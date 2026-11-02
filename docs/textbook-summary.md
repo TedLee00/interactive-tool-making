@@ -121,12 +121,17 @@ Quick Check: quickly 단어 / in the park 구 / because it rained 절 / to eat l
 ### 1-5(연습 ②-B · ③). 청크 표시 방식 ★ 게임 채점 기준
 
 > **원장님 결정 (2026-11-02): 「5품사 청크 독해 법칙」**
+> **목적:** 긴 글을 명·동·형·부 4개(접속사까지 5개)의 큰 덩어리로 묶어 문장 구조를 빨리 파악하고, 덩어리 순서대로 머릿속에서 번역한다. 접속사는 잘 나오지 않으므로 사실상 4품사 덩어리 독해다.
+> **대원칙: 묶을 수 있는 단위는 최대한 묶는다.**
 > 품사 공부(단어 하나하나)와 청크 독해(덩어리)는 구분한다.
 > - **품사 공부 (유형 1~3)**: 단어를 따로따로 본다. the, my, pretty 각각 형용사.
 > - **청크 독해 (유형 6~12)**: **명사 앞에 있는 형용사(관사·소유격 포함)는 명사의 일부**로 보고, 통째로 **○ 명사구**로 묶는다.
 >   - ○The pretty girl (in the red clothes) ← (The pretty) ○girl 처럼 잘게 자르는 것은 5품사 청크 독해가 아니다.
-> - 청크 유형을 시작할 때 이 법칙을 짧게 안내한다:
->   「5품사 청크 독해 법칙 — 명사 앞에 있는 형용사는 명사의 일부! 통째로 명사구 ○로 묶어요.」
+>   - **보어 자리 형용사 앞의 부사는 형용사의 일부**로 보고, 통째로 **( ) 형용사구**로 묶는다. 합쳐서 보어 역할을 한다.
+>     - □was (very long) / □smell (really sweet) / □is (really exciting) ← <very> (long)처럼 나누지 않는다.
+> - 청크 유형을 시작할 때 이 법칙을 짧게 안내하고, 해당 문제 해설에서도 다시 언급한다:
+>   「5품사 청크 독해 법칙 ① 명사 앞에 있는 형용사는 명사의 일부! 통째로 명사구 ○로 묶어요.」
+>   「5품사 청크 독해 법칙 ② 보어 자리 형용사 앞에 있는 부사는 형용사의 일부! 통째로 형용사구 ( )로 묶어요.」
 >
 > 아래 1번은 교재 정답지 표기((The tall) ○girl)와 다르지만, **게임에서는 원장님 결정을 따른다.**
 
@@ -137,8 +142,8 @@ Quick Check: quickly 단어 / in the park 구 / because it rained 절 / to eat l
 2. **명사 뒤 전명구는 ( ) 형용사구** (뒤에서 꾸미는 말은 따로) — ○girl (in the blue jacket), ○key (to the front door)
 3. **대명사는 ○ 명사로 표시** — ○We, ○She, ○I, ○it (5품사 체계에서 대명사는 명사 무리)
 4. **동사 덩어리는 한 □** — □is sleeping, □can be (조동사·진행형 포함)
-5. **보어 자리 형용사도 ( )** — □smell <really> (sweet). / □was (tired) / □is <really> (exciting)
-   - 형용사를 꾸미는 부사는 따로 < > : <really>, <very>
+5. **보어 자리 형용사는 ( ), 그 앞 부사까지 한 덩어리 형용사구** — □smell (really sweet). / □was (tired) / □is (really exciting)
+   - 교재 정답지는 <really> (sweet)로 나눠 표시하지만, 게임에서는 원장님 결정(법칙 ②)을 따른다.
 6. **목적어·주어 자리의 to부정사구·동명사구·that절은 통째로 ○** — ○to become a famous singer, ○Reading comic books, ○that English is fun
 7. **부사절은 접속사까지 통째로 < >** — <When it snows>, <because it rained heavily>, <because they are fun>
 8. **△는 등위접속사(and, but)만 따로 표시** — ○Tom △and ○I / △but
