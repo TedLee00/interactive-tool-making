@@ -4,8 +4,9 @@
 ## 지금 단계 (3단계: 3D 보드·캐릭터·주사위)
 - `index.html` — 게임 (타이틀 → 등록 → 캐릭터 선택 → 3D 보드)
 - `data/board.json` — 40칸 여정 (지역 4곳, 칸 종류·유형)
-- `data/characters.json` — 캐릭터 6명 + 안내 캐릭터 (이름·성격·대사)
-- `public/assets/characters/*.svg` — 캐릭터 그림 (같은 이름의 파일로 바꾸면 교체됨)
+- `data/characters.json` — 플레이어 캐릭터 8명 + 안내 Ted 선생님 (이름·성격·대사)
+- `public/assets/characters/*.svg` — 캐릭터 그림 (기존 앱 캐릭터. 같은 이름의 파일로 바꾸면 교체됨)
+- `public/assets/brand/logo.png` — 학원 로고
 - `src/board/` — 3D 보드·말·주사위
 
 ## 2단계 결과물

@@ -2,6 +2,7 @@
 import * as THREE from 'three';
 
 const FONT = "'Noto Sans KR', 'Apple SD Gothic Neo', sans-serif";
+const FONT_CUTE = "'Jua', 'Noto Sans KR', sans-serif";
 
 function roundRect(ctx, x, y, w, h, r) {
   ctx.beginPath();
@@ -20,25 +21,63 @@ function tex(canvas) {
   return t;
 }
 
-/** 건물 간판: 지역 색 테두리 + 유형 이름 */
+/** 건물 간판: 크림색 동화책 팻말 + 지역 색 리본 */
 export function signSprite(text, sub, color) {
   const c = document.createElement('canvas');
-  c.width = 512; c.height = 176;
+  c.width = 512; c.height = 200;
   const x = c.getContext('2d');
-  roundRect(x, 8, 8, 496, 160, 34);
-  x.fillStyle = '#0D2144'; x.fill();
-  x.lineWidth = 10; x.strokeStyle = color; x.stroke();
-  x.fillStyle = '#C9A84C';
-  x.font = `800 34px ${FONT}`;
-  x.textAlign = 'center';
-  x.fillText(sub, 256, 62);
+  x.shadowColor = 'rgba(80,50,120,.25)'; x.shadowBlur = 14; x.shadowOffsetY = 6;
+  roundRect(x, 14, 30, 484, 150, 44);
+  x.fillStyle = '#FFFBF0'; x.fill();
+  x.shadowColor = 'transparent';
+  x.lineWidth = 9; x.strokeStyle = color; x.stroke();
+  // 리본
+  roundRect(x, 166, 8, 180, 50, 25);
+  x.fillStyle = color; x.fill();
   x.fillStyle = '#fff';
-  x.font = `900 ${text.length > 7 ? 54 : 62}px ${FONT}`;
-  x.fillText(text, 256, 132);
+  x.font = `700 30px ${FONT_CUTE}`;
+  x.textAlign = 'center';
+  x.fillText(sub, 256, 44);
+  x.fillStyle = '#2B2350';
+  x.font = `400 ${text.length > 7 ? 60 : 68}px ${FONT_CUTE}`;
+  x.fillText(text, 256, 140);
   const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex(c), transparent: true, depthWrite: false }));
-  s.scale.set(2.3, 0.79, 1);
+  s.scale.set(2.3, 0.9, 1);
   s.renderOrder = 2;
   return s;
+}
+
+/** 학원 로고 (public/assets/brand/logo.png) */
+export function logoSprite(w = 1.1) {
+  const c = document.createElement('canvas');
+  c.width = 256; c.height = 300;
+  const x = c.getContext('2d');
+  const t = tex(c);
+  const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: t, transparent: true, depthWrite: false }));
+  s.scale.set(w, (w * 300) / 256, 1);
+  const im = new Image();
+  im.onload = () => {
+    x.beginPath(); x.arc(128, 150, 124, 0, Math.PI * 2);
+    x.fillStyle = 'rgba(255,251,240,.95)'; x.fill();
+    x.lineWidth = 8; x.strokeStyle = '#C9A84C'; x.stroke();
+    x.drawImage(im, 128 - 80, 150 - 96, 160, 192);
+    t.needsUpdate = true;
+  };
+  im.src = `${import.meta.env.BASE_URL}assets/brand/logo.png`;
+  return s;
+}
+
+/** 파스텔 하늘 그라데이션 */
+export function skyTexture() {
+  const c = document.createElement('canvas');
+  c.width = 4; c.height = 256;
+  const x = c.getContext('2d');
+  const g = x.createLinearGradient(0, 0, 0, 256);
+  g.addColorStop(0, '#7EC8FF');
+  g.addColorStop(0.55, '#BFE6FF');
+  g.addColorStop(1, '#FFE3F0');
+  x.fillStyle = g; x.fillRect(0, 0, 4, 256);
+  return tex(c);
 }
 
 /** 큰 배너 (출발·지역 이름 등) */
@@ -48,9 +87,9 @@ export function bannerSprite(text, color = '#C9A84C', w = 3.6) {
   const x = c.getContext('2d');
   roundRect(x, 6, 6, 628, 148, 40);
   x.fillStyle = color; x.fill();
-  x.lineWidth = 8; x.strokeStyle = '#0D2144'; x.stroke();
-  x.fillStyle = '#0D2144';
-  x.font = `900 72px ${FONT}`;
+  x.lineWidth = 8; x.strokeStyle = '#ffffff'; x.stroke();
+  x.fillStyle = '#2B2350';
+  x.font = `400 76px ${FONT_CUTE}`;
   x.textAlign = 'center';
   x.fillText(text, 320, 106);
   const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex(c), transparent: true, depthWrite: false }));
@@ -101,7 +140,7 @@ export function numberTexture(n, fg = '#0D2144') {
   c.width = 128; c.height = 128;
   const x = c.getContext('2d');
   x.fillStyle = fg;
-  x.font = `900 64px ${FONT}`;
+  x.font = `400 66px ${FONT_CUTE}`;
   x.textAlign = 'center'; x.textBaseline = 'middle';
   x.fillText(String(n), 64, 70);
   return tex(c);

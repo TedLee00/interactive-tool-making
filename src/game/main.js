@@ -10,9 +10,11 @@ import { runCell } from '../quiz/cell.js';
 import { TYPES } from '../quiz/constants.js';
 import { esc } from '../quiz/notation.js';
 import { sfx, setMuted, isMuted } from '../quiz/sound.js';
+import { loadChar, fillFaces, charURL } from '../board/charart.js';
 
 const BASE = import.meta.env.BASE_URL;
-const portrait = (id) => `${BASE}assets/characters/${id}.svg`;
+const LOGO = `${BASE}assets/brand/logo.png`;
+const faceImg = (id, cls = '') => `<img class="face ${cls}" data-face="${id}" alt="">`;
 const SAVE_KEY = 'cq.game.v1';
 const GRADES = ['중1', '중2', '중3', '고1', '고2', '기타'];
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -37,9 +39,10 @@ renderer.setPixelRatio(Math.min(2, window.devicePixelRatio || 1));
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.NoToneMapping;
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 200);
-const world = buildWorld(scene, board);
+let world = null;
 const dice = createDice(scene);
 let avatar = null;
 
@@ -85,14 +88,13 @@ function loop(now) {
   const dt = Math.min(0.05, (now - last) / 1000);
   last = now;
   elapsed += dt;
-  world.update(dt, elapsed);
-  avatar?.update(dt);
+  world.update(dt, elapsed, camera);
+  avatar?.update(dt, camera);
   updateCamera(dt);
   renderer.render(scene, camera);
   requestAnimationFrame(loop);
 }
-requestAnimationFrame(loop);
-window.__CQ = { get S() { return S; }, world, cam, get avatar() { return avatar; } }; // 테스트용
+window.__CQ = { get S() { return S; }, get world() { return world; }, cam, get avatar() { return avatar; } }; // 테스트용
 
 function placeAvatar(charId) {
   if (avatar) scene.remove(avatar.root);
@@ -142,6 +144,7 @@ const regionOf = (i) => board.regions[board.cells[i].region];
 
 function screen(html) {
   ui.innerHTML = html;
+  fillFaces(ui);
   return ui;
 }
 
@@ -152,6 +155,7 @@ function title() {
   const can = sv && !sv.finished;
   screen(`<div class="title-screen">
     <div class="logo-card">
+      <img class="brand" src="${LOGO}" alt="백년지대계">
       <div class="kicker">CHUNK QUEST</div>
       <h1>품사 <b>원정대</b></h1>
       <p>주사위를 굴려 「문장의 성」까지!</p>
@@ -193,8 +197,8 @@ function choose(name, grade) {
     const c = chars.players.find((p) => p.id === pick);
     screen(`<div class="panel-screen"><div class="panel card">
       <h2>함께 떠날 캐릭터</h2>
-      <div class="chars">${chars.players.map((p) => `<button class="ch ${p.id === pick ? 'on' : ''}" data-id="${p.id}" style="--cc:${p.body}"><img src="${portrait(p.id)}" alt=""><b>${esc(p.name)}</b><small>${esc(p.title)}</small></button>`).join('')}</div>
-      <div class="say"><img src="${portrait(c.id)}" alt=""><p><b>${esc(c.name)}</b> “${esc(c.lines.select)}”</p></div>
+      <div class="chars">${chars.players.map((p) => `<button class="ch ${p.id === pick ? 'on' : ''}" data-id="${p.id}" style="--cc:${p.color}"><img src="${charURL(p.id)}" alt=""><b>${esc(p.name)}</b><small class="nick">${esc(p.nick)}</small><small>${esc(p.title)}</small></button>`).join('')}</div>
+      <div class="say">${faceImg(c.id)}<p><b>${esc(c.name)}</b> “${esc(c.lines.select)}”</p></div>
       <div class="row"><button class="ghost" id="back">◀ 이전</button><button class="primary" id="go">${esc(c.name)}(와)과 출발! ▶</button></div></div></div>`);
     ui.querySelectorAll('.ch').forEach((b) => { b.onclick = () => { pick = b.dataset.id; sfx('tap'); draw(); }; });
     ui.querySelector('#back').onclick = () => profile(name, grade);
@@ -217,8 +221,8 @@ function hud() {
     </div>
     <div class="progress"><i style="width:${(S.pos / (board.cells.length - 1)) * 100}%"></i>${board.regions.map((r, k) => `<em style="left:${(board.cells.findIndex((c) => c.region === k) / (board.cells.length - 1)) * 100}%"></em>`).join('')}</div>
     <div class="hud-bottom">
-      <div class="talk" id="talk"><img id="talkImg" src="${portrait('guide')}" alt=""><p id="talkTxt"></p></div>
-      <div class="me"><img src="${portrait(p.id)}" alt=""><span>${esc(S.name)}</span></div>
+      <div class="talk" id="talk"><img id="talkImg" class="face" data-face="ted" alt=""><p id="talkTxt"></p></div>
+      <div class="me">${faceImg(p.id)}<span>${esc(S.name)}</span></div>
       <button class="dice-btn" id="roll"><span class="pip-ico">🎲</span>주사위 굴리기</button>
     </div>
     <div class="bignum" id="bignum"></div>
@@ -232,7 +236,8 @@ function talk(text, who = 'guide') {
   const img = ui.querySelector('#talkImg');
   const tx = ui.querySelector('#talkTxt');
   if (!img) return;
-  img.src = portrait(who === 'guide' ? 'guide' : player().id);
+  img.dataset.face = who === 'guide' ? 'ted' : player().id;
+  fillFaces(ui);
   tx.innerHTML = `<b>${esc(who === 'guide' ? chars.guide.name : player().name)}</b> ${esc(text)}`;
   const t = ui.querySelector('#talk');
   t.classList.remove('pop'); void t.offsetWidth; t.classList.add('pop');
@@ -272,9 +277,19 @@ function toast(text) {
   el.classList.remove('show'); void el.offsetWidth; el.classList.add('show');
 }
 
+function snapCamera() {
+  const t = avatar.root.position;
+  const dir = world.direction(S.pos);
+  const yaw = Math.atan2(dir.x, -dir.z) * 0.6;
+  cam.target.copy(t);
+  cam.pos.copy(t).add(new THREE.Vector3(Math.sin(yaw) * -8, 7.6, Math.cos(yaw) * 8));
+  cam.look.copy(t).add(new THREE.Vector3(0, 0.6, -2.4));
+}
+
 async function startBoard(fresh) {
   cam.mode = 'board';
   placeAvatar(S.char);
+  if (!fresh) snapCamera(); // 이어하기: 바로 내 말 위치에서 시작
   hud();
   if (S.finished) return goal();
   if (fresh) {
@@ -399,4 +414,12 @@ async function goal() {
   ui.querySelector('#home').onclick = title;
 }
 
-title();
+async function boot() {
+  // 간판 글꼴(Jua)이 준비된 뒤 3D 보드를 그린다 (최대 2.5초 기다림)
+  try { await Promise.race([document.fonts.load('400 40px Jua'), sleep(2500)]); } catch { /* 글꼴 없음 */ }
+  world = buildWorld(scene, board, chars.guide);
+  chars.players.forEach((p) => loadChar(p.id).catch(() => {}));
+  requestAnimationFrame(loop);
+  title();
+}
+boot();

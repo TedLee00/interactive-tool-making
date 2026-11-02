@@ -1,162 +1,100 @@
-// 플레이어 말(로우폴리 캐릭터) — data/characters.json 의 색·장신구로 조립한다.
+// 플레이어 말 = 보드게임 "스탠디" (캐릭터 그림 스티커 + 금색 받침)
+// 그림은 public/assets/characters/<id>.svg — 나중에 AI 일러스트로 바꿔도 코드는 그대로.
 // 동작: idle(대기) · hop(이동) · joy(기쁨) · sad(좌절) · win(승리)
 import * as THREE from 'three';
+import { loadChar } from './charart.js';
 
-const mat = (color, opts = {}) => new THREE.MeshStandardMaterial({ color, roughness: 0.65, metalness: 0, flatShading: true, ...opts });
-const INK = 0x0d2144;
+const HEIGHT = 1.55; // 스탠디 높이 (월드 단위)
 
-function accessory(acc, c) {
-  const g = new THREE.Group();
-  if (acc === 'explorer') {
-    const brim = new THREE.Mesh(new THREE.CylinderGeometry(0.52, 0.52, 0.05, 16), mat(0xa9864b));
-    const top = new THREE.Mesh(new THREE.CylinderGeometry(0.28, 0.34, 0.26, 12), mat(0xc9a66b));
-    top.position.y = 0.14;
-    const band = new THREE.Mesh(new THREE.CylinderGeometry(0.345, 0.345, 0.06, 12), mat(0x6b4f2a));
-    band.position.y = 0.05;
-    g.add(brim, top, band);
-    g.position.y = 0.3;
-  } else if (acc === 'cap') {
-    const dome = new THREE.Mesh(new THREE.SphereGeometry(0.38, 14, 8, 0, Math.PI * 2, 0, Math.PI / 2), mat(0x2e7bc4));
-    const bill = new THREE.Mesh(new THREE.BoxGeometry(0.34, 0.04, 0.3), mat(0x1f5fb8));
-    bill.position.set(0, 0.02, -0.38); // 거꾸로 쓴 모자 (뒤쪽)
-    g.add(dome, bill);
-    g.position.y = 0.1;
-  } else if (acc === 'glasses') {
-    [-0.13, 0.13].forEach((x) => {
-      const ring = new THREE.Mesh(new THREE.TorusGeometry(0.09, 0.02, 6, 14), mat(INK));
-      ring.position.set(x, 0, 0.33);
-      g.add(ring);
-    });
-    const bridge = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.02, 0.02), mat(INK));
-    bridge.position.z = 0.34;
-    g.add(bridge);
-    g.position.y = 0.02;
-  } else if (acc === 'headband') {
-    const band = new THREE.Mesh(new THREE.TorusGeometry(0.36, 0.05, 6, 20), mat(0xffffff));
-    band.rotation.x = Math.PI / 2;
-    g.add(band);
-    g.position.y = 0.16;
-  } else if (acc === 'beret') {
-    const b = new THREE.Mesh(new THREE.SphereGeometry(0.4, 14, 8), mat(0xc8372d));
-    b.scale.set(1, 0.32, 1);
-    b.position.set(0.06, 0.26, 0);
-    b.rotation.z = -0.2;
-    g.add(b);
-  } else if (acc === 'antenna') {
-    const stick = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.025, 0.3, 6), mat(INK));
-    stick.position.y = 0.45;
-    const ball = new THREE.Mesh(new THREE.SphereGeometry(0.08, 10, 8), mat(0xf2c14e, { emissive: 0xf2c14e, emissiveIntensity: 0.6 }));
-    ball.position.y = 0.62;
-    g.add(stick, ball);
-    g.userData.glow = ball;
-  }
-  return g;
-}
-
-export function createAvatar(c) {
-  const root = new THREE.Group(); // 위치·회전 (게임이 조작)
-  const rig = new THREE.Group(); // 애니메이션 (점프·찌그러짐)
+export function createAvatar(c, { height = HEIGHT, base = true } = {}) {
+  const root = new THREE.Group(); // 위치 (게임이 조작)
+  const rig = new THREE.Group(); // 점프·찌그러짐
+  const face = new THREE.Group(); // 카메라 쪽으로 돌기
   root.add(rig);
-  const robot = c.acc === 'antenna';
+  rig.add(face);
 
-  const body = new THREE.Mesh(new THREE.CapsuleGeometry(0.26, 0.28, 4, 10), mat(c.body));
-  body.position.y = 0.42;
-  const head = new THREE.Group();
-  head.position.y = 1.02;
-  const skull = robot
-    ? new THREE.Mesh(new THREE.BoxGeometry(0.62, 0.56, 0.58), mat(c.skin, { metalness: 0.3 }))
-    : new THREE.Mesh(new THREE.SphereGeometry(0.36, 16, 12), mat(c.skin));
-  head.add(skull);
-  if (!robot) {
-    const hair = new THREE.Mesh(new THREE.SphereGeometry(0.375, 16, 10, 0, Math.PI * 2, 0, Math.PI * 0.55), mat(c.hair));
-    hair.rotation.x = -0.55;
-    hair.position.set(0, 0.02, -0.04);
-    head.add(hair);
+  const mat = new THREE.MeshBasicMaterial({ transparent: true, alphaTest: 0.08, side: THREE.DoubleSide, toneMapped: false });
+  const card = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), mat);
+  card.visible = false;
+  face.add(card);
+  // 그림자용 (투명 부분은 그림자 없음)
+  const depthMat = new THREE.MeshDepthMaterial({ depthPacking: THREE.RGBADepthPacking, alphaTest: 0.5 });
+  card.customDepthMaterial = depthMat;
+  card.castShadow = true;
+
+  loadChar(c.id).then((a) => {
+    const tex = new THREE.CanvasTexture(a.sticker);
+    tex.colorSpace = THREE.SRGBColorSpace;
+    tex.anisotropy = 4;
+    mat.map = tex;
+    depthMat.map = tex;
+    mat.needsUpdate = true;
+    depthMat.needsUpdate = true;
+    const aspect = a.sticker.width / a.sticker.height;
+    card.scale.set(height * aspect, height, 1);
+    card.position.y = height / 2 + 0.06;
+    card.visible = true;
+  });
+
+  if (base) {
+    const plinth = new THREE.Mesh(new THREE.CylinderGeometry(0.34, 0.4, 0.12, 24), new THREE.MeshToonMaterial({ color: 0xe8c665 }));
+    plinth.position.y = 0.06;
+    const ring = new THREE.Mesh(new THREE.TorusGeometry(0.37, 0.03, 8, 28), new THREE.MeshToonMaterial({ color: new THREE.Color(c.color || '#C9A84C') }));
+    ring.rotation.x = Math.PI / 2;
+    ring.position.y = 0.12;
+    plinth.castShadow = true;
+    rig.add(plinth, ring);
   }
-  const eyeM = robot ? mat(0x5be0ff, { emissive: 0x5be0ff, emissiveIntensity: 0.8 }) : mat(INK);
-  const eyes = [-0.12, 0.12].map((x) => {
-    const e = robot ? new THREE.Mesh(new THREE.BoxGeometry(0.11, 0.08, 0.02), eyeM) : new THREE.Mesh(new THREE.SphereGeometry(0.045, 8, 6), eyeM);
-    e.position.set(x, 0.02, robot ? 0.3 : 0.33);
-    head.add(e);
-    return e;
-  });
-  if (!robot) {
-    [-0.2, 0.2].forEach((x) => {
-      const ch = new THREE.Mesh(new THREE.SphereGeometry(0.05, 8, 6), mat(0xff9db0, { transparent: true, opacity: 0.7 }));
-      ch.position.set(x, -0.08, 0.3);
-      ch.scale.z = 0.4;
-      head.add(ch);
-    });
-  }
-  const acc = accessory(c.acc, c);
-  head.add(acc);
-
-  const arms = [-1, 1].map((s) => {
-    const a = new THREE.Mesh(new THREE.SphereGeometry(0.1, 8, 6), mat(c.body));
-    a.position.set(0.32 * s, 0.5, 0.02);
-    rig.add(a);
-    return a;
-  });
-  const feet = [-1, 1].map((s) => {
-    const f = new THREE.Mesh(new THREE.SphereGeometry(0.1, 8, 6), mat(INK));
-    f.scale.set(1, 0.6, 1.3);
-    f.position.set(0.13 * s, 0.05, 0.04);
-    rig.add(f);
-    return f;
-  });
-  rig.add(body, head);
-  rig.traverse((o) => { if (o.isMesh) { o.castShadow = true; } });
-
-  // 바닥 그림자 원 (그림자가 꺼진 기기에서도 위치감)
-  const blob = new THREE.Mesh(new THREE.CircleGeometry(0.42, 20), new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.18, depthWrite: false }));
+  const blob = new THREE.Mesh(new THREE.CircleGeometry(0.46, 24), new THREE.MeshBasicMaterial({ color: 0x3a2a55, transparent: true, opacity: 0.18, depthWrite: false }));
   blob.rotation.x = -Math.PI / 2;
   blob.position.y = 0.02;
   root.add(blob);
 
   let anim = 'idle';
   let t = 0;
-  let blinkT = 2;
+  const camPos = new THREE.Vector3();
 
   function setAnim(name) { anim = name; t = 0; }
 
-  function update(dt) {
+  /** @param camera 있으면 그쪽으로 그림을 돌린다 (스탠디가 항상 정면) */
+  function update(dt, camera) {
     t += dt;
-    blinkT -= dt;
-    const blink = blinkT < 0.12 && !robot;
-    eyes.forEach((e) => { e.scale.y = blink ? 0.15 : 1; });
-    if (blinkT < 0) blinkT = 2 + Math.random() * 3;
-    if (acc.userData.glow) acc.userData.glow.material.emissiveIntensity = 0.4 + 0.4 * Math.sin(t * 6);
-
-    // 기본 자세
+    if (camera) {
+      camera.getWorldPosition(camPos);
+      const p = root.getWorldPosition(new THREE.Vector3());
+      face.rotation.y = Math.atan2(camPos.x - p.x, camPos.z - p.z) - root.rotation.y;
+    }
     rig.position.y = 0;
     rig.rotation.set(0, 0, 0);
     rig.scale.set(1, 1, 1);
-    head.rotation.set(0, 0, 0);
-    arms.forEach((a, i) => { a.position.y = 0.5; a.position.x = (i ? 1 : -1) * 0.32; });
+    card.rotation.set(0, 0, 0);
+    mat.color.setScalar(1);
+    blob.scale.setScalar(1);
 
     if (anim === 'idle') {
-      rig.position.y = Math.abs(Math.sin(t * 2.2)) * 0.04;
-      head.rotation.z = Math.sin(t * 1.3) * 0.06;
-      arms.forEach((a, i) => { a.position.y = 0.5 + Math.sin(t * 2.2 + i * Math.PI) * 0.03; });
+      rig.scale.y = 1 + Math.sin(t * 2.4) * 0.025; // 숨쉬기
+      card.rotation.z = Math.sin(t * 1.3) * 0.035;
     } else if (anim === 'hop') {
-      // 위치는 게임이 옮기고, 여기서는 찌그러짐·팔만
       const k = Math.sin(Math.min(1, t / 0.32) * Math.PI);
-      rig.scale.set(1 - k * 0.06, 1 + k * 0.1, 1 - k * 0.06);
-      arms.forEach((a) => { a.position.y = 0.5 + k * 0.18; });
+      rig.scale.set(1 - k * 0.08, 1 + k * 0.12, 1);
+      card.rotation.z = Math.sin(t * 18) * 0.06;
     } else if (anim === 'joy') {
-      const p = (t % 0.6) / 0.6;
-      rig.position.y = Math.sin(p * Math.PI) * 0.55;
-      rig.rotation.y = t < 1.2 ? (t / 1.2) * Math.PI * 2 : 0;
-      arms.forEach((a, i) => { a.position.y = 0.95; a.position.x = (i ? 1 : -1) * 0.42; });
+      const p = (t % 0.55) / 0.55;
+      rig.position.y = Math.sin(p * Math.PI) * 0.6;
+      card.rotation.y = t < 1.1 ? (t / 1.1) * Math.PI * 2 : 0;
+      blob.scale.setScalar(1 - Math.sin(p * Math.PI) * 0.3);
     } else if (anim === 'sad') {
-      head.rotation.x = 0.45;
-      rig.scale.set(1.04, 0.9, 1.04);
-      rig.rotation.z = Math.sin(t * 2) * 0.05;
-      arms.forEach((a) => { a.position.y = 0.36; });
+      card.rotation.x = -0.32;
+      rig.scale.set(1.03, 0.92, 1);
+      card.rotation.z = Math.sin(t * 2) * 0.04;
+      mat.color.setScalar(0.78);
     } else if (anim === 'win') {
-      rig.position.y = Math.abs(Math.sin(t * 4)) * 0.45;
-      rig.rotation.y = t * 3;
-      arms.forEach((a, i) => { a.position.y = 0.95 + Math.sin(t * 10 + i * Math.PI) * 0.08; a.position.x = (i ? 1 : -1) * 0.45; });
+      rig.position.y = Math.abs(Math.sin(t * 4)) * 0.5;
+      card.rotation.y = t * 3.2;
+      blob.scale.setScalar(1 - Math.abs(Math.sin(t * 4)) * 0.3);
+    } else if (anim === 'wave') {
+      card.rotation.z = Math.sin(t * 3) * 0.08;
+      rig.position.y = Math.abs(Math.sin(t * 3)) * 0.08;
     }
   }
 

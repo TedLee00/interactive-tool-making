@@ -5,7 +5,7 @@
    "name": "품사 마을",
    "level": "하",
    "color": "#4FA65B",
-   "ground": "#8CCB6E",
+   "ground": "#B6E88E",
    "accent": "#F2C14E",
    "types": [
     1,
@@ -19,7 +19,7 @@
    "name": "청크 시티",
    "level": "중",
    "color": "#2E7BC4",
-   "ground": "#9FB9D6",
+   "ground": "#F6E7CF",
    "accent": "#5BC0EB",
    "types": [
     4,
@@ -33,7 +33,7 @@
    "name": "절단 협곡",
    "level": "중상",
    "color": "#C2602D",
-   "ground": "#E2A66B",
+   "ground": "#FFD9B5",
    "accent": "#8C3B1E",
    "types": [
     8,
@@ -46,7 +46,7 @@
    "name": "문장의 성",
    "level": "상",
    "color": "#7A3FA8",
-   "ground": "#B9A3D6",
+   "ground": "#EBDDFF",
    "accent": "#C9A84C",
    "types": [
     11,
