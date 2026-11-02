@@ -1,0 +1,398 @@
+[
+ {
+  "id": "09-001",
+  "type": 9,
+  "level": 1,
+  "en": "N:My little brother | V:plays | N:mobile games | D:after dinner | D:every day",
+  "end": ".",
+  "explain": "법칙 ① 명사 앞 꾸밈말은 명사의 일부 → ○My little brother, ○mobile games. 뼈대 brother plays games (S V O)",
+  "source": "교재 연습②-B · ③ · 5품사 청크 독해 법칙"
+ },
+ {
+  "id": "09-002",
+  "type": 9,
+  "level": 2,
+  "en": "N:The students | A:in my class | V:ate | N:lunch | D:quickly | D:because they wanted to play soccer",
+  "end": ".",
+  "explain": "명사 뒤에서 꾸미는 in my class는 따로 ( 형용사구 ). because부터 끝까지 < 부사절 >",
+  "source": "교재 연습②-B · ③ · 5품사 청크 독해 법칙"
+ },
+ {
+  "id": "09-003",
+  "type": 9,
+  "level": 3,
+  "en": "N:I | V:was | A:hungry, | C:but | N:the cafeteria line | V:was | A:very long",
+  "end": ".",
+  "explain": "법칙 ① 명사 앞 꾸밈말은 명사의 일부 → ○the cafeteria line. 법칙 ② 보어 자리 형용사 앞 부사는 형용사의 일부 → (very long). but은 △",
+  "source": "교재 연습②-B · ③ · 5품사 청크 독해 법칙"
+ },
+ {
+  "id": "09-004",
+  "type": 9,
+  "level": 1,
+  "en": "N:My best friend | V:lives | D:next to my house",
+  "end": ".",
+  "explain": "어디에? → < next to my house >",
+  "source": "교재 연습②-B · ③ · 5품사 청크 독해 법칙"
+ },
+ {
+  "id": "09-005",
+  "type": 9,
+  "level": 2,
+  "en": "N:Our homeroom teacher | D:always | V:smiles | D:at us",
+  "end": ".",
+  "explain": "빈도부사 always는 동사 앞 < >. 뼈대 teacher smiles (S V)",
+  "source": "교재 연습②-B · ③ · 5품사 청크 독해 법칙"
+ },
+ {
+  "id": "09-006",
+  "type": 9,
+  "level": 2,
+  "en": "N:The boy | A:with the big backpack | V:is | N:my desk partner",
+  "end": ".",
+  "explain": "명사 boy를 뒤에서 꾸미는 ( 형용사구 ). 보어 자리 ○my desk partner",
+  "source": "교재 연습②-B · ③ · 5품사 청크 독해 법칙"
+ },
+ {
+  "id": "09-007",
+  "type": 9,
+  "level": 2,
+  "en": "D:Every morning, | N:my dad | V:makes | N:breakfast | D:for us",
+  "end": ".",
+  "explain": "언제? → < Every morning >. 뼈대 dad makes breakfast",
+  "source": "교재 연습②-B · ③ · 5품사 청크 독해 법칙"
+ },
+ {
+  "id": "09-008",
+  "type": 9,
+  "level": 1,
+  "en": "N:We | V:played | N:dodgeball | D:on the playground | D:after lunch",
+  "end": ".",
+  "explain": "어디서 → 언제 순서 < > < >",
+  "source": "교재 연습②-B · ③ · 5품사 청크 독해 법칙"
+ },
+ {
+  "id": "09-009",
+  "type": 9,
+  "level": 1,
+  "en": "N:Minji | V:is | N:the class president",
+  "end": ".",
+  "explain": "보어 자리 명사구 ○the class president (Minji = president)",
+  "source": "교재 연습②-B · ③ · 5품사 청크 독해 법칙"
+ },
+ {
+  "id": "09-010",
+  "type": 9,
+  "level": 2,
+  "en": "N:Today's school lunch | V:looks | A:really delicious",
+  "end": ".",
+  "explain": "법칙 ② 보어 자리 형용사 앞 부사는 형용사의 일부 → (really delicious)",
+  "source": "교재 연습②-B · ③ · 5품사 청크 독해 법칙"
+ },
+ {
+  "id": "09-011",
+  "type": 9,
+  "level": 2,
+  "en": "N:I | V:want | N:to win the relay race",
+  "end": ".",
+  "explain": "목적어 자리 to부정사구 → ○ 한 덩어리",
+  "source": "교재 연습②-B · ③ · 5품사 청크 독해 법칙"
+ },
+ {
+  "id": "09-012",
+  "type": 9,
+  "level": 2,
+  "en": "N:Playing games with my friends | V:is | A:really fun",
+  "end": ".",
+  "explain": "주어 자리 동명사구 → ○ 한 덩어리. 법칙 ② 보어 자리 형용사 앞 부사는 형용사의 일부",
+  "source": "교재 연습②-B · ③ · 5품사 청크 독해 법칙"
+ },
+ {
+  "id": "09-013",
+  "type": 9,
+  "level": 2,
+  "en": "N:My dream | V:is | N:to become a famous YouTuber",
+  "end": ".",
+  "explain": "보어 자리 to부정사구 → ○ 한 덩어리",
+  "source": "교재 연습②-B · ③ · 5품사 청크 독해 법칙"
+ },
+ {
+  "id": "09-014",
+  "type": 9,
+  "level": 2,
+  "en": "N:Jiho | V:went | D:to the convenience store | D:to buy some snacks",
+  "end": ".",
+  "explain": "어디로? 왜? → < > < >. \"~하기 위해\" to부정사 < 부사구 >",
+  "source": "교재 연습②-B · ③ · 5품사 청크 독해 법칙"
+ },
+ {
+  "id": "09-015",
+  "type": 9,
+  "level": 2,
+  "en": "D:When I got home, | N:my dog | V:jumped | D:on me",
+  "end": ".",
+  "explain": "주어 + 동사가 있는 When ~ → < 부사절 > 통째로",
+  "source": "교재 연습②-B · ③ · 5품사 청크 독해 법칙"
+ },
+ {
+  "id": "09-016",
+  "type": 9,
+  "level": 3,
+  "en": "N:I | V:heard | N:that today's lunch is spaghetti",
+  "end": ".",
+  "explain": "목적어 자리 that절 → ○ 명사절 통째로",
+  "source": "교재 연습②-B · ③ · 5품사 청크 독해 법칙"
+ },
+ {
+  "id": "09-017",
+  "type": 9,
+  "level": 2,
+  "en": "N:Mom | V:gave | N:me | N:a new phone | D:for my birthday",
+  "end": ".",
+  "explain": "4형식 S V O O → ○me ○a new phone",
+  "source": "교재 연습②-B · ③ · 5품사 청크 독해 법칙"
+ },
+ {
+  "id": "09-018",
+  "type": 9,
+  "level": 3,
+  "en": "N:The news | V:made | N:us | A:very happy",
+  "end": ".",
+  "explain": "5형식 → us = very happy. 법칙 ② 보어 자리 형용사 앞 부사는 형용사의 일부",
+  "source": "교재 연습②-B · ③ · 5품사 청크 독해 법칙"
+ },
+ {
+  "id": "09-019",
+  "type": 9,
+  "level": 3,
+  "en": "N:We | V:call | N:our class hamster | N:Mochi",
+  "end": ".",
+  "explain": "5형식 → hamster = Mochi, 보어 자리 명사 ○",
+  "source": "교재 연습②-B · ③ · 5품사 청크 독해 법칙"
+ },
+ {
+  "id": "09-020",
+  "type": 9,
+  "level": 2,
+  "en": "N:The cookies | A:on the table | V:look | A:delicious",
+  "end": ".",
+  "explain": "명사 cookies를 뒤에서 꾸미는 ( 형용사구 ). 보어 자리 ( 형용사 )",
+  "source": "교재 연습②-B · ③ · 5품사 청크 독해 법칙"
+ },
+ {
+  "id": "09-021",
+  "type": 9,
+  "level": 3,
+  "en": "N:I | V:was | A:so sleepy | D:because I played games all night",
+  "end": ".",
+  "explain": "법칙 ② 보어 자리 형용사 앞 부사는 형용사의 일부 → (so sleepy). because ~ < 부사절 >",
+  "source": "교재 연습②-B · ③ · 5품사 청크 독해 법칙"
+ },
+ {
+  "id": "09-022",
+  "type": 9,
+  "level": 1,
+  "en": "N:My sister | V:is studying | D:in her room | D:now",
+  "end": ".",
+  "explain": "is studying은 동사 덩어리 하나 □",
+  "source": "교재 연습②-B · ③ · 5품사 청크 독해 법칙"
+ },
+ {
+  "id": "09-023",
+  "type": 9,
+  "level": 1,
+  "en": "N:We | V:can win | N:the game | D:this time",
+  "end": ".",
+  "explain": "can win은 동사 덩어리 하나 □",
+  "source": "교재 연습②-B · ③ · 5품사 청크 독해 법칙"
+ },
+ {
+  "id": "09-024",
+  "type": 9,
+  "level": 2,
+  "en": "N:The new student | A:from Canada | V:speaks | N:Korean | D:very well",
+  "end": ".",
+  "explain": "법칙 ① 명사 앞 꾸밈말은 명사의 일부 → ○The new student. 뒤에서 꾸미는 from Canada는 따로 ( )",
+  "source": "교재 연습②-B · ③ · 5품사 청크 독해 법칙"
+ },
+ {
+  "id": "09-025",
+  "type": 9,
+  "level": 3,
+  "en": "N:I | V:need | N:some water | A:to drink",
+  "end": ".",
+  "explain": "명사 water를 꾸미는 to부정사 ( 형용사구 ) \"마실\"",
+  "source": "교재 연습②-B · ③ · 5품사 청크 독해 법칙"
+ },
+ {
+  "id": "09-026",
+  "type": 9,
+  "level": 2,
+  "en": "N:Tom | C:and | N:I | V:go | D:to the same academy",
+  "end": ".",
+  "explain": "and는 말과 말을 잇는 △",
+  "source": "교재 연습②-B · ③ · 5품사 청크 독해 법칙"
+ },
+ {
+  "id": "09-027",
+  "type": 9,
+  "level": 3,
+  "en": "N:My grandma | V:lives | D:in Busan, | C:so | N:I | V:visit | N:her | D:every summer",
+  "end": ".",
+  "explain": "so는 두 문장을 잇는 △",
+  "source": "교재 연습②-B · ③ · 5품사 청크 독해 법칙"
+ },
+ {
+  "id": "09-028",
+  "type": 9,
+  "level": 2,
+  "en": "D:After school, | N:we | D:usually | V:play | N:basketball",
+  "end": ".",
+  "explain": "빈도부사 usually는 동사 앞 < >",
+  "source": "교재 연습②-B · ③ · 5품사 청크 독해 법칙"
+ },
+ {
+  "id": "09-029",
+  "type": 9,
+  "level": 3,
+  "en": "N:The math test | V:was | A:very difficult, | C:but | N:I | V:passed | N:it",
+  "end": ".",
+  "explain": "법칙 ② 보어 자리 형용사 앞 부사는 형용사의 일부 → (very difficult). but은 △",
+  "source": "교재 연습②-B · ③ · 5품사 청크 독해 법칙"
+ },
+ {
+  "id": "09-030",
+  "type": 9,
+  "level": 2,
+  "en": "N:I | V:finished | N:my homework | D:quickly | D:to play games",
+  "end": ".",
+  "explain": "\"~하기 위해\" to부정사 < 부사구 >",
+  "source": "교재 연습②-B · ③ · 5품사 청크 독해 법칙"
+ },
+ {
+  "id": "09-031",
+  "type": 9,
+  "level": 2,
+  "en": "N:My friends | C:and | N:I | V:watched | N:a scary movie | D:last night",
+  "end": ".",
+  "explain": "and는 △. 법칙 ① 명사 앞 꾸밈말은 명사의 일부 → ○a scary movie",
+  "source": "교재 연습②-B · ③ · 5품사 청크 독해 법칙"
+ },
+ {
+  "id": "09-032",
+  "type": 9,
+  "level": 1,
+  "en": "N:The girl | A:in the yellow jacket | V:is | N:my cousin",
+  "end": ".",
+  "explain": "명사 girl을 뒤에서 꾸미는 ( 형용사구 )",
+  "source": "교재 연습②-B · ③ · 5품사 청크 독해 법칙"
+ },
+ {
+  "id": "09-033",
+  "type": 9,
+  "level": 2,
+  "en": "N:Reading comic books | V:is | N:my favorite hobby",
+  "end": ".",
+  "explain": "주어 자리 동명사구 ○, 보어 자리 명사구 ○",
+  "source": "교재 연습②-B · ③ · 5품사 청크 독해 법칙"
+ },
+ {
+  "id": "09-034",
+  "type": 9,
+  "level": 2,
+  "en": "N:I | V:enjoy | N:watching YouTube | D:before bed",
+  "end": ".",
+  "explain": "목적어 자리 동명사구 ○ 한 덩어리",
+  "source": "교재 연습②-B · ③ · 5품사 청크 독해 법칙"
+ },
+ {
+  "id": "09-035",
+  "type": 9,
+  "level": 1,
+  "en": "N:Our class | V:won | N:the relay race | D:on Sports Day",
+  "end": ".",
+  "explain": "법칙 ① 명사 앞 꾸밈말은 명사의 일부 → ○Our class, ○the relay race",
+  "source": "교재 연습②-B · ③ · 5품사 청크 독해 법칙"
+ },
+ {
+  "id": "09-036",
+  "type": 9,
+  "level": 2,
+  "en": "N:My brother | V:became | N:a middle school student | D:this year",
+  "end": ".",
+  "explain": "보어 자리 명사구 ○ (brother = student)",
+  "source": "교재 연습②-B · ③ · 5품사 청크 독해 법칙"
+ },
+ {
+  "id": "09-037",
+  "type": 9,
+  "level": 2,
+  "en": "N:The soup | V:smells | A:really good",
+  "end": ".",
+  "explain": "법칙 ② 보어 자리 형용사 앞 부사는 형용사의 일부 → (really good)",
+  "source": "교재 연습②-B · ③ · 5품사 청크 독해 법칙"
+ },
+ {
+  "id": "09-038",
+  "type": 9,
+  "level": 1,
+  "en": "N:You | V:look | A:tired | D:today",
+  "end": ".",
+  "explain": "You = tired → 보어 자리 ( 형용사 )",
+  "source": "교재 연습②-B · ③ · 5품사 청크 독해 법칙"
+ },
+ {
+  "id": "09-039",
+  "type": 9,
+  "level": 2,
+  "en": "N:We | V:stayed | D:at home | D:because it snowed a lot",
+  "end": ".",
+  "explain": "because ~ < 부사절 > 통째로",
+  "source": "교재 연습②-B · ③ · 5품사 청크 독해 법칙"
+ },
+ {
+  "id": "09-040",
+  "type": 9,
+  "level": 2,
+  "en": "N:The key | A:to my locker | V:is | D:in my bag",
+  "end": ".",
+  "explain": "명사 key를 뒤에서 꾸미는 ( 형용사구 ). 어디에? < in my bag >",
+  "source": "교재 연습②-B · ③ · 5품사 청크 독해 법칙"
+ },
+ {
+  "id": "09-041",
+  "type": 9,
+  "level": 1,
+  "en": "N:Many students | V:visit | N:the school library | D:at lunchtime",
+  "end": ".",
+  "explain": "법칙 ① 명사 앞 꾸밈말은 명사의 일부 → ○Many students, ○the school library",
+  "source": "교재 연습②-B · ③ · 5품사 청크 독해 법칙"
+ },
+ {
+  "id": "09-042",
+  "type": 9,
+  "level": 2,
+  "en": "D:Before the test, | N:I | V:reviewed | N:all my notes",
+  "end": ".",
+  "explain": "Before the test → 문장을 꾸미는 < 부사구 >",
+  "source": "교재 연습②-B · ③ · 5품사 청크 독해 법칙"
+ },
+ {
+  "id": "09-043",
+  "type": 9,
+  "level": 2,
+  "en": "N:Minsu | V:showed | N:us | N:his new bike",
+  "end": ".",
+  "explain": "4형식 S V O O → ○us ○his new bike",
+  "source": "교재 연습②-B · ③ · 5품사 청크 독해 법칙"
+ },
+ {
+  "id": "09-044",
+  "type": 9,
+  "level": 2,
+  "en": "N:The leaves | V:turned | A:red | D:in autumn",
+  "end": ".",
+  "explain": "leaves = red → 보어 자리 ( 형용사 )",
+  "source": "교재 연습②-B · ③ · 5품사 청크 독해 법칙"
+ }
+]

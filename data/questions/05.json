@@ -1,0 +1,398 @@
+[
+ {
+  "id": "05-001",
+  "type": 5,
+  "level": 1,
+  "sentence": "[My best friend] lives next to my house.",
+  "answer": "S",
+  "explain": "동사 lives 앞, 누가? → 주어(S)",
+  "source": "교재 2-2 성분 찾기 4단계"
+ },
+ {
+  "id": "05-002",
+  "type": 5,
+  "level": 2,
+  "sentence": "[The students in my class] are very kind.",
+  "answer": "S",
+  "explain": "동사 are 앞, 누가? → 주어(S). 뒤에서 꾸미는 (in my class)까지 한 덩어리",
+  "source": "교재 2-1"
+ },
+ {
+  "id": "05-003",
+  "type": 5,
+  "level": 2,
+  "sentence": "[Playing mobile games] is my favorite hobby.",
+  "answer": "S",
+  "explain": "동사 is 앞, 무엇이? → 주어(S). 동명사구도 명사 무리라 주어 의자에 앉는다",
+  "source": "교재 2-4 연결표"
+ },
+ {
+  "id": "05-004",
+  "type": 5,
+  "level": 3,
+  "sentence": "[To win the relay race] is our goal.",
+  "answer": "S",
+  "explain": "동사 is 앞, 무엇이? → 주어(S). to부정사구 \"~하는 것\" = 명사 무리",
+  "source": "교재 2-4 연결표"
+ },
+ {
+  "id": "05-005",
+  "type": 5,
+  "level": 1,
+  "sentence": "[Our homeroom teacher] always smiles at us.",
+  "answer": "S",
+  "explain": "동사 smiles 앞, 누가? → 주어(S)",
+  "source": "교재 2-2 성분 찾기 4단계"
+ },
+ {
+  "id": "05-006",
+  "type": 5,
+  "level": 1,
+  "sentence": "[Today's school lunch] looks delicious.",
+  "answer": "S",
+  "explain": "동사 looks 앞, 무엇이? → 주어(S)",
+  "source": "교재 2-2 성분 찾기 4단계"
+ },
+ {
+  "id": "05-007",
+  "type": 5,
+  "level": 2,
+  "sentence": "[Watching YouTube] is fun.",
+  "answer": "S",
+  "explain": "동사 is 앞, 무엇이? → 주어(S). 동명사구 = 명사 무리",
+  "source": "교재 연습⑦-A"
+ },
+ {
+  "id": "05-008",
+  "type": 5,
+  "level": 1,
+  "sentence": "My little brother [plays] soccer after school.",
+  "answer": "V",
+  "explain": "문장의 심장! \"한다\" → 서술어(동사)(V). 성분 찾기는 동사부터!",
+  "source": "교재 2-2 성분 찾기 4단계"
+ },
+ {
+  "id": "05-009",
+  "type": 5,
+  "level": 1,
+  "sentence": "They [became] good friends at the academy.",
+  "answer": "V",
+  "explain": "\"~이 되었다\" → 서술어(동사)(V)",
+  "source": "교재 2-2 성분 찾기 4단계"
+ },
+ {
+  "id": "05-010",
+  "type": 5,
+  "level": 1,
+  "sentence": "Minji [is] the class president.",
+  "answer": "V",
+  "explain": "\"~이다\" be동사 → 서술어(동사)(V)",
+  "source": "교재 2-2 성분 찾기 4단계"
+ },
+ {
+  "id": "05-011",
+  "type": 5,
+  "level": 1,
+  "sentence": "We [ate] lunch quickly.",
+  "answer": "V",
+  "explain": "\"먹었다\" → 서술어(동사)(V)",
+  "source": "교재 2-2 성분 찾기 4단계"
+ },
+ {
+  "id": "05-012",
+  "type": 5,
+  "level": 2,
+  "sentence": "The baby [is sleeping] on the sofa.",
+  "answer": "V",
+  "explain": "is sleeping은 동사 덩어리 하나 → 서술어(동사)(V)",
+  "source": "교재 2-2 성분 찾기 4단계"
+ },
+ {
+  "id": "05-013",
+  "type": 5,
+  "level": 1,
+  "sentence": "She [helps] sick people.",
+  "answer": "V",
+  "explain": "\"돕는다\" → 서술어(동사)(V)",
+  "source": "교재 연습⑦-B"
+ },
+ {
+  "id": "05-014",
+  "type": 5,
+  "level": 1,
+  "sentence": "My best friend ate [two pieces of pizza] at lunch.",
+  "answer": "O",
+  "explain": "동사 ate 뒤, 무엇을? → 목적어(O). friend ≠ pizza니까 보어가 아니다",
+  "source": "교재 2-2 성분 찾기 4단계"
+ },
+ {
+  "id": "05-015",
+  "type": 5,
+  "level": 1,
+  "sentence": "I love [spicy tteokbokki].",
+  "answer": "O",
+  "explain": "동사 love 뒤, 무엇을? → 목적어(O)",
+  "source": "교재 2-2 성분 찾기 4단계"
+ },
+ {
+  "id": "05-016",
+  "type": 5,
+  "level": 2,
+  "sentence": "I like [playing games with my friends].",
+  "answer": "O",
+  "explain": "like 뒤, 무엇을? → 목적어(O). 동명사구 = 명사 무리",
+  "source": "교재 2-4 연결표"
+ },
+ {
+  "id": "05-017",
+  "type": 5,
+  "level": 1,
+  "sentence": "My mom made [a cake] for my birthday.",
+  "answer": "O",
+  "explain": "made 뒤, 무엇을? → 목적어(O)",
+  "source": "교재 2-2 성분 찾기 4단계"
+ },
+ {
+  "id": "05-018",
+  "type": 5,
+  "level": 2,
+  "sentence": "We want [to win the game].",
+  "answer": "O",
+  "explain": "want 뒤, 무엇을? → 목적어(O). to부정사구 \"~하는 것\"",
+  "source": "교재 2-4 연결표"
+ },
+ {
+  "id": "05-019",
+  "type": 5,
+  "level": 3,
+  "sentence": "I know [that she is kind].",
+  "answer": "O",
+  "explain": "know 뒤, 무엇을? → 목적어(O). 명사절도 목적어 의자에 앉는다",
+  "source": "교재 연습⑦-B"
+ },
+ {
+  "id": "05-020",
+  "type": 5,
+  "level": 3,
+  "sentence": "Mom gave [me] a new phone.",
+  "answer": "O",
+  "explain": "4형식 S V O O — \"~에게\" 자리도 목적어(O)!",
+  "source": "교재 2-4 다섯 가지 뼈대"
+ },
+ {
+  "id": "05-021",
+  "type": 5,
+  "level": 2,
+  "sentence": "Mom gave me [a new phone].",
+  "answer": "O",
+  "explain": "4형식 S V O O — \"~을\" 자리 목적어(O)",
+  "source": "교재 2-4 다섯 가지 뼈대"
+ },
+ {
+  "id": "05-022",
+  "type": 5,
+  "level": 3,
+  "sentence": "We call [our dog] Coco.",
+  "answer": "O",
+  "explain": "5형식 S V O C — 누구를? 우리 강아지를 → 목적어(O)",
+  "source": "교재 2-4 다섯 가지 뼈대"
+ },
+ {
+  "id": "05-023",
+  "type": 5,
+  "level": 2,
+  "sentence": "I enjoy [watching YouTube].",
+  "answer": "O",
+  "explain": "enjoy 뒤, 무엇을? → 목적어(O)",
+  "source": "교재 2-2 성분 찾기 4단계"
+ },
+ {
+  "id": "05-024",
+  "type": 5,
+  "level": 2,
+  "sentence": "Today's school lunch looks [delicious].",
+  "answer": "C",
+  "explain": "lunch = delicious, \"=\" 가 성립 → 보어(C). 감각동사 look 뒤엔 형용사!",
+  "source": "교재 2-5"
+ },
+ {
+  "id": "05-025",
+  "type": 5,
+  "level": 2,
+  "sentence": "My dream is [to be a teacher].",
+  "answer": "C",
+  "explain": "dream = to be a teacher, \"=\" 성립 → 보어(C)",
+  "source": "교재 2-4 연결표"
+ },
+ {
+  "id": "05-026",
+  "type": 5,
+  "level": 2,
+  "sentence": "My hobby is [reading comic books].",
+  "answer": "C",
+  "explain": "hobby = reading comic books → 보어(C). 같은 덩어리도 자리에 따라 성분이 바뀐다!",
+  "source": "교재 연습⑦-A"
+ },
+ {
+  "id": "05-027",
+  "type": 5,
+  "level": 1,
+  "sentence": "Minji is [the class president].",
+  "answer": "C",
+  "explain": "Minji = the class president → 보어(C)",
+  "source": "교재 2-2 성분 찾기 4단계"
+ },
+ {
+  "id": "05-028",
+  "type": 5,
+  "level": 2,
+  "sentence": "The test was [really difficult].",
+  "answer": "C",
+  "explain": "test = really difficult → 보어(C). 보어 자리 형용사 앞 부사도 한 덩어리",
+  "source": "교재 2-2"
+ },
+ {
+  "id": "05-029",
+  "type": 5,
+  "level": 1,
+  "sentence": "They became [good friends].",
+  "answer": "C",
+  "explain": "They = good friends → 보어(C)",
+  "source": "교재 연습⑦-A"
+ },
+ {
+  "id": "05-030",
+  "type": 5,
+  "level": 2,
+  "sentence": "The leaves turned [red].",
+  "answer": "C",
+  "explain": "leaves = red, 상태 변화 turn 뒤 → 보어(C)",
+  "source": "교재 2-5"
+ },
+ {
+  "id": "05-031",
+  "type": 5,
+  "level": 3,
+  "sentence": "The news made me [happy].",
+  "answer": "C",
+  "explain": "5형식 — me = happy, 목적어를 설명 → 보어(C)",
+  "source": "교재 2-5"
+ },
+ {
+  "id": "05-032",
+  "type": 5,
+  "level": 3,
+  "sentence": "We call our dog [Coco].",
+  "answer": "C",
+  "explain": "5형식 — dog = Coco, 목적어를 설명 → 보어(C)",
+  "source": "교재 2-4 다섯 가지 뼈대"
+ },
+ {
+  "id": "05-033",
+  "type": 5,
+  "level": 2,
+  "sentence": "This soup smells [good].",
+  "answer": "C",
+  "explain": "soup = good → 보어(C). smells well은 틀린 표현!",
+  "source": "교재 2-5"
+ },
+ {
+  "id": "05-034",
+  "type": 5,
+  "level": 3,
+  "sentence": "Stay [calm] during the fire drill.",
+  "answer": "C",
+  "explain": "(You) = calm, 상태 유지 stay 뒤 → 보어(C)",
+  "source": "교재 2-5"
+ },
+ {
+  "id": "05-035",
+  "type": 5,
+  "level": 1,
+  "sentence": "Our class practiced the relay race [after school].",
+  "answer": "M",
+  "explain": "빼도 문장이 된다 → 리본, 수식어(M). 동사를 꾸미는 < 부사구 >",
+  "source": "교재 2-1"
+ },
+ {
+  "id": "05-036",
+  "type": 5,
+  "level": 1,
+  "sentence": "He runs [very fast].",
+  "answer": "M",
+  "explain": "동사 runs를 꾸민다 → 수식어(M)",
+  "source": "교재 연습⑦-A"
+ },
+ {
+  "id": "05-037",
+  "type": 5,
+  "level": 2,
+  "sentence": "The cat [on the sofa] is sleeping.",
+  "answer": "M",
+  "explain": "명사 cat을 꾸미는 ( 형용사구 ) → 수식어(M). 빼도 문장이 된다",
+  "source": "교재 2-4 연결표"
+ },
+ {
+  "id": "05-038",
+  "type": 5,
+  "level": 1,
+  "sentence": "We ate pizza [for lunch].",
+  "answer": "M",
+  "explain": "빼도 문장이 된다 → 수식어(M)",
+  "source": "교재 연습⑦-A"
+ },
+ {
+  "id": "05-039",
+  "type": 5,
+  "level": 2,
+  "sentence": "[Every morning], my mom wakes me up.",
+  "answer": "M",
+  "explain": "언제? → 동사를 꾸미는 < 부사구 > → 수식어(M)",
+  "source": "교재 2-2 성분 찾기 4단계"
+ },
+ {
+  "id": "05-040",
+  "type": 5,
+  "level": 2,
+  "sentence": "She [always] comes to class early.",
+  "answer": "M",
+  "explain": "빈도부사 always → 수식어(M). 작은 리본은 동사 앞!",
+  "source": "교재 2-1"
+ },
+ {
+  "id": "05-041",
+  "type": 5,
+  "level": 3,
+  "sentence": "We stayed at home [because it snowed a lot].",
+  "answer": "M",
+  "explain": "이유를 말하는 < 부사절 > → 수식어(M). 절도 리본이 될 수 있다",
+  "source": "교재 2-4 연결표"
+ },
+ {
+  "id": "05-042",
+  "type": 5,
+  "level": 2,
+  "sentence": "The boy [with a big backpack] is my desk partner.",
+  "answer": "M",
+  "explain": "명사 boy를 꾸미는 ( 형용사구 ) → 수식어(M)",
+  "source": "교재 2-4 연결표"
+ },
+ {
+  "id": "05-043",
+  "type": 5,
+  "level": 2,
+  "sentence": "I went to the store [to buy snacks].",
+  "answer": "M",
+  "explain": "\"~하기 위해\" < 부사구 > → 수식어(M)",
+  "source": "교재 1-4"
+ },
+ {
+  "id": "05-044",
+  "type": 5,
+  "level": 2,
+  "sentence": "Minho studies [hard] for the test.",
+  "answer": "M",
+  "explain": "동사 studies를 꾸미는 < 부사 > → 수식어(M)",
+  "source": "교재 2-2 성분 찾기 4단계"
+ }
+]

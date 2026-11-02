@@ -1,0 +1,13 @@
+{
+  "questionsPerCell": 5,
+  "rewards": {
+    "perfect": { "move": 2, "coins": 10, "label": "PERFECT" },
+    "good": { "move": 1, "coins": 5 },
+    "perCorrectCoin": 1
+  },
+  "grading": {
+    "mergeAdjacent": ["D"],
+    "type12Mode": "typing"
+  },
+  "signature": "Ted"
+}

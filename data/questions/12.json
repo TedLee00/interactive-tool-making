@@ -1,0 +1,706 @@
+[
+ {
+  "id": "12-001",
+  "type": 12,
+  "level": 2,
+  "ko": "N:나는=I | D:매일 아침=every morning | D:7시에=at 7/at seven/at 7 o'clock/at seven o'clock | N:아침을=breakfast | V:먹는다=eat/have",
+  "order": [
+   0,
+   4,
+   3,
+   2,
+   1
+  ],
+  "end": ".",
+  "alts": [
+   [
+    0,
+    4,
+    3,
+    1,
+    2
+   ]
+  ],
+  "explain": "have breakfast — 식사는 \"일과\" 이름 → 관사 X",
+  "source": "교재 연습④ 거꾸로! 4품사로 영작하기"
+ },
+ {
+  "id": "12-002",
+  "type": 12,
+  "level": 2,
+  "ko": "N:내 친구는=my friend | D:방과 후에=after school | D:도서관에서=in the library/at the library | N:만화책을=comic books/comics | V:읽는다=reads",
+  "order": [
+   0,
+   4,
+   3,
+   2,
+   1
+  ],
+  "end": ".",
+  "explain": "주어가 3인칭 단수 → reads. <어디서> → <언제>",
+  "source": "교재 연습④ 거꾸로! 4품사로 영작하기"
+ },
+ {
+  "id": "12-003",
+  "type": 12,
+  "level": 3,
+  "ko": "N:나는=I | D:게임을 하기 위해=to play games/to play a game/to play the game | N:숙제를=my homework | D:빨리=quickly/fast | V:끝냈다=finished",
+  "order": [
+   0,
+   4,
+   2,
+   3,
+   1
+  ],
+  "end": ".",
+  "explain": "\"~하기 위해\" → to부정사 < 부사구 >, 맨 뒤로",
+  "source": "교재 연습④ 거꾸로! 4품사로 영작하기"
+ },
+ {
+  "id": "12-004",
+  "type": 12,
+  "level": 2,
+  "ko": "N:우리는=we | D:점심시간에=at lunchtime/at lunch/during lunchtime/during lunch/at lunch time | D:운동장에서=on the playground/in the playground | N:축구를=soccer | V:한다=play",
+  "order": [
+   0,
+   4,
+   3,
+   2,
+   1
+  ],
+  "end": ".",
+  "explain": "play soccer — 운동 이름엔 관사 X. <어디서> → <언제>",
+  "source": "교재 연습④ 거꾸로! 4품사로 영작하기"
+ },
+ {
+  "id": "12-005",
+  "type": 12,
+  "level": 1,
+  "ko": "N:내 남동생은=my little brother/my younger brother | D:매일=every day | N:모바일 게임을=mobile games | V:한다=plays",
+  "order": [
+   0,
+   3,
+   2,
+   1
+  ],
+  "end": ".",
+  "explain": "주어 → 동사 → 목적어 → <언제>",
+  "source": "교재 연습④ 거꾸로! 4품사로 영작하기"
+ },
+ {
+  "id": "12-006",
+  "type": 12,
+  "level": 2,
+  "ko": "N:엄마는=mom/my mom | N:나에게=me | N:새 휴대폰을=a new phone/a new cellphone/a new cell phone | V:주셨다=gave",
+  "order": [
+   0,
+   3,
+   1,
+   2
+  ],
+  "end": ".",
+  "explain": "4형식 S V O O — gave me a new phone",
+  "source": "교재 2-4"
+ },
+ {
+  "id": "12-007",
+  "type": 12,
+  "level": 2,
+  "ko": "N:키 큰 내 짝은=my tall desk partner/my tall partner/my tall seatmate | D:수업 시간에=in class/during class | D:조용히=quietly | V:잔다=sleeps",
+  "order": [
+   0,
+   3,
+   2,
+   1
+  ],
+  "end": ".",
+  "explain": "짧은 꾸밈말은 명사 앞 → my tall desk partner",
+  "source": "교재 연습④ 거꾸로! 4품사로 영작하기"
+ },
+ {
+  "id": "12-008",
+  "type": 12,
+  "level": 3,
+  "ko": "N:그 소식은=the news | N:나를=me | A:행복하게=happy | V:만들었다=made",
+  "order": [
+   0,
+   3,
+   1,
+   2
+  ],
+  "end": ".",
+  "explain": "5형식 — \"행복하게\"지만 보어 → happy (happily X)",
+  "source": "교재 2-5"
+ },
+ {
+  "id": "12-009",
+  "type": 12,
+  "level": 2,
+  "ko": "N:내 꿈은=my dream | N:선생님이 되는 것=to be a teacher/to become a teacher/being a teacher/becoming a teacher | V:이다=is",
+  "order": [
+   0,
+   2,
+   1
+  ],
+  "end": ".",
+  "explain": "보어 자리 \"~하는 것\" → to부정사구",
+  "source": "교재 연습④ 거꾸로! 4품사로 영작하기"
+ },
+ {
+  "id": "12-010",
+  "type": 12,
+  "level": 2,
+  "ko": "N:우리 반은=our class | D:체육대회에서=on Sports Day/at Sports Day/at the sports day | N:이어달리기를=the relay race/the relay | V:이겼다=won",
+  "order": [
+   0,
+   3,
+   2,
+   1
+  ],
+  "end": ".",
+  "explain": "won the relay race — \"그\" 경기 → the",
+  "source": "교재 연습④ 거꾸로! 4품사로 영작하기"
+ },
+ {
+  "id": "12-011",
+  "type": 12,
+  "level": 3,
+  "ko": "N:나는=I | A:마실=to drink | N:물이=some water/water | V:필요하다=need",
+  "order": [
+   0,
+   3,
+   2,
+   1
+  ],
+  "end": ".",
+  "explain": "\"마실\" → 명사 뒤 to부정사 ( 형용사구 ): some water to drink",
+  "source": "교재 1-4"
+ },
+ {
+  "id": "12-012",
+  "type": 12,
+  "level": 3,
+  "ko": "D:비가 와서=because it rained/because it was raining | N:우리는=we | D:집에=at home | V:머물렀다=stayed",
+  "order": [
+   1,
+   3,
+   2,
+   0
+  ],
+  "end": ".",
+  "alts": [
+   [
+    0,
+    1,
+    3,
+    2
+   ]
+  ],
+  "explain": "< 부사절 >은 맨 뒤로 (앞에 두려면 쉼표!)",
+  "source": "교재 연습④ 거꾸로! 4품사로 영작하기"
+ },
+ {
+  "id": "12-013",
+  "type": 12,
+  "level": 1,
+  "ko": "N:그 고양이는=the cat | D:소파 위에서=on the sofa | V:자고 있다=is sleeping",
+  "order": [
+   0,
+   2,
+   1
+  ],
+  "end": ".",
+  "explain": "is sleeping — 동사 덩어리 하나",
+  "source": "교재 연습④ 거꾸로! 4품사로 영작하기"
+ },
+ {
+  "id": "12-014",
+  "type": 12,
+  "level": 2,
+  "ko": "N:나는=I | N:매운 떡볶이를=spicy tteokbokki | D:정말=really | V:좋아한다=like/love",
+  "order": [
+   0,
+   2,
+   3,
+   1
+  ],
+  "end": ".",
+  "explain": "really는 동사 앞에서 꾸민다: I really like ~",
+  "source": "교재 연습④ 거꾸로! 4품사로 영작하기"
+ },
+ {
+  "id": "12-015",
+  "type": 12,
+  "level": 2,
+  "ko": "D:내가 집에 도착했을 때=when I got home/when I arrived home/when I came home | N:내 강아지가=my dog/my puppy | V:짖었다=barked",
+  "order": [
+   0,
+   1,
+   2
+  ],
+  "end": ".",
+  "alts": [
+   [
+    1,
+    2,
+    0
+   ]
+  ],
+  "explain": "< 부사절 >이 앞이면 쉼표, 뒤로 보내도 OK",
+  "source": "교재 연습④ 거꾸로! 4품사로 영작하기"
+ },
+ {
+  "id": "12-016",
+  "type": 12,
+  "level": 2,
+  "ko": "N:지호는=Jiho | D:과자를 사기 위해=to buy snacks/to buy some snacks | D:편의점에=to the convenience store | V:갔다=went",
+  "order": [
+   0,
+   3,
+   2,
+   1
+  ],
+  "end": ".",
+  "explain": "어디로 → 왜(~하기 위해)",
+  "source": "교재 연습④ 거꾸로! 4품사로 영작하기"
+ },
+ {
+  "id": "12-017",
+  "type": 12,
+  "level": 1,
+  "ko": "N:우리 할머니는=my grandma/my grandmother | D:부산에=in Busan | V:사신다=lives",
+  "order": [
+   0,
+   2,
+   1
+  ],
+  "end": ".",
+  "explain": "주어 3인칭 단수 → lives",
+  "source": "교재 연습④ 거꾸로! 4품사로 영작하기"
+ },
+ {
+  "id": "12-018",
+  "type": 12,
+  "level": 2,
+  "ko": "N:나는=I | D:자기 전에=before bed/before I go to bed/before going to bed | N:유튜브 보는 것을=watching YouTube/watching videos on YouTube | V:즐긴다=enjoy",
+  "order": [
+   0,
+   3,
+   2,
+   1
+  ],
+  "end": ".",
+  "explain": "enjoy 뒤엔 동명사 watching",
+  "source": "교재 연습④ 거꾸로! 4품사로 영작하기"
+ },
+ {
+  "id": "12-019",
+  "type": 12,
+  "level": 2,
+  "ko": "N:우리 형은=my older brother/my big brother | D:올해=this year | N:중학생이=a middle school student | V:되었다=became",
+  "order": [
+   0,
+   3,
+   2,
+   1
+  ],
+  "end": ".",
+  "explain": "became + 보어 명사구",
+  "source": "교재 연습④ 거꾸로! 4품사로 영작하기"
+ },
+ {
+  "id": "12-020",
+  "type": 12,
+  "level": 2,
+  "ko": "N:너는=you | D:오늘=today | A:피곤해=tired | V:보인다=look",
+  "order": [
+   0,
+   3,
+   2,
+   1
+  ],
+  "end": ".",
+  "explain": "look + 형용사 보어: look tired",
+  "source": "교재 2-5"
+ },
+ {
+  "id": "12-021",
+  "type": 12,
+  "level": 2,
+  "ko": "N:민수는=Minsu | N:우리에게=us | N:그의 새 자전거를=his new bike/his new bicycle | V:보여 주었다=showed",
+  "order": [
+   0,
+   3,
+   1,
+   2
+  ],
+  "end": ".",
+  "explain": "4형식 S V O O",
+  "source": "교재 2-4"
+ },
+ {
+  "id": "12-022",
+  "type": 12,
+  "level": 2,
+  "ko": "N:우리는=we | N:우리 강아지를=our dog/our puppy | N:코코라고=Coco | V:부른다=call",
+  "order": [
+   0,
+   3,
+   1,
+   2
+  ],
+  "end": ".",
+  "explain": "5형식 S V O C",
+  "source": "교재 2-4"
+ },
+ {
+  "id": "12-023",
+  "type": 12,
+  "level": 3,
+  "ko": "A:캐나다에서 온=from Canada | N:새 학생은=the new student | N:한국어를=Korean | D:아주 잘=very well | V:한다=speaks",
+  "order": [
+   1,
+   0,
+   4,
+   2,
+   3
+  ],
+  "end": ".",
+  "explain": "긴 ( )는 명사 뒤: The new student from Canada",
+  "source": "교재 연습④ 거꾸로! 4품사로 영작하기"
+ },
+ {
+  "id": "12-024",
+  "type": 12,
+  "level": 2,
+  "ko": "N:내 여동생은=my little sister/my younger sister | D:지금=now | D:자기 방에서=in her room | V:공부하고 있다=is studying",
+  "order": [
+   0,
+   3,
+   2,
+   1
+  ],
+  "end": ".",
+  "explain": "<어디서> → <언제>",
+  "source": "교재 연습④ 거꾸로! 4품사로 영작하기"
+ },
+ {
+  "id": "12-025",
+  "type": 12,
+  "level": 2,
+  "ko": "N:많은 학생들이=many students | D:점심시간에=at lunchtime/during lunchtime/at lunch/at lunch time | N:도서관을=the library/the school library | V:방문한다=visit",
+  "order": [
+   0,
+   3,
+   2,
+   1
+  ],
+  "end": ".",
+  "explain": "주어가 복수 → visit",
+  "source": "교재 연습④ 거꾸로! 4품사로 영작하기"
+ },
+ {
+  "id": "12-026",
+  "type": 12,
+  "level": 2,
+  "ko": "D:시험 전에=before the test/before the exam | N:나는=I | N:내 필기를=my notes | V:복습했다=reviewed",
+  "order": [
+   0,
+   1,
+   3,
+   2
+  ],
+  "end": ".",
+  "alts": [
+   [
+    1,
+    3,
+    2,
+    0
+   ]
+  ],
+  "explain": "문장 앞 < >는 쉼표와 함께",
+  "source": "교재 연습④ 거꾸로! 4품사로 영작하기"
+ },
+ {
+  "id": "12-027",
+  "type": 12,
+  "level": 3,
+  "ko": "N:나뭇잎이=the leaves | D:가을에=in autumn/in fall/in the fall | A:빨갛게=red | V:변했다=turned",
+  "order": [
+   0,
+   3,
+   2,
+   1
+  ],
+  "end": ".",
+  "alts": [
+   [
+    1,
+    0,
+    3,
+    2
+   ]
+  ],
+  "explain": "turned red — \"빨갛게\"지만 보어 → 형용사",
+  "source": "교재 2-5"
+ },
+ {
+  "id": "12-028",
+  "type": 12,
+  "level": 3,
+  "ko": "N:나는=I | D:어제=yesterday | D:친구들과=with my friends | N:무서운 영화를=a scary movie/a horror movie | V:봤다=watched/saw",
+  "order": [
+   0,
+   4,
+   3,
+   2,
+   1
+  ],
+  "end": ".",
+  "explain": "누구와 → 언제",
+  "source": "교재 연습④ 거꾸로! 4품사로 영작하기"
+ },
+ {
+  "id": "12-029",
+  "type": 12,
+  "level": 3,
+  "ko": "N:아빠는=dad/my dad | D:매일 아침=every morning | D:우리를 위해=for us | N:아침을=breakfast | V:만드신다=makes/cooks",
+  "order": [
+   0,
+   4,
+   3,
+   2,
+   1
+  ],
+  "end": ".",
+  "explain": "식사 breakfast엔 관사 X",
+  "source": "교재 1-5"
+ },
+ {
+  "id": "12-030",
+  "type": 12,
+  "level": 2,
+  "ko": "N:내 짝은=my desk partner/my partner/my seatmate | N:수학 문제를=the math problem/the math question | D:정확하게=correctly | V:풀었다=solved",
+  "order": [
+   0,
+   3,
+   1,
+   2
+  ],
+  "end": ".",
+  "explain": "어떻게? < correctly >는 맨 뒤",
+  "source": "교재 연습④ 거꾸로! 4품사로 영작하기"
+ },
+ {
+  "id": "12-031",
+  "type": 12,
+  "level": 2,
+  "ko": "N:나는=I | D:친구를 만나러=to meet my friend/to meet a friend/to meet my friends | D:도서관에=to the library | V:갔다=went",
+  "order": [
+   0,
+   3,
+   2,
+   1
+  ],
+  "end": ".",
+  "explain": "어디로 → 왜(~하러)",
+  "source": "교재 연습④ 거꾸로! 4품사로 영작하기"
+ },
+ {
+  "id": "12-032",
+  "type": 12,
+  "level": 2,
+  "ko": "N:우리 반 반장은=our class president | D:매일 아침=every morning | N:창문을=the windows/the window | V:연다=opens",
+  "order": [
+   0,
+   3,
+   2,
+   1
+  ],
+  "end": ".",
+  "explain": "주어 3인칭 단수 → opens",
+  "source": "교재 연습④ 거꾸로! 4품사로 영작하기"
+ },
+ {
+  "id": "12-033",
+  "type": 12,
+  "level": 2,
+  "ko": "N:이 수프는=this soup | A:정말 좋은=really good/very good | V:냄새가 난다=smells",
+  "order": [
+   0,
+   2,
+   1
+  ],
+  "end": ".",
+  "explain": "법칙 ② → (really good). smell + 형용사 보어",
+  "source": "교재 2-5"
+ },
+ {
+  "id": "12-034",
+  "type": 12,
+  "level": 3,
+  "ko": "N:나는=I | D:배가 고팠기 때문에=because I was hungry | N:라면을=ramyeon/ramen | D:빨리=quickly/fast | V:먹었다=ate",
+  "order": [
+   0,
+   4,
+   2,
+   3,
+   1
+  ],
+  "end": ".",
+  "explain": "< 부사절 >은 맨 뒤로",
+  "source": "교재 연습④ 거꾸로! 4품사로 영작하기"
+ },
+ {
+  "id": "12-035",
+  "type": 12,
+  "level": 3,
+  "ko": "N:우리 선생님은=our teacher | N:우리에게=us | N:많은 숙제를=a lot of homework/lots of homework | V:내 주셨다=gave",
+  "order": [
+   0,
+   3,
+   1,
+   2
+  ],
+  "end": ".",
+  "explain": "4형식: gave us a lot of homework",
+  "source": "교재 2-4"
+ },
+ {
+  "id": "12-036",
+  "type": 12,
+  "level": 3,
+  "ko": "N:나는=I | D:숙제를 끝낸 후에=after I finished my homework/after finishing my homework | N:텔레비전을=TV/television | V:봤다=watched",
+  "order": [
+   0,
+   3,
+   2,
+   1
+  ],
+  "end": ".",
+  "alts": [
+   [
+    1,
+    0,
+    3,
+    2
+   ]
+  ],
+  "explain": "< 부사절 >은 맨 뒤로",
+  "source": "교재 연습④ 거꾸로! 4품사로 영작하기"
+ },
+ {
+  "id": "12-037",
+  "type": 12,
+  "level": 1,
+  "ko": "N:나는=I | D:매일 밤=every night | N:영어 단어를=English words | V:외운다=memorize/study/learn",
+  "order": [
+   0,
+   3,
+   2,
+   1
+  ],
+  "end": ".",
+  "explain": "주어 → 동사 → 목적어 → <언제>",
+  "source": "교재 연습④ 거꾸로! 4품사로 영작하기"
+ },
+ {
+  "id": "12-038",
+  "type": 12,
+  "level": 2,
+  "ko": "N:우리는=we | D:쉬는 시간에=at break time/during break/during the break/during break time | N:보드게임을=board games/a board game | V:했다=played",
+  "order": [
+   0,
+   3,
+   2,
+   1
+  ],
+  "end": ".",
+  "explain": "주어 → 동사 → 목적어 → <언제>",
+  "source": "교재 연습④ 거꾸로! 4품사로 영작하기"
+ },
+ {
+  "id": "12-039",
+  "type": 12,
+  "level": 2,
+  "ko": "N:그 귀여운 강아지는=the cute puppy/the cute dog | D:소파 위에서=on the sofa | D:조용히=quietly | V:자고 있다=is sleeping",
+  "order": [
+   0,
+   3,
+   2,
+   1
+  ],
+  "end": ".",
+  "alts": [
+   [
+    0,
+    3,
+    1,
+    2
+   ]
+  ],
+  "explain": "어떻게 → 어디서",
+  "source": "교재 연습④ 거꾸로! 4품사로 영작하기"
+ },
+ {
+  "id": "12-040",
+  "type": 12,
+  "level": 2,
+  "ko": "N:우리 반 친구들은=my classmates/our classmates | D:방과 후에=after school | N:이어달리기를=the relay race/the relay | V:연습했다=practiced/practised",
+  "order": [
+   0,
+   3,
+   2,
+   1
+  ],
+  "end": ".",
+  "explain": "주어 → 동사 → 목적어 → <언제>",
+  "source": "교재 연습④ 거꾸로! 4품사로 영작하기"
+ },
+ {
+  "id": "12-041",
+  "type": 12,
+  "level": 2,
+  "ko": "N:나는=I | N:친구에게=my friend/a friend | N:생일 선물을=a birthday present/a birthday gift/a present/a gift | V:주었다=gave",
+  "order": [
+   0,
+   3,
+   1,
+   2
+  ],
+  "end": ".",
+  "explain": "4형식: gave my friend a birthday present",
+  "source": "교재 2-4"
+ },
+ {
+  "id": "12-042",
+  "type": 12,
+  "level": 2,
+  "ko": "N:민지는=Minji | D:급식실에서=in the cafeteria/at the cafeteria | N:맛있는 떡볶이를=delicious tteokbokki | V:먹었다=ate/had",
+  "order": [
+   0,
+   3,
+   2,
+   1
+  ],
+  "end": ".",
+  "explain": "짧은 꾸밈말은 명사 앞: delicious tteokbokki",
+  "source": "교재 연습④ 거꾸로! 4품사로 영작하기"
+ },
+ {
+  "id": "12-043",
+  "type": 12,
+  "level": 2,
+  "ko": "N:엄마는=mom/my mom | D:주말마다=on weekends/every weekend | N:김밥을=gimbap/kimbap | V:만들어 주신다=makes",
+  "order": [
+   0,
+   3,
+   2,
+   1
+  ],
+  "end": ".",
+  "explain": "주어 3인칭 단수 → makes",
+  "source": "교재 연습④ 거꾸로! 4품사로 영작하기"
+ }
+]
