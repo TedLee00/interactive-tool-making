@@ -1,7 +1,14 @@
 # 품사 원정대 (Chunk Quest)
 「영어의 이해」 특강 내용으로 만드는 1인용 3D 보드게임. 기획서: `GAME_SPEC.md`
 
-## 지금 단계 (2단계)
+## 지금 단계 (3단계: 3D 보드·캐릭터·주사위)
+- `index.html` — 게임 (타이틀 → 등록 → 캐릭터 선택 → 3D 보드)
+- `data/board.json` — 40칸 여정 (지역 4곳, 칸 종류·유형)
+- `data/characters.json` — 캐릭터 6명 + 안내 캐릭터 (이름·성격·대사)
+- `public/assets/characters/*.svg` — 캐릭터 그림 (같은 이름의 파일로 바꾸면 교체됨)
+- `src/board/` — 3D 보드·말·주사위
+
+## 2단계 결과물
 - `data/questions/01.json` ~ `12.json` — 문제 은행 (유형별 40문제 이상)
 - `data/config.json` — 칸 보상·채점 설정 (코드 수정 없이 변경)
 - `quiz-lab.html` — 퀴즈 연습장 (한 칸 = 5문제 엔진)

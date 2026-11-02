@@ -2,29 +2,19 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0D2144">
+<meta name="apple-mobile-web-app-capable" content="yes">
 <title>품사 원정대</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/src/styles/base.css">
-<style>
-  .hero { background: var(--navy); color: #fff; border-radius: var(--radius); padding: 28px 20px; text-align: center; }
-  .hero h1 { margin: 6px 0; font-size: 34px; font-weight: 900; }
-  .hero h1 b { color: var(--gold); }
-  .hero p { margin: 0; color: #C9D3E6; }
-  .links { display: grid; gap: 12px; margin-top: 16px; }
-  .links a { display: block; text-decoration: none; color: inherit; }
-  .links h3 { margin: 0 0 4px; color: var(--navy); }
-  .links p { margin: 0; }
-</style>
+<link rel="stylesheet" href="/src/styles/quiz.css">
+<link rel="stylesheet" href="/src/game/game.css">
 </head>
-<body>
-<div class="wrap">
-  <div class="hero"><div class="kicker">CHUNK QUEST · 2단계 미리보기</div><h1>품사 <b>원정대</b></h1><p>보드게임은 3단계에서 만들어집니다</p></div>
-  <div class="links">
-    <a class="card" href="./quiz-lab.html"><h3>🧪 퀴즈 연습장</h3><p class="muted">12개 유형을 한 칸(5문제)씩 직접 풀어 보기</p></a>
-    <a class="card" href="./review.html"><h3>📋 문제 검수 (원장님용)</h3><p class="muted">유형별 전체 문제 목록 · 오류 표시 · 메모</p></a>
-  </div>
-</div>
+<body class="game">
+<canvas id="scene"></canvas>
+<div id="ui"></div>
+<script type="module" src="/src/game/main.js"></script>
 </body>
 </html>

@@ -38,6 +38,10 @@ export function sfx(kind) {
   else if (kind === 'perfect') tone([523, 659, 784, 1047, 1319], 'triangle', 0.14, 0.09, 0.22);
   else if (kind === 'end') tone([392, 330], 'triangle', 0.08, 0.12, 0.2);
   else if (kind === 'tap') tone([880], 'sine', 0.04, 0, 0.05);
+  else if (kind === 'hop') tone([520, 780], 'sine', 0.05, 0.05, 0.08);
+  else if (kind === 'bounce') tone([140 + Math.random() * 40], 'square', 0.05, 0, 0.06);
+  else if (kind === 'reveal') tone([784, 1047], 'triangle', 0.1, 0.07, 0.16);
+  else if (kind === 'whoosh') tone([300, 420, 560], 'sawtooth', 0.025, 0.03, 0.1);
 }
 
 export function setMuted(m) {
