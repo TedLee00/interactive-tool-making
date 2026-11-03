@@ -1,252 +1,429 @@
-// 청크 카트 — 위에서 내려다보는 레이싱. 품사 게이트(맞는 레인 → 부스터), 아이템 박스(퀴즈 1문제), 라이벌 3대
-import { openGame, loadImage, asset, charSprite, rand, pick, shuffle, clamp, roundRect, tag } from './engine.js';
+// 청크 카트 — 기존 앱 「TED 카트 레이스」를 그대로 옮기고(5명 경주 · 악셀 게이지 · 바나나 · 공사중 벽 ·
+// 영크크/늙크크 · 타코 · 응원단), 학습 요소를 더했다:
+//   ❓ 퀴즈 존 — 지나가는 순간 경기가 「순간정지」되고 문제 1개. 맞히면 ⚡ 게이지 가득 + 부스터, 틀리면 게이지 감소.
+// 아래 "legacy" 표시 부분은 legacy/index.html(2266~2540행)에서 자동으로 옮긴 코드다.
+import { openGame, loadImage, asset, charSprite, pick, roundRect } from './engine.js';
 import { BANK } from '../quiz/bank.js';
-import data from '../../data/minigames.json';
+import { renderChoice } from '../quiz/renderers.js';
+import { legacySfx as lsfx, sfxNo as lsfxNo } from '../fx/legacy.js';
 
-const L = 15000; // 코스 길이
-const POS4 = ['명사', '동사', '형용사', '부사'];
+const QUIZ_TYPES = [1, 2, 3, 4, 5, 7];
 
-export function playKart({ charId = 'bboy' } = {}) {
+async function kartImages(name) {
+  const keys = ['ted', 'goddess', 'scooter', 'cart', 'skate'];
+  const IM = {};
+  await Promise.all(keys.map(async (k) => {
+    if (k === 'ted') {
+      const nm = name.length > 6 ? name.slice(0, 6) : name;
+      const fs = nm.length <= 3 ? 7.5 : nm.length <= 4 ? 6.8 : 5.6;
+      const txt = (await (await fetch(asset('kart/ted.svg'))).text())
+        .replace('font-size="7" fill="#FFD43B">Ted</text>', `font-size="${fs}" fill="#FFD43B">${nm.replace(/[<&>]/g, '')}</text>`);
+      IM[k] = await loadImage('data:image/svg+xml;charset=utf-8,' + encodeURIComponent(txt));
+    } else IM[k] = await loadImage(asset(`kart/${k}.svg`));
+  }));
+  return IM;
+}
+
+export function playKart({ charId = 'bboy', name = '나' } = {}) {
   return openGame({
     id: 'kart',
     title: '🏎️ 청크 카트',
-    subtitle: '품사 게이트로 부스터를 모아 1등으로 골인!',
+    subtitle: '5명이 겨루는 레이스! 퀴즈 존에서 게이지를 채워라',
     music: 'mgKart',
     howto: [
-      '<b>◀ ▶</b>를 꾹 눌러 핸들 조작 (카트는 저절로 달려요)',
-      '<b>품사 게이트</b>: 위에 뜬 단어의 품사 레인으로 통과하면 <b>부스터!</b> 틀리면 빙글~',
-      '<b>❓ 아이템 박스</b>: 퀴즈 1문제! 맞히면 실드 + 부스터',
-      '🍌 바나나는 피하기 · 라이벌은 <b>보강 여신 · 보강대장 · 묵언수행</b>',
+      '왼손 <b>◀ ▶ 핸들</b> · 오른손 <b>⚡ 악셀</b> (꾹 2초 ↑ 2단 가속, 게이지가 줄어요)',
+      '<b>❓ 퀴즈 존</b>을 지나면 <b>순간정지!</b> 맞히면 ⚡ 게이지 가득 + 부스터',
+      '🌮 타코 = 게이지 가득 · 🍌 바나나 · 🚧 공사중 벽 · 🚶 영크크·늙크크 조심!',
+      '라이벌: <b>보강 여신 · 묵언수행 · 보강대장 · B-BOY</b> — 1등이면 쿠키앤크림!',
     ],
-    async setup(ctx) {
-      const [kTed, kGod, kCart, kScoot, face, banana] = await Promise.all([
-        loadImage(asset('kart/ted.svg')), loadImage(asset('kart/goddess.svg')), loadImage(asset('kart/cart.svg')), loadImage(asset('kart/scooter.svg')),
-        charSprite(charId), Promise.resolve(null),
-      ]);
-      void banana;
-      const W = () => ctx.W;
-      const RW = 230;
-      const AMP = () => Math.max(20, (W() - RW) / 2 - 8);
-      const cx = (d) => W() / 2 + AMP() * Math.min(1, d / 600) * (0.6 * Math.sin(d / 520) + 0.4 * Math.sin(d / 230 + 1.2));
-      const PY = () => ctx.H * 0.76;
+    async setup(E) {
+      const ctx = E.g;
+      let W = E.W;
+      let H = E.H;
+      const MYNAME = name || '나';
+      const [IM, face] = await Promise.all([kartImages(MYNAME), charSprite(charId)]);
+      const imgOK = (im) => im && im.complete && im.naturalWidth > 0;
+      const msgEl = document.createElement('div');
+      msgEl.className = 'mg-mission kmsg';
+      E.layer.appendChild(msgEl);
+      let lastMsg = '';
+      const MSG = { set textContent(v) { if (v === lastMsg) return; lastMsg = v; msgEl.innerHTML = `<b>${v}</b>`; msgEl.classList.remove('pop'); void msgEl.offsetWidth; msgEl.classList.add('pop'); } };
+      MSG.textContent = '왼손 핸들 ◀ ▶ · 오른손 ⚡ 악셀';
 
-      const mk = (o) => ({ d: 0, x: 0, v: 0, boost: 0, spin: 0, shield: 0, lane: 0, fin: 0, ...o });
-      const me = mk({ id: 'me', name: '나', img: kTed, base: 270, me: true });
-      const R = [me,
-        mk({ id: 'g', name: '보강 여신', img: kGod, base: 262, lane: -0.25, d: 60 }),
-        mk({ id: 'c', name: '보강대장', img: kCart, base: 258, lane: 0.25, d: 40 }),
-        mk({ id: 's', name: '묵언수행', img: kScoot, base: 264, lane: 0, d: 90 })];
-      R.forEach((r) => { r.x = cx(r.d) + r.lane * RW; });
+      // ---- 코스 (legacy 값 그대로) ----
+      const L = 22100;
+      const RW = Math.min(232, W * 0.58);
+      const AMP = Math.max(26, (W - RW) / 2 - 10);
+      let PY = H * 0.74;
+      const START = 120;
+      const cx = (d) => { const e = Math.min(1, Math.max(0, (d - 380) / 520)), f = Math.min(1, Math.max(0, (L + 260 - d) / 420));
+        return W / 2 + AMP * e * f * (0.62 * Math.sin(d / 430) + 0.38 * Math.sin(d / 190 + 1.3)); };
+      let seed = 11; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+      const BAN = [], TAC = [];
+      const WALL = { d: Math.round(L / 3), k: -0.05, w: RW * 0.26, th: 16 };
+      const PEDS = [{ d: Math.round(L * 0.27), kind: 'young', sp: 235, x: -30, on: false, wait: false, done: false, dir: 1 },
+        { d: Math.round(L * 2 / 3), kind: 'old', sp: 120, x: -30, on: false, wait: false, done: false, dir: 1 }];
+      // legacy ↓
+      for (let d = 950; d < L - 450; d += 300 + rnd() * 160) { const k = (rnd() * 2 - 1) * .36; BAN.push({d, k, gone: false}); if (rnd() < .35) BAN.push({d: d + 26, k: k + (k > 0 ? -.2 : .2), gone: false}); }
+    [2300, 5000, 7700, 10200, 12800, 15900, 18400, 20500].forEach((d, i) => TAC.push({d, k: [-.28, .3, -.05, .26, -.2, .12, -.3, .22][i], gone: false}));
+    BAN.forEach(b => { if (Math.abs(b.d - WALL.d) < 260 || PEDS.some(q => Math.abs(b.d - q.d) < 220)) b.gone = true; });
+    // keep tacos clear of bananas
+    TAC.forEach(t => BAN.forEach(b => { if (Math.abs(b.d - t.d) < 70 && Math.abs(b.k - t.k) < .22) b.gone = true; }));
+      // legacy ↑
 
-      // 코스 물체
-      const gates = [];
-      for (let d = 1300; d < L - 900; d += 1700) {
-        const prompt = pick(POS4);
-        const word = pick(data.pos[prompt]);
-        const lanes = shuffle([prompt, ...shuffle(POS4.filter((p) => p !== prompt)).slice(0, 2)]);
-        gates.push({ d, word, answer: prompt, lanes, done: false });
+      // ❓ 퀴즈 존 (벽·보행자와 떨어진 곳)
+      const QZ = [0.13, 0.41, 0.53, 0.76, 0.9].map((f) => ({ d: Math.round(L * f), done: false }));
+      BAN.forEach((b) => { if (QZ.some((z) => Math.abs(b.d - z.d) < 240)) b.gone = true; });
+
+      const KW = Math.max(36, Math.min(46, W * 0.115)), KH = KW * 84 / 60;
+      const mk = (o) => Object.assign({ v: 0, spin: 0, boost: 0, head: 0, fin: 0, steerX: 0, lane: o.lane0 || 0, laneT: 0 }, o);
+      const R = [
+        mk({ id: 'ted', name: MYNAME, col: '#751A19', img: 'ted', base: 238, x: W / 2, d: START - 140, me: true }),
+        mk({ id: 'g', name: '보강 여신', col: '#9B6BE0', img: 'goddess', base: 250, x: W / 2 - RW * 0.2, d: START, lane0: -0.2, hits: 1 }),
+        mk({ id: 'm', name: '묵언수행', col: '#1B2F4E', img: 'scooter', base: 246, x: W / 2 + RW * 0.2, d: START, lane0: 0.2, hits: 1 }),
+        mk({ id: 'b', name: '보강대장', col: '#E0453A', img: 'cart', base: 242, x: W / 2 - RW * 0.2, d: START - 70, lane0: -0.15, hits: 1 }),
+        mk({ id: 's', name: 'B-BOY', col: '#28A064', img: 'skate', base: 245, x: W / 2 + RW * 0.2, d: START - 70, lane0: 0.15, hits: 1 })];
+      const ME = R[0];
+      let gauge = 1, accel = false;
+      const FUEL_SEC = 3.36, REGEN_SEC = 12, ACC1 = 1.3, ACC2 = 1.5, ACC_T2 = 2;
+      let holdT = 0;
+      let mode = 'count', t = 0, steer = 0, order = [], place = 5, quizzes = { ok: 0, n: 0 }, streak = 0, finished = false;
+      const FX = [];
+      const say = (txt, x, y, col) => FX.push({ txt, x, y, life: 1.1, col });
+
+      // ---- 조작 ----
+      const hold = (v) => ({ onDown: () => { steer = v; }, onUp: () => { if (steer === v) steer = 0; } });
+      E.button('◀', 'left', hold(-1));
+      E.button('▶', 'right', hold(1));
+      E.button('⚡<small>악셀</small>', 'drop pedal', { onDown: () => { accel = true; }, onUp: () => { accel = false; } });
+
+      const onRoad = r => Math.abs(r.x - cx(r.d)) < RW / 2 - 6;
+    function spinOut(r) { r.nSpin = (r.nSpin || 0) + 1; (r.spinD = r.spinD || []).push(Math.round(r.d)); r.spin = 1.15; r.boost = 0; r.v *= .6; say('빙글!', r.x, PY - (r.d - ME.d) - KH * .7, '#F2A01E');
+      if (r.me) { lsfxNo(); MSG.textContent = '🍌 바나나! 빙글빙글~ 다음엔 피해요!'; } }
+    function boost(r) { gauge = 1; say('타코! 게이지 FULL!', r.x, PY - KH * .8, '#E21E8C');
+      lsfx([392, 523, 659, 784, 1047], 'square', .09, .04); MSG.textContent = '🌮 타코! ⚡ 악셀 게이지가 가득 찼어요!'; }
+    function stepRacer(r, dt) {
+      if (r.fin && !r.me) { r.v += (r.base * .55 - r.v) * dt; r.d += r.v * dt; return; }
+      if (r.fin && r.me) { r.v -= r.v * Math.min(1, dt * 2.2); r.d += r.v * dt; r.x += (cx(r.d) - r.x) * Math.min(1, dt * 2); r.head *= .9; return; }   // brake past the finish line
+      let tgt = r.base;
+      if (!onRoad(r)) { tgt *= .55; r.gT = (r.gT || 0) + dt; }
+      if (r.boost > 0) { tgt *= r.me ? 1.6 : 1.25; r.boost -= dt; }
+      if (r.me) { const on = accel && gauge > 0 && !(r.spin > 0) && mode === 'race';
+        holdT = on ? holdT + dt : 0; const lv = !on ? 0 : holdT >= ACC_T2 ? 2 : 1;
+        if (lv === 2 && r.acc === 1) { say('⚡⚡ 2단 가속!', r.x, PY - KH * .9, '#2E9BDA'); lsfx([523, 784, 1047, 1568], 'square', .08, .04); }
+        r.acc = lv;
+        if (!r.acc && mode === 'race') gauge = Math.min(1, gauge + dt / REGEN_SEC);   // refills slowly by itself while the pedal is up
+        if (r.acc) { tgt *= lv === 2 ? ACC2 : ACC1; gauge = Math.max(0, gauge - dt / FUEL_SEC); if (gauge === 0) MSG.textContent = '⚡ 게이지 바닥! 손을 떼면 천천히 차요 · 🌮 타코 = 가득!'; } }
+      if (r.spin > 0) { tgt *= .3; r.spin -= dt; }
+      if (!r.me && !r.fin) {   // light rubber-band so the race stays close
+        const gap = ME.d - r.d; if (gap > 380) tgt *= 1.12; else if (gap < -520) tgt *= .95; }
+      r.v += (tgt - r.v) * Math.min(1, dt * (r.v < tgt * .5 ? 1.6 : 3.2));
+      r.d += r.v * dt;
+      let vx;
+      if (r.me) { vx = r.fin ? (cx(r.d + 60) - r.x) * 2 : steer * 150; }
+      else {   // AI: follow its lane, dodge bananas (except the one it is scripted to hit)
+        r.laneT -= dt; if (r.laneT <= 0) { r.laneT = 1.3 + rnd() * 1.4; r.lane = (rnd() * 2 - 1) * .3; }
+        let lane = r.lane;
+        if (r.aim && r.aim.gone) r.aim = null;
+        BAN.forEach((b, i) => { if (b.gone || b.d < r.d + 10 || b.d > r.d + 240) return;
+          if (r.hits && b.d > L * (r.id === 'g' ? .55 : r.id === 'm' ? .38 : r.id === 's' ? .46 : .7) && !r.aim) r.aim = b;
+          if (r.aim === b) { lane = b.k; return; }
+          if (Math.abs(b.k - lane) < .22) lane = b.k + (b.k > 0 ? -.28 : .28); });
+        const tc = TAC.find(o => !o.gone && o.d > r.d + 20 && o.d < r.d + 320); if (tc && r.d < ME.d + 150 && Math.abs(tc.k - lane) < .26 && (tc.d / 97 + r.base) % 2 < 1) lane = tc.k;   // sometimes go for the taco (not when far ahead)
+        if (Math.abs(ME.d - r.d) < 130 && !ME.fin && !r.aim) lane = (ME.x - cx(r.d)) / RW + (r.x < ME.x ? -.08 : .08);   // side by side → lean on the player
+        if (WALL.d > r.d && WALL.d - r.d < 340) { const wl = WALL.k - WALL.w / RW / 2 - .12, wr = WALL.k + WALL.w / RW / 2 + .12;
+          if (lane > wl && lane < wr) lane = (lane - WALL.k) < 0 ? wl - .02 : wr + .02; }
+        lane = Math.max(-.4, Math.min(.4, lane));
+        const tx = cx(r.d + 50) + lane * RW; vx = Math.max(-170, Math.min(170, (tx - r.x) * 3.6));
       }
-      const boxes = [];
-      for (let d = 2100; d < L - 600; d += 1700) boxes.push({ d, k: rand(-0.3, 0.3), got: false });
-      const bananas = [];
-      for (let d = 900; d < L - 400; d += rand(380, 620)) if (!gates.some((gt) => Math.abs(gt.d - d) < 250)) bananas.push({ d, k: rand(-0.38, 0.38), hit: false });
+      if (r.spin > 0) vx *= .3;
+      r.x = Math.max(12, Math.min(W - 12, r.x + vx * dt));
+      r.head += ((r.spin > 0 ? 0 : vx / 150 * .32) - r.head) * Math.min(1, dt * 10);
+      // items
+      BAN.forEach(b => { if (b.gone || r.spin > 0 || (!r.me && r.aim !== b)) return; const bx = cx(b.d) + b.k * RW;
+        if (Math.abs(b.d - r.d) < KH * .42 && Math.abs(bx - r.x) < KW * .5) { b.gone = true; if (r.aim === b) { r.aim = null; r.hits = 0; } spinOut(r); } });
+      TAC.forEach(o => { if (o.gone) return; const ox = cx(o.d) + o.k * RW;
+        if (Math.abs(o.d - r.d) < KH * .5 && Math.abs(ox - r.x) < KW * .62) { o.gone = true; r.tacos = (r.tacos || 0) + 1;
+          if (r.me) boost(r); else { r.boost = 2.2; say(r.name.split(' ')[0] + ' 타코!', r.x, sy(r.d) - KH * .7, '#F2A01E'); if (!ME.fin) MSG.textContent = `🌮 ${r.name}가 타코를 먹었어요!`; } } });
+      { const wx = cx(WALL.d) + WALL.k * RW;   // wall: a dead stop — steer sideways to get out
+        if (r.d < WALL.d && r.d + KH * .45 > WALL.d - WALL.th / 2 && Math.abs(r.x - wx) < WALL.w / 2 + KW * .38) {
+          r.d = WALL.d - WALL.th / 2 - KH * .45; r.v = 0; r.boost = 0;
+          if (!r.wallT || t - r.wallT > 1) { r.wallT = t; say('쿵!', r.x, sy(r.d) - KH * .6, '#E0453A');
+            if (r.me) { lsfxNo(); MSG.textContent = '쿵! 벽에 막혔어요 — ◀ ▶ 로 옆으로 빠져나가요!'; } } } }
+      PEDS.forEach(q => { if (q.on && !(r.pedHit || {})[q.kind] && r.spin <= 0 && Math.abs(r.d - q.d) < KH * .5 && Math.abs(r.x - q.x) < KW * .5 + 8) {
+        (r.pedHit = r.pedHit || {})[q.kind] = true; spinOut(r); say(q.kind === 'old' ? '어이쿠!' : '앗 죄송!', q.x, sy(q.d) - 46, '#1B2F4E');
+        if (r.me) MSG.textContent = q.kind === 'old' ? '앗! 눈치 없는 늙크크 아저씨! 다음엔 피해요 😵' : '앗! 영크크가 뛰어들었어요! 😵'; } });
+      if (!r.fin && r.d >= L) { r.fin = t; order.push(r); if (r.me) finishRace(); else if (!ME.fin) MSG.textContent = `🏁 ${r.name.split(' ·')[0]} 골인! 서둘러요!`; }
+    }
+    function bump() {   // karts push each other sideways
+      for (let i = 0; i < R.length; i++) for (let j = i + 1; j < R.length; j++) { const a = R[i], b = R[j];
+        const dd = a.d - b.d, dx = a.x - b.x;
+        if (Math.abs(dd) < KH * .8 && Math.abs(dx) < KW * .9) { const push = (KW * .9 - Math.abs(dx)) / 2 * (dx >= 0 ? 1 : -1);
+          a.x += push * 1.25; b.x -= push * 1.25; const back = dd < 0 ? a : b; back.v *= .995; if (a.me || b.me) { if (!bump.t || t - bump.t > .5) { bump.t = t; lsfx([140, 110], 'square', .06, .05); } } } }
+    }
+    const placeOf = r => r.fin ? order.indexOf(r) + 1 : order.length + 1 + R.filter(o => !o.fin && o !== r && o.d > r.d).length;
+    // ---- drawing ----
+    const rr = (X, Y, w, h, r, f) => { ctx.fillStyle = f; roundRect(ctx, X, Y, w, h, Math.min(r, w / 2, h / 2)); ctx.fill(); };
+      const sy = d => PY - (d - ME.d);
+    function palmTop(x, y, s, a) {
+      ctx.fillStyle = 'rgba(0,0,0,.16)'; ctx.beginPath(); ctx.ellipse(x + 8 * s, y + 8 * s, 22 * s, 14 * s, 0, 0, 7); ctx.fill();
+      for (let k = 0; k < 7; k++) { ctx.save(); ctx.translate(x, y); ctx.rotate(a + k * .9); ctx.fillStyle = k % 2 ? '#1F8A4C' : '#2EA35C';
+        ctx.beginPath(); ctx.moveTo(0, 0); ctx.quadraticCurveTo(12 * s, -9 * s, 26 * s, -2 * s); ctx.quadraticCurveTo(12 * s, 2 * s, 0, 0); ctx.fill(); ctx.restore(); }
+      ctx.fillStyle = '#8A5A2B'; ctx.beginPath(); ctx.arc(x, y, 3.5 * s, 0, 7); ctx.fill();
+    }
+    function fans(x, y, side, k) {   // a little cheering crowd (top view), arms waving, one holds a sign
+      const tm = performance.now() / 1000, n = 5;
+      for (let i = 0; i < n; i++) { const py = y - i * 15, px = x + ((i * 7) % 3 - 1) * 4 * side, ph = tm * 9 + i + k;
+        const shirt = ['#E21E8C', '#2E9BDA', '#FFD43B', '#28A064', '#fff', '#7B5CD6'][(i + k * 2) % 6], hair = ['#1E1714', '#5A3A22', '#C8955A', '#2B2724', '#E7B85A'][(i + k) % 5];
+        ctx.fillStyle = 'rgba(0,0,0,.15)'; ctx.beginPath(); ctx.ellipse(px + 3, py + 3, 9, 7, 0, 0, 7); ctx.fill();
+        [-1, 1].forEach(a => { const ex = px + a * (9 + Math.sin(ph) * 3), ey = py - 9 - Math.abs(Math.sin(ph)) * 5;
+          ctx.strokeStyle = '#1B2F4E'; ctx.lineWidth = 4.5; ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(px + a * 6, py); ctx.lineTo(ex, ey); ctx.stroke();
+          ctx.strokeStyle = '#F2C9A0'; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.moveTo(px + a * 6, py); ctx.lineTo(ex, ey); ctx.stroke(); });
+        ctx.fillStyle = shirt; ctx.strokeStyle = '#1B2F4E'; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.ellipse(px, py, 8, 5.5, 0, 0, 7); ctx.fill(); ctx.stroke();
+        ctx.fillStyle = hair; ctx.beginPath(); ctx.arc(px, py - 1, 4.6, 0, 7); ctx.fill(); }
+      const sx = x + side * 4, sy2 = y - n * 15 - 4, txt = ['GO!', '화이팅!', '⚡GO⚡', MYNAME + ' 화이팅!'][k % 4];
+      ctx.font = "900 9px 'Noto Sans KR',sans-serif"; const tw = ctx.measureText(txt).width + 8;
+      const bx = Math.max(2, Math.min(W - tw - 2, sx - tw / 2)); rr(bx, sy2 - 11, tw, 13, 3, '#fff');
+      ctx.strokeStyle = '#E21E8C'; ctx.lineWidth = 1.5; ctx.strokeRect(bx, sy2 - 11, tw, 13); ctx.fillStyle = '#E21E8C'; ctx.fillText(txt, bx + 4, sy2 - 1.5);
+    }
+    function umbrellaTop(x, y, k) {
+      const c = [['#E21E8C', '#fff'], ['#2E9BDA', '#fff'], ['#F2A01E', '#fff']][((k % 3) + 3) % 3];
+      ctx.fillStyle = c[0]; ctx.fillRect(x - 6, y + 10, 12, 20); ctx.fillStyle = 'rgba(255,255,255,.6)'; ctx.fillRect(x - 6, y + 14, 12, 2);   // towel
+      ctx.fillStyle = 'rgba(0,0,0,.15)'; ctx.beginPath(); ctx.arc(x + 4, y + 4, 15, 0, 7); ctx.fill();
+      for (let i = 0; i < 8; i++) { ctx.fillStyle = c[i % 2]; ctx.beginPath(); ctx.moveTo(x, y); ctx.arc(x, y, 15, i * Math.PI / 4, (i + 1) * Math.PI / 4); ctx.closePath(); ctx.fill(); }
+      ctx.strokeStyle = '#1B2F4E'; ctx.lineWidth = 1.2; ctx.beginPath(); ctx.arc(x, y, 15, 0, 7); ctx.stroke(); ctx.fillStyle = '#1B2F4E'; ctx.beginPath(); ctx.arc(x, y, 2, 0, 7); ctx.fill();
+    }
+    function tires(x, y) { ['#E0453A', '#fff', '#2E9BDA'].forEach((c, i) => { ctx.fillStyle = '#26262C'; ctx.beginPath(); ctx.arc(x, y - i * 12, 7.5, 0, 7); ctx.fill(); ctx.fillStyle = c; ctx.beginPath(); ctx.arc(x, y - i * 12, 3.6, 0, 7); ctx.fill(); }); }
+    function banana(x, y) {   // banana PEEL: four floppy flaps splayed out from the stem
+      ctx.save(); ctx.translate(x, y); ctx.rotate(.15);
+      ctx.fillStyle = 'rgba(0,0,0,.18)'; ctx.beginPath(); ctx.ellipse(2, 9, 17, 8, 0, 0, 7); ctx.fill();
+      ctx.strokeStyle = '#1B2F4E'; ctx.lineWidth = 1.8; ctx.lineJoin = 'round';
+      [[-2.2, 16], [3.14, 14], [2.2, 16]].forEach(([a, l], i) => { ctx.save(); ctx.rotate(a);
+        ctx.fillStyle = i % 2 ? '#FFD43B' : '#F7C531'; ctx.beginPath(); ctx.moveTo(-4, 0); ctx.quadraticCurveTo(-5, -l * .6, -1, -l); ctx.quadraticCurveTo(2, -l - 2, 4, -l + 2); ctx.quadraticCurveTo(5, -l * .5, 4, 0); ctx.closePath(); ctx.fill(); ctx.stroke();
+        ctx.fillStyle = '#FFF4C2'; ctx.beginPath(); ctx.ellipse(0, -l * .45, 1.4, l * .3, 0, 0, 7); ctx.fill();
+        ctx.fillStyle = '#6B4A1E'; ctx.beginPath(); ctx.arc(1.5, -l, 1.6, 0, 7); ctx.fill(); ctx.restore(); });
+      ctx.fillStyle = '#F7C531'; ctx.beginPath(); ctx.moveTo(-5, 2); ctx.quadraticCurveTo(-5, -9, 0, -11); ctx.quadraticCurveTo(5, -9, 5, 2); ctx.closePath(); ctx.fill(); ctx.stroke();
+      ctx.fillStyle = '#6B4A1E'; ctx.fillRect(-1.6, -15, 3.2, 5); ctx.restore();
+    }
+    function wall() {
+      const y = sy(WALL.d); if (y < -40 || y > H + 40) return; const x = cx(WALL.d) + WALL.k * RW, w = WALL.w, h = WALL.th;
+      ctx.fillStyle = 'rgba(0,0,0,.22)'; ctx.fillRect(x - w / 2 + 4, y - h / 2 + 5, w, h);
+      rr(x - w / 2, y - h / 2, w, h, 3, '#C9CED6'); ctx.save(); ctx.beginPath(); ctx.rect(x - w / 2, y - h / 2, w, h); ctx.clip();
+      for (let i = -2; i < w / 12 + 2; i++) { ctx.fillStyle = i % 2 ? '#E0453A' : '#fff'; ctx.beginPath(); const X = x - w / 2 + i * 12;
+        ctx.moveTo(X, y + h / 2); ctx.lineTo(X + 12, y + h / 2); ctx.lineTo(X + 24, y - h / 2); ctx.lineTo(X + 12, y - h / 2); ctx.fill(); }
+      ctx.restore(); ctx.strokeStyle = '#1B2F4E'; ctx.lineWidth = 2; ctx.strokeRect(x - w / 2, y - h / 2, w, h);
+      ctx.font = "900 10px 'Noto Sans KR',sans-serif"; ctx.textAlign = 'center'; ctx.lineWidth = 4; ctx.strokeStyle = '#1B2F4E'; ctx.strokeText('⚠ 공사중', x, y - h / 2 - 5); ctx.fillStyle = '#FFD43B'; ctx.fillText('⚠ 공사중', x, y - h / 2 - 5); ctx.textAlign = 'left';
+    }
+    function ajussi(PED) {   // a pedestrian crossing the track, looking left and right (old: 늙크크 ajussi · young: 영크크 teen)
+      if (!PED.on && !PED.wait) return; const y = sy(PED.d); if (y < -60 || y > H + 60) return; const x = PED.x, tm = performance.now() / 1000, look = Math.sin(tm * (PED.on ? 6 : 3)) > 0 ? 1 : -1, step = PED.on ? Math.sin(tm * (PED.kind === 'old' ? 18 : 30)) * 1.6 : 0;
+      if (PED.kind === 'young') return teen(PED, x, y, tm, look, step);
+      ctx.fillStyle = 'rgba(0,0,0,.2)'; ctx.beginPath(); ctx.ellipse(x + 2, y + 18, 12, 4, 0, 0, 7); ctx.fill();
+      ctx.strokeStyle = '#1B2F4E'; ctx.lineWidth = 1.8; ctx.lineJoin = 'round';
+      [[-4, step], [4, -step]].forEach(([o, s2]) => { ctx.fillStyle = '#5A5F6B'; ctx.fillRect(x + o - 2.5, y + 4, 5, 11 + s2 * 2); ctx.strokeRect(x + o - 2.5, y + 4, 5, 11 + s2 * 2);
+        ctx.fillStyle = '#2A2A30'; ctx.beginPath(); ctx.ellipse(x + o + 1, y + 16 + s2 * 2, 4, 2.4, 0, 0, 7); ctx.fill(); });
+      ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.moveTo(x - 9, y - 9); ctx.lineTo(x + 9, y - 9); ctx.lineTo(x + 8, y + 6); ctx.lineTo(x - 8, y + 6); ctx.closePath(); ctx.fill(); ctx.stroke();
+      ctx.strokeStyle = '#1B2F4E'; ctx.lineWidth = 3.5; ctx.beginPath(); ctx.moveTo(x + 9, y - 7); ctx.lineTo(x + 14, y + 2 + step * 2); ctx.stroke();
+      ctx.strokeStyle = '#F2C9A0'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(x + 9, y - 7); ctx.lineTo(x + 14, y + 2 + step * 2); ctx.stroke();
+      ctx.fillStyle = 'rgba(255,255,255,.9)'; ctx.strokeStyle = '#1B2F4E'; ctx.lineWidth = 1.4; ctx.beginPath(); ctx.ellipse(x + 15, y + 8 + step * 2, 4.5, 6, 0, 0, 7); ctx.fill(); ctx.stroke();   // plastic bag
+      ctx.fillStyle = '#F2C9A0'; ctx.lineWidth = 1.8; ctx.beginPath(); ctx.arc(x, y - 17, 9, 0, 7); ctx.fill(); ctx.stroke();
+      ctx.strokeStyle = '#3A332E'; ctx.lineWidth = 1.6; ctx.beginPath(); ctx.moveTo(x - 6, y - 23); ctx.quadraticCurveTo(x, y - 28, x + 7, y - 22); ctx.stroke();   // comb-over
+      ctx.fillStyle = '#1B2F4E'; ctx.beginPath(); ctx.arc(x - 3 + look * 2.4, y - 18, 1.3, 0, 7); ctx.arc(x + 3 + look * 2.4, y - 18, 1.3, 0, 7); ctx.fill();
+      ctx.strokeStyle = '#3A332E'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(x - 4 + look * 1.5, y - 13.5); ctx.lineTo(x + 4 + look * 1.5, y - 13.5); ctx.stroke();   // mustache
+      ctx.font = "900 11px 'Noto Sans KR',sans-serif"; ctx.textAlign = 'center'; const bw = 48;
+      rr(x - bw / 2, y - 45, bw, 15, 7, '#fff'); ctx.strokeStyle = '#1B2F4E'; ctx.lineWidth = 1.4; ctx.strokeRect(x - bw / 2 + 1, y - 45, bw - 2, 15);
+      ctx.fillStyle = '#1B2F4E'; ctx.fillText('늙크크', x, y - 34); ctx.textAlign = 'left';
+    }
+    function teen(PED, x, y, tm, look, step) {   // 영크크: hoodie, backwards cap, backpack, sprinting
+      ctx.fillStyle = 'rgba(0,0,0,.2)'; ctx.beginPath(); ctx.ellipse(x + 2, y + 18, 12, 4, 0, 0, 7); ctx.fill();
+      ctx.strokeStyle = '#1B2F4E'; ctx.lineWidth = 1.8; ctx.lineJoin = 'round';
+      [[-4, step], [4, -step]].forEach(([o, s2]) => { ctx.fillStyle = '#2E4A78'; ctx.fillRect(x + o - 2.5, y + 3, 5, 11 + s2 * 2.5); ctx.strokeRect(x + o - 2.5, y + 3, 5, 11 + s2 * 2.5);
+        ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.ellipse(x + o + 1, y + 15 + s2 * 2.5, 4.2, 2.6, 0, 0, 7); ctx.fill(); ctx.stroke(); });
+      ctx.fillStyle = '#28A064'; ctx.beginPath(); ctx.moveTo(x - 9, y - 9); ctx.lineTo(x + 9, y - 9); ctx.lineTo(x + 8, y + 5); ctx.lineTo(x - 8, y + 5); ctx.closePath(); ctx.fill(); ctx.stroke();
+      ctx.fillStyle = '#F2A01E'; ctx.fillRect(x - PED.dir * 12 - 3, y - 8, 6, 11); ctx.strokeRect(x - PED.dir * 12 - 3, y - 8, 6, 11);   // backpack
+      [-1, 1].forEach(a => { ctx.strokeStyle = '#1B2F4E'; ctx.lineWidth = 3.6; ctx.beginPath(); ctx.moveTo(x + a * 8, y - 6); ctx.lineTo(x + a * 12, y + 1 + a * step * 3); ctx.stroke();
+        ctx.strokeStyle = '#28A064'; ctx.lineWidth = 2.2; ctx.beginPath(); ctx.moveTo(x + a * 8, y - 6); ctx.lineTo(x + a * 12, y + 1 + a * step * 3); ctx.stroke(); });
+      ctx.strokeStyle = '#1B2F4E'; ctx.lineWidth = 1.8; ctx.fillStyle = '#FFE0C2'; ctx.beginPath(); ctx.arc(x, y - 17, 8.5, 0, 7); ctx.fill(); ctx.stroke();
+      ctx.fillStyle = '#E0453A'; ctx.beginPath(); ctx.arc(x, y - 20, 8.6, Math.PI, 0); ctx.closePath(); ctx.fill(); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(x - PED.dir * 6, y - 21); ctx.lineTo(x - PED.dir * 15, y - 19); ctx.lineTo(x - PED.dir * 6, y - 17); ctx.closePath(); ctx.fill(); ctx.stroke();   // brim backwards
+      ctx.fillStyle = '#1B2F4E'; ctx.beginPath(); ctx.arc(x - 3 + look * 2.2, y - 16, 1.3, 0, 7); ctx.arc(x + 3 + look * 2.2, y - 16, 1.3, 0, 7); ctx.fill();
+      ctx.strokeStyle = '#1B2F4E'; ctx.lineWidth = 1.4; ctx.beginPath(); ctx.arc(x + look * 1.5, y - 12.5, 2.6, .1 * Math.PI, .9 * Math.PI); ctx.stroke();
+      ctx.font = "900 11px 'Noto Sans KR',sans-serif"; ctx.textAlign = 'center'; const bw = 48;
+      rr(x - bw / 2, y - 45, bw, 15, 7, '#fff'); ctx.strokeStyle = '#28A064'; ctx.lineWidth = 1.4; ctx.strokeRect(x - bw / 2 + 1, y - 45, bw - 2, 15);
+      ctx.fillStyle = '#28A064'; ctx.fillText('영크크', x, y - 34); ctx.textAlign = 'left';
+    }
+    function taco(x, y) {
+      const tm = performance.now() / 1000, pulse = .5 + .5 * Math.sin(tm * 8);
+      ctx.fillStyle = `rgba(255,212,59,${.3 + .35 * pulse})`; ctx.beginPath(); ctx.arc(x, y, 20 + pulse * 5, 0, 7); ctx.fill();
+      for (let k = 0; k < 4; k++) { const a = tm * 2.4 + k * 1.57; ctx.fillStyle = k % 2 ? '#fff' : '#FFD43B'; ctx.beginPath(); ctx.arc(x + Math.cos(a) * 26, y + Math.sin(a) * 20, 2.6, 0, 7); ctx.fill(); }
+      ctx.fillStyle = '#6FBF3A'; ctx.beginPath(); ctx.ellipse(x, y - 3, 14, 5.5, 0, Math.PI, 0); ctx.fill();
+      ctx.fillStyle = '#E0453A'; ctx.beginPath(); ctx.arc(x - 5, y - 4, 2.8, 0, 7); ctx.arc(x + 5, y - 5, 2.8, 0, 7); ctx.fill();
+      ctx.fillStyle = '#F2B740'; ctx.strokeStyle = '#B97A1C'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(x, y - 2, 15, 0, Math.PI); ctx.closePath(); ctx.fill(); ctx.stroke();
+      ctx.font = "900 11px 'Noto Sans KR',sans-serif"; ctx.textAlign = 'center'; ctx.lineWidth = 4; ctx.strokeStyle = '#1B2F4E'; ctx.strokeText('타코', x, y + 26); ctx.fillStyle = '#FFD43B'; ctx.fillText('타코', x, y + 26); ctx.textAlign = 'left';
+    }
+    function checker(d, label) {
+      const y = sy(d); if (y < -60 || y > H + 20) return; const c = cx(d), l = c - RW / 2, n = 12, cw = RW / n;
+      for (let r = 0; r < 2; r++) for (let i = 0; i < n; i++) { ctx.fillStyle = (i + r) % 2 ? '#1B2F4E' : '#fff'; ctx.fillRect(l + i * cw, y - 8 + r * 8, cw + .5, 8); }
+      // arch
+      ctx.fillStyle = '#1B2F4E'; ctx.fillRect(l - 16, y - 46, 6, 46); ctx.fillRect(l + RW + 10, y - 46, 6, 46);
+      rr(l - 18, y - 60, RW + 36, 22, 6, '#E21E8C'); ctx.fillStyle = '#fff'; ctx.font = "400 15px Jua, 'Noto Sans KR', sans-serif"; ctx.textAlign = 'center'; ctx.fillText(label, c, y - 44); ctx.textAlign = 'left';
+    }
+    function racer(r) {
+      const y = sy(r.d); if (y < -80 || y > H + 80 || r.hide) return;
+      ctx.fillStyle = 'rgba(0,0,0,.22)'; ctx.beginPath(); ctx.ellipse(r.x + 3, y + 4, KW * .48, KH * .42, 0, 0, 7); ctx.fill();
+      if (r.boost > 0 || r.acc) {   // exhaust flames (stage 2: bigger, with a blue core)
+        const big = r.acc === 2, fl = (10 + Math.random() * 10) * (big ? 2.1 : 1), fw = big ? 8 : 5;
+        if (big) [-.22, .22].forEach(o => { ctx.fillStyle = 'rgba(255,122,26,.55)'; ctx.beginPath(); ctx.moveTo(r.x + o * KW - fw - 3, y + KH * .48); ctx.lineTo(r.x + o * KW, y + KH * .48 + fl * 1.15); ctx.lineTo(r.x + o * KW + fw + 3, y + KH * .48); ctx.fill(); });
+        [-.22, .22].forEach(o => { ctx.fillStyle = '#FFD43B'; ctx.beginPath(); ctx.moveTo(r.x + o * KW - fw, y + KH * .48); ctx.lineTo(r.x + o * KW, y + KH * .48 + fl); ctx.lineTo(r.x + o * KW + fw, y + KH * .48); ctx.fill();
+          ctx.fillStyle = big ? '#7FD3FF' : '#FF7A1A'; ctx.beginPath(); ctx.moveTo(r.x + o * KW - fw * .6, y + KH * .48); ctx.lineTo(r.x + o * KW, y + KH * .48 + fl * .6); ctx.lineTo(r.x + o * KW + fw * .6, y + KH * .48); ctx.fill(); }); }
+      const ang = r.spin > 0 ? (1.15 - r.spin) * Math.PI * 3.5 : r.head;
+      ctx.save(); ctx.translate(r.x, y); ctx.rotate(ang); if (imgOK(IM[r.img])) ctx.drawImage(IM[r.img], -KW / 2, -KH / 2, KW, KH); ctx.restore();
+      // name tag
+      ctx.font = "900 10.5px 'Noto Sans KR',sans-serif"; const nm = r.name, tw = ctx.measureText(nm).width + 12, ty = y - KH / 2 - 8;
+      rr(r.x - tw / 2, ty - 13, tw, 16, 8, r.col); ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.fillText(nm, r.x, ty - 1.5); ctx.textAlign = 'left';
+      if (r.me) { ctx.fillStyle = r.col; ctx.beginPath(); ctx.moveTo(r.x - 5, ty + 3); ctx.lineTo(r.x + 5, ty + 3); ctx.lineTo(r.x, ty + 8); ctx.fill(); }
+    }
+    function draw() {
+      // grass with scrolling stripes
+      ctx.fillStyle = '#66BE45'; ctx.fillRect(0, 0, W, H);
+      ctx.fillStyle = '#74C953'; const st = 46; for (let k = Math.floor((ME.d - PY) / st) - 1; k * st < ME.d + (H - PY) + st * 2; k++) if (k % 2 === 0) { const y = sy(k * st); ctx.fillRect(0, y - st, W, st); }
+      // Miami beach on the right: sand → wavy shoreline → sea with rolling waves
+      { const tm = performance.now() / 1000;
+        for (let y = -6; y <= H + 6; y += 6) { const d = ME.d + PY - y, e = cx(d) + RW / 2;
+          ctx.fillStyle = '#F4E0A8'; ctx.fillRect(e + 8, y, W, 6.5);
+          const sea = e + 40 + Math.sin(d / 80) * 7;
+          ctx.fillStyle = '#4FC1E8'; ctx.fillRect(sea, y, W, 6.5);
+          ctx.fillStyle = Math.floor((d + tm * 60) / 30) % 3 === 0 ? 'rgba(255,255,255,.35)' : 'rgba(255,255,255,0)'; ctx.fillRect(sea + 14, y, W, 3);
+          ctx.fillStyle = 'rgba(255,255,255,.9)'; ctx.fillRect(sea - 2 + Math.sin(tm * 2 + d / 50) * 2, y, 4, 6.5); } }
+      // road + curbs
+      const step = 6; ctx.fillStyle = '#8B9199'; ctx.beginPath();
+      for (let y = -step; y <= H + step; y += step) { const d = ME.d + PY - y; ctx.lineTo(cx(d) - RW / 2, y); }
+      for (let y = H + step; y >= -step; y -= step) { const d = ME.d + PY - y; ctx.lineTo(cx(d) + RW / 2, y); }
+      ctx.fill();
+      for (let y = -step; y <= H + step; y += step) { const d = ME.d + PY - y, c = cx(d), band = Math.floor(d / 22) % 2;
+        ctx.fillStyle = Math.floor(d / 70) % 2 ? 'rgba(255,255,255,.035)' : 'rgba(0,0,0,.03)'; ctx.fillRect(c - RW / 2, y, RW, step + .5);
+        ctx.fillStyle = band ? '#E0453A' : '#fff'; ctx.fillRect(c - RW / 2 - 9, y, 10, step + .5); ctx.fillRect(c + RW / 2 - 1, y, 10, step + .5);
+        if (Math.floor(d / 34) % 2 === 0) { ctx.fillStyle = 'rgba(255,255,255,.85)'; ctx.fillRect(c - 2, y, 4, step + .5); } }
+      // roadside props: palms & tyre stacks on the grass (left), umbrellas & towels on the beach (right), cheering crowds on both sides
+      const k0 = Math.floor((ME.d - (H - PY) - 120) / 150), k1 = Math.ceil((ME.d + PY + 120) / 150);
+      for (let k = k0; k <= k1; k++) { if (k < -2) continue; const d = k * 150, y = sy(d), c = cx(d), crowd = k % 4 === 2;
+        if (!crowd) { const px = c - (RW / 2 + 34 + (((k * 37) % 3) + 3) % 3 * 10); if (px > 6) { if (k % 7 === 0) tires(px, y); else palmTop(px, y, .95, k); } }
+        else fans(c - RW / 2 - 22, y, -1, k);
+        if (k % 4 === 0) fans(c + RW / 2 + 20, y + 60, 1, k + 1);
+        else if (k % 2) { const ux = c + RW / 2 + 30 + (k % 3) * 6; if (ux < W - 20) umbrellaTop(ux, y + 20, k); }
+        if (k % 3 === 0) palmTop(c + RW / 2 + 40, y - 40, .8, k + 2); }
+      checker(START, 'CHUNK KART · START'); checker(L, '🏁 FINISH');
+      BAN.forEach(b => { if (b.gone) return; const y = sy(b.d); if (y > -20 && y < H + 20) banana(cx(b.d) + b.k * RW, y); });
+      TAC.forEach(o => { if (o.gone) return; const y = sy(o.d); if (y > -30 && y < H + 30) taco(cx(o.d) + o.k * RW, y); });
+      // speed lines while boosting
+      wall();
+      R.slice().sort((a, b) => b.d - a.d).forEach(racer);
+      PEDS.forEach(ajussi);
+      FX.forEach(f => { ctx.globalAlpha = Math.max(0, Math.min(1, f.life * 1.5)); ctx.font = "900 20px 'Noto Sans KR',sans-serif"; ctx.textAlign = 'center';
+        ctx.lineWidth = 5; ctx.strokeStyle = '#fff'; ctx.strokeText(f.txt, f.x, f.y); ctx.fillStyle = f.col; ctx.fillText(f.txt, f.x, f.y); ctx.textAlign = 'left'; ctx.globalAlpha = 1; });
+      // progress bar (right edge) with racer dots
+      const bt = 46, bb = H - 46, bx = W - 16; rr(bx - 6, bt, 12, bb - bt, 6, 'rgba(27,47,78,.6)');
+      ctx.fillStyle = '#fff'; ctx.font = "12px 'Noto Sans KR', sans-serif"; ctx.textAlign = 'center'; ctx.fillText('🏁', bx, bt - 6); ctx.textAlign = 'left';
+      R.slice().reverse().forEach(r => { const k = Math.max(0, Math.min(1, (r.d - START) / (L - START))), y = bb - k * (bb - bt);
+        ctx.fillStyle = r.col; ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(bx, y, r.me ? 9 : 7, 0, 7); ctx.fill(); ctx.stroke(); });
+    }
 
-      let steer = 0;
-      ctx.button('◀', 'left', { onDown: () => { steer = -1; }, onUp: () => { if (steer < 0) steer = 0; } });
-      const boostBtn = ctx.button('⚡<small>부스터</small>', 'drop', { onDown: () => useBoost() });
-      ctx.button('▶', 'right', { onDown: () => { steer = 1; }, onUp: () => { if (steer > 0) steer = 0; } });
-      let stock = 0; // 모아 둔 부스터
-      function useBoost() { if (stock > 0 && !me.fin) { stock--; me.boost = 1.6; ctx.sfx('reveal'); ctx.callout('nice', '부스터!'); } }
-
-      const S = { t: 0, slow: 1, quiz: null, order: [], finished: false, gate: null };
-
-      function quiz() {
-        const q = pick([...BANK[3], ...BANK[1].filter((x) => !x.context)]);
-        const right = q.answer;
-        const wrong = pick(q.options.filter((o) => o !== right));
-        const opts = shuffle([right, wrong]);
+      // ---- 퀴즈 존: 순간정지 ----
+      function quizStop(z) {
+        mode = 'quiz';
+        accel = false;
+        lsfx([880, 660, 880], 'square', 0.08, 0.06);
+        const type = pick(QUIZ_TYPES);
+        const q = pick(BANK[type].filter((x) => !(type === 1 && x.word.includes(' '))));
         const box = document.createElement('div');
-        box.className = 'mg-quiz';
-        box.innerHTML = `<div class="qq">${q.prompt ? q.prompt.replace('___', '<u>　?　</u>') : `<b>${q.word}</b>의 품사는?`}</div>
-          <div class="qo">${opts.map((o) => `<button>${o}</button>`).join('')}</div><i class="bar"></i>`;
-        ctx.layer.appendChild(box);
-        S.slow = 0.35;
-        let done = false;
-        const close = (ok) => {
-          if (done) return; done = true;
-          S.slow = 1; box.remove();
-          if (ok) { me.shield = 6; stock = Math.min(3, stock + 1); ctx.callout('easy', '실드 + 부스터 1개'); }
-          else { me.v *= 0.6; ctx.floatText(`정답: ${right}`, me.x, PY() - 70, '#E0453A', 16); ctx.sfx('no'); }
+        box.className = 'mg-freeze';
+        box.innerHTML = `<div class="fz-head"><b>❓ 퀴즈 존 · 순간정지!</b><span>맞히면 ⚡ 게이지 가득</span></div><div class="card q" id="fzq"></div><i class="fz-bar"></i>`;
+        E.layer.appendChild(box);
+        let settled = false;
+        const settle = (ok, answerHTML) => {
+          if (settled) return; settled = true;
+          quizzes.n++;
+          box.querySelectorAll('.opt').forEach((b) => { b.disabled = true; });
+          const fb = document.createElement('div');
+          fb.className = `fz-fb ${ok ? 'ok' : 'no'}`;
+          fb.innerHTML = ok ? '<b>정답! ⚡ 게이지 가득!</b>' : `<b>${answerHTML ? '아쉬워요!' : '⏰ 시간 초과!'}</b> ${answerHTML || `정답: <b>${q.answer}</b>`}<small>💡 ${q.explain}</small>`;
+          box.appendChild(fb);
+          if (ok) {
+            quizzes.ok++; streak++;
+            gauge = 1; ME.boost = 1.3;
+            E.callout(streak >= 3 ? 'yar' : 'easy', streak >= 3 ? `퀴즈 ${streak}연속!` : '게이지 FULL!');
+          } else {
+            streak = 0;
+            gauge = Math.max(0, gauge - 0.35);
+            lsfxNo();
+          }
+          setTimeout(() => { box.remove(); MSG.textContent = ok ? '⚡ 게이지 가득! 악셀을 꾹!' : '다음 퀴즈 존에서 만회하자!'; mode = 'race'; }, ok ? 1100 : 2600);
         };
-        box.querySelectorAll('button').forEach((b) => { b.onclick = () => close(b.textContent === right); });
-        setTimeout(() => close(false), 4500);
+        renderChoice(box.querySelector('#fzq'), q).then((r) => settle(r.ok, r.ok ? '' : r.answerHTML));
+        setTimeout(() => settle(false, ''), 10000);
       }
 
-      function stepRacer(r, dt) {
-        if (r.fin) { r.v *= 1 - dt * 1.5; r.d += r.v * dt; return; }
-        let tgt = r.base;
-        if (r.boost > 0) { r.boost -= dt; tgt *= 1.6; }
-        if (r.spin > 0) { r.spin -= dt; tgt *= 0.35; }
-        if (!r.me) {
-          // AI: 길 중앙 + 자기 레인, 가끔 부스터, 플레이어와 비슷한 거리 유지(러버밴드)
-          const lead = r.d - me.d;
-          tgt *= lead > 500 ? 0.9 : lead < -500 ? 1.12 : 1;
-          if (Math.random() < dt * 0.12) r.boost = 1.1;
-          const want = cx(r.d + 120) + r.lane * RW;
-          r.x += clamp(want - r.x, -140 * dt, 140 * dt);
-        } else {
-          const st = steer || (ctx.input.keys.ArrowLeft ? -1 : ctx.input.keys.ArrowRight ? 1 : 0);
-          r.x += st * 210 * dt;
-          if (ctx.input.down) r.x += clamp(ctx.input.x - r.x, -210 * dt, 210 * dt);
-          const off = Math.abs(r.x - cx(r.d)) > RW / 2 - 14;
-          if (off) tgt *= 0.55; // 잔디
-          r.x = clamp(r.x, cx(r.d) - RW / 2 - 30, cx(r.d) + RW / 2 + 30);
-        }
-        r.v += (tgt - r.v) * Math.min(1, dt * 2.2);
-        r.d += r.v * dt * (r.me ? 1 : 1);
-        if (r.d >= L && !r.fin) { r.fin = S.t; S.order.push(r); if (r.me) finish(); }
+      function finishRace() {
+        if (finished) return;
+        finished = true;
+        mode = 'after';
+        place = order.indexOf(ME) + 1;
+        const rows = R.slice().sort((a, b) => placeOf(a) - placeOf(b)).map((r) => `${placeOf(r)}. ${r.me ? `<b>${r.name}</b>` : r.name}`).join(' · ');
+        setTimeout(() => E.end({
+          score: Math.max(0, 1500 - (place - 1) * 300) + quizzes.ok * 200, cleared: place <= 3,
+          coins: [0, 20, 14, 10, 6, 4][place], snack: place === 1 ? 'cookie' : null,
+          headline: place === 1 ? '🏆 1등 골인!' : `${place}등 골인!`, legendAt: 2400,
+          lines: [`❓ 퀴즈 존 <b>${quizzes.ok}</b>/${quizzes.n} 정답`, rows],
+        }), 1600);
       }
 
-      function finish() {
-        const place = S.order.indexOf(me) + 1;
-        S.finished = true;
-        boostBtn.disabled = true;
-        setTimeout(() => {
-          ctx.end({
-            score: Math.max(0, 1600 - place * 300) + S.gateOk * 150, cleared: place <= 2,
-            coins: [0, 20, 12, 7, 4][place], snack: place === 1 ? 'cookie' : null,
-            headline: place === 1 ? '🏆 1등 골인!' : `${place}등 골인!`, legendAt: 2100,
-            lines: [`품사 게이트 <b>${S.gateOk}</b>/${gates.length} 통과`, R.slice().sort((a, b) => (a.fin || 1e9) - (b.fin || 1e9) || b.d - a.d).map((r, i) => `${i + 1}. ${r.me ? '<b>나</b>' : r.name}`).join(' · ')],
-          });
-        }, 1200);
-      }
-      S.gateOk = 0;
-
+      window.__KG = { R, QZ, PEDS, WALL, L, get gauge() { return gauge; }, get mode() { return mode; } }; // 테스트용
       return {
-        update(dt0) {
-          const dt = dt0 * S.slow;
-          S.t += dt;
+        start() { mode = 'race'; },
+        update(dt) {
+          W = E.W; H = E.H; PY = H * 0.74;
+          if (E.input.down && E.input.y < H * 0.9) steer = E.input.x < W / 2 ? -1 : 1;
+          else if (!E.ctrl.querySelector('.mg-btn.on')) steer = (E.input.keys.ArrowRight ? 1 : 0) - (E.input.keys.ArrowLeft ? 1 : 0);
+          if (E.input.keys.ArrowUp || E.input.keys[' ']) accel = true; else if (!E.ctrl.querySelector('.pedal.on')) accel = false;
+          if (mode === 'quiz' || mode === 'count') return;
+          t += dt;
           R.forEach((r) => stepRacer(r, dt));
-          if (S.finished) return;
-          me.shield = Math.max(0, me.shield - dt);
-          // 게이트: 다가오면 위쪽에 문제 표시
-          const next = gates.find((gt) => !gt.done && gt.d > me.d);
-          if (next !== S.gate) S.gate = next;
-          gates.forEach((gt) => {
-            if (gt.done || me.d < gt.d) return;
-            gt.done = true;
-            const rel = (me.x - (cx(gt.d) - RW / 2)) / RW;
-            const lane = clamp(Math.floor(rel * 3), 0, 2);
-            if (gt.lanes[lane] === gt.answer) {
-              S.gateOk++; me.boost = 1.8; stock = Math.min(3, stock + 1);
-              ctx.callout(S.gateOk >= 3 ? 'yar' : 'easy', `${gt.word} = ${gt.answer}`);
-              ctx.burst(me.x, PY() - 20, 22);
-            } else {
-              me.spin = 1; ctx.shake(7); ctx.sfx('no');
-              ctx.floatText(`${gt.word} → ${gt.answer}!`, me.x, PY() - 80, '#E0453A', 18);
-            }
+          bump();
+          PEDS.forEach((Q) => {
+            if (!Q.wait && !Q.on && !Q.done && ME.d > Q.d - (PY + 60)) { Q.wait = true; Q.dir = ME.x < cx(Q.d) ? -1 : 1; Q.x = cx(Q.d) - Q.dir * (RW / 2 + 26); }
+            if (Q.wait && !Q.on) { const dist = Q.d - ME.d, need = Math.abs(ME.x - Q.x) / Q.sp;
+              if (dist < Math.max(60, ME.v * need)) { Q.on = true; Q.wait = false; lsfx(Q.kind === 'old' ? [660, 520] : [880, 1100], 'square', 0.05, 0.06); } }
+            if (Q.on) { Q.x += Q.dir * Q.sp * dt; if (Math.abs(Q.x - cx(Q.d)) > RW / 2 + 60 && Math.sign(Q.x - cx(Q.d)) === Q.dir) { Q.on = false; Q.done = true; } }
+            if (Q.wait && ME.d > Q.d + 40) { Q.wait = false; Q.done = true; }
           });
-          boxes.forEach((b) => {
-            if (b.got || Math.abs(b.d - me.d) > 24) return;
-            if (Math.abs(cx(b.d) + b.k * RW - me.x) < 26) { b.got = true; ctx.sfx('reveal'); quiz(); }
-          });
-          bananas.forEach((b) => {
-            if (b.hit || Math.abs(b.d - me.d) > 18) return;
-            if (Math.abs(cx(b.d) + b.k * RW - me.x) < 20) {
-              b.hit = true;
-              if (me.shield > 0) { me.shield = 0; ctx.floatText('실드로 막았다!', me.x, PY() - 70, '#2E7BC4', 16); }
-              else { me.spin = 1.1; ctx.shake(6); ctx.sfx('no'); ctx.floatText('🍌 빙글!', me.x, PY() - 70, '#F2A01E', 18); }
-            }
-          });
-          const place = R.filter((r) => r.d > me.d).length + 1;
-          ctx.hud(`<b>${place}</b>등 · ${Math.min(100, Math.round((me.d / L) * 100))}% · ⚡${'●'.repeat(stock)}${'○'.repeat(3 - stock)}`);
+          for (let i = FX.length - 1; i >= 0; i--) { FX[i].life -= dt; FX[i].y -= 34 * dt; if (FX[i].life <= 0) FX.splice(i, 1); }
+          if (!finished) {
+            const z = QZ.find((q) => !q.done && ME.d >= q.d);
+            if (z) { z.done = true; quizStop(z); }
+            place = placeOf(ME);
+          }
+          const kmh = Math.round(ME.v * 0.4);
+          E.hud(`<b>${place}</b>/5등 · ${kmh}km/h <span class="gbar ${gauge < 0.2 ? 'low' : ''}"><i style="width:${Math.round(gauge * 100)}%"></i></span>`);
         },
-        draw(g) {
-          const w = W();
-          const H = ctx.H;
-          const py = PY();
-          const toY = (d) => py - (d - me.d);
-          g.fillStyle = '#B6E88E'; g.fillRect(0, 0, w, H);
-          // 잔디 무늬 + 꽃
-          for (let d = Math.floor((me.d - 200) / 80) * 80; d < me.d + H; d += 80) {
-            const y = toY(d);
-            g.fillStyle = (d / 80) % 2 ? '#A8E07A' : '#BFEA94';
-            g.fillRect(0, y - 80, w, 80);
-            g.fillStyle = ['#FF9ECB', '#FFE36B', '#fff'][Math.abs(d / 80) % 3 | 0];
-            g.beginPath(); g.arc((d * 7) % w, y - 30, 4, 0, 7); g.arc((d * 13 + 90) % w, y - 60, 4, 0, 7); g.fill();
-          }
-          // 도로
-          g.fillStyle = '#F6E7CF';
-          g.beginPath();
-          for (let y = -20; y <= H + 20; y += 10) { const d = me.d + (py - y); g.lineTo(cx(d) - RW / 2, y); }
-          for (let y = H + 20; y >= -20; y -= 10) { const d = me.d + (py - y); g.lineTo(cx(d) + RW / 2, y); }
-          g.fill();
-          // 연석
-          for (let y = -20; y <= H + 20; y += 20) {
-            const d = me.d + (py - y);
-            g.fillStyle = Math.floor(d / 40) % 2 ? '#FF8A8A' : '#fff';
-            g.fillRect(cx(d) - RW / 2 - 8, y, 8, 20); g.fillRect(cx(d) + RW / 2, y, 8, 20);
-          }
-          // 결승선
-          const fy = toY(L);
-          if (fy > -40 && fy < H + 40) {
-            for (let k = 0; k < 12; k++) for (let r = 0; r < 2; r++) { g.fillStyle = (k + r) % 2 ? '#2B2350' : '#fff'; g.fillRect(cx(L) - RW / 2 + (k * RW) / 12, fy - r * 12, RW / 12, 12); }
-            tag(g, 'FINISH', cx(L), fy - 34, { bg: '#FFD43B' });
-          }
-          // 게이트
-          gates.forEach((gt) => {
-            const y = toY(gt.d);
-            if (y < -60 || y > H + 40) return;
-            const x0 = cx(gt.d) - RW / 2;
-            gt.lanes.forEach((ln, i) => {
-              const done = gt.done;
-              g.fillStyle = done ? (ln === gt.answer ? 'rgba(143,224,138,.7)' : 'rgba(255,138,138,.5)') : ['rgba(255,158,203,.75)', 'rgba(143,216,255,.75)', 'rgba(255,211,107,.75)'][i];
-              g.fillRect(x0 + (i * RW) / 3 + 2, y - 26, RW / 3 - 4, 26);
-              g.font = '400 15px Jua, sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillStyle = '#2B2350';
-              g.fillText(ln, x0 + ((i + 0.5) * RW) / 3, y - 12);
-            });
-            g.fillStyle = '#2B2350'; g.fillRect(x0 - 10, y - 46, 6, 46); g.fillRect(x0 + RW + 4, y - 46, 6, 46);
-            roundRect(g, x0 - 10, y - 50, RW + 20, 10, 4); g.fill();
+        draw() {
+          W = E.W; H = E.H; PY = H * 0.74;
+          draw();
+          // 퀴즈 존 띠
+          QZ.forEach((z) => {
+            const y = sy(z.d); if (y < -40 || y > H + 40) return;
+            const c = cx(z.d), l = c - RW / 2;
+            for (let i = 0; i < 12; i++) { ctx.fillStyle = (i % 2) ? (z.done ? '#C9B8F0' : '#9B6BE0') : '#fff'; ctx.fillRect(l + (i * RW) / 12, y - 7, RW / 12 + 0.5, 14); }
+            rr(c - 64, y - 34, 128, 22, 11, z.done ? '#C9B8F0' : '#9B6BE0');
+            ctx.font = "400 14px Jua, 'Noto Sans KR', sans-serif"; ctx.textAlign = 'center'; ctx.fillStyle = '#fff';
+            ctx.fillText(z.done ? '퀴즈 완료' : '❓ 퀴즈 존 · 정지!', c, y - 19); ctx.textAlign = 'left';
           });
-          // 아이템 박스 · 바나나
-          boxes.forEach((b) => {
-            if (b.got) return;
-            const y = toY(b.d); if (y < -40 || y > H + 40) return;
-            const x = cx(b.d) + b.k * RW;
-            g.save(); g.translate(x, y); g.rotate(S.t * 2);
-            roundRect(g, -14, -14, 28, 28, 6); g.fillStyle = `hsl(${(S.t * 120) % 360},85%,70%)`; g.fill(); g.lineWidth = 3; g.strokeStyle = '#fff'; g.stroke();
-            g.restore();
-            g.font = '400 18px Jua, sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillStyle = '#2B2350'; g.fillText('?', x, y + 1);
-          });
-          bananas.forEach((b) => {
-            if (b.hit) return;
-            const y = toY(b.d); if (y < -30 || y > H + 30) return;
-            const x = cx(b.d) + b.k * RW;
-            g.fillStyle = '#FFD43B'; g.beginPath(); g.ellipse(x, y, 11, 6, 0.5, 0, 7); g.fill();
-            g.strokeStyle = '#B07A4F'; g.lineWidth = 2; g.stroke();
-          });
-          // 카트
-          [...R].sort((a, b) => a.d - b.d).forEach((r) => {
-            const y = toY(r.d); if (y < -60 || y > H + 60) return;
-            g.save(); g.translate(r.x, y);
-            if (r.spin > 0) g.rotate(r.spin * 12);
-            if (r.boost > 0) { g.fillStyle = 'rgba(255,170,60,.8)'; g.beginPath(); g.moveTo(-8, 30); g.lineTo(0, 30 + 24 + Math.random() * 10); g.lineTo(8, 30); g.fill(); }
-            if (r.img) g.drawImage(r.img, -21, -30, 42, 59);
-            if (r.me && face) {
-              const fw = 26; const fh = (face.height / face.width) * fw;
-              g.save(); g.beginPath(); g.arc(0, 2, 12, 0, 7); g.clip(); g.drawImage(face, -fw / 2, -2, fw, fh); g.restore();
-              g.strokeStyle = '#fff'; g.lineWidth = 2.5; g.beginPath(); g.arc(0, 2, 12, 0, 7); g.stroke();
-            }
-            if (r.shield > 0) { g.strokeStyle = 'rgba(143,216,255,.9)'; g.lineWidth = 3; g.beginPath(); g.arc(0, 0, 34, 0, 7); g.stroke(); }
-            g.restore();
-            if (!r.me) tag(g, r.name, r.x, y - 42, { size: 11, bg: '#fff' });
-          });
-          // 다가오는 게이트 문제
-          if (S.gate && S.gate.d - me.d < 700) {
-            roundRect(g, w / 2 - 120, 12, 240, 46, 23);
-            g.fillStyle = 'rgba(255,251,240,.95)'; g.fill(); g.lineWidth = 3; g.strokeStyle = '#F2B84B'; g.stroke();
-            g.font = '400 20px Jua, sans-serif'; g.fillStyle = '#2B2350'; g.textAlign = 'center'; g.textBaseline = 'middle';
-            g.fillText(`「${S.gate.word}」 의 품사 레인은?`, w / 2, 36);
+          // 내 카트 운전석에 내 캐릭터 얼굴
+          if (face && !ME.hide) {
+            const y = sy(ME.d);
+            const ang = ME.spin > 0 ? (1.15 - ME.spin) * Math.PI * 3.5 : ME.head;
+            ctx.save(); ctx.translate(ME.x, y); ctx.rotate(ang);
+            ctx.beginPath(); ctx.arc(0, -2, KW * 0.24, 0, 7); ctx.clip();
+            const fw = KW * 0.6; ctx.drawImage(face, -fw / 2, -2 - KW * 0.24, fw, (face.height / face.width) * fw);
+            ctx.restore();
           }
         },
       };

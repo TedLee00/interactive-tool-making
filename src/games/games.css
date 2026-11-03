@@ -55,3 +55,24 @@
 .mg-quiz .qo button { flex: 1; min-height: 48px; border-radius: 14px; border: 2px solid #E2D7F5; background: #fff; font-family: 'Jua', sans-serif; font-size: 18px; color: var(--plum); }
 .mg-quiz .bar { position: absolute; left: 0; bottom: 0; height: 4px; background: #F2B84B; animation: qbar 4.5s linear forwards; }
 @keyframes qbar { from { width: 100%; } to { width: 0; } }
+
+/* 카트: 순간정지 퀴즈 · 게이지 · 악셀 */
+.mg-freeze { position: absolute; inset: 0; background: rgba(43, 35, 80, .45); display: flex; flex-direction: column; justify-content: center; padding: 14px; gap: 8px; animation: fadein .2s; }
+.mg-freeze .fz-head { text-align: center; color: #fff; }
+.mg-freeze .fz-head b { display: block; font-family: 'Jua', sans-serif; font-weight: 400; font-size: 26px; -webkit-text-stroke: 2px #2B2350; paint-order: stroke fill; color: #FFD43B; animation: pop .4s ease-out; }
+.mg-freeze .fz-head span { font-size: 13px; font-weight: 700; }
+.mg-freeze .card { border-radius: 20px; border: 3px solid #fff; max-height: 62vh; overflow: auto; }
+.mg-freeze .stem.word { font-size: 28px; }
+.mg-freeze .stem.sent { font-size: 17px; }
+.mg-freeze .opt { min-height: 46px; font-size: 16px; }
+.mg-freeze .fz-bar { display: block; height: 6px; border-radius: 3px; background: #FFD43B; animation: qbar 10s linear forwards; }
+.mg-freeze .fz-fb { background: #fff; border-radius: 16px; padding: 10px 12px; font-size: 14px; color: #2B2350; border: 3px solid; animation: up .25s ease-out; }
+.mg-freeze .fz-fb.ok { border-color: #1E9B5B; } .mg-freeze .fz-fb.ok b { color: #1E9B5B; }
+.mg-freeze .fz-fb.no { border-color: #E0453A; } .mg-freeze .fz-fb.no > b:first-child { color: #E0453A; }
+.mg-freeze .fz-fb small { display: block; margin-top: 4px; color: #6B5F8A; }
+.gbar { display: inline-block; vertical-align: middle; width: 64px; height: 10px; border-radius: 5px; background: rgba(43, 35, 80, .2); overflow: hidden; margin-left: 4px; }
+.gbar i { display: block; height: 100%; background: linear-gradient(90deg, #8FD8FF, #FFD43B); }
+.gbar.low i { background: #E0453A; }
+.mg-kart .mg-btn.pedal { flex: 1.3; }
+.mg-kart .kmsg b { font-size: 15px; }
+@keyframes fadein { from { opacity: 0; } }
