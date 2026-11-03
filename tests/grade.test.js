@@ -108,3 +108,17 @@ describe('question bank', () => {
     }
   });
 });
+
+import { nearMatch } from '../src/quiz/normalize.js';
+describe('lenient answers', () => {
+  it('nearMatch accepts a dropped modifier word', () => {
+    expect(nearMatch('my brother', ['my little brother'])).toBeTruthy();
+    expect(nearMatch('your sister', ['my little brother'])).toBeFalsy();
+  });
+  it('tower order: trailing adverb chunks may swap / move to front', () => {
+    const q = { ko: 'N:그는=He | D:공원에서=in the park | D:어제=yesterday | V:달렸다=ran', order: [0, 3, 1, 2] };
+    expect(gradeTowerOrder(q, [0, 3, 2, 1])).toBe(true);
+    expect(gradeTowerOrder(q, [2, 0, 3, 1])).toBe(true);
+    expect(gradeTowerOrder(q, [0, 1, 3, 2])).toBe(false);
+  });
+});

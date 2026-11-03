@@ -1,0 +1,48 @@
+/* 기존 앱 쿠키런 달리기·점프 동작 (legacy/index.html 477~523행) */
+.rg-p{position:absolute;left:0;top:0;z-index:3;pointer-events:none;will-change:transform}
+.rg-p svg{width:100%;display:block;overflow:visible}
+.rg-hud{position:absolute;left:8px;right:8px;top:8px;display:flex;align-items:center;gap:8px;z-index:4;font-size:15px;font-weight:900;pointer-events:none}
+.rg-hud .bar{flex:1;height:10px;border-radius:6px;background:rgba(255,255,255,.75);box-shadow:inset 0 0 0 2px #1B2F4E;overflow:hidden}
+.rg-hud .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#E21E8C,#FFC300)}
+.rg-jump{height:72px!important;font-size:26px!important}
+.sv svg g{transform-box:view-box}
+.sv.run .svLegF,.sv.run .svLegB{animation:svLeg .5s linear infinite}.sv.run .svLegB{animation-delay:-.25s}
+@keyframes svLeg{0%,100%{transform:rotate(-40deg)}50%{transform:rotate(32deg)}}
+.sv.run .svShinF,.sv.run .svShinB{animation:svShin .5s linear infinite}.sv.run .svShinB{animation-delay:-.25s}
+@keyframes svShin{0%,100%{transform:rotate(14deg)}25%{transform:rotate(18deg)}50%{transform:rotate(10deg)}75%{transform:rotate(88deg)}}
+.sv.run .svArmF,.sv.run .svArmB{animation:svArm .5s linear infinite}.sv.run .svArmF{animation-delay:-.25s}
+@keyframes svArm{0%,100%{transform:rotate(-45deg)}50%{transform:rotate(38deg)}}
+.sv.run .svForeF,.sv.run .svForeB{transform:rotate(-55deg)}
+.sv.run .svBody{animation:svBob .25s ease-in-out infinite alternate}@keyframes svBob{from{transform:translateY(0)}to{transform:translateY(-2.5px)}}
+/* Mario-style jump: one fist to the sky, legs split front / back */
+.sv.jump .svArmF{transform:rotate(-158deg) scale(1,1.15)}.sv.jump .svForeF{transform:rotate(-10deg) scale(1,1.5)}
+.sv.jump .svArmB{transform:rotate(40deg)}.sv.jump .svForeB{transform:rotate(-35deg)}
+.sv.jump .svLegF{transform:rotate(-58deg)}.sv.jump .svShinF{transform:rotate(48deg)}
+.sv.jump .svLegB{transform:rotate(38deg)}.sv.jump .svShinB{transform:rotate(22deg)}
+/* Teacher Ted in his own outfit (skirt) while running / jumping — one hand to the sky on every jump */
+.rg-p.tr .tWhole{animation:tdBob .5s ease-in-out infinite}.rg-p.tr .tLegL,.rg-p.tr .tLegR{animation:tdLeg .5s cubic-bezier(.45,0,.3,1) infinite}.rg-p.tr .tLegR{animation-delay:-.25s}
+.rg-p.tr .tArmL{animation:tdAL .5s ease-in-out infinite}.rg-p.tr .tSkirt{animation:tdSk .25s ease-in-out infinite alternate}
+.rg-p.tj .tArmL{transform:rotate(166deg) scale(1,2.7)}.rg-p.tj .tForeL{transform:rotate(0deg)}.rg-p.tj .tLegL{transform:rotate(48deg) scale(1,.9)}.rg-p.tj .tLegR{transform:rotate(-40deg)}
+.rg-p.tj .tSkirt{transform:scale(1.12,1)}.rg-p.tj .tWhole{transform:rotate(-4deg)}
+.rg-title{position:absolute;left:0;right:0;top:6px;text-align:center;z-index:4;pointer-events:none;line-height:1}
+.rg-title b{font-family:Inter,Arial,sans-serif;font-weight:900;font-size:22px;letter-spacing:-.02em;color:#1B2F4E;text-shadow:2px 2px 0 #fff,-1px -1px 0 #fff}
+.rg-title b i{font-style:normal;color:#E21E8C}
+.rg-title span{display:inline-block;margin-top:3px;background:#E21E8C;color:#fff;font-size:10.5px;font-weight:900;letter-spacing:.14em;padding:2px 9px;border-radius:9px;box-shadow:0 2px 0 #9E0F62}
+.rg-title s{display:block;width:88px;height:3px;margin:3px auto 0;text-decoration:none;background:linear-gradient(90deg,#2E9BDA 0 34%,#28A064 34% 60%,#E21E8C 60% 78%,#DEBE82 78%)}
+.rg-hud{top:auto!important;bottom:6px;background:rgba(255,255,255,.85);border-radius:14px;padding:3px 8px;box-shadow:0 2px 0 rgba(27,47,78,.25)}
+.rg-bub{position:absolute;left:0;top:0;z-index:5;pointer-events:none;white-space:nowrap;font-weight:900;font-size:24px;line-height:1;
+  color:#FFD43B;-webkit-text-stroke:5px #1B2F4E;paint-order:stroke fill;text-shadow:0 3px 0 #1B2F4E;opacity:0;scale:.3}
+.rg-bub.on{opacity:1;scale:1;animation:bubJ .3s cubic-bezier(.2,1.9,.4,1)}@keyframes bubJ{from{scale:.3;translate:0 8px}to{scale:1;translate:0 0}}
+.rg-pw{position:absolute;left:50%;top:50%;width:270px;height:270px;margin:-135px 0 0 -135px;z-index:8;pointer-events:none;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
+  font-family:Inter,Arial,sans-serif;font-weight:900;font-style:italic;font-size:54px;line-height:.9;color:#FFD43B;-webkit-text-stroke:8px #E21E8C;paint-order:stroke fill;text-shadow:0 6px 0 #7A0B48;animation:pwIn 1.4s cubic-bezier(.2,1.6,.4,1) forwards}
+.rg-pw:before{content:"";position:absolute;inset:0;z-index:-1;background:#fff;clip-path:polygon(50% 0,59% 30%,85% 12%,72% 40%,100% 45%,74% 60%,92% 86%,62% 74%,50% 100%,38% 74%,8% 86%,26% 60%,0 45%,28% 40%,15% 12%,41% 30%);
+  filter:drop-shadow(0 0 0 #FFD43B);box-shadow:none;outline:none;animation:pwSpin 1.4s linear}
+@keyframes pwSpin{to{rotate:40deg}}
+.rg-pw small{display:block;margin:10px 30px 0;font-size:13px;white-space:normal;font-style:normal;-webkit-text-stroke:4px #1B2F4E;color:#fff;text-shadow:none;font-family:'Noto Sans KR',sans-serif;line-height:1.3}
+@keyframes pwIn{0%{transform:scale(0) rotate(-12deg);opacity:0}25%{transform:scale(1.25) rotate(-4deg);opacity:1}40%,85%{transform:scale(1) rotate(-4deg);opacity:1}100%{transform:scale(1.1) rotate(-4deg);opacity:0}}
+.rg-p.spin{animation:rgSpin .46s ease-in forwards}@keyframes rgSpin{from{rotate:y 0deg;scale:1}to{rotate:y 360deg;scale:.8}}
+.rg-tip{position:absolute;left:12px;right:12px;top:30%;z-index:7;text-align:center;pointer-events:none}
+.rg-tip b{display:block;font-family:Inter,Arial,sans-serif;font-weight:900;font-size:64px;line-height:1;color:#FFD43B;-webkit-text-stroke:7px #1B2F4E;paint-order:stroke fill}
+.rg-tip span{display:inline-block;margin-top:10px;background:rgba(27,47,78,.88);color:#fff;font-weight:900;font-size:14px;padding:7px 14px;border-radius:14px}
+.rg-tip.bump b{animation:tipB .45s cubic-bezier(.2,1.8,.4,1)}@keyframes tipB{from{transform:scale(.2)}to{transform:scale(1)}}
+.rg-p.pop{animation:rgPop .5s cubic-bezier(.2,1.8,.4,1)}@keyframes rgPop{0%{scale:.2}60%{scale:1.35}100%{scale:1}}

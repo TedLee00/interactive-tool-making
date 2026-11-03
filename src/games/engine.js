@@ -84,7 +84,7 @@ export function openGame(opt) {
       cv.height = Math.round(r.height * dpr);
       cv.style.width = `${r.width}px`;
       cv.style.height = `${r.height}px`;
-      ctx.W = W; ctx.H = H;
+      ctx.W = W; ctx.H = H; ctx.scale = scale;
     }
 
     // ---- 입력 ----

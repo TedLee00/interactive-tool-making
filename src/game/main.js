@@ -12,7 +12,7 @@ import { esc } from '../quiz/notation.js';
 import { sfx, setMuted, isMuted } from '../quiz/sound.js';
 import { loadChar, fillFaces, charURL } from '../board/charart.js';
 import { bgm, callout, maWarning, teacherDance, crewDance, finaleDance, snackCard, snackCode, SNACKS, syncMute, unlockAudio } from '../fx/fx.js';
-import { playRun, playCrane, playKart, playArena, GAMES } from '../games/index.js';
+import { playRun, playCrane, playKart, playShoot, GAMES } from '../games/index.js';
 
 const BASE = import.meta.env.BASE_URL;
 const LOGO = `${BASE}assets/brand/logo.png`;
@@ -30,7 +30,7 @@ function save() {
   try { localStorage.setItem(SAVE_KEY, JSON.stringify(S)); } catch { /* 저장 불가 */ }
 }
 function newGame(name, grade, char) {
-  S = { v: 1, name, grade, char, pos: 0, coins: 0, correct: 0, answered: 0, cellsPlayed: 0, used: [], notes: [], byType: {}, snacks: [], games: {}, streak: 0, wrongStreak: 0, perfects: 0, startedAt: Date.now(), finished: false };
+  S = { v: 1, name, grade, char, pos: 0, coins: 0, correct: 0, answered: 0, cellsPlayed: 0, used: [], notes: [], byType: {}, snacks: [], games: {}, gates: {}, regTypes: {}, streak: 0, wrongStreak: 0, perfects: 0, startedAt: Date.now(), finished: false };
   save();
 }
 
@@ -92,11 +92,12 @@ function loop(now) {
   elapsed += dt;
   world.update(dt, elapsed, camera);
   avatar?.update(dt, camera);
+  dice.update(dt);
   updateCamera(dt);
   renderer.render(scene, camera);
   requestAnimationFrame(loop);
 }
-window.__CQ = { get S() { return S; }, get world() { return world; }, cam, get avatar() { return avatar; }, fx: { maWarning, teacherDance, callout }, cell: (i) => resolveCell(board.cells[i]) }; // 테스트용
+window.__CQ = { get S() { return S; }, get world() { return world; }, cam, get avatar() { return avatar; }, fx: { maWarning, teacherDance, callout }, cell: (i) => resolveCell(board.cells[i]), dice, turn: (sw) => turn(sw), move: (n) => moveBy(n) }; // 테스트용
 
 function placeAvatar(charId) {
   if (avatar) scene.remove(avatar.root);
@@ -129,8 +130,15 @@ async function hopTo(i) {
   S.pos = i;
 }
 
+/** 아직 통과 못 한 게이트가 길을 막는다 — 지나치지 않고 그 칸에 멈춘다 */
+function stopLimit(from, to) {
+  for (let i = from + 1; i <= to; i++) if (board.cells[i].kind === 'gate' && !(S.gates || {})[i]) return i;
+  return to;
+}
 async function moveBy(n) {
-  const target = Math.min(world.N - 1, S.pos + n);
+  const want = Math.min(world.N - 1, S.pos + n);
+  const target = stopLimit(S.pos, want);
+  if (target < want) toast('🚧 게이트 앞에서 멈춤! 관문을 통과해야 지나갈 수 있어요');
   while (S.pos < target) { await hopTo(S.pos + 1); await sleep(40); }
   avatar.root.rotation.y = 0; // 카메라 쪽을 보게
   avatar.setAnim('idle');
@@ -227,12 +235,13 @@ function hud() {
     <div class="hud-bottom">
       <div class="talk" id="talk"><img id="talkImg" class="face" data-face="ted" alt=""><p id="talkTxt"></p></div>
       <div class="me">${faceImg(p.id)}<span>${esc(S.name)}</span></div>
-      <button class="dice-btn" id="roll"><span class="pip-ico">🎲</span>주사위 굴리기</button>
+      <button class="dice-btn" id="roll"><span class="pip-ico">🎲</span><span class="dl">주사위<small>위로 휙! 쓸어 올리기</small></span></button>
+      <div class="swipe-line" id="swipeLine"></div>
     </div>
     <div class="bignum" id="bignum"></div>
     <div class="toast" id="toast"></div>
   </div>`);
-  ui.querySelector('#roll').onclick = turn;
+  bindSwipe(ui.querySelector('#roll'));
   ui.querySelector('#menu').onclick = menu;
 }
 
@@ -250,6 +259,51 @@ function talk(text, who = 'guide') {
 function setRollEnabled(on) {
   const b = ui.querySelector('#roll');
   if (b) b.disabled = !on;
+  if (on && avatar && dice.state !== 'ready') {
+    const base = avatar.root.position.clone().setY(0);
+    dice.ready(base, world.direction(S.pos).setY(0).normalize().negate());
+  }
+}
+
+/** 주사위 버튼: 꾹 누르고 위로 쓸어 올리면 던진다 (속도 = 세기, 좌우 = 비틀기) */
+function bindSwipe(btn) {
+  const line = ui.querySelector('#swipeLine');
+  let st = null;
+  btn.addEventListener('pointerdown', (e) => {
+    if (btn.disabled || busy) return;
+    e.preventDefault();
+    btn.setPointerCapture(e.pointerId);
+    st = { x: e.clientX, y: e.clientY, t: performance.now(), pts: [[e.clientX, e.clientY, performance.now()]] };
+    btn.classList.add('hold');
+    unlockAudio();
+  });
+  btn.addEventListener('pointermove', (e) => {
+    if (!st) return;
+    st.pts.push([e.clientX, e.clientY, performance.now()]);
+    if (st.pts.length > 8) st.pts.shift();
+    const dx = e.clientX - st.x;
+    const dy = e.clientY - st.y;
+    const len = Math.hypot(dx, dy);
+    line.style.cssText = `display:block;left:${st.x}px;top:${st.y}px;width:${len}px;transform:rotate(${Math.atan2(dy, dx)}rad)`;
+  });
+  const end = (e) => {
+    if (!st) return;
+    btn.classList.remove('hold');
+    line.style.display = 'none';
+    const p0 = st.pts[0];
+    const dt = Math.max(16, performance.now() - p0[2]);
+    const up = p0[1] - e.clientY; // 위로 + (최근 손가락 움직임)
+    const total = st.y - e.clientY;
+    const dx = e.clientX - st.x;
+    st = null;
+    if (total < 30) { talk('주사위를 꾹 누르고 위로 휙! 쓸어 올려 던져 봐!'); return; }
+    const speed = up / dt; // px/ms
+    const power = Math.max(0.15, Math.min(1, (speed - 0.2) / 2.2 + total / 900));
+    const lateral = Math.max(-1, Math.min(1, dx / 140));
+    turn({ power, lateral });
+  };
+  btn.addEventListener('pointerup', end);
+  btn.addEventListener('pointercancel', () => { st = null; btn.classList.remove('hold'); line.style.display = 'none'; });
 }
 
 function menu() {
@@ -298,7 +352,7 @@ function snapCamera() {
 
 async function startBoard(fresh) {
   cam.mode = 'board';
-  S.snacks ||= []; S.games ||= {}; S.streak ||= 0; S.wrongStreak ||= 0; S.perfects ||= 0;
+  S.snacks ||= []; S.games ||= {}; S.gates ||= {}; S.regTypes ||= {}; S.streak ||= 0; S.wrongStreak ||= 0; S.perfects ||= 0;
   bgm(regionOf(S.pos).id);
   placeAvatar(S.char);
   if (!fresh) snapCamera(); // 이어하기: 바로 내 말 위치에서 시작
@@ -313,24 +367,20 @@ async function startBoard(fresh) {
 }
 
 /** 한 턴: 주사위 → 이동 → 칸 실행 */
-async function turn() {
+async function turn(swipe = { power: 0.6, lateral: 0 }) {
   if (busy) return;
   busy = true;
   setRollEnabled(false);
   talk(player().lines.roll, 'me');
   sfx('whoosh');
-  const value = 1 + Math.floor(Math.random() * 6);
-  const base = avatar.root.position.clone();
-  base.y = 0;
-  const camDir = camera.position.clone().sub(base).setY(0).normalize();
-  const side = new THREE.Vector3(-camDir.z, 0, camDir.x);
-  const from = base.clone().add(camDir.clone().multiplyScalar(4)).add(side.clone().multiplyScalar(-1.5)).setY(3.2);
-  const to = base.clone().add(camDir.clone().multiplyScalar(1.2)).add(side.clone().multiplyScalar(1.3)).setY(0);
-  cam.zoom = 1.12;
-  await dice.roll(value, from, to, () => sfx('bounce'));
+  const base = avatar.root.position.clone().setY(0);
+  const ahead = world.direction(S.pos).setY(0).normalize();
+  if (dice.state !== 'ready') dice.ready(base, ahead.clone().negate());
+  cam.zoom = 1.15;
+  const value = await dice.roll({ power: swipe.power, lateral: swipe.lateral, forward: ahead, onBounce: () => sfx('bounce') });
   bigNumber(value);
   sfx('reveal');
-  await sleep(700);
+  await sleep(800);
   await dice.hide();
   cam.zoom = 1;
   const prevRegion = board.cells[S.pos].region;
@@ -355,17 +405,7 @@ async function resolveCell(cell) {
     const T = TYPES[cell.type];
     talk(`「${T.short}」에 도착! ${T.name} 문제 5개를 풀어 보자.`);
     await sleep(1200);
-    const r = await quizSheet(cell.type);
-    S.coins += r.reward.coins;
-    S.correct += r.correct;
-    S.answered += r.total;
-    S.cellsPlayed++;
-    const bt = (S.byType[cell.type] ||= { c: 0, n: 0 });
-    bt.c += r.correct;
-    bt.n += r.total;
-    S.notes.push(...r.wrongs.map((w) => ({ ...w, at: Date.now() })));
-    save();
-    hud();
+    const r = await playQuiz(cell.type, cell.region);
     if (r.reward.move > 0) {
       avatar.setAnim('joy');
       talk(r.reward.perfect ? chars.guide.lines.perfect : chars.guide.lines.good);
@@ -374,7 +414,7 @@ async function resolveCell(cell) {
       toast(`보너스 ${r.reward.move}칸 전진!`);
       await moveBy(r.reward.move);
       hud();
-      if (board.cells[S.pos].kind === 'goal') return goal();
+      if (await checkpoint()) return;
       talk(player().lines.joy, 'me');
       await sleep(1400);
     } else {
@@ -385,6 +425,7 @@ async function resolveCell(cell) {
     }
     return;
   }
+  if (cell.kind === 'gate') return gateFlow(cell);
   if (cell.game) return playCellGame(cell);
   if (cell.kind === 'trap') {
     toast('⚠️ 함정! 2칸 뒤로');
@@ -397,8 +438,8 @@ async function resolveCell(cell) {
   if (cell.kind === 'portal') {
     toast('🌀 순간이동 포털! 3칸 앞으로');
     talk('소용돌이 포털이다! 슝~ 3칸 앞으로!');
-    await teleport(Math.min(world.N - 1, S.pos + 3));
-    if (board.cells[S.pos].kind === 'goal') return goal();
+    await teleport(stopLimit(S.pos, Math.min(world.N - 1, S.pos + 3)));
+    await checkpoint();
     return;
   }
   if (cell.kind === 'bonus') {
@@ -408,6 +449,57 @@ async function resolveCell(cell) {
     await sleep(900);
     S.bonusRoll = true;
   }
+}
+
+/** 이동 후 게이트/도착 칸에 섰다면 그 칸을 실행 */
+async function checkpoint() {
+  const c = board.cells[S.pos];
+  if (c.kind === 'goal') { await goal(); return true; }
+  if (c.kind === 'gate' && !S.gates[S.pos]) { await gateFlow(c); return true; }
+  return false;
+}
+
+/** 이 지역에서 아직 2종류를 못 풀었으면 남은 유형으로 「관문 시험」 */
+async function regionExam(k) {
+  const reg = board.regions[k];
+  const done = new Set(S.regTypes[k] || []);
+  while (done.size < 2) {
+    const left = reg.types.filter((t) => !done.has(t));
+    const fresh = left.filter((t) => !(board.regions[k - 1]?.types || []).includes(t)); // 앞 지역과 겹치지 않는 유형 우선
+    const pool = fresh.length ? fresh : left;
+    const t = pool[Math.floor(Math.random() * pool.length)];
+    toast(`📝 관문 시험: ${reg.name}에서는 두 가지 시험을 꼭 풀어야 해요 (${done.size}/2)`);
+    talk(`잠깐! ${reg.name}을 떠나기 전에 「${TYPES[t].short}」 시험도 풀고 가자!`);
+    await sleep(1800);
+    await playQuiz(t, k);
+    done.add(t);
+  }
+}
+
+/** 게이트: 지역 시험 2종 확인 → 미니게임 한 판 (꼭 해야 지나갈 수 있음) */
+async function gateFlow(cell) {
+  await regionExam(cell.region);
+  await playCellGame(cell);
+  S.gates[S.pos] = true;
+  save();
+  hud();
+}
+
+/** 한 칸(5문제) 풀고 기록 */
+async function playQuiz(type, region) {
+  const r = await quizSheet(type);
+  (S.regTypes[region] ||= []).includes(type) || S.regTypes[region].push(type);
+  S.coins += r.reward.coins;
+  S.correct += r.correct;
+  S.answered += r.total;
+  S.cellsPlayed++;
+  const bt = (S.byType[type] ||= { c: 0, n: 0 });
+  bt.c += r.correct;
+  bt.n += r.total;
+  S.notes.push(...r.wrongs.map((w) => ({ ...w, at: Date.now() })));
+  save();
+  hud();
+  return r;
 }
 
 async function enterRegion(k) {
@@ -423,7 +515,7 @@ async function playCellGame(cell) {
   toast(`${G.icon} ${G.title}!`);
   talk(cell.kind === 'gate' ? `미니게임 게이트! 「${G.title}」에 도전해 보자!` : '간식 뽑기 칸이야! 품사 인형을 뽑아 간식을 노려 봐!');
   await sleep(1300);
-  const play = { run: playRun, crane: playCrane, kart: playKart, arena: playArena }[cell.game];
+  const play = { run: playRun, crane: playCrane, kart: playKart, shoot: playShoot }[cell.game];
   const r = await play({ charId: S.char, name: S.name });
   bgm(regionOf(S.pos).id);
   S.coins += r.coins || 0;
@@ -504,9 +596,54 @@ function quizSheet(type) {
   });
 }
 
+function rankHTML() {
+  const { list, place } = recordRank();
+  const t = tierOf(S.coins);
+  const medal = (i) => ['🥇', '🥈', '🥉'][i] || `${i + 1}`;
+  return `<div class="tier"><span>${t.icon}</span><b>${esc(t.name)}</b><small>코인이 많을수록 높은 등급 · 이 기기 ${place}위 / ${list.length}명</small></div>
+    <ol class="rank">${list.slice(0, 5).map((x, i) => `<li class="${x.id === S.rankId ? 'me' : ''}"><i>${medal(i)}</i><span>${esc(x.name)}</span><b>🪙 ${x.coins}</b></li>`).join('')}</ol>`;
+}
+
 /** 목적지 도착 — 시상식은 4단계에서 */
+const RANK_KEY = 'cq.rank.v1';
+const TIERS = [
+  { min: 320, name: '전설의 청크 마스터', icon: '👑' },
+  { min: 240, name: '골드 원정대장', icon: '🥇' },
+  { min: 170, name: '실버 탐험가', icon: '🥈' },
+  { min: 100, name: '브론즈 모험가', icon: '🥉' },
+  { min: 0, name: '새싹 원정대원', icon: '🌱' },
+];
+const tierOf = (c) => TIERS.find((t) => c >= t.min);
+function recordRank() {
+  let list = [];
+  try { list = JSON.parse(localStorage.getItem(RANK_KEY)) || []; } catch { /* 없음 */ }
+  if (!S.rankId) {
+    S.rankId = `${Date.now()}-${Math.random().toString(36).slice(2, 6)}`;
+    list.push({ id: S.rankId, name: S.name, char: S.char, coins: S.coins, at: Date.now() });
+  } else {
+    const me = list.find((x) => x.id === S.rankId);
+    if (me) me.coins = S.coins;
+  }
+  list.sort((a, b) => b.coins - a.coins || a.at - b.at);
+  list = list.slice(0, 50);
+  try { localStorage.setItem(RANK_KEY, JSON.stringify(list)); } catch { /* 저장 불가 */ }
+  save();
+  return { list, place: list.findIndex((x) => x.id === S.rankId) + 1 };
+}
+
+/** 성 도착 전 마지막 확인: 성 시험 2종 · 간식 뽑기 한 번은 꼭 */
+async function finalChecks() {
+  await regionExam(board.cells[S.pos].region);
+  if (!('crane' in S.games)) {
+    talk('도착 직전! 아직 간식 뽑기를 안 했구나. 한 판 뽑고 들어가자!');
+    await sleep(1600);
+    await playCellGame({ kind: 'snack', game: 'crane', region: board.cells[S.pos].region });
+  }
+}
+
 async function goal() {
   const first = !S.finished;
+  if (first) await finalChecks();
   S.finished = true;
   save();
   avatar.setAnim('win');
@@ -519,7 +656,7 @@ async function goal() {
     <p>${esc(player().lines.win)}</p>
     <div class="goal-stats"><div><b>${S.correct}</b><small>정답</small></div><div><b>${acc}%</b><small>정답률</small></div><div><b>🪙 ${S.coins}</b><small>코인</small></div></div>
     ${(S.snacks || []).length ? `<div class="goal-snacks">${S.snacks.map((k) => `<img src="${BASE}assets/snacks/${k.kind}.svg" alt="">`).join('')}</div>` : ''}
-    <p class="muted">시상식(금·은·동 시상대)은 다음 단계에서 완성돼요.</p>
+    ${rankHTML()}
     <button class="primary big" id="home">처음으로</button></div></div>`);
   ui.querySelector('#home').onclick = title;
 }

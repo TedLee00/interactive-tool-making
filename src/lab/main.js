@@ -4,7 +4,7 @@ import { BANK, config, draw } from '../quiz/bank.js';
 import { runCell } from '../quiz/cell.js';
 import { esc } from '../quiz/notation.js';
 import { setMuted, isMuted } from '../quiz/sound.js';
-import { playRun, playCrane, playKart, playArena, GAMES } from '../games/index.js';
+import { playRun, playCrane, playKart, playShoot, GAMES } from '../games/index.js';
 import { syncMute, unlockAudio } from '../fx/fx.js';
 
 const KEY = 'cq.lab';
@@ -42,7 +42,7 @@ function home() {
   app.querySelectorAll('.tcard.mg').forEach((b) => {
     b.onclick = async () => {
       unlockAudio(); syncMute();
-      const fn = { run: playRun, crane: playCrane, kart: playKart, arena: playArena }[b.dataset.g];
+      const fn = { run: playRun, crane: playCrane, kart: playKart, shoot: playShoot }[b.dataset.g];
       const r = await fn({ charId: 'bboy' });
       S.coins += r.coins || 0; save(); home();
     };

@@ -109,3 +109,20 @@ img.face { border-radius: 50%; background: radial-gradient(circle at 50% 35%, #F
 .cp small { color: var(--muted); }
 .goal-snacks { display: flex; justify-content: center; flex-wrap: wrap; gap: 4px; margin: 0 0 10px; }
 .goal-snacks img { width: 64px; filter: drop-shadow(0 3px 4px rgba(43, 35, 80, .2)); }
+
+/* 주사위 쓸어 올리기 */
+.dice-btn .dl { display: flex; flex-direction: column; line-height: 1.1; text-align: left; }
+.dice-btn .dl small { font-family: 'Noto Sans KR', sans-serif; font-size: 11px; font-weight: 800; color: #8A5A10; }
+.dice-btn.hold { transform: scale(.96); box-shadow: 0 2px 0 #D99A2B, 0 0 0 6px rgba(255, 212, 59, .45); animation: none; }
+.dice-btn { touch-action: none; }
+.swipe-line { display: none; position: fixed; height: 8px; margin-top: -4px; border-radius: 4px; background: linear-gradient(90deg, rgba(255, 212, 59, .2), #FFD43B); transform-origin: 0 50%; pointer-events: none; z-index: 30; box-shadow: 0 0 12px rgba(255, 212, 59, .8); }
+.tier { display: flex; flex-direction: column; align-items: center; margin: 4px 0 8px; }
+.tier span { font-size: 40px; line-height: 1; }
+.tier b { font-family: var(--cute); font-weight: 400; font-size: 22px; color: var(--plum); }
+.tier small { color: var(--muted); font-size: 12px; }
+.rank { list-style: none; padding: 0; margin: 0 0 12px; text-align: left; }
+.rank li { display: flex; align-items: center; gap: 8px; padding: 6px 10px; border-radius: 12px; font-size: 15px; }
+.rank li:nth-child(odd) { background: rgba(43, 35, 80, .05); }
+.rank li.me { background: #FFF1C2; font-weight: 800; }
+.rank li i { font-style: normal; width: 26px; text-align: center; }
+.rank li span { flex: 1; }

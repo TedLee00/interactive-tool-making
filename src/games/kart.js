@@ -3,11 +3,11 @@
 //   ❓ 퀴즈 존 — 지나가는 순간 경기가 「순간정지」되고 문제 1개. 맞히면 ⚡ 게이지 가득 + 부스터, 틀리면 게이지 감소.
 // 아래 "legacy" 표시 부분은 legacy/index.html(2266~2540행)에서 자동으로 옮긴 코드다.
 import { openGame, loadImage, asset, charSprite, pick, roundRect } from './engine.js';
-import { BANK } from '../quiz/bank.js';
+import { drawMixed } from '../quiz/bank.js';
 import { renderChoice } from '../quiz/renderers.js';
 import { legacySfx as lsfx, sfxNo as lsfxNo } from '../fx/legacy.js';
 
-const QUIZ_TYPES = [1, 2, 3, 4, 5, 7];
+const QUIZ_TYPES = [1, 2, 3, 4, 5, 6, 7];
 
 async function kartImages(name) {
   const keys = ['ted', 'goddess', 'scooter', 'cart', 'skate'];
@@ -24,7 +24,7 @@ async function kartImages(name) {
   return IM;
 }
 
-export function playKart({ charId = 'bboy', name = '나' } = {}) {
+export function playKart({ charId = 'bboy', name = '나', used } = {}) {
   return openGame({
     id: 'kart',
     title: '🏎️ 청크 카트',
@@ -95,7 +95,9 @@ export function playKart({ charId = 'bboy', name = '나' } = {}) {
       const hold = (v) => ({ onDown: () => { steer = v; }, onUp: () => { if (steer === v) steer = 0; } });
       E.button('◀', 'left', hold(-1));
       E.button('▶', 'right', hold(1));
-      E.button('⚡<small>악셀</small>', 'drop pedal', { onDown: () => { accel = true; }, onUp: () => { accel = false; } });
+      const pedal = E.button('<span class="pgauge"><i id="pgFill"></i><em id="pgTxt">100%</em></span>⚡<small>악셀 꾹!</small>', 'drop pedal', { onDown: () => { accel = true; }, onUp: () => { accel = false; } });
+      const pgFill = pedal.querySelector('#pgFill');
+      const pgTxt = pedal.querySelector('#pgTxt');
 
       const onRoad = r => Math.abs(r.x - cx(r.d)) < RW / 2 - 6;
     function spinOut(r) { r.nSpin = (r.nSpin || 0) + 1; (r.spinD = r.spinD || []).push(Math.round(r.d)); r.spin = 1.15; r.boost = 0; r.v *= .6; say('빙글!', r.x, PY - (r.d - ME.d) - KH * .7, '#F2A01E');
@@ -332,8 +334,7 @@ export function playKart({ charId = 'bboy', name = '나' } = {}) {
         mode = 'quiz';
         accel = false;
         lsfx([880, 660, 880], 'square', 0.08, 0.06);
-        const type = pick(QUIZ_TYPES);
-        const q = pick(BANK[type].filter((x) => !(type === 1 && x.word.includes(' '))));
+        const q = drawMixed(QUIZ_TYPES, used);
         const box = document.createElement('div');
         box.className = 'mg-freeze';
         box.innerHTML = `<div class="fz-head"><b>❓ 퀴즈 존 · 순간정지!</b><span>맞히면 ⚡ 게이지 가득</span></div><div class="card q" id="fzq"></div><i class="fz-bar"></i>`;
@@ -402,7 +403,10 @@ export function playKart({ charId = 'bboy', name = '나' } = {}) {
             place = placeOf(ME);
           }
           const kmh = Math.round(ME.v * 0.4);
-          E.hud(`<b>${place}</b>/5등 · ${kmh}km/h <span class="gbar ${gauge < 0.2 ? 'low' : ''}"><i style="width:${Math.round(gauge * 100)}%"></i></span>`);
+          E.hud(`<b>${place}</b>/5등 · ${kmh}km/h`);
+          pgFill.style.width = `${Math.round(gauge * 100)}%`;
+          pgTxt.textContent = `${Math.round(gauge * 100)}%`;
+          pedal.classList.toggle('low', gauge < 0.2);
         },
         draw() {
           W = E.W; H = E.H; PY = H * 0.74;

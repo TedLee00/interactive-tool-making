@@ -19,8 +19,11 @@
 .qhead .dots i.no { background: var(--no); }
 .qhead .prog { font-weight: 800; color: var(--navy); font-size: 14px; }
 
-.q .qhelp { font-size: 14px; color: var(--muted); margin-bottom: 10px; }
+.q .qhelp { font-size: 17px; font-weight: 700; line-height: 1.45; color: var(--navy); margin-bottom: 12px; background: #FFF4F2; border-left: 6px solid #E0453A; border-radius: 10px; padding: 9px 12px; }
 .q .qhelp b { color: var(--navy); }
+.q .qhelp em { font-style: normal; font-weight: 900; color: #E0453A; font-size: 1.12em; }
+.q .qhelp small { display: block; font-size: 13px; font-weight: 600; color: #8A4B3F; margin-top: 2px; }
+.trow .near { color: var(--ok); font-size: 13px; }
 .stem { margin: 6px 0 16px; color: var(--navy); }
 .stem.word { font-size: 34px; font-weight: 900; text-align: center; padding: 10px 0; }
 .stem.sent { font-size: 20px; font-weight: 700; line-height: 1.6; }
@@ -104,3 +107,7 @@ mark.target::after { content: ']'; color: var(--gold); }
 .wn .wm { color: var(--no); }
 .wn .wa { color: var(--ok); }
 .sign { font-style: italic; color: var(--muted); }
+
+.intro .how { background: #FFF4F2; border: 2px solid #E0453A; border-radius: 14px; padding: 10px 12px; margin-bottom: 12px; font-size: 14px; color: #8A4B3F; font-weight: 700; }
+.intro .how b { display: block; font-size: 19px; color: var(--navy); margin-top: 4px; line-height: 1.4; }
+.intro .how em { font-style: normal; color: #E0453A; font-weight: 900; }
