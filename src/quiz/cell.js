@@ -12,7 +12,41 @@ const wait = (el, sel) => new Promise((r) => { el.querySelector(sel).onclick = r
  * @param opts   { type, questions, config, showIntro=true }
  * @returns Promise<{type, correct, total, reward, wrongs[]}>
  */
-export async function runCell(root, { type, questions, config, showIntro = true, hooks = {} }) {
+/** 문제당 제한시간(초) — 지역(마을)이 어려워질수록 길게. config.timeLimit 로 조정 */
+export function timeLimitFor(type, region, config) {
+  const tl = config?.timeLimit;
+  if (!tl) return 0;
+  if (tl.byType?.[type]) return tl.byType[type];
+  return tl.byRegion?.[region] ?? tl.default ?? 0;
+}
+
+/** 제한시간 막대 — 다 되면 resolve('timeout') */
+function startTimer(el, sec) {
+  let stop;
+  const p = new Promise((res) => {
+    const t0 = performance.now();
+    let lastSec = sec;
+    const bar = el.querySelector('i');
+    const num = el.querySelector('b');
+    let raf = 0;
+    const step = (now) => {
+      const left = Math.max(0, sec - (now - t0) / 1000);
+      bar.style.width = `${(left / sec) * 100}%`;
+      const s = Math.ceil(left);
+      num.textContent = s;
+      el.classList.toggle('hurry', left <= 5);
+      if (s !== lastSec && s <= 5 && s > 0) sfx('tick');
+      lastSec = s;
+      if (left <= 0) { res('timeout'); return; }
+      raf = requestAnimationFrame(step);
+    };
+    raf = requestAnimationFrame(step);
+    stop = () => cancelAnimationFrame(raf);
+  });
+  return { p, stop: () => stop() };
+}
+
+export async function runCell(root, { type, questions, config, showIntro = true, hooks = {}, timeLimit = 0 }) {
   const T = TYPES[type];
   root.innerHTML = '';
   const wrap = document.createElement('div');
@@ -24,6 +58,7 @@ export async function runCell(root, { type, questions, config, showIntro = true,
       <div class="kicker">유형 ${type} · 난이도 ${esc(T.level)}</div>
       <h2>${esc(T.name)}</h2>
       <div class="how">✏️ 이렇게 풀어요<b>${T.how}</b></div>
+      ${timeLimit ? `<div class="tl-note">⏰ 문제마다 제한시간 <b>${timeLimit}초</b>!</div>` : ''}
       <p>${questions.length}문제 · 5개 다 맞히면 <b>2칸 전진 + PERFECT!</b><br>4개 맞히면 1칸 전진</p>
       ${T.chunkRule ? `<div class="rule">${CHUNK_RULE_HTML}</div>` : ''}
       <button class="primary big" id="go">시작 ▶</button></div>`;
@@ -37,15 +72,29 @@ export async function runCell(root, { type, questions, config, showIntro = true,
     wrap.innerHTML = `<div class="qhead"><span class="chip">${esc(T.short)}</span>
         <span class="dots">${questions.map((_, k) => `<i class="${k < i ? (wrongs.some((w) => w.idx === k) ? 'no' : 'ok') : k === i ? 'now' : ''}"></i>`).join('')}</span>
         <span class="prog">${i + 1} / ${questions.length}</span></div>
+      ${timeLimit ? '<div class="qtimer"><i></i><b></b><span>초</span></div>' : ''}
       <div class="card q" id="qbox"></div><div id="fb"></div>`;
-    const r = await renderQuestion(wrap.querySelector('#qbox'), q, config);
+    const box = wrap.querySelector('#qbox');
+    const rp = renderQuestion(box, q, config);
+    let r;
+    if (timeLimit) {
+      const tm = startTimer(wrap.querySelector('.qtimer'), timeLimit);
+      r = await Promise.race([rp, tm.p]);
+      tm.stop();
+      if (r === 'timeout') {
+        sfx('timeup');
+        box.classList.add('timeup');
+        box.querySelectorAll('button, input').forEach((x) => { x.disabled = true; });
+        r = { ok: false, mine: '⏰ 시간 초과', ...(box._answerInfo || { answerHTML: '', questionPlain: '', answerPlain: '' }), timeout: true };
+      }
+    } else r = await rp;
     if (r.ok) { correct++; if (!hooks.onAnswer) sfx('ok'); } else {
       if (!hooks.onAnswer) sfx('no');
       wrongs.push({ idx: i, type, id: q.id, question: r.questionPlain, mine: r.mine, answer: r.answerPlain });
     }
     const fb = wrap.querySelector('#fb');
     fb.innerHTML = `<div class="fb ${r.ok ? 'ok' : 'no'}">
-      <h3>${r.ok ? '정답! 👏' : '아쉬워요!'}</h3>
+      <h3>${r.ok ? '정답! 👏' : r.timeout ? '⏰ 시간 초과!' : '아쉬워요!'}</h3>
       <div class="ans">${r.answerHTML}</div>
       <div class="why">💡 ${esc(q.explain)}</div>
       <div class="src">📖 ${esc(q.source)}</div>

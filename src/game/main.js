@@ -6,7 +6,7 @@ import { buildWorld } from '../board/world.js';
 import { createAvatar } from '../board/avatar.js';
 import { createDice } from '../board/dice.js';
 import { draw, config, setLevel } from '../quiz/bank.js';
-import { runCell } from '../quiz/cell.js';
+import { runCell, timeLimitFor } from '../quiz/cell.js';
 import { TYPES } from '../quiz/constants.js';
 import { esc } from '../quiz/notation.js';
 import { sfx, setMuted, isMuted } from '../quiz/sound.js';
@@ -72,7 +72,9 @@ function updateCamera(dt) {
     const want = cam.target.clone().add(new THREE.Vector3(Math.sin(cam.flyT * 0.2) * 5, 9, 11));
     cam.pos.lerp(want, 1 - Math.exp(-dt * 1.5));
   } else {
-    const t = avatar ? avatar.root.position : world.cellPosition(S?.pos || 0);
+    let t = avatar ? avatar.root.position : world.cellPosition(S?.pos || 0);
+    // 주사위가 날아가는 동안엔 내 말과 주사위 사이를 비춘다
+    if (dice.state === 'rolling') t = t.clone().lerp(dice.mesh.position.clone().setY(0), 0.6);
     cam.target.lerp(t, 1 - Math.exp(-dt * 4));
     const dir = world.direction(Math.round(S?.pos || 0));
     const yaw = Math.atan2(dir.x, -dir.z) * 0.6;
@@ -382,7 +384,7 @@ async function turn(swipe = { power: 0.6, lateral: 0 }) {
   const base = avatar.root.position.clone().setY(0);
   const ahead = world.direction(S.pos).setY(0).normalize();
   if (dice.state !== 'ready') dice.ready(base, ahead.clone().negate());
-  cam.zoom = 1.15;
+  cam.zoom = 1.4;
   const value = await dice.roll({ power: swipe.power, lateral: swipe.lateral, forward: ahead, onBounce: () => sfx('bounce') });
   bigNumber(value);
   sfx('reveal');
@@ -493,10 +495,17 @@ async function gateFlow(cell) {
 
 /** 한 칸(5문제) 풀고 기록 */
 async function playQuiz(type, region) {
-  const r = await quizSheet(type);
+  const r = await quizSheet(type, region);
   (S.regTypes[region] ||= []).includes(type) || S.regTypes[region].push(type);
   S.coins += r.reward.coins;
+  const before = S.correct;
   S.correct += r.correct;
+  // 선생님 댄스: 누적 정답 20개마다 한 번
+  const every = config.danceEvery || 20;
+  if (Math.floor(S.correct / every) > Math.floor(before / every)) {
+    save();
+    await teacherDance(`누적 정답 ${Math.floor(S.correct / every) * every}개 돌파! ${S.name}, 선생님도 참을 수 없다 📚`);
+  }
   S.answered += r.total;
   S.cellsPlayed++;
   const bt = (S.byType[type] ||= { c: 0, n: 0 });
@@ -526,7 +535,7 @@ async function playCellGame(cell) {
   talk(cell.kind === 'gate' ? `미니게임 게이트! 「${G.title}」에 도전해 보자!` : '간식 뽑기 칸이야! 품사 인형을 뽑아 간식을 노려 봐!');
   await sleep(1300);
   const play = { run: playRun, crane: playCrane, kart: playKart, shoot: playShoot }[cell.game];
-  const r = await play({ charId: S.char, name: S.name });
+  const r = await play({ charId: S.char, name: S.name, short: cell.kind === 'snack' });
   bgm(regionOf(S.pos).id);
   S.coins += r.coins || 0;
   const best = S.games[cell.game] || 0;
@@ -541,7 +550,9 @@ async function playCellGame(cell) {
   if (r.cleared) {
     // 미니게임 성공 → 선생님 댄스
     avatar.setAnim('joy');
-    await teacherDance(cell.kind === 'gate' ? `${G.title} 성공! ${regionOf(S.pos).name} 게이트 통과 🎉` : `${G.title} 성공! ${S.name}, 선생님도 참을 수 없다 🕺`);
+    callout('legend', `${G.title} 성공!`);
+    talk(cell.kind === 'gate' ? `${G.title} 성공! ${regionOf(S.pos).name} 관문 통과!` : chars.guide.lines.good);
+    await sleep(1600);
     avatar.setAnim('idle');
   } else if (!r.quit) talk(chars.guide.lines.retry);
 }
@@ -569,7 +580,7 @@ async function teleport(i) {
   save(); hud();
 }
 
-function quizSheet(type) {
+function quizSheet(type, region = board.cells[S.pos].region) {
   const ov = document.createElement('div');
   ov.className = 'sheet';
   ov.innerHTML = '<div class="sheet-inner wrap" id="cellRoot"></div>';
@@ -585,7 +596,6 @@ function quizSheet(type) {
       if (ok) {
         S.streak++; S.wrongStreak = 0;
         callout(S.streak % 3 === 0 ? 'yar' : 'easy', S.streak % 3 === 0 ? `${S.streak}연속 정답!` : undefined);
-        if (S.streak % 8 === 0) S.danceDue = S.streak; // 많이 맞히면 칸이 끝난 뒤 선생님 댄스
       } else {
         S.streak = 0; S.wrongStreak++;
         callout('oops', S.wrongStreak >= 2 ? `연속 오답 ${S.wrongStreak}` : '해설을 읽어 봐요');
@@ -595,18 +605,11 @@ function quizSheet(type) {
     },
     onResult(reward) { if (reward.perfect) callout('legend', 'PERFECT 5/5'); },
   };
-  return runCell(ov.querySelector('#cellRoot'), { type, questions: qs, config, hooks }).then(async (r) => {
+  return runCell(ov.querySelector('#cellRoot'), { type, questions: qs, config, hooks, timeLimit: timeLimitFor(type, region, config) }).then(async (r) => {
     ov.classList.remove('open');
     setTimeout(() => ov.remove(), 300);
     bgm(regionOf(S.pos).id);
-    if (r.reward.perfect) {
-      S.perfects++;
-      save();
-      await teacherDance(`PERFECT! ${S.name}, 선생님도 참을 수 없다 📚`);
-    } else if (S.danceDue) {
-      await teacherDance(`${S.danceDue}연속 정답! ${S.name} 최고 📚`);
-    }
-    S.danceDue = 0; save();
+    if (r.reward.perfect) { S.perfects++; save(); }
     return r;
   });
 }
@@ -649,11 +652,7 @@ function recordRank() {
 /** 성 도착 전 마지막 확인: 성 시험 2종 · 간식 뽑기 한 번은 꼭 */
 async function finalChecks() {
   await regionExam(board.cells[S.pos].region);
-  if (!('crane' in S.games)) {
-    talk('도착 직전! 아직 간식 뽑기를 안 했구나. 한 판 뽑고 들어가자!');
-    await sleep(1600);
-    await playCellGame({ kind: 'snack', game: 'crane', region: board.cells[S.pos].region });
-  }
+
 }
 
 async function goal() {
@@ -683,6 +682,7 @@ async function boot() {
   // 간판 글꼴(Jua)이 준비된 뒤 3D 보드를 그린다 (최대 2.5초 기다림)
   try { await Promise.race([document.fonts.load('400 40px Jua'), sleep(2500)]); } catch { /* 글꼴 없음 */ }
   world = buildWorld(scene, board, chars.guide);
+  dice.setObstacles(world.obstacles);
   chars.players.forEach((p) => loadChar(p.id).catch(() => {}));
   requestAnimationFrame(loop);
   title();

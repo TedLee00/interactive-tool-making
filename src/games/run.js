@@ -6,8 +6,8 @@ import '../fx/legacy-run.css';
 
 const iconFor = (label) => { const I = data.run.icons; const k = Object.keys(I).sort((a, b) => b.length - a.length).find((n) => label.endsWith(n)); return k ? I[k] : '🍽️'; };
 
-const MISSION_SEC = 15;
-const BOSS_SEC = 14;
+const MISSION_SEC = 30; // 미션 하나 30초 × 6 + 보스 30초 ≈ 3분 30초
+const BOSS_SEC = 30;
 
 export function playRun({ charId = 'bboy' } = {}) {
   return openGame({
@@ -19,7 +19,7 @@ export function playRun({ charId = 'bboy' } = {}) {
       '화면 위쪽 <b>미션</b>에 맞는 음식만 먹어요 (예: <b>달콤한 케이크</b> ⭕ / 달콤하게 케이크 ❌)',
       '<b>⬆ 점프</b> (두 번 누르면 2단 점프) · <b>⬇ 슬라이드</b>로 장애물 피하기',
       '🌮 <b>타코</b>를 먹으면 Ted 선생님으로 변신! 잠깐 무적 + 자석',
-      '하트 5개 (💗 하트를 먹으면 회복) · 마지막 <b>보스</b>를 지나 초코파이 깃발에 도착하면 클리어!',
+      '하트 5개 (💗 하트를 먹으면 회복) · 미션 6개 → 마지막 <b>보스</b>를 지나 초코파이 깃발에 도착하면 클리어!',
     ],
     async setup(ctx) {
       const { g } = ctx;
@@ -80,7 +80,7 @@ export function playRun({ charId = 'bboy' } = {}) {
           S.ents.push({ kind: Math.random() < 0.5 ? 'cone' : 'crate', x: ctx.W + 40, y: gy, w: 30, h: 32 });
         } else if (r < 0.97) {
           S.ents.push({ kind: 'bar', x: ctx.W + 40, y: gy - 70, w: 70, h: 18 }); // 슬라이드로 통과
-        } else if (S.hearts < 5 && Math.random() < 0.5) {
+        } else if (S.hearts < 5 && Math.random() < 0.7) {
           S.ents.push({ kind: 'heart', x: ctx.W + 40, y: gy - 100, w: 30, h: 28 });
         } else if (!S.taco) {
           S.ents.push({ kind: 'taco', x: ctx.W + 40, y: gy - 110, w: 34, h: 26 });
@@ -95,10 +95,10 @@ export function playRun({ charId = 'bboy' } = {}) {
       }
 
       function result(cleared) {
-        const coins = Math.min(30, Math.round(S.score / 120)) + (cleared ? 10 : 0);
+        const coins = Math.min(30, Math.round(S.score / 300)) + (cleared ? 10 : 0);
         return {
           score: S.score, cleared, coins,
-          snack: cleared && S.good >= 12 ? 'choco' : null,
+          snack: cleared && S.good >= 25 ? 'choco' : null,
           headline: cleared ? (S.bad === 0 ? '노 미스 클리어!' : '청크런 완주!') : '하트를 모두 잃었어요',
           legendAt: 3200,
           lines: [`바른 음식 <b>${S.good}</b>개 · 잘못 꾸민 음식 ${S.bad}개`, `최고 콤보 <b>${S.best}</b>`],
@@ -122,7 +122,7 @@ export function playRun({ charId = 'bboy' } = {}) {
             if (mi !== S.mission) { setMission(mi); ctx.callout('nice', `미션 ${mi + 1}`); }
             if (S.t > total) {
               S.phase = 'boss'; S.bossHP = BOSS_SEC; S.bossT = 0;
-              banner.innerHTML = '<small>BOSS</small><b>오답 몬스터 등장! 잘못 꾸민 음식을 피해라!</b><em>💡 날아오는 음식은 모두 오답이에요</em>';
+              banner.innerHTML = '<small>BOSS</small><b>오답 몬스터 등장! <span class="tg">잘못 꾸민 음식을 피해라!</span></b><em>💡 날아오는 음식은 모두 오답이에요</em>';
               banner.classList.remove('pop'); void banner.offsetWidth; banner.classList.add('pop');
               ctx.shake(10, 0.5);
             }
@@ -275,8 +275,6 @@ export function playRun({ charId = 'bboy' } = {}) {
               roundRect(gc, e.x - e.w / 2, e.y - e.h, e.w, e.h, 6);
               gc.fillStyle = '#FF9ECB'; gc.fill();
               tag(gc, '⬇ 슬라이드', e.x, e.y - e.h - 12, { size: 11, bg: '#fff' });
-            } else if (e.kind === 'heart') {
-              S.hearts = Math.min(5, S.hearts + 1); S.ents.splice(k, 1); ctx.sfx('reveal'); ctx.floatText('💗 +1', PX, gy - 110, '#E21E8C', 20);
             } else if (e.kind === 'heart') {
               const hy = e.y - 14 + Math.sin(S.t * 6) * 4;
               gc.fillStyle = '#FF6FA8'; gc.beginPath(); gc.moveTo(e.x, hy + 10);

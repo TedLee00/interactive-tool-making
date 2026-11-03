@@ -111,3 +111,22 @@ mark.target::after { content: ']'; color: var(--gold); }
 .intro .how { background: #FFF4F2; border: 2px solid #E0453A; border-radius: 14px; padding: 10px 12px; margin-bottom: 12px; font-size: 14px; color: #8A4B3F; font-weight: 700; }
 .intro .how b { display: block; font-size: 19px; color: var(--navy); margin-top: 4px; line-height: 1.4; }
 .intro .how em { font-style: normal; color: #E0453A; font-weight: 900; }
+/* 제한시간 */
+.qtimer { position: relative; height: 26px; border-radius: 13px; background: #EDE6F7; overflow: hidden; margin: 0 0 10px; display: flex; align-items: center; justify-content: center; gap: 2px; font-weight: 900; color: #2B2350; }
+.qtimer i { position: absolute; left: 0; top: 0; bottom: 0; background: linear-gradient(90deg, #8FE08A, #FFD43B); }
+.qtimer b, .qtimer span { position: relative; font-size: 15px; }
+.qtimer.hurry i { background: #E0453A; }
+.qtimer.hurry b { color: #fff; font-size: 18px; animation: pop .5s ease-out infinite; }
+.qtimer.hurry span { color: #fff; }
+.q.timeup { opacity: .7; }
+.intro .tl-note { margin: 8px 0; font-size: 17px; font-weight: 800; color: #C0322A; }
+.intro .tl-note b { font-size: 1.25em; }
+/* 짝꿍 ② 품사 고르기 */
+.pairline { margin-bottom: 8px; }
+.pairrow { display: flex; align-items: center; gap: 8px; margin: 8px 0; }
+.pairrow .pw { flex: 0 0 84px; font-weight: 900; font-size: 18px; text-align: center; background: #FFF4D6; border-radius: 12px; padding: 8px 4px; word-break: keep-all; }
+.opts.pos4 { flex: 1; display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin: 0; }
+.opts.pos4 .opt { min-height: 44px; padding: 4px; font-size: 15px; }
+.opts.pos4 .opt.on { border-color: #2E7BC4; background: #EAF4FF; }
+.pairrule { margin-top: 8px; padding: 8px 10px; border-radius: 12px; background: #FFF0EE; color: #2B2350; font-size: 15px; }
+.pairrule b { color: #C0322A; }

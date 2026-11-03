@@ -261,6 +261,7 @@ function arch(color, w = 2.6) {
 export function buildWorld(scene, board, guide) {
   const { regions, cells } = board;
   const N = cells.length;
+  const before = new Set(scene.children);
   const r = rng(20261102);
   const animated = [];
   const sparkles = [];
@@ -401,8 +402,8 @@ export function buildWorld(scene, board, guide) {
       const a = arch(0x8fc8ff, 2.4);
       a.position.set(p.x, 0.16, p.z);
       scene.add(a);
-      const bn = bannerSprite('미니게임', '#BDE3FF', 2.4);
-      bn.position.set(p.x, 3.0, p.z);
+      const bn = bannerSprite('미니게임 관문', '#BDE3FF', 2.4);
+      bn.position.set(p.x, 2.7, p.z);
       scene.add(bn);
       signs.push({ s: bn });
     }
@@ -413,14 +414,34 @@ export function buildWorld(scene, board, guide) {
     if (k === 0) return;
     const first = ranges[k][0] + 1;
     const p = cellPosition(first);
-    const side = first % 2 ? -1 : 1;
-    const post = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.08, 2.4, 8), m(0xb07a4f));
-    post.position.set(p.x + side * 2.6, 1.2, p.z + 1.2);
-    scene.add(post);
-    const bn = bannerSprite(reg.name, shade(reg.color, 0.3).getStyle(), 2.8);
-    bn.position.set(post.position.x, 2.6, post.position.z);
+    // 마을 입구문: 길 위에 큰 문 + 문 위에 마을 이름 간판
+    const q = cellPosition(first - 1);
+    const at = p.clone().lerp(q, 0.5);
+    const g = new THREE.Group();
+    const col = new THREE.Color(reg.color).getHex();
+    const w = 3.6;
+    [-1, 1].forEach((s2) => {
+      const pil = new THREE.Mesh(new THREE.BoxGeometry(0.42, 2.9, 0.42), m(col));
+      pil.position.set((s2 * w) / 2, 1.45, 0);
+      const cap = new THREE.Mesh(new THREE.ConeGeometry(0.36, 0.55, 4), m(0xffd36b, { emissive: 0xffc94a, emissiveIntensity: 0.35 }));
+      cap.position.set((s2 * w) / 2, 3.2, 0);
+      cap.rotation.y = Math.PI / 4;
+      g.add(pil, cap);
+    });
+    const beam = new THREE.Mesh(new THREE.BoxGeometry(w + 0.7, 0.42, 0.5), m(shade(reg.color, 0.15).getHex()));
+    beam.position.y = 2.75;
+    g.add(beam);
+    shadowAll(g);
+    g.position.set(at.x, 0, at.z);
+    scene.add(g);
+    const bn = bannerSprite(`${reg.name}`, shade(reg.color, 0.45).getStyle(), 3.6);
+    bn.position.set(at.x, 3.55, at.z);
     scene.add(bn);
     signs.push({ s: bn });
+    const sub = bannerSprite(`STAGE ${k + 1} · 난이도 ${reg.level}`, '#FFFFFF', 2.2);
+    sub.position.set(at.x, 2.75, at.z + 0.3);
+    scene.add(sub);
+    signs.push({ s: sub });
   });
 
   // 목적지: 성 + 무지개 + 로고
@@ -588,5 +609,19 @@ export function buildWorld(scene, board, guide) {
     return b.sub(a).normalize();
   }
 
-  return { N, cellPosition, direction, sparkle, update, focus, sun, tiles };
+  // 주사위가 부딪힐 수 있는 마을 물체들(집·나무·바위 등)의 상자 — 길 위(아치 등)는 제외
+  const obstacles = [];
+  scene.children.forEach((o) => {
+    if (before.has(o) || o.isLight || o.isSprite) return;
+    const bb = new THREE.Box3().setFromObject(o);
+    if (bb.isEmpty()) return;
+    const size = bb.getSize(new THREE.Vector3());
+    const c = bb.getCenter(new THREE.Vector3());
+    if (size.y < 0.7 || size.x > 7 || size.z > 7) return;
+    const onPath = Math.abs(c.x - pathX(-c.z / SP)) < 1.9;
+    if (onPath) return;
+    obstacles.push({ center: c, size });
+  });
+
+  return { N, cellPosition, direction, sparkle, update, focus, sun, tiles, obstacles };
 }
