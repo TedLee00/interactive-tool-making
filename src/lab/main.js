@@ -1,6 +1,6 @@
 // 퀴즈 연습장 — 유형을 골라 한 칸(5문제)을 풀어 본다. (3단계에서 보드 칸이 이 엔진을 부른다)
 import { TYPES } from '../quiz/constants.js';
-import { BANK, config, draw } from '../quiz/bank.js';
+import { BANK, config, draw, setLevel, getLevel } from '../quiz/bank.js';
 import { runCell } from '../quiz/cell.js';
 import { esc } from '../quiz/notation.js';
 import { setMuted, isMuted } from '../quiz/sound.js';
@@ -16,6 +16,7 @@ const save = () => {
   try { localStorage.setItem(KEY, JSON.stringify(S)); } catch { /* 저장 불가 */ }
 };
 const used = new Set(S.used);
+setLevel(S.level || 'mid');
 
 const REGIONS = [
   { name: '품사 마을', level: '하', color: '#3E9B5B', types: [1, 2, 3, 4] },
@@ -32,12 +33,14 @@ muteBtn.onclick = () => { setMuted(!isMuted()); syncMute(); muteBtn.textContent 
 function home() {
   app.innerHTML = `
     <div class="stats card"><div><b>${S.played}</b><small>칸</small></div><div><b>${S.moves}</b><small>전진</small></div><div><b>🪙 ${S.coins}</b><small>코인</small></div><div><b>${S.notes.length}</b><small>오답</small></div></div>
+    <div class="lvsw card">난이도 <button class="${getLevel() === 'mid' ? 'on' : ''}" data-lv="mid">🙂 중 · 골고루</button><button class="${getLevel() === 'high' ? 'on' : ''}" data-lv="high">🔥 상 · 어려운 문제만</button></div>
     ${REGIONS.map((r) => `<section class="region" style="--rc:${r.color}"><h2>${esc(r.name)} <small>${esc(r.level)}</small></h2>
       <div class="types">${r.types.map((t) => `<button class="tcard" data-t="${t}"><span class="no">${t}</span><b>${esc(TYPES[t].name)}</b><small>${esc(TYPES[t].level)} · ${(BANK[t] || []).length}문제</small></button>`).join('')}</div></section>`).join('')}
     <section class="region" style="--rc:#E21E8C"><h2>미니게임 연습 <small>상품 없음</small></h2>
       <div class="types">${Object.entries(GAMES).map(([k, gm]) => `<button class="tcard mg" data-g="${k}"><span class="no">${gm.icon}</span><b>${esc(gm.title)}</b><small>${esc(gm.desc)}</small></button>`).join('')}</div></section>
     <div class="row"><button class="ghost" id="notes">📒 오답노트</button><button class="ghost" id="reset">새 판 시작</button></div>
     <p class="muted">같은 판에서는 같은 문제가 다시 나오지 않아요. 「새 판 시작」을 누르면 기록이 지워집니다.</p>`;
+  app.querySelectorAll('[data-lv]').forEach((b) => { b.onclick = () => { S.level = b.dataset.lv; setLevel(S.level); save(); home(); }; });
   app.querySelectorAll('.tcard:not(.mg)').forEach((b) => { b.onclick = () => play(+b.dataset.t); });
   app.querySelectorAll('.tcard.mg').forEach((b) => {
     b.onclick = async () => {

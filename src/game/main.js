@@ -5,7 +5,7 @@ import chars from '../../data/characters.json';
 import { buildWorld } from '../board/world.js';
 import { createAvatar } from '../board/avatar.js';
 import { createDice } from '../board/dice.js';
-import { draw, config } from '../quiz/bank.js';
+import { draw, config, setLevel } from '../quiz/bank.js';
 import { runCell } from '../quiz/cell.js';
 import { TYPES } from '../quiz/constants.js';
 import { esc } from '../quiz/notation.js';
@@ -18,7 +18,11 @@ const BASE = import.meta.env.BASE_URL;
 const LOGO = `${BASE}assets/brand/logo.png`;
 const faceImg = (id, cls = '') => `<img class="face ${cls}" data-face="${id}" alt="">`;
 const SAVE_KEY = 'cq.game.v1';
-const GRADES = ['중1', '중2', '중3', '고1', '고2', '기타'];
+const LEVELS = [
+  { id: 'mid', name: '중 난이도', icon: '🙂', desc: '쉬운 문제부터 어려운 문제까지 골고루' },
+  { id: 'high', name: '상 난이도', icon: '🔥', desc: '어려운 문제 위주! 쉬운 문제는 나오지 않아요' },
+];
+const levelName = (id) => (LEVELS.find((l) => l.id === id) || LEVELS[0]).name;
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 /* ---------------- 저장 ---------------- */
@@ -29,8 +33,8 @@ let S = null;
 function save() {
   try { localStorage.setItem(SAVE_KEY, JSON.stringify(S)); } catch { /* 저장 불가 */ }
 }
-function newGame(name, grade, char) {
-  S = { v: 1, name, grade, char, pos: 0, coins: 0, correct: 0, answered: 0, cellsPlayed: 0, used: [], notes: [], byType: {}, snacks: [], games: {}, gates: {}, regTypes: {}, streak: 0, wrongStreak: 0, perfects: 0, startedAt: Date.now(), finished: false };
+function newGame(name, level, char) {
+  S = { v: 1, name, level, grade: levelName(level), char, pos: 0, coins: 0, correct: 0, answered: 0, cellsPlayed: 0, used: [], notes: [], byType: {}, snacks: [], games: {}, gates: {}, regTypes: {}, streak: 0, wrongStreak: 0, perfects: 0, startedAt: Date.now(), finished: false };
   save();
 }
 
@@ -183,11 +187,11 @@ function title() {
   if (can) ui.querySelector('#cont').onclick = () => { S = sv; startBoard(false); };
 }
 
-function profile(name = '', grade = '') {
+function profile(name = '', grade = 'mid') {
   screen(`<div class="panel-screen"><div class="panel card">
     <h2>원정대원 등록</h2>
     <label class="fld">이름 또는 닉네임<input id="nm" maxlength="12" placeholder="예: 민트초코" value="${esc(name)}" autocomplete="off"></label>
-    <div class="fld">학년<div class="grades">${GRADES.map((g) => `<button class="gr ${g === grade ? 'on' : ''}" data-g="${g}">${g}</button>`).join('')}</div></div>
+    <div class="fld">난이도<div class="levels">${LEVELS.map((l) => `<button class="gr lv ${l.id === grade ? 'on' : ''}" data-g="${l.id}"><span>${l.icon}</span><b>${l.name}</b><small>${l.desc}</small></button>`).join('')}</div></div>
     <p class="muted">기록은 선생님께만 보여요. 닉네임도 괜찮아요.</p>
     <div class="row"><button class="ghost" id="back">◀ 처음</button><button class="primary" id="next">다음 ▶</button></div>
     <div class="err" id="err"></div></div></div>`);
@@ -197,7 +201,7 @@ function profile(name = '', grade = '') {
   ui.querySelector('#next').onclick = () => {
     const n = ui.querySelector('#nm').value.trim();
     if (!n) { ui.querySelector('#err').textContent = '이름을 써 주세요.'; return; }
-    if (!g) { ui.querySelector('#err').textContent = '학년을 골라 주세요.'; return; }
+    if (!g) { ui.querySelector('#err').textContent = '난이도를 골라 주세요.'; return; }
     choose(n, g);
   };
 }
@@ -226,6 +230,7 @@ function hud() {
   screen(`<div class="hud">
     <div class="hud-top">
       <span class="reg" style="--rc:${reg.color}">${esc(reg.name)}</span>
+      <span class="lvb ${S.level}">${S.level === 'high' ? '상' : '중'}</span>
       <span class="pos"><b>${S.pos}</b>/${board.cells.length - 1}칸</span>
       <span class="coin">🪙 <b>${S.coins}</b></span>
       ${(S.snacks || []).length ? `<span class="snk">🍫 <b>${S.snacks.length}</b></span>` : ''}
@@ -352,6 +357,7 @@ function snapCamera() {
 
 async function startBoard(fresh) {
   cam.mode = 'board';
+  S.level ||= 'mid'; setLevel(S.level);
   S.snacks ||= []; S.games ||= {}; S.gates ||= {}; S.regTypes ||= {}; S.streak ||= 0; S.wrongStreak ||= 0; S.perfects ||= 0;
   bgm(regionOf(S.pos).id);
   placeAvatar(S.char);
@@ -504,6 +510,10 @@ async function playQuiz(type, region) {
 
 async function enterRegion(k) {
   const reg = board.regions[k];
+  if (k > 0 && !(S.regionsSeen ||= []).includes(k)) {
+    S.regionsSeen.push(k); save();
+    await crewDance(`${reg.name} 도착! 원정대 입성 🎉`);
+  }
   bgm(reg.id);
   talk(chars.guide.lines[reg.id]);
   await sleep(1400);
@@ -528,11 +538,12 @@ async function playCellGame(cell) {
   }
   save();
   hud();
-  if (cell.kind === 'gate' && r.cleared) {
+  if (r.cleared) {
+    // 미니게임 성공 → 선생님 댄스
     avatar.setAnim('joy');
-    await crewDance(`${regionOf(S.pos).name} 게이트 통과! 🎉`);
+    await teacherDance(cell.kind === 'gate' ? `${G.title} 성공! ${regionOf(S.pos).name} 게이트 통과 🎉` : `${G.title} 성공! ${S.name}, 선생님도 참을 수 없다 🕺`);
     avatar.setAnim('idle');
-  } else if (!r.quit) talk(r.cleared ? chars.guide.lines.good : chars.guide.lines.retry);
+  } else if (!r.quit) talk(chars.guide.lines.retry);
 }
 
 async function moveBack(n) {
@@ -574,6 +585,7 @@ function quizSheet(type) {
       if (ok) {
         S.streak++; S.wrongStreak = 0;
         callout(S.streak % 3 === 0 ? 'yar' : 'easy', S.streak % 3 === 0 ? `${S.streak}연속 정답!` : undefined);
+        if (S.streak % 8 === 0) S.danceDue = S.streak; // 많이 맞히면 칸이 끝난 뒤 선생님 댄스
       } else {
         S.streak = 0; S.wrongStreak++;
         callout('oops', S.wrongStreak >= 2 ? `연속 오답 ${S.wrongStreak}` : '해설을 읽어 봐요');
@@ -591,7 +603,10 @@ function quizSheet(type) {
       S.perfects++;
       save();
       await teacherDance(`PERFECT! ${S.name}, 선생님도 참을 수 없다 📚`);
+    } else if (S.danceDue) {
+      await teacherDance(`${S.danceDue}연속 정답! ${S.name} 최고 📚`);
     }
+    S.danceDue = 0; save();
     return r;
   });
 }
@@ -601,7 +616,7 @@ function rankHTML() {
   const t = tierOf(S.coins);
   const medal = (i) => ['🥇', '🥈', '🥉'][i] || `${i + 1}`;
   return `<div class="tier"><span>${t.icon}</span><b>${esc(t.name)}</b><small>코인이 많을수록 높은 등급 · 이 기기 ${place}위 / ${list.length}명</small></div>
-    <ol class="rank">${list.slice(0, 5).map((x, i) => `<li class="${x.id === S.rankId ? 'me' : ''}"><i>${medal(i)}</i><span>${esc(x.name)}</span><b>🪙 ${x.coins}</b></li>`).join('')}</ol>`;
+    <ol class="rank">${list.slice(0, 5).map((x, i) => `<li class="${x.id === S.rankId ? 'me' : ''}"><i>${medal(i)}</i><span>${esc(x.name)}${x.level ? ` <em class="lvb ${x.level}">${x.level === 'high' ? '상' : '중'}</em>` : ''}</span><b>🪙 ${x.coins}</b></li>`).join('')}</ol>`;
 }
 
 /** 목적지 도착 — 시상식은 4단계에서 */
@@ -619,7 +634,7 @@ function recordRank() {
   try { list = JSON.parse(localStorage.getItem(RANK_KEY)) || []; } catch { /* 없음 */ }
   if (!S.rankId) {
     S.rankId = `${Date.now()}-${Math.random().toString(36).slice(2, 6)}`;
-    list.push({ id: S.rankId, name: S.name, char: S.char, coins: S.coins, at: Date.now() });
+    list.push({ id: S.rankId, name: S.name, char: S.char, level: S.level, coins: S.coins, at: Date.now() });
   } else {
     const me = list.find((x) => x.id === S.rankId);
     if (me) me.coins = S.coins;

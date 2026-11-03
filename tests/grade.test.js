@@ -122,3 +122,20 @@ describe('lenient answers', () => {
     expect(gradeTowerOrder(q, [0, 1, 3, 2])).toBe(false);
   });
 });
+
+import { draw, BANK } from '../src/quiz/bank.js';
+describe('difficulty', () => {
+  it('상 draws no level-1 questions, mostly level 3 when available', () => {
+    for (const t of Object.keys(BANK)) {
+      const qs = draw(+t, 5, new Set(), 'high');
+      expect(qs.length).toBe(5);
+      expect(qs.every((q) => q.level >= 2)).toBe(true);
+    }
+    const q6 = draw(6, 5, new Set(), 'high');
+    expect(q6.filter((q) => q.level === 3).length).toBeGreaterThanOrEqual(3);
+  });
+  it('중 mixes levels', () => {
+    const qs = draw(1, 5, new Set(), 'mid');
+    expect(new Set(qs.map((q) => q.level)).size).toBeGreaterThanOrEqual(2);
+  });
+});
