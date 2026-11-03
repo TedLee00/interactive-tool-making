@@ -100,3 +100,12 @@ img.face { border-radius: 50%; background: radial-gradient(circle at 50% 35%, #F
 .goal-stats b { display: block; font-family: var(--cute); font-weight: 400; font-size: 28px; color: var(--plum); }
 .goal-stats small { color: var(--muted); }
 .panel-screen.goal { background: transparent; align-items: flex-end; padding-bottom: calc(env(safe-area-inset-bottom) + 16px); }
+
+/* 간식 쿠폰 */
+.hud-top .snk b { color: #C2482B; }
+.cp { display: flex; gap: 10px; align-items: center; border-top: 1px solid #F1E6FA; padding: 8px 0; }
+.cp img { width: 70px; }
+.cp b { display: block; font-family: var(--cute); font-weight: 400; color: var(--plum); font-size: 17px; }
+.cp small { color: var(--muted); }
+.goal-snacks { display: flex; justify-content: center; flex-wrap: wrap; gap: 4px; margin: 0 0 10px; }
+.goal-snacks img { width: 64px; filter: drop-shadow(0 3px 4px rgba(43, 35, 80, .2)); }

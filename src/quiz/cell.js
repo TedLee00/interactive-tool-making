@@ -12,7 +12,7 @@ const wait = (el, sel) => new Promise((r) => { el.querySelector(sel).onclick = r
  * @param opts   { type, questions, config, showIntro=true }
  * @returns Promise<{type, correct, total, reward, wrongs[]}>
  */
-export async function runCell(root, { type, questions, config, showIntro = true }) {
+export async function runCell(root, { type, questions, config, showIntro = true, hooks = {} }) {
   const T = TYPES[type];
   root.innerHTML = '';
   const wrap = document.createElement('div');
@@ -38,8 +38,8 @@ export async function runCell(root, { type, questions, config, showIntro = true 
         <span class="prog">${i + 1} / ${questions.length}</span></div>
       <div class="card q" id="qbox"></div><div id="fb"></div>`;
     const r = await renderQuestion(wrap.querySelector('#qbox'), q, config);
-    if (r.ok) { correct++; sfx('ok'); } else {
-      sfx('no');
+    if (r.ok) { correct++; if (!hooks.onAnswer) sfx('ok'); } else {
+      if (!hooks.onAnswer) sfx('no');
       wrongs.push({ idx: i, type, id: q.id, question: r.questionPlain, mine: r.mine, answer: r.answerPlain });
     }
     const fb = wrap.querySelector('#fb');
@@ -50,11 +50,13 @@ export async function runCell(root, { type, questions, config, showIntro = true 
       <div class="src">📖 ${esc(q.source)}</div>
       <button class="primary" id="next">${i === questions.length - 1 ? '결과 보기 ▶' : '다음 ▶'}</button></div>`;
     fb.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    await wait(fb, '#next');
+    const nextClick = wait(fb, '#next');
+    if (hooks.onAnswer) await hooks.onAnswer(r.ok, { index: i, last: i === questions.length - 1 });
+    await nextClick;
   }
 
   const reward = cellReward(correct, questions.length, config);
-  sfx(reward.perfect ? 'perfect' : correct >= questions.length - 1 ? 'ok' : 'end');
+  if (!hooks.onResult) sfx(reward.perfect ? 'perfect' : correct >= questions.length - 1 ? 'ok' : 'end');
   wrap.innerHTML = `<div class="result card ${reward.perfect ? 'perfect' : ''}">
     ${reward.perfect ? '<div class="perfect-banner">PERFECT!</div>' : ''}
     <div class="score">${correct}<small>/${questions.length}</small></div>
@@ -62,6 +64,7 @@ export async function runCell(root, { type, questions, config, showIntro = true 
     ${wrongs.length ? `<div class="wrong-note"><h4>📒 오답노트</h4>${wrongs.map((w) => `<div class="wn"><div class="wq">${esc(w.question)}</div><div class="wm">내 답: ${esc(w.mine)}</div><div class="wa">정답: ${esc(w.answer)}</div></div>`).join('')}</div>` : '<p class="muted">틀린 문제가 없어요!</p>'}
     <p class="sign">— ${esc(config.signature || 'Ted')}</p>
     <button class="primary big" id="done">계속 ▶</button></div>`;
+  if (hooks.onResult) hooks.onResult(reward, correct);
   await wait(wrap, '#done');
   return { type, correct, total: questions.length, reward, wrongs: wrongs.map(({ idx, ...w }) => w) };
 }

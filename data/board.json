@@ -81,7 +81,8 @@
   {
    "i": 4,
    "kind": "snack",
-   "region": 0
+   "region": 0,
+   "game": "crane"
   },
   {
    "i": 5,
@@ -115,7 +116,8 @@
   {
    "i": 10,
    "kind": "gate",
-   "region": 0
+   "region": 0,
+   "game": "run"
   },
   {
    "i": 11,
@@ -138,7 +140,8 @@
   {
    "i": 14,
    "kind": "snack",
-   "region": 1
+   "region": 1,
+   "game": "crane"
   },
   {
    "i": 15,
@@ -172,7 +175,8 @@
   {
    "i": 20,
    "kind": "gate",
-   "region": 1
+   "region": 1,
+   "game": "kart"
   },
   {
    "i": 21,
@@ -189,7 +193,8 @@
   {
    "i": 23,
    "kind": "snack",
-   "region": 2
+   "region": 2,
+   "game": "crane"
   },
   {
    "i": 24,
@@ -228,7 +233,8 @@
   {
    "i": 30,
    "kind": "gate",
-   "region": 2
+   "region": 2,
+   "game": "arena"
   },
   {
    "i": 31,
@@ -245,7 +251,8 @@
   {
    "i": 33,
    "kind": "snack",
-   "region": 3
+   "region": 3,
+   "game": "crane"
   },
   {
    "i": 34,
@@ -279,7 +286,8 @@
   {
    "i": 39,
    "kind": "snack",
-   "region": 3
+   "region": 3,
+   "game": "crane"
   },
   {
    "i": 40,
@@ -295,7 +303,7 @@
    "label": "문제"
   },
   "snack": {
-   "label": "간식 상자",
+   "label": "간식 뽑기",
    "icon": "🎁"
   },
   "gate": {

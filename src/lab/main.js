@@ -4,6 +4,8 @@ import { BANK, config, draw } from '../quiz/bank.js';
 import { runCell } from '../quiz/cell.js';
 import { esc } from '../quiz/notation.js';
 import { setMuted, isMuted } from '../quiz/sound.js';
+import { playRun, playCrane, playKart, playArena, GAMES } from '../games/index.js';
+import { syncMute, unlockAudio } from '../fx/fx.js';
 
 const KEY = 'cq.lab';
 const load = () => {
@@ -25,16 +27,26 @@ const REGIONS = [
 const app = document.getElementById('app');
 const muteBtn = document.getElementById('mute');
 muteBtn.textContent = isMuted() ? '🔇' : '🔊';
-muteBtn.onclick = () => { setMuted(!isMuted()); muteBtn.textContent = isMuted() ? '🔇' : '🔊'; };
+muteBtn.onclick = () => { setMuted(!isMuted()); syncMute(); muteBtn.textContent = isMuted() ? '🔇' : '🔊'; };
 
 function home() {
   app.innerHTML = `
     <div class="stats card"><div><b>${S.played}</b><small>칸</small></div><div><b>${S.moves}</b><small>전진</small></div><div><b>🪙 ${S.coins}</b><small>코인</small></div><div><b>${S.notes.length}</b><small>오답</small></div></div>
     ${REGIONS.map((r) => `<section class="region" style="--rc:${r.color}"><h2>${esc(r.name)} <small>${esc(r.level)}</small></h2>
       <div class="types">${r.types.map((t) => `<button class="tcard" data-t="${t}"><span class="no">${t}</span><b>${esc(TYPES[t].name)}</b><small>${esc(TYPES[t].level)} · ${(BANK[t] || []).length}문제</small></button>`).join('')}</div></section>`).join('')}
+    <section class="region" style="--rc:#E21E8C"><h2>미니게임 연습 <small>상품 없음</small></h2>
+      <div class="types">${Object.entries(GAMES).map(([k, gm]) => `<button class="tcard mg" data-g="${k}"><span class="no">${gm.icon}</span><b>${esc(gm.title)}</b><small>${esc(gm.desc)}</small></button>`).join('')}</div></section>
     <div class="row"><button class="ghost" id="notes">📒 오답노트</button><button class="ghost" id="reset">새 판 시작</button></div>
     <p class="muted">같은 판에서는 같은 문제가 다시 나오지 않아요. 「새 판 시작」을 누르면 기록이 지워집니다.</p>`;
-  app.querySelectorAll('.tcard').forEach((b) => { b.onclick = () => play(+b.dataset.t); });
+  app.querySelectorAll('.tcard:not(.mg)').forEach((b) => { b.onclick = () => play(+b.dataset.t); });
+  app.querySelectorAll('.tcard.mg').forEach((b) => {
+    b.onclick = async () => {
+      unlockAudio(); syncMute();
+      const fn = { run: playRun, crane: playCrane, kart: playKart, arena: playArena }[b.dataset.g];
+      const r = await fn({ charId: 'bboy' });
+      S.coins += r.coins || 0; save(); home();
+    };
+  });
   app.querySelector('#reset').onclick = () => {
     if (!confirm('기록(코인·오답노트·출제 기록)을 지우고 새 판을 시작할까요?')) return;
     Object.assign(S, { used: [], coins: 0, moves: 0, notes: [], played: 0 });

@@ -1,0 +1,30 @@
+{
+ "run": {
+  "missions": [
+   {"title": "형용사 + 명사로 바르게 꾸민 음식만 먹어라!", "hint": "명사를 꾸미는 건 형용사 ( )",
+    "good": ["달콤한 케이크", "바삭한 쿠키", "시원한 우유", "따뜻한 호빵", "매운 떡볶이", "고소한 팝콘", "새콤한 젤리", "쫀득한 떡", "부드러운 푸딩", "짭짤한 감자칩"],
+    "bad": ["달콤하게 케이크", "빨리 쿠키", "시원하게 우유", "맵게 떡볶이", "고소하게 팝콘", "천천히 젤리", "부드럽게 푸딩", "조용히 감자칩"]},
+   {"title": "부사가 동사를 꾸민 것만 먹어라!", "hint": "동사를 꾸미는 건 부사 < >",
+    "good": ["빨리 달린다", "조용히 잔다", "열심히 공부한다", "크게 웃는다", "천천히 걷는다", "맛있게 먹는다", "일찍 일어난다", "신나게 춤춘다"],
+    "bad": ["빠른 달린다", "조용한 잔다", "열심한 공부한다", "큰 웃는다", "느린 걷는다", "맛있는 먹는다", "이른 일어난다"]},
+   {"title": "명사(구) ○ 만 먹어라!", "hint": "명사 앞 형용사는 명사의 일부 → 통째로 ○",
+    "good": ["the cute puppy", "my best friend", "spicy tteokbokki", "playing games", "a new phone", "my little brother", "to win the game", "school lunch"],
+    "bad": ["very quickly", "in the park", "is sleeping", "after school", "really fun", "because it rained", "loudly"]},
+   {"title": "부사구 < > 만 먹어라!", "hint": "동사를 꾸미는 덩어리 → < >",
+    "good": ["after school", "in the park", "every morning", "at lunchtime", "to buy snacks", "on the playground", "with my friends", "on Sports Day"],
+    "bad": ["my friend", "the tall boy", "is studying", "delicious", "playing soccer", "a scary movie", "can win"]}
+  ]
+ },
+ "pos": {
+  "명사": ["teacher", "happiness", "friendship", "school lunch", "급식", "학원", "운동장", "떡볶이", "excitement", "safety", "숙제", "체육대회"],
+  "동사": ["eat", "run", "study", "swim", "realize", "먹는다", "달린다", "공부한다", "잔다", "웃는다", "write", "dance"],
+  "형용사": ["beautiful", "delicious", "brave", "sunny", "creative", "맛있는", "예쁜", "친절한", "무서운", "dangerous", "happy", "tall"],
+  "부사": ["quickly", "slowly", "always", "carefully", "however", "빨리", "열심히", "조용히", "천천히", "일찍", "very", "fortunately"]
+ },
+ "chunks": {
+  "명사구": ["the tall boy", "playing games", "my new phone", "to learn English", "spicy tteokbokki", "my best friend"],
+  "형용사구": ["(boy) with a big bag", "(water) to drink", "(cookies) on the table", "(girl) in the red cap", "(book) about dinosaurs"],
+  "부사구": ["after school", "in the park", "every morning", "to buy snacks", "at lunchtime", "on Sports Day"],
+  "부사절": ["when I got home", "because it rained", "if it snows", "before class starts", "after I finished my homework"]
+ }
+}

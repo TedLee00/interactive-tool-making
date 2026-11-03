@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 68 100"><g stroke="#1B2F4E" stroke-width="2.4" stroke-linejoin="round">
+        <rect x="23" y="80" width="9" height="16" rx="4" fill="#4F7CC4"/><rect x="36" y="80" width="9" height="16" rx="4" fill="#4F7CC4"/>
+        <ellipse cx="27" cy="96" rx="8" ry="4" fill="#fff"/><ellipse cx="41" cy="96" rx="8" ry="4" fill="#fff"/>
+        <path d="M14 84 Q14 62 34 61 Q54 62 54 84 Z" fill="#FFFFFF"/><path d="M28 62 Q34 67 40 62" fill="none" stroke-width="1.6"/>
+        <rect x="16.5" y="67" width="35" height="14" rx="2.5" fill="#FFFFFF" stroke="#1F6FD1" stroke-width="1.6"/>
+        <text x="34" y="77.6" text-anchor="middle" font-family="'Noto Sans KR',sans-serif" font-weight="900" font-size="10" fill="#1B2F4E" stroke="none" textLength="31" lengthAdjust="spacingAndGlyphs">묵언수행</text>
+        <circle cx="34" cy="38" r="25" fill="#FFE3CC"/>
+        <path d="M8 40 Q5 12 34 10 Q63 12 60 40 Q58 26 46 22 Q40 30 34 21 Q28 30 22 22 Q10 26 8 40 Z" fill="#C8955A"/></g>
+        <path d="M14 24 Q20 15 30 14 M38 14 Q48 15 54 24" stroke="#EAC27A" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <path d="M34 12 L34 22" stroke="#9A6B3A" stroke-width="1.6"/>
+        <path d="M20 41 Q24 38 28 41 M40 41 Q44 38 48 41" stroke="#1B2F4E" stroke-width="2.8" fill="none" stroke-linecap="round"/><circle cx="26" cy="42.6" r="2.2" fill="#1B2F4E"/><circle cx="46" cy="42.6" r="2.2" fill="#1B2F4E"/><path d="M18 34 L28 35 M40 33 Q45 28 50 31" stroke="#9A6B3A" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+        <circle cx="18" cy="49" r="4" fill="#FFA7BE" opacity=".7"/><circle cx="50" cy="49" r="4" fill="#FFA7BE" opacity=".7"/>
+        <g transform="rotate(-8 34 53)"><path d="M17 47 L51 47 L49.5 49 L52 51 L49.5 53 L52 55 L49.5 57 L51 59 L17 59 L18.5 57 L16 55 L18.5 53 L16 51 L18.5 49 Z" fill="#A9B0B9" stroke="#1B2F4E" stroke-width="1.8" stroke-linejoin="round"/><path d="M19 49.5 L49 49.5" stroke="#E4E8EE" stroke-width="1.6"/><path d="M22 52 L47 52 M21 55 L46 55" stroke="#8B929C" stroke-width=".9" stroke-dasharray="2 1.6"/></g></svg>

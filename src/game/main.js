@@ -11,6 +11,8 @@ import { TYPES } from '../quiz/constants.js';
 import { esc } from '../quiz/notation.js';
 import { sfx, setMuted, isMuted } from '../quiz/sound.js';
 import { loadChar, fillFaces, charURL } from '../board/charart.js';
+import { bgm, callout, maWarning, teacherDance, crewDance, finaleDance, snackCard, snackCode, SNACKS, syncMute, unlockAudio } from '../fx/fx.js';
+import { playRun, playCrane, playKart, playArena, GAMES } from '../games/index.js';
 
 const BASE = import.meta.env.BASE_URL;
 const LOGO = `${BASE}assets/brand/logo.png`;
@@ -28,7 +30,7 @@ function save() {
   try { localStorage.setItem(SAVE_KEY, JSON.stringify(S)); } catch { /* 저장 불가 */ }
 }
 function newGame(name, grade, char) {
-  S = { v: 1, name, grade, char, pos: 0, coins: 0, correct: 0, answered: 0, cellsPlayed: 0, used: [], notes: [], byType: {}, startedAt: Date.now(), finished: false };
+  S = { v: 1, name, grade, char, pos: 0, coins: 0, correct: 0, answered: 0, cellsPlayed: 0, used: [], notes: [], byType: {}, snacks: [], games: {}, streak: 0, wrongStreak: 0, perfects: 0, startedAt: Date.now(), finished: false };
   save();
 }
 
@@ -94,7 +96,7 @@ function loop(now) {
   renderer.render(scene, camera);
   requestAnimationFrame(loop);
 }
-window.__CQ = { get S() { return S; }, get world() { return world; }, cam, get avatar() { return avatar; } }; // 테스트용
+window.__CQ = { get S() { return S; }, get world() { return world; }, cam, get avatar() { return avatar; }, fx: { maWarning, teacherDance, callout }, cell: (i) => resolveCell(board.cells[i]) }; // 테스트용
 
 function placeAvatar(charId) {
   if (avatar) scene.remove(avatar.root);
@@ -150,6 +152,7 @@ function screen(html) {
 
 function title() {
   cam.mode = 'title';
+  bgm('title');
   if (avatar) { scene.remove(avatar.root); avatar = null; }
   const sv = loadSave();
   const can = sv && !sv.finished;
@@ -163,7 +166,7 @@ function title() {
     <div class="title-btns">
       ${can ? `<button class="primary big" id="cont">이어하기 · ${esc(sv.name)} (${sv.pos}/${board.cells.length - 1}칸)</button>` : ''}
       <button class="${can ? 'ghost big' : 'primary big'}" id="new">${can ? '처음부터 새로 하기' : '시작하기 ▶'}</button>
-      <div class="title-links"><a href="./quiz-lab.html">🧪 퀴즈 연습장</a><a href="./review.html">📋 문제 검수</a></div>
+      <div class="title-links"><a href="./quiz-lab.html">🧪 연습장 · 미니게임</a><a href="./review.html">📋 문제 검수</a></div>
     </div></div>`);
   ui.querySelector('#new').onclick = () => {
     if (can && !confirm('저장된 진행 상황이 지워져요. 새로 시작할까요?')) return;
@@ -217,6 +220,7 @@ function hud() {
       <span class="reg" style="--rc:${reg.color}">${esc(reg.name)}</span>
       <span class="pos"><b>${S.pos}</b>/${board.cells.length - 1}칸</span>
       <span class="coin">🪙 <b>${S.coins}</b></span>
+      ${(S.snacks || []).length ? `<span class="snk">🍫 <b>${S.snacks.length}</b></span>` : ''}
       <button class="menu" id="menu" aria-label="메뉴">☰</button>
     </div>
     <div class="progress"><i style="width:${(S.pos / (board.cells.length - 1)) * 100}%"></i>${board.regions.map((r, k) => `<em style="left:${(board.cells.findIndex((c) => c.region === k) / (board.cells.length - 1)) * 100}%"></em>`).join('')}</div>
@@ -254,10 +258,16 @@ function menu() {
   ov.innerHTML = `<div class="card menu-box"><h3>메뉴</h3>
     <button class="ghost" id="snd">${isMuted() ? '🔇 소리 켜기' : '🔊 소리 끄기'}</button>
     <button class="ghost" id="note">📒 오답노트 (${S.notes.length})</button>
+    <button class="ghost" id="snk">🍫 내 간식 쿠폰 (${(S.snacks || []).length})</button>
     <button class="ghost" id="home">🏠 처음 화면 (자동 저장됨)</button>
     <button class="primary" id="close">닫기</button></div>`;
   document.body.appendChild(ov);
-  ov.querySelector('#snd').onclick = () => { setMuted(!isMuted()); ov.remove(); };
+  ov.querySelector('#snd').onclick = () => { setMuted(!isMuted()); syncMute(); ov.remove(); };
+  ov.querySelector('#snk').onclick = () => {
+    const list = S.snacks || [];
+    ov.querySelector('.menu-box').innerHTML = `<h3>🍫 내 간식 쿠폰</h3><div class="notes">${list.length ? list.map((k) => `<div class="cp"><img src="${BASE}assets/snacks/${k.kind}.svg" alt=""><div><b>${esc(SNACKS[k.kind].name)}</b><small>${esc(k.how)} · 코드 ${k.code}</small></div></div>`).join('') : '<p class="muted">간식 뽑기 칸과 미니게임에서 받을 수 있어요.</p>'}</div><button class="primary" id="close2">닫기</button>`;
+    ov.querySelector('#close2').onclick = () => ov.remove();
+  };
   ov.querySelector('#close').onclick = () => ov.remove();
   ov.querySelector('#home').onclick = () => { ov.remove(); title(); };
   ov.querySelector('#note').onclick = () => {
@@ -288,6 +298,8 @@ function snapCamera() {
 
 async function startBoard(fresh) {
   cam.mode = 'board';
+  S.snacks ||= []; S.games ||= {}; S.streak ||= 0; S.wrongStreak ||= 0; S.perfects ||= 0;
+  bgm(regionOf(S.pos).id);
   placeAvatar(S.char);
   if (!fresh) snapCamera(); // 이어하기: 바로 내 말 위치에서 시작
   hud();
@@ -326,14 +338,15 @@ async function turn() {
   hud();
   cam.zoom = 0.8;
   const cell = board.cells[S.pos];
-  if (cell.region !== prevRegion) {
-    talk(chars.guide.lines[board.regions[cell.region].id]);
-    await sleep(1800);
-  }
+  if (cell.region !== prevRegion) await enterRegion(cell.region);
   await resolveCell(cell);
   cam.zoom = 1;
   busy = false;
-  if (!S.finished) { hud(); talk(chars.guide.lines.roll); setRollEnabled(true); }
+  if (!S.finished) {
+    hud();
+    if (S.bonusRoll) { S.bonusRoll = false; talk('보너스! 바로 한 번 더 굴려!'); } else talk(chars.guide.lines.roll);
+    setRollEnabled(true);
+  }
 }
 
 async function resolveCell(cell) {
@@ -372,11 +385,85 @@ async function resolveCell(cell) {
     }
     return;
   }
-  // 특수 칸: 효과는 4단계에서 완성
-  const label = board.kinds[cell.kind]?.label || '';
-  toast(`${label}!`);
-  talk(`${label} — ${chars.guide.lines.special}`);
-  await sleep(1800);
+  if (cell.game) return playCellGame(cell);
+  if (cell.kind === 'trap') {
+    toast('⚠️ 함정! 2칸 뒤로');
+    talk('앗, 함정이야! 2칸 뒤로 미끄러져…');
+    avatar.setAnim('sad'); sfx('no');
+    await sleep(900);
+    await moveBack(2);
+    return;
+  }
+  if (cell.kind === 'portal') {
+    toast('🌀 순간이동 포털! 3칸 앞으로');
+    talk('소용돌이 포털이다! 슝~ 3칸 앞으로!');
+    await teleport(Math.min(world.N - 1, S.pos + 3));
+    if (board.cells[S.pos].kind === 'goal') return goal();
+    return;
+  }
+  if (cell.kind === 'bonus') {
+    toast('🎲 보너스 주사위! 한 번 더!');
+    talk('보너스 주사위! 한 번 더 굴려!');
+    callout('nice', '한 번 더!');
+    await sleep(900);
+    S.bonusRoll = true;
+  }
+}
+
+async function enterRegion(k) {
+  const reg = board.regions[k];
+  bgm(reg.id);
+  talk(chars.guide.lines[reg.id]);
+  await sleep(1400);
+}
+
+/** 미니게임 칸 (게이트 · 간식 뽑기) */
+async function playCellGame(cell) {
+  const G = GAMES[cell.game];
+  toast(`${G.icon} ${G.title}!`);
+  talk(cell.kind === 'gate' ? `미니게임 게이트! 「${G.title}」에 도전해 보자!` : '간식 뽑기 칸이야! 품사 인형을 뽑아 간식을 노려 봐!');
+  await sleep(1300);
+  const play = { run: playRun, crane: playCrane, kart: playKart, arena: playArena }[cell.game];
+  const r = await play({ charId: S.char });
+  bgm(regionOf(S.pos).id);
+  S.coins += r.coins || 0;
+  const best = S.games[cell.game] || 0;
+  S.games[cell.game] = Math.max(best, r.score || 0);
+  if (r.snack) {
+    S.snacks.push({ kind: r.snack, how: G.title, code: snackCode(), at: Date.now() });
+    save();
+    await snackCard(r.snack, G.title, S.name);
+  }
+  save();
+  hud();
+  if (cell.kind === 'gate' && r.cleared) {
+    avatar.setAnim('joy');
+    await crewDance(`${regionOf(S.pos).name} 게이트 통과! 🎉`);
+    avatar.setAnim('idle');
+  } else if (!r.quit) talk(r.cleared ? chars.guide.lines.good : chars.guide.lines.retry);
+}
+
+async function moveBack(n) {
+  const target = Math.max(0, S.pos - n);
+  while (S.pos > target) { await hopTo(S.pos - 1); await sleep(40); }
+  avatar.root.rotation.y = 0;
+  avatar.setAnim('idle');
+  world.sparkle(S.pos);
+  save();
+  hud();
+}
+
+async function teleport(i) {
+  sfx('whoosh');
+  const r0 = avatar.root;
+  for (let k = 0; k < 12; k++) { r0.rotation.y += 0.6; r0.scale.setScalar(1 - k / 12); await sleep(30); }
+  S.pos = i;
+  r0.position.copy(world.cellPosition(i)); r0.position.y = 0.3;
+  snapCamera();
+  for (let k = 0; k <= 12; k++) { r0.rotation.y += 0.6; r0.scale.setScalar(k / 12); await sleep(30); }
+  r0.rotation.y = 0; r0.scale.setScalar(1);
+  world.sparkle(i); sfx('reveal');
+  save(); hud();
 }
 
 function quizSheet(type) {
@@ -389,18 +476,41 @@ function quizSheet(type) {
   const qs = draw(type, config.questionsPerCell, used);
   S.used = [...used];
   save();
-  return runCell(ov.querySelector('#cellRoot'), { type, questions: qs, config }).then((r) => {
+  bgm('quiz');
+  const hooks = {
+    async onAnswer(ok) {
+      if (ok) {
+        S.streak++; S.wrongStreak = 0;
+        callout(S.streak % 3 === 0 ? 'yar' : 'easy', S.streak % 3 === 0 ? `${S.streak}연속 정답!` : undefined);
+      } else {
+        S.streak = 0; S.wrongStreak++;
+        callout('oops', S.wrongStreak >= 2 ? `연속 오답 ${S.wrongStreak}` : '해설을 읽어 봐요');
+        if (S.wrongStreak >= 3) { S.wrongStreak = 0; save(); await sleep(900); await maWarning(); }
+      }
+      save();
+    },
+    onResult(reward) { if (reward.perfect) callout('legend', 'PERFECT 5/5'); },
+  };
+  return runCell(ov.querySelector('#cellRoot'), { type, questions: qs, config, hooks }).then(async (r) => {
     ov.classList.remove('open');
     setTimeout(() => ov.remove(), 300);
+    bgm(regionOf(S.pos).id);
+    if (r.reward.perfect) {
+      S.perfects++;
+      save();
+      await teacherDance(`PERFECT! ${S.name}, 선생님도 참을 수 없다 📚`);
+    }
     return r;
   });
 }
 
 /** 목적지 도착 — 시상식은 4단계에서 */
 async function goal() {
+  const first = !S.finished;
   S.finished = true;
   save();
   avatar.setAnim('win');
+  if (first) { bgm('castle'); await finaleDance(`🎉 ALL CLEAR! ${S.name} 문장의 성 도착`); }
   avatar.root.rotation.y = 0;
   cam.zoom = 0.7;
   const acc = S.answered ? Math.round((S.correct / S.answered) * 100) : 0;
@@ -408,11 +518,14 @@ async function goal() {
     <div class="kicker">GOAL!</div><h2>문장의 성 도착!</h2>
     <p>${esc(player().lines.win)}</p>
     <div class="goal-stats"><div><b>${S.correct}</b><small>정답</small></div><div><b>${acc}%</b><small>정답률</small></div><div><b>🪙 ${S.coins}</b><small>코인</small></div></div>
+    ${(S.snacks || []).length ? `<div class="goal-snacks">${S.snacks.map((k) => `<img src="${BASE}assets/snacks/${k.kind}.svg" alt="">`).join('')}</div>` : ''}
     <p class="muted">시상식(금·은·동 시상대)은 다음 단계에서 완성돼요.</p>
     <button class="primary big" id="home">처음으로</button></div></div>`);
-  sfx('perfect');
   ui.querySelector('#home').onclick = title;
 }
+
+// iOS: 첫 터치에서 소리 시작
+document.addEventListener('pointerdown', () => { unlockAudio(); syncMute(); }, { once: true });
 
 async function boot() {
   // 간판 글꼴(Jua)이 준비된 뒤 3D 보드를 그린다 (최대 2.5초 기다림)

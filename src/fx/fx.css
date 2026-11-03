@@ -1,0 +1,27 @@
+/* 콜아웃: 게임처럼 쾅! 찍히는 글자 */
+.callout { position: fixed; left: 50%; top: 38%; z-index: 80; pointer-events: none; transform: translate(-50%, -50%); text-align: center; font-family: 'Jua', 'Noto Sans KR', sans-serif; animation: coIn 1.3s cubic-bezier(.2, 1.6, .4, 1) forwards; }
+.callout b { display: block; font-weight: 400; font-size: 64px; line-height: 1; letter-spacing: .02em; -webkit-text-stroke: 3px #2B2350; paint-order: stroke fill; text-shadow: 0 6px 0 #2B2350, 0 10px 24px rgba(43, 35, 80, .35); }
+.callout small { display: inline-block; margin-top: 8px; font-size: 18px; background: #2B2350; color: #fff; padding: 3px 12px; border-radius: 999px; }
+.co-easy b { color: #8FE08A; font-size: 54px; }
+.co-yar b { color: #FFD43B; font-size: 78px; }
+.co-legend b { font-size: 82px; background: linear-gradient(180deg, #FFF6B8, #FFC94A 45%, #FF8A3D); -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-stroke: 3px #5A2A0A; }
+.co-legend { animation-duration: 2s; }
+.co-oops b { color: #FF8A8A; font-size: 48px; }
+.callout i { position: absolute; left: 50%; top: 40%; width: 10px; height: 10px; border-radius: 2px; background: #FFD43B; transform: rotate(var(--a)) translate(0); animation: coBurst .9s ease-out forwards; }
+.callout i:nth-child(3n) { background: #FF9ECB; }
+.callout i:nth-child(3n+1) { background: #8FD8FF; }
+@keyframes coIn { 0% { transform: translate(-50%, -50%) scale(.2) rotate(-12deg); opacity: 0; } 18% { transform: translate(-50%, -50%) scale(1.15) rotate(3deg); opacity: 1; } 30% { transform: translate(-50%, -50%) scale(1) rotate(0); } 80% { opacity: 1; } 100% { transform: translate(-50%, -80%) scale(.95); opacity: 0; } }
+@keyframes coBurst { to { transform: rotate(var(--a)) translate(var(--d)); opacity: 0; } }
+
+/* 간식 획득 */
+.snack-ov { position: fixed; inset: 0; z-index: 70; display: flex; align-items: center; justify-content: center; padding: 16px; background: rgba(43, 35, 80, .45); }
+.snack-card { position: relative; overflow: hidden; width: 100%; max-width: 360px; text-align: center; background: #FFFBF0; border: 4px solid #fff; border-radius: 28px; padding: 22px 18px; box-shadow: 0 16px 40px rgba(43, 35, 80, .35); animation: pop .5s ease-out; }
+.snack-card .rays { position: absolute; left: 50%; top: 40%; width: 600px; height: 600px; margin: -300px 0 0 -300px; background: repeating-conic-gradient(rgba(255, 211, 107, .35) 0 10deg, transparent 10deg 24deg); animation: spin 12s linear infinite; z-index: 0; }
+.snack-card > * { position: relative; z-index: 1; }
+.snack-card img { width: 190px; filter: drop-shadow(0 8px 10px rgba(43, 35, 80, .25)); animation: float 2.4s ease-in-out infinite; }
+.snack-card h2 { font-family: 'Jua', sans-serif; font-weight: 400; color: #2B2350; margin: 8px 0 4px; font-size: 28px; }
+.snack-card .kicker { color: #D9822B; }
+.snack-card p { color: #6B5F8A; font-size: 14px; margin: 0 0 14px; }
+
+/* "마!" 경고: 이 게임은 연속 오답 3개에서 나온다 */
+#show.th-ma .banner:before { content: "⚾ 연속 오답 3개" !important; }
