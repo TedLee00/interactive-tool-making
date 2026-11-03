@@ -73,6 +73,11 @@ function choiceSpec(q) {
 
 export function renderChoice(box, q) {
   const sp = choiceSpec(q);
+  box._answerInfo = {
+    answerHTML: `정답: <b>${esc(q.type === 5 ? ROLES[q.answer] : q.type === 4 && q.answer === 'X' ? 'X (관사 없음)' : q.answer)}</b>`,
+    questionPlain: sp.plain,
+    answerPlain: q.type === 5 ? ROLES[q.answer] : q.answer,
+  };
   const help = (q.type === 1 || q.type === 2) && !q.context ? sp.helpNoCtx : sp.help;
   const label = sp.label || ((o) => esc(o));
   box.innerHTML = `<div class="qhelp">${help}</div>${sp.stem}
@@ -91,10 +96,46 @@ export function renderChoice(box, q) {
         if (!ok) b.classList.add('wrong');
         const ansLabel = q.type === 5 ? ROLES[q.answer] : q.type === 4 && q.answer === 'X' ? 'X (관사 없음)' : q.answer;
         const mineLabel = q.type === 5 ? ROLES[v] : v;
-        res({ ok, mine: mineLabel, answerHTML: `정답: <b>${esc(ansLabel)}</b>`, questionPlain: sp.plain, answerPlain: ansLabel });
+        const out = { ok, mine: mineLabel, answerHTML: `정답: <b>${esc(ansLabel)}</b>`, questionPlain: sp.plain, answerPlain: ansLabel };
+        if (q.type === 3 && q.pair) setTimeout(() => pairStep(box, q, out, res), ok ? 650 : 1100);
+        else res(out);
       };
     });
   });
+}
+
+/* 짝꿍 찾기 ② — 두 짝꿍의 품사 고르기 (형용사↔명사, 부사↔동사) */
+const PAIR_POS = ['N', 'V', 'A', 'D'];
+const PNAME = { N: '명사', V: '동사', A: '형용사', D: '부사' };
+function pairStep(box, q, first, res) {
+  const P = q.pair;
+  const picks = { mod: null, head: null };
+  const rule = P.modPos === 'A' ? '형용사는 <b>명사</b>와 짝꿍! 형용사 뒤에는 명사가 와요' : '부사는 <b>동사</b>와 짝꿍! 부사는 동사를 꾸며요';
+  const draw = () => {
+    box.innerHTML = `<div class="qhelp">② 두 짝꿍의 <em>품사</em>를 각각 고르세요 <small>${first.ok ? '짝꿍 정답! 이제 품사까지!' : `짝꿍 정답은 「${esc(q.answer)}」 — 이제 품사를 골라 봐요`}</small></div>
+      <div class="stem sent pairline">${esc(q.prompt.replace(/\s*\(.*\)\s*$/, '')).replace('___', `<b class="hl">${esc(q.answer)}</b>`)}</div>
+      ${['mod', 'head'].map((k) => `<div class="pairrow"><span class="pw">${esc(P[k])}</span><div class="opts pos4">${PAIR_POS.map((p) => `<button class="opt ${picks[k] === p ? 'on' : ''}" data-k="${k}" data-p="${p}">${PNAME[p]}</button>`).join('')}</div></div>`).join('')}
+      <div class="row"><button class="primary" id="pairGo" ${picks.mod && picks.head ? '' : 'disabled'}>확인</button></div>`;
+    box.querySelectorAll('[data-k]').forEach((b) => { b.onclick = () => { picks[b.dataset.k] = b.dataset.p; draw(); }; });
+    box.querySelector('#pairGo').onclick = () => {
+      const ok2 = picks.mod === P.modPos && picks.head === P.headPos;
+      box.querySelectorAll('[data-k]').forEach((b) => {
+        b.disabled = true;
+        if (b.dataset.p === P[b.dataset.k === 'mod' ? 'modPos' : 'headPos']) b.classList.add('right');
+        else if (b.classList.contains('on')) b.classList.add('wrong');
+      });
+      box.querySelector('#pairGo').remove();
+      res({
+        ...first,
+        ok: first.ok && ok2,
+        mine: `${first.mine} · ${P.mod}=${PNAME[picks.mod]}, ${P.head}=${PNAME[picks.head]}`,
+        answerHTML: `${first.answerHTML}<div class="pairrule">${esc(P.mod)} = <b>${PNAME[P.modPos]}</b> · ${esc(P.head)} = <b>${PNAME[P.headPos]}</b><br>👉 ${rule}</div>`,
+        answerPlain: `${first.answerPlain} (${P.mod}=${PNAME[P.modPos]}, ${P.head}=${PNAME[P.headPos]})`,
+      });
+    };
+  };
+  box._answerInfo = { ...box._answerInfo, answerHTML: `${first.answerHTML}<div class="pairrule">${esc(P.mod)} = <b>${PNAME[P.modPos]}</b> · ${esc(P.head)} = <b>${PNAME[P.headPos]}</b><br>👉 ${rule}</div>` };
+  draw();
 }
 
 /* ---------------- 청크 절단소 (8·9) ---------------- */
@@ -106,6 +147,7 @@ export function renderSplit(box, q, cfg) {
   let labels = [];
   let brush = 'N';
   let phase = 1;
+  box._answerInfo = { answerHTML: `정답<div class="ans-line">${chunksHTML(answer, q.end)}</div>`, questionPlain: tokens.join(' ') + (q.end || ''), answerPlain: chunksPlain(answer) + (q.end || '') };
 
   const draw = () => {
     if (phase === 1) {
@@ -159,6 +201,7 @@ export function renderSplit(box, q, cfg) {
 /* ---------------- 오류 수리점 (10) ---------------- */
 export function renderRepair(box, q) {
   const r = buildRepair(q);
+  box._answerInfo = { answerHTML: `바르게 고친 분석<div class="ans-line">${chunksHTML(r.correct, q.end)}</div>`, questionPlain: chunksPlain(r.shown) + (q.end || ''), answerPlain: chunksPlain(r.correct) + (q.end || '') };
   return new Promise((res) => {
     const step1 = () => {
       box.innerHTML = `<div class="qhelp">① <em>잘못 분석된 덩어리</em>를 찾아 누르세요</div>
@@ -209,6 +252,7 @@ export function renderPuzzle(box, q) {
   const chunks = parseChunks(q.en).map((c, i) => ({ ...c, i, text: puzzleText(c.text) }));
   let pool = shuffle(chunks);
   const placed = [];
+  { const answer = parseChunks(q.en); box._answerInfo = { answerHTML: `정답<div class="ans-line">${chunksHTML(answer, q.end)}</div>`, questionPlain: q.ko, answerPlain: answer.map((c) => c.text).join(' / ') + (q.end || '') }; }
   return new Promise((res) => {
     const draw = () => {
       const shownPlaced = placed.map((c, k) => ({ ...c, text: k === 0 ? cap(c.text) : c.text }));
@@ -244,6 +288,7 @@ export function renderTower(box, q, cfg) {
   const mode = cfg?.grading?.type12Mode || 'typing';
   const placed = [];
   let orderOk = false;
+  { const sentence = cap(q.order.map((i) => ko[i].answers[0]).join(' ')) + (q.end || ''); box._answerInfo = { answerHTML: `정답<div class="ans-line en">${esc(sentence)}</div><div class="ans-line">${q.order.map((i) => `${chunkHTML(ko[i])} = <b>${esc(ko[i].answers.join(' / '))}</b>`).join('<br>')}</div>`, questionPlain: ko.map((c) => c.text).join(' ') + '.', answerPlain: sentence }; }
   return new Promise((res) => {
     const step1 = () => {
       box.innerHTML = `<div class="qhelp"><b>STEP 1</b> 한글 덩어리를 <em>영어 어순</em>으로 놓으세요 <small>주어 → 동사 → 목적어/보어 → &lt;어디서&gt; → &lt;언제&gt;</small></div>

@@ -1,7 +1,7 @@
 // 퀴즈 연습장 — 유형을 골라 한 칸(5문제)을 풀어 본다. (3단계에서 보드 칸이 이 엔진을 부른다)
 import { TYPES } from '../quiz/constants.js';
 import { BANK, config, draw, setLevel, getLevel } from '../quiz/bank.js';
-import { runCell } from '../quiz/cell.js';
+import { runCell, timeLimitFor } from '../quiz/cell.js';
 import { esc } from '../quiz/notation.js';
 import { setMuted, isMuted } from '../quiz/sound.js';
 import { playRun, playCrane, playKart, playShoot, GAMES } from '../games/index.js';
@@ -65,7 +65,8 @@ async function play(type) {
   S.used = [...used];
   save();
   window.scrollTo(0, 0);
-  const r = await runCell(app, { type, questions: qs, config });
+  const region = REGIONS.findIndex((rg) => rg.types.includes(type));
+  const r = await runCell(app, { type, questions: qs, config, timeLimit: timeLimitFor(type, region, config) });
   S.played++;
   S.coins += r.reward.coins;
   S.moves += r.reward.move;

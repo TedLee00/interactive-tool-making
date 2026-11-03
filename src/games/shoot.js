@@ -2,13 +2,22 @@
 import { openGame, rand, pick, shuffle, clamp, roundRect } from './engine.js';
 import data from '../../data/minigames.json';
 
+// 3단계 × 4라운드 = 12라운드 (약 3분 30초) — 단계가 오를수록 과녁이 빨라진다
 const ROUNDS = [
-  { target: '명사', pool: 'pos', sec: 12 },
-  { target: '부사', pool: 'pos', sec: 12 },
-  { target: '형용사', pool: 'pos', sec: 12 },
-  { target: '동사', pool: 'pos', sec: 12 },
-  { target: '부사구', pool: 'chunks', sec: 14 },
+  { target: '명사', pool: 'pos', sec: 15 },
+  { target: '부사', pool: 'pos', sec: 15 },
+  { target: '형용사', pool: 'pos', sec: 15 },
+  { target: '동사', pool: 'pos', sec: 15 },
+  { target: '형용사', pool: 'pos', sec: 14 },
+  { target: '명사', pool: 'pos', sec: 14 },
+  { target: '동사', pool: 'pos', sec: 14 },
+  { target: '부사', pool: 'pos', sec: 14 },
+  { target: '부사구', pool: 'chunks', sec: 18 },
+  { target: '형용사구', pool: 'chunks', sec: 18 },
+  { target: '명사구', pool: 'chunks', sec: 18 },
+  { target: '부사절', pool: 'chunks', sec: 18 },
 ];
+const PAUSE = 1.8; // 라운드 사이 쉬는 시간(미션 읽기)
 const RING = ['#E0453A', '#fff', '#2E7BC4', '#fff', '#FFD43B'];
 
 export function playShoot() {
@@ -19,9 +28,9 @@ export function playShoot() {
     music: 'mgArena',
     howto: [
       '화면 위 <b>지시된 품사</b>의 과녁만 <b>정확히 탭</b>해서 쏘기',
-      '라운드마다 <b>12초!</b> 명사 → 부사 → 형용사 → 동사 → 부사구',
+      '라운드 <b>12개</b>(각 14~18초): 명사·부사·형용사·동사 → 마지막엔 <b>부사구·형용사구·명사구·부사절</b>',
       '틀린 과녁을 쏘면 <b>-1초</b> · 빈 곳을 쏘면 콤보가 끊겨요',
-      '연속으로 맞히면 점수가 쑥쑥! 많이 맞히면 오예스 쿠폰 🍫',
+      '연속으로 맞히면 점수가 쑥쑥! <b>55발</b> 이상 맞히면 오예스 쿠폰 🍫',
     ],
     async setup(ctx) {
       const S = { round: -1, t: 0, left: 0, targets: [], spawnT: 0, score: 0, hits: 0, wrong: 0, combo: 0, best: 0, holes: [], gun: 0, aim: { x: 180, y: 300 }, finished: false, flash: 0 };
@@ -38,8 +47,8 @@ export function playShoot() {
         S.round++;
         if (S.round >= ROUNDS.length) return finish();
         const R = ROUNDS[S.round];
-        S.left = R.sec; S.targets = []; S.spawnT = 0; S.roundHits = 0;
-        banner.innerHTML = `<small>ROUND ${S.round + 1}/${ROUNDS.length}</small><b>「<span class="tg">${R.target}</span>」만 쏴라!</b>`;
+        S.left = R.sec; S.targets = []; S.spawnT = 0; S.roundHits = 0; S.pause = S.round > 0 ? PAUSE : 0.6;
+        banner.innerHTML = `<small>ROUND ${S.round + 1}/${ROUNDS.length}</small><b>「<span class="tg">${R.target}</span>」만 쏴라!</b>${R.pool === 'chunks' ? '<em>💡 단어 하나가 아니라 <span class="tg">덩어리(구·절)</span>의 품사!</em>' : ''}`;
         banner.classList.remove('pop'); void banner.offsetWidth; banner.classList.add('pop');
         if (S.round > 0) ctx.callout('nice', `${R.target}만!`);
       }
@@ -52,7 +61,8 @@ export function playShoot() {
         const label = pick((good ? W.good : W.bad).filter((w) => !present.has(w))) || pick(good ? W.good : W.bad);
         const r = R.pool === 'chunks' ? 36 : 31;
         const ry = rows();
-        const sp = 55 + S.round * 12;
+        const lvl = Math.min(6, S.round); // 난이도 상한
+        const sp = 60 + lvl * 12;
         // 줄마다 방향 고정(겹치지 않게) · 입구가 비어 있는 줄에만 등장
         const free = [0, 1, 2].filter((row) => {
           const dir = row % 2 ? -1 : 1;
@@ -72,7 +82,7 @@ export function playShoot() {
           if (pops.every((t) => Math.abs(t.x - c) > r * 2 + 16)) x = c;
         }
         if (x === null) return;
-        S.targets.push({ kind: 'pop', label, good, x, y: ctx.H * 0.8, base: ctx.H * 0.8, up: 0, life: 2.4 - S.round * 0.15, r, t: 0, alive: true });
+        S.targets.push({ kind: 'pop', label, good, x, y: ctx.H * 0.8, base: ctx.H * 0.8, up: 0, life: 2.4 - lvl * 0.12, r, t: 0, alive: true });
       }
 
       function shoot(p) {
@@ -106,11 +116,11 @@ export function playShoot() {
       function finish() {
         if (S.finished) return;
         S.finished = true;
-        const snack = S.hits >= 18 ? 'cake' : null;
+        const snack = S.hits >= 55 ? 'cake' : null;
         ctx.end({
-          score: S.score, cleared: S.hits >= 12, coins: Math.min(30, S.hits * 2), snack,
-          headline: S.hits >= 18 ? '명사수 등장!' : S.hits >= 12 ? '사격 성공!' : '조금만 더 정확하게!', legendAt: 3500,
-          lines: [`명중 <b>${S.hits}</b> · 잘못 쏜 과녁 ${S.wrong}`, `최고 콤보 <b>${S.best}</b> · 18발 이상 명중하면 오예스 쿠폰!`],
+          score: S.score, cleared: S.hits >= 35, coins: Math.min(30, Math.round(S.hits / 2)), snack,
+          headline: S.hits >= 55 ? '명사수 등장!' : S.hits >= 35 ? '사격 성공!' : '조금만 더 정확하게!', legendAt: 9000,
+          lines: [`명중 <b>${S.hits}</b> · 잘못 쏜 과녁 ${S.wrong}`, `최고 콤보 <b>${S.best}</b> · 35발 명중하면 성공 · 55발 이상이면 오예스 쿠폰!`],
         });
       }
 
@@ -118,6 +128,7 @@ export function playShoot() {
         start() { nextRound(); },
         update(dt) {
           if (S.finished || S.round < 0) return;
+          if (S.pause > 0) { S.pause -= dt; ctx.hud(`⏸ 준비! · 🎯 ${S.hits} · <b>${S.score}</b>`); return; }
           ctx.input.taps.forEach(shoot);
           S.t += dt;
           S.left -= dt;
@@ -126,7 +137,7 @@ export function playShoot() {
           if (S.left <= 0) { ctx.floatText('TIME!', ctx.W / 2, ctx.H * 0.45, '#D9822B', 30); nextRound(); return; }
           S.spawnT -= dt;
           const alive = S.targets.filter((t) => t.alive).length;
-          if (S.spawnT <= 0 && alive < 6) { spawn(); S.spawnT = Math.max(0.35, 0.75 - S.round * 0.08); }
+          if (S.spawnT <= 0 && alive < 6) { spawn(); S.spawnT = Math.max(0.42, 0.78 - Math.min(6, S.round) * 0.06); }
           S.targets.forEach((t) => {
             t.t += dt;
             if (t.kind === 'slide') { t.x += t.vx * dt; t.ty = t.y + Math.sin(t.t * 4) * 3; if (t.x < -60 || t.x > ctx.W + 60) t.alive = false; }

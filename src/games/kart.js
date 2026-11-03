@@ -6,6 +6,7 @@ import { openGame, loadImage, asset, charSprite, pick, roundRect } from './engin
 import { drawMixed } from '../quiz/bank.js';
 import { renderChoice } from '../quiz/renderers.js';
 import { legacySfx as lsfx, sfxNo as lsfxNo } from '../fx/legacy.js';
+import mg from '../../data/minigames.json';
 
 const QUIZ_TYPES = [1, 2, 3, 4, 5, 6, 7];
 
@@ -33,6 +34,7 @@ export function playKart({ charId = 'bboy', name = '나', used } = {}) {
     howto: [
       '왼손 <b>◀ ▶ 핸들</b> · 오른손 <b>⚡ 악셀</b> (꾹 2초 ↑ 2단 가속, 게이지가 줄어요)',
       '<b>❓ 퀴즈 존</b>을 지나면 <b>순간정지!</b> 맞히면 ⚡ 게이지 가득 + 부스터',
+      '<b class="red">🛣️ 품사 레인</b>: 화면 위 단어의 품사가 적힌 <b>레인으로 달리면 부스터!</b> 틀린 레인은 감속',
       '🌮 타코 = 게이지 가득 · 🍌 바나나 · 🚧 공사중 벽 · 🚶 영크크·늙크크 조심!',
       '라이벌: <b>보강 여신 · 묵언수행 · 보강대장 · B-BOY</b> — 1등이면 쿠키앤크림!',
     ],
@@ -51,7 +53,8 @@ export function playKart({ charId = 'bboy', name = '나', used } = {}) {
       MSG.textContent = '왼손 핸들 ◀ ▶ · 오른손 ⚡ 악셀';
 
       // ---- 코스 (legacy 값 그대로) ----
-      const L = 22100;
+      const L = 42000; // 원래 22100 → 약 3분 넘게 달리도록 늘림
+      const LS = L / 22100;
       const RW = Math.min(232, W * 0.58);
       const AMP = Math.max(26, (W - RW) / 2 - 10);
       let PY = H * 0.74;
@@ -65,15 +68,26 @@ export function playKart({ charId = 'bboy', name = '나', used } = {}) {
         { d: Math.round(L * 2 / 3), kind: 'old', sp: 120, x: -30, on: false, wait: false, done: false, dir: 1 }];
       // legacy ↓
       for (let d = 950; d < L - 450; d += 300 + rnd() * 160) { const k = (rnd() * 2 - 1) * .36; BAN.push({d, k, gone: false}); if (rnd() < .35) BAN.push({d: d + 26, k: k + (k > 0 ? -.2 : .2), gone: false}); }
-    [2300, 5000, 7700, 10200, 12800, 15900, 18400, 20500].forEach((d, i) => TAC.push({d, k: [-.28, .3, -.05, .26, -.2, .12, -.3, .22][i], gone: false}));
+    [2300, 5000, 7700, 10200, 12800, 15900, 18400, 20500].forEach((d, i) => TAC.push({d: Math.round(d * LS), k: [-.28, .3, -.05, .26, -.2, .12, -.3, .22][i], gone: false}));
     BAN.forEach(b => { if (Math.abs(b.d - WALL.d) < 260 || PEDS.some(q => Math.abs(b.d - q.d) < 220)) b.gone = true; });
     // keep tacos clear of bananas
     TAC.forEach(t => BAN.forEach(b => { if (Math.abs(b.d - t.d) < 70 && Math.abs(b.k - t.k) < .22) b.gone = true; }));
       // legacy ↑
 
       // ❓ 퀴즈 존 (벽·보행자와 떨어진 곳)
-      const QZ = [0.13, 0.41, 0.53, 0.76, 0.9].map((f) => ({ d: Math.round(L * f), done: false }));
+      const QZ = [0.08, 0.22, 0.4, 0.53, 0.7, 0.88].map((f) => ({ d: Math.round(L * f), done: false }));
       BAN.forEach((b) => { if (QZ.some((z) => Math.abs(b.d - z.d) < 240)) b.gone = true; });
+      // 🛣️ 품사 레인: 길이 3줄로 나뉘고 줄마다 품사 이름. 위에 나온 단어의 품사 레인으로 지나가면 부스터!
+      const LANE_LEN = 900;
+      const LZ = [0.15, 0.45, 0.6, 0.78, 0.95].map((f) => {
+        const target = pick(['명사', '동사', '형용사', '부사']);
+        const word = pick(mg.pos[target]);
+        const others = ['명사', '동사', '형용사', '부사'].filter((x) => x !== target);
+        const labels = [target, ...others.sort(() => Math.random() - 0.5).slice(0, 2)].sort(() => Math.random() - 0.5);
+        return { d: Math.round(L * f), target, word, labels, done: false, shown: false };
+      });
+      BAN.forEach((b) => { if (LZ.some((z) => b.d > z.d - LANE_LEN - 120 && b.d < z.d + 80)) b.gone = true; });
+      TAC.forEach((o) => { if (LZ.some((z) => o.d > z.d - LANE_LEN - 120 && o.d < z.d + 80)) o.d += LANE_LEN + 300; });
 
       const KW = Math.max(36, Math.min(46, W * 0.115)), KH = KW * 84 / 60;
       const mk = (o) => Object.assign({ v: 0, spin: 0, boost: 0, head: 0, fin: 0, steerX: 0, lane: o.lane0 || 0, laneT: 0 }, o);
@@ -87,17 +101,28 @@ export function playKart({ charId = 'bboy', name = '나', used } = {}) {
       let gauge = 1, accel = false;
       const FUEL_SEC = 3.36, REGEN_SEC = 12, ACC1 = 1.3, ACC2 = 1.5, ACC_T2 = 2;
       let holdT = 0;
-      let mode = 'count', t = 0, steer = 0, order = [], place = 5, quizzes = { ok: 0, n: 0 }, streak = 0, finished = false;
+      let mode = 'count', t = 0, steer = 0, order = [], place = 5, quizzes = { ok: 0, n: 0 }, lanes = { ok: 0, n: 0 }, streak = 0, finished = false;
       const FX = [];
       const say = (txt, x, y, col) => FX.push({ txt, x, y, life: 1.1, col });
 
       // ---- 조작 ----
       const hold = (v) => ({ onDown: () => { steer = v; }, onUp: () => { if (steer === v) steer = 0; } });
-      E.button('◀', 'left', hold(-1));
-      E.button('▶', 'right', hold(1));
-      const pedal = E.button('<span class="pgauge"><i id="pgFill"></i><em id="pgTxt">100%</em></span>⚡<small>악셀 꾹!</small>', 'drop pedal', { onDown: () => { accel = true; }, onUp: () => { accel = false; } });
-      const pgFill = pedal.querySelector('#pgFill');
-      const pgTxt = pedal.querySelector('#pgTxt');
+      // 왼쪽: 자동차 핸들 모양 테두리 안에 ◀ ▶ (딱 붙여서 엄지 하나로)
+      const wheel = document.createElement('div');
+      wheel.className = 'kwheel';
+      wheel.innerHTML = '<i class="rim"></i><i class="hub"></i>';
+      E.ctrl.appendChild(wheel);
+      wheel.appendChild(E.button('◀', 'left', hold(-1)));
+      wheel.appendChild(E.button('▶', 'right', hold(1)));
+      // 오른쪽: 큰 악셀 게이지(버튼 위) + 악셀
+      const pcol = document.createElement('div');
+      pcol.className = 'kpcol';
+      pcol.innerHTML = '<div class="kgauge"><span>⚡ 악셀 게이지</span><div class="bar"><i id="pgFill"></i></div><b id="pgTxt">100%</b></div>';
+      E.ctrl.appendChild(pcol);
+      const pedal = E.button('⚡ 악셀<small>꾹 누르기</small>', 'drop pedal', { onDown: () => { accel = true; }, onUp: () => { accel = false; } });
+      pcol.appendChild(pedal);
+      const pgFill = pcol.querySelector('#pgFill');
+      const pgTxt = pcol.querySelector('#pgTxt');
 
       const onRoad = r => Math.abs(r.x - cx(r.d)) < RW / 2 - 6;
     function spinOut(r) { r.nSpin = (r.nSpin || 0) + 1; (r.spinD = r.spinD || []).push(Math.round(r.d)); r.spin = 1.15; r.boost = 0; r.v *= .6; say('빙글!', r.x, PY - (r.d - ME.d) - KH * .7, '#F2A01E');
@@ -370,14 +395,14 @@ export function playKart({ charId = 'bboy', name = '나', used } = {}) {
         place = order.indexOf(ME) + 1;
         const rows = R.slice().sort((a, b) => placeOf(a) - placeOf(b)).map((r) => `${placeOf(r)}. ${r.me ? `<b>${r.name}</b>` : r.name}`).join(' · ');
         setTimeout(() => E.end({
-          score: Math.max(0, 1500 - (place - 1) * 300) + quizzes.ok * 200, cleared: place <= 3,
+          score: Math.max(0, 1500 - (place - 1) * 300) + quizzes.ok * 200 + lanes.ok * 150, cleared: place <= 3,
           coins: [0, 20, 14, 10, 6, 4][place], snack: place === 1 ? 'cookie' : null,
           headline: place === 1 ? '🏆 1등 골인!' : `${place}등 골인!`, legendAt: 2400,
-          lines: [`❓ 퀴즈 존 <b>${quizzes.ok}</b>/${quizzes.n} 정답`, rows],
+          lines: [`❓ 퀴즈 존 <b>${quizzes.ok}</b>/${quizzes.n} 정답 · 🛣️ 품사 레인 <b>${lanes.ok}</b>/${lanes.n}`, rows],
         }), 1600);
       }
 
-      window.__KG = { R, QZ, PEDS, WALL, L, get gauge() { return gauge; }, get mode() { return mode; } }; // 테스트용
+      window.__KG = { R, QZ, LZ, PEDS, WALL, L, get gauge() { return gauge; }, get mode() { return mode; } }; // 테스트용
       return {
         start() { mode = 'race'; },
         update(dt) {
@@ -398,6 +423,26 @@ export function playKart({ charId = 'bboy', name = '나', used } = {}) {
           });
           for (let i = FX.length - 1; i >= 0; i--) { FX[i].life -= dt; FX[i].y -= 34 * dt; if (FX[i].life <= 0) FX.splice(i, 1); }
           if (!finished) {
+            LZ.forEach((z) => {
+              if (!z.shown && ME.d > z.d - LANE_LEN - 500) { z.shown = true; MSG.textContent = `🛣️ 품사 레인! 「<span class="tg">${z.word}</span>」의 품사 레인으로 달려라!`; lsfx([660, 880], 'square', 0.06, 0.05); }
+              if (!z.done && ME.d >= z.d) {
+                z.done = true;
+                const c = cx(z.d);
+                const k = Math.max(0, Math.min(2, Math.floor((ME.x - (c - RW / 2)) / (RW / 3))));
+                if (z.labels[k] === z.target) {
+                  ME.boost = 2.2; gauge = Math.min(1, gauge + 0.35); lanes.ok++;
+                  say(`⚡ ${z.word} = ${z.target}! 부스터!`, ME.x, PY - KH, '#1E9B5B');
+                  E.callout('easy', `${z.target} 레인 정답!`); MSG.textContent = `⚡ 정답! ${z.word} = <span class="tg">${z.target}</span> · 부스터!`;
+                  lsfx([523, 659, 784, 1047], 'square', 0.08, 0.04);
+                } else {
+                  ME.v *= 0.55; ME.boost = 0;
+                  say(`✘ ${z.word}는 ${z.target}!`, ME.x, PY - KH, '#E0453A');
+                  MSG.textContent = `✘ 아쉬워요! ${z.word}는 <span class="tg">${z.target}</span>예요`;
+                  lsfxNo();
+                }
+                lanes.n++;
+              }
+            });
             const z = QZ.find((q) => !q.done && ME.d >= q.d);
             if (z) { z.done = true; quizStop(z); }
             place = placeOf(ME);
@@ -406,11 +451,44 @@ export function playKart({ charId = 'bboy', name = '나', used } = {}) {
           E.hud(`<b>${place}</b>/5등 · ${kmh}km/h`);
           pgFill.style.width = `${Math.round(gauge * 100)}%`;
           pgTxt.textContent = `${Math.round(gauge * 100)}%`;
-          pedal.classList.toggle('low', gauge < 0.2);
+          pcol.classList.toggle('low', gauge < 0.2);
         },
         draw() {
           W = E.W; H = E.H; PY = H * 0.74;
           draw();
+          // 🛣️ 품사 레인 그리기
+          LZ.forEach((z) => {
+            const y0 = sy(z.d - LANE_LEN); const y1 = sy(z.d);
+            if (y1 > H + 40 || y0 < -60) return;
+            const cols = ['rgba(224,69,58,.22)', 'rgba(46,123,196,.22)', 'rgba(40,160,100,.22)'];
+            for (let yy = Math.max(-6, y1); yy <= Math.min(H + 6, y0); yy += 6) {
+              const d = ME.d + PY - yy; const c = cx(d); const lw = RW / 3;
+              for (let k = 0; k < 3; k++) { ctx.fillStyle = z.done ? 'rgba(200,200,200,.15)' : cols[k]; ctx.fillRect(c - RW / 2 + k * lw, yy, lw, 6.5); }
+              if (Math.floor(d / 30) % 2 === 0) { ctx.fillStyle = 'rgba(255,255,255,.9)'; ctx.fillRect(c - RW / 2 + lw - 2, yy, 4, 6.5); ctx.fillRect(c - RW / 2 + 2 * lw - 2, yy, 4, 6.5); }
+            }
+            // 레인 이름 (여러 번 되풀이)
+            for (let dd = z.d - LANE_LEN + 120; dd < z.d; dd += 260) {
+              const y = sy(dd); if (y < -20 || y > H + 20) continue;
+              const c = cx(dd); const lw = RW / 3;
+              z.labels.forEach((lab, k) => {
+                const x = c - RW / 2 + lw * (k + 0.5);
+                rr(x - lw / 2 + 4, y - 13, lw - 8, 24, 8, z.done ? '#B9B9C6' : ['#E0453A', '#2E7BC4', '#28A064'][k]);
+                ctx.font = "400 15px Jua, 'Noto Sans KR', sans-serif"; ctx.textAlign = 'center'; ctx.fillStyle = '#fff'; ctx.fillText(lab, x, y + 5);
+              });
+              ctx.textAlign = 'left';
+            }
+            // 시작 표지: 단어
+            const ys = sy(z.d - LANE_LEN - 60);
+            if (ys > -30 && ys < H + 30) {
+              const c = cx(z.d - LANE_LEN - 60);
+              rr(c - 92, ys - 20, 184, 34, 12, '#FFFBF0');
+              ctx.strokeStyle = '#E0453A'; ctx.lineWidth = 3; roundRect(ctx, c - 92, ys - 20, 184, 34, 12); ctx.stroke();
+              ctx.font = "400 18px Jua, 'Noto Sans KR', sans-serif"; ctx.textAlign = 'center'; ctx.fillStyle = '#E0453A';
+              ctx.fillText(`「${z.word}」 품사 레인으로!`, c, ys + 3); ctx.textAlign = 'left';
+            }
+            // 끝 판정선
+            if (y1 > -10 && y1 < H + 10) { const c = cx(z.d); ctx.fillStyle = '#FFD43B'; ctx.fillRect(c - RW / 2, y1 - 3, RW, 6); }
+          });
           // 퀴즈 존 띠
           QZ.forEach((z) => {
             const y = sy(z.d); if (y < -40 || y > H + 40) return;

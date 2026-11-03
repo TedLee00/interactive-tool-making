@@ -82,7 +82,8 @@ export function loadChar(id) {
       f.width = 256; f.height = 256;
       const fx = f.getContext('2d');
       const sx = (full.width - side) / 2;
-      fx.drawImage(full, sx, 0, side, side, 0, 0, 256, 256);
+      // 얼굴이 동그라미 안에 다 들어오게 조금 작게(여백) 그린다
+      fx.drawImage(full, sx, 0, side, side, 34, 40, 188, 188);
       return { full, sticker: st, face: f.toDataURL('image/png') };
     })());
   }

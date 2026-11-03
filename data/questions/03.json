@@ -12,7 +12,13 @@
    "친절한"
   ],
   "explain": "\"맛있는\"은(는) 명사 \"급식\"과(와) 짝 → \"맛있는\"은(는) ( 형용사 ). 형용사는 명사를 꾸민다!",
-  "source": "교재 1-2"
+  "source": "교재 1-2",
+  "pair": {
+   "mod": "맛있는",
+   "modPos": "A",
+   "head": "급식",
+   "headPos": "N"
+  }
  },
  {
   "id": "03-002",
@@ -27,7 +33,13 @@
    "숙제"
   ],
   "explain": "\"조용히\"은(는) 동사 \"잔다\"와(과) 짝 → \"조용히\"은(는) < 부사 >. 부사는 동사를 꾸민다!",
-  "source": "교재 1-2"
+  "source": "교재 1-2",
+  "pair": {
+   "mod": "조용히",
+   "modPos": "D",
+   "head": "잔다",
+   "headPos": "V"
+  }
  },
  {
   "id": "03-003",
@@ -42,7 +54,13 @@
    "시끄러운"
   ],
   "explain": "\"예쁜\"은(는) 명사 \"필통\"과(와) 짝 → \"예쁜\"은(는) ( 형용사 ). 형용사는 명사를 꾸민다!",
-  "source": "교재 1-2"
+  "source": "교재 1-2",
+  "pair": {
+   "mod": "예쁜",
+   "modPos": "A",
+   "head": "필통",
+   "headPos": "N"
+  }
  },
  {
   "id": "03-004",
@@ -57,7 +75,13 @@
    "시험"
   ],
   "explain": "\"열심히\"은(는) 동사 \"공부한다\"와(과) 짝 → \"열심히\"은(는) < 부사 >. 부사는 동사를 꾸민다!",
-  "source": "교재 1-2"
+  "source": "교재 1-2",
+  "pair": {
+   "mod": "열심히",
+   "modPos": "D",
+   "head": "공부한다",
+   "headPos": "V"
+  }
  },
  {
   "id": "03-005",
@@ -72,7 +96,13 @@
    "체육복"
   ],
   "explain": "\"빨리\"은(는) 동사 \"달린다\"와(과) 짝 → \"빨리\"은(는) < 부사 >. 부사는 동사를 꾸민다!",
-  "source": "교재 1-2"
+  "source": "교재 1-2",
+  "pair": {
+   "mod": "빨리",
+   "modPos": "D",
+   "head": "달린다",
+   "headPos": "V"
+  }
  },
  {
   "id": "03-006",
@@ -87,7 +117,13 @@
    "조용히"
   ],
   "explain": "\"친절한\"은(는) 명사 \"선생님\"과(와) 짝 → \"친절한\"은(는) ( 형용사 ). 형용사는 명사를 꾸민다!",
-  "source": "교재 1-2"
+  "source": "교재 1-2",
+  "pair": {
+   "mod": "친절한",
+   "modPos": "A",
+   "head": "선생님",
+   "headPos": "N"
+  }
  },
  {
   "id": "03-007",
@@ -102,7 +138,13 @@
    "크게"
   ],
   "explain": "\"무서운\"은(는) 명사 \"영화\"과(와) 짝 → \"무서운\"은(는) ( 형용사 ). 형용사는 명사를 꾸민다!",
-  "source": "교재 1-2"
+  "source": "교재 1-2",
+  "pair": {
+   "mod": "무서운",
+   "modPos": "A",
+   "head": "영화",
+   "headPos": "N"
+  }
  },
  {
   "id": "03-008",
@@ -117,7 +159,13 @@
    "학원"
   ],
   "explain": "\"항상\"은(는) 동사 \"늦는다\"와(과) 짝 → \"항상\"은(는) < 부사 >. 부사는 동사를 꾸민다! (빈도부사)",
-  "source": "교재 1-2"
+  "source": "교재 1-2",
+  "pair": {
+   "mod": "항상",
+   "modPos": "D",
+   "head": "늦는다",
+   "headPos": "V"
+  }
  },
  {
   "id": "03-009",
@@ -132,7 +180,13 @@
    "매우"
   ],
   "explain": "\"시끄러운\"은(는) 명사 \"교실\"과(와) 짝 → \"시끄러운\"은(는) ( 형용사 ). 형용사는 명사를 꾸민다!",
-  "source": "교재 1-2"
+  "source": "교재 1-2",
+  "pair": {
+   "mod": "시끄러운",
+   "modPos": "A",
+   "head": "교실",
+   "headPos": "N"
+  }
  },
  {
   "id": "03-010",
@@ -147,7 +201,13 @@
    "친구"
   ],
   "explain": "\"천천히\"은(는) 동사 \"걷는다\"와(과) 짝 → \"천천히\"은(는) < 부사 >. 부사는 동사를 꾸민다!",
-  "source": "교재 1-2"
+  "source": "교재 1-2",
+  "pair": {
+   "mod": "천천히",
+   "modPos": "D",
+   "head": "걷는다",
+   "headPos": "V"
+  }
  },
  {
   "id": "03-011",
@@ -162,7 +222,13 @@
    "빨리"
   ],
   "explain": "명사 \"떡볶이\" 앞에서 꾸미는 말 → ( 형용사 ) \"매운\"",
-  "source": "교재 1-2"
+  "source": "교재 1-2",
+  "pair": {
+   "mod": "매운",
+   "modPos": "A",
+   "head": "떡볶이",
+   "headPos": "N"
+  }
  },
  {
   "id": "03-012",
@@ -177,7 +243,13 @@
    "책상"
   ],
   "explain": "동사 \"웃는다\"를 꾸미는 말 → < 부사 > \"크게\"",
-  "source": "교재 1-2"
+  "source": "교재 1-2",
+  "pair": {
+   "mod": "크게",
+   "modPos": "D",
+   "head": "웃는다",
+   "headPos": "V"
+  }
  },
  {
   "id": "03-013",
@@ -192,7 +264,13 @@
    "알람"
   ],
   "explain": "동사 \"일어난다\"를 꾸미는 말 → < 부사 > \"일찍\"",
-  "source": "교재 1-2"
+  "source": "교재 1-2",
+  "pair": {
+   "mod": "일찍",
+   "modPos": "D",
+   "head": "일어난다",
+   "headPos": "V"
+  }
  },
  {
   "id": "03-014",
@@ -207,7 +285,13 @@
    "매우"
   ],
   "explain": "명사 \"가방\"을 꾸미는 말 → ( 형용사 ) \"무거운\"",
-  "source": "교재 1-2"
+  "source": "교재 1-2",
+  "pair": {
+   "mod": "무거운",
+   "modPos": "A",
+   "head": "가방",
+   "headPos": "N"
+  }
  },
  {
   "id": "03-015",
@@ -237,7 +321,13 @@
    "항상"
   ],
   "explain": "명사 \"친구\"를 꾸미는 말 → ( 형용사 ) \"착한\"",
-  "source": "교재 1-2"
+  "source": "교재 1-2",
+  "pair": {
+   "mod": "착한",
+   "modPos": "A",
+   "head": "친구",
+   "headPos": "N"
+  }
  },
  {
   "id": "03-017",
@@ -267,7 +357,13 @@
    "책상"
   ],
   "explain": "동사 \"공부한다\"를 꾸미는 말 → < 부사 > \"조용히\"",
-  "source": "교재 1-2"
+  "source": "교재 1-2",
+  "pair": {
+   "mod": "조용히",
+   "modPos": "D",
+   "head": "공부한다",
+   "headPos": "V"
+  }
  },
  {
   "id": "03-019",
@@ -282,7 +378,13 @@
    "질문"
   ],
   "explain": "동사 \"대답했다\"를 꾸미는 말 → < 부사 > \"정확하게\"",
-  "source": "교재 1-2"
+  "source": "교재 1-2",
+  "pair": {
+   "mod": "정확하게",
+   "modPos": "D",
+   "head": "대답했다",
+   "headPos": "V"
+  }
  },
  {
   "id": "03-020",
@@ -297,7 +399,13 @@
    "작게"
   ],
   "explain": "\"귀여운\"은(는) 명사 \"강아지\"과(와) 짝 → \"귀여운\"은(는) ( 형용사 ). 형용사는 명사를 꾸민다!",
-  "source": "교재 1-2"
+  "source": "교재 1-2",
+  "pair": {
+   "mod": "귀여운",
+   "modPos": "A",
+   "head": "강아지",
+   "headPos": "N"
+  }
  },
  {
   "id": "03-021",
@@ -312,7 +420,13 @@
    "게임"
   ],
   "explain": "\"늦게\"은(는) 동사 \"잔다\"와(과) 짝 → \"늦게\"은(는) < 부사 >. 부사는 동사를 꾸민다!",
-  "source": "교재 1-2"
+  "source": "교재 1-2",
+  "pair": {
+   "mod": "늦게",
+   "modPos": "D",
+   "head": "잔다",
+   "headPos": "V"
+  }
  },
  {
   "id": "03-022",
@@ -327,7 +441,13 @@
    "매우"
   ],
   "explain": "명사 \"소리\"를 꾸미는 말 → ( 형용사 ) \"큰\"",
-  "source": "교재 1-2"
+  "source": "교재 1-2",
+  "pair": {
+   "mod": "큰",
+   "modPos": "A",
+   "head": "소리",
+   "headPos": "N"
+  }
  },
  {
   "id": "03-023",
@@ -342,7 +462,13 @@
    "급식"
   ],
   "explain": "동사 \"기다린다\"를 꾸미는 말 → < 부사 > \"오래\"",
-  "source": "교재 1-2"
+  "source": "교재 1-2",
+  "pair": {
+   "mod": "오래",
+   "modPos": "D",
+   "head": "기다린다",
+   "headPos": "V"
+  }
  },
  {
   "id": "03-024",
@@ -357,7 +483,13 @@
    "빨리"
   ],
   "explain": "\"차가운\"은(는) 명사 \"물\"과(와) 짝 → \"차가운\"은(는) ( 형용사 ). 형용사는 명사를 꾸민다!",
-  "source": "교재 1-2"
+  "source": "교재 1-2",
+  "pair": {
+   "mod": "차가운",
+   "modPos": "A",
+   "head": "물",
+   "headPos": "N"
+  }
  },
  {
   "id": "03-025",
@@ -372,7 +504,13 @@
    "carefulness"
   ],
   "explain": "명사 driver와 짝 → ( 형용사 ) careful. -ful은 형용사 꼬리!",
-  "source": "교재 1-1 연습①-D · 2-5"
+  "source": "교재 1-1 연습①-D · 2-5",
+  "pair": {
+   "mod": "careful",
+   "modPos": "A",
+   "head": "driver",
+   "headPos": "N"
+  }
  },
  {
   "id": "03-026",
@@ -387,7 +525,13 @@
    "happen"
   ],
   "explain": "동사 smiled와 짝 → < 부사 > happily. 형용사 + -ly = 부사",
-  "source": "교재 1-1 연습①-D · 2-5"
+  "source": "교재 1-1 연습①-D · 2-5",
+  "pair": {
+   "mod": "happily",
+   "modPos": "D",
+   "head": "smiled",
+   "headPos": "V"
+  }
  },
  {
   "id": "03-027",
@@ -402,7 +546,13 @@
    "excite"
   ],
   "explain": "명사 movie와 짝 → ( 형용사 ) exciting",
-  "source": "교재 1-1 연습①-D · 2-5"
+  "source": "교재 1-1 연습①-D · 2-5",
+  "pair": {
+   "mod": "exciting",
+   "modPos": "A",
+   "head": "movie",
+   "headPos": "N"
+  }
  },
  {
   "id": "03-028",
@@ -417,7 +567,13 @@
    "easiness"
   ],
   "explain": "동사 solved를 꾸민다 → < 부사 > easily",
-  "source": "교재 1-1 연습①-D · 2-5"
+  "source": "교재 1-1 연습①-D · 2-5",
+  "pair": {
+   "mod": "easily",
+   "modPos": "D",
+   "head": "solved",
+   "headPos": "V"
+  }
  },
  {
   "id": "03-029",
@@ -462,7 +618,13 @@
    "endanger"
   ],
   "explain": "명사 place와 짝 → ( 형용사 ) dangerous. -ous는 형용사 꼬리!",
-  "source": "교재 1-1 연습①-D · 2-5"
+  "source": "교재 1-1 연습①-D · 2-5",
+  "pair": {
+   "mod": "dangerous",
+   "modPos": "A",
+   "head": "place",
+   "headPos": "N"
+  }
  },
  {
   "id": "03-032",
@@ -477,7 +639,13 @@
    "correctness"
   ],
   "explain": "동사 answered를 꾸민다 → < 부사 > correctly",
-  "source": "교재 1-1 연습①-D · 2-5"
+  "source": "교재 1-1 연습①-D · 2-5",
+  "pair": {
+   "mod": "correctly",
+   "modPos": "D",
+   "head": "answered",
+   "headPos": "V"
+  }
  },
  {
   "id": "03-033",
@@ -492,7 +660,13 @@
    "create"
   ],
   "explain": "명사 idea와 짝 → ( 형용사 ) creative. -ive는 형용사 꼬리!",
-  "source": "교재 1-1 연습①-D · 2-5"
+  "source": "교재 1-1 연습①-D · 2-5",
+  "pair": {
+   "mod": "creative",
+   "modPos": "A",
+   "head": "idea",
+   "headPos": "N"
+  }
  },
  {
   "id": "03-034",
@@ -522,7 +696,13 @@
    "beautify"
   ],
   "explain": "동사 sings를 꾸민다 → < 부사 > beautifully",
-  "source": "교재 1-1 연습①-D · 2-5"
+  "source": "교재 1-1 연습①-D · 2-5",
+  "pair": {
+   "mod": "beautifully",
+   "modPos": "D",
+   "head": "sings",
+   "headPos": "V"
+  }
  },
  {
   "id": "03-036",
@@ -552,7 +732,13 @@
    "smarten"
   ],
   "explain": "명사 student와 짝 → ( 형용사 ) smart",
-  "source": "교재 1-1 연습①-D · 2-5"
+  "source": "교재 1-1 연습①-D · 2-5",
+  "pair": {
+   "mod": "smart",
+   "modPos": "A",
+   "head": "student",
+   "headPos": "N"
+  }
  },
  {
   "id": "03-038",
@@ -567,7 +753,13 @@
    "quicken"
   ],
   "explain": "동사 runs를 꾸민다 → < 부사 > quickly",
-  "source": "교재 1-1 연습①-D · 2-5"
+  "source": "교재 1-1 연습①-D · 2-5",
+  "pair": {
+   "mod": "quickly",
+   "modPos": "D",
+   "head": "runs",
+   "headPos": "V"
+  }
  },
  {
   "id": "03-039",
@@ -612,7 +804,13 @@
    "populate"
   ],
   "explain": "명사 game과 짝 → ( 형용사 ) popular",
-  "source": "교재 1-1 연습①-D · 2-5"
+  "source": "교재 1-1 연습①-D · 2-5",
+  "pair": {
+   "mod": "popular",
+   "modPos": "A",
+   "head": "game",
+   "headPos": "N"
+  }
  },
  {
   "id": "03-042",
@@ -642,6 +840,390 @@
    "peacemaker"
   ],
   "explain": "동사 slept를 꾸민다 → < 부사 > peacefully",
-  "source": "교재 1-1 연습①-D · 2-5"
+  "source": "교재 1-1 연습①-D · 2-5",
+  "pair": {
+   "mod": "peacefully",
+   "modPos": "D",
+   "head": "slept",
+   "headPos": "V"
+  }
+ },
+ {
+  "id": "03-044",
+  "type": 3,
+  "level": 1,
+  "prompt": "a ___ dog  (귀여운 개)",
+  "answer": "cute",
+  "options": [
+   "cute",
+   "cutely",
+   "cuteness",
+   "cuter"
+  ],
+  "explain": "명사 dog와(과) 짝 → ( 형용사 ) cute. 형용사는 명사를 꾸민다! \"귀여운 개\"",
+  "source": "영어 짝꿍 (추가)",
+  "pair": {
+   "mod": "cute",
+   "modPos": "A",
+   "head": "dog",
+   "headPos": "N"
+  }
+ },
+ {
+  "id": "03-045",
+  "type": 3,
+  "level": 1,
+  "prompt": "___ water  (차가운 물)",
+  "answer": "cold",
+  "options": [
+   "cold",
+   "coldly",
+   "coldness",
+   "colder"
+  ],
+  "explain": "명사 water와(과) 짝 → ( 형용사 ) cold. 형용사는 명사를 꾸민다! \"차가운 물\"",
+  "source": "영어 짝꿍 (추가)",
+  "pair": {
+   "mod": "cold",
+   "modPos": "A",
+   "head": "water",
+   "headPos": "N"
+  }
+ },
+ {
+  "id": "03-046",
+  "type": 3,
+  "level": 1,
+  "prompt": "a ___ girl  (친절한 소녀)",
+  "answer": "kind",
+  "options": [
+   "kind",
+   "kindly",
+   "kindness",
+   "kinds"
+  ],
+  "explain": "명사 girl와(과) 짝 → ( 형용사 ) kind. 형용사는 명사를 꾸민다! \"친절한 소녀\"",
+  "source": "영어 짝꿍 (추가)",
+  "pair": {
+   "mod": "kind",
+   "modPos": "A",
+   "head": "girl",
+   "headPos": "N"
+  }
+ },
+ {
+  "id": "03-047",
+  "type": 3,
+  "level": 1,
+  "prompt": "a ___ day  (화창한 날)",
+  "answer": "sunny",
+  "options": [
+   "sunny",
+   "sun",
+   "sunnily",
+   "suns"
+  ],
+  "explain": "명사 day와(과) 짝 → ( 형용사 ) sunny. 형용사는 명사를 꾸민다! \"화창한 날\"",
+  "source": "영어 짝꿍 (추가)",
+  "pair": {
+   "mod": "sunny",
+   "modPos": "A",
+   "head": "day",
+   "headPos": "N"
+  }
+ },
+ {
+  "id": "03-048",
+  "type": 3,
+  "level": 1,
+  "prompt": "___ food  (맛있는 음식)",
+  "answer": "delicious",
+  "options": [
+   "delicious",
+   "deliciously",
+   "deliciousness",
+   "delight"
+  ],
+  "explain": "명사 food와(과) 짝 → ( 형용사 ) delicious. 형용사는 명사를 꾸민다! \"맛있는 음식\"",
+  "source": "영어 짝꿍 (추가)",
+  "pair": {
+   "mod": "delicious",
+   "modPos": "A",
+   "head": "food",
+   "headPos": "N"
+  }
+ },
+ {
+  "id": "03-049",
+  "type": 3,
+  "level": 1,
+  "prompt": "a ___ flower  (아름다운 꽃)",
+  "answer": "beautiful",
+  "options": [
+   "beautiful",
+   "beautifully",
+   "beauty",
+   "beautify"
+  ],
+  "explain": "명사 flower와(과) 짝 → ( 형용사 ) beautiful. 형용사는 명사를 꾸민다! \"아름다운 꽃\"",
+  "source": "영어 짝꿍 (추가)",
+  "pair": {
+   "mod": "beautiful",
+   "modPos": "A",
+   "head": "flower",
+   "headPos": "N"
+  }
+ },
+ {
+  "id": "03-050",
+  "type": 3,
+  "level": 1,
+  "prompt": "___ music  (시끄러운 음악)",
+  "answer": "loud",
+  "options": [
+   "loud",
+   "loudly",
+   "loudness",
+   "louder"
+  ],
+  "explain": "명사 music와(과) 짝 → ( 형용사 ) loud. 형용사는 명사를 꾸민다! \"시끄러운 음악\"",
+  "source": "영어 짝꿍 (추가)",
+  "pair": {
+   "mod": "loud",
+   "modPos": "A",
+   "head": "music",
+   "headPos": "N"
+  }
+ },
+ {
+  "id": "03-051",
+  "type": 3,
+  "level": 2,
+  "prompt": "a ___ test  (어려운 시험)",
+  "answer": "difficult",
+  "options": [
+   "difficult",
+   "difficulty",
+   "difficultly",
+   "differ"
+  ],
+  "explain": "명사 test와(과) 짝 → ( 형용사 ) difficult. 형용사는 명사를 꾸민다! \"어려운 시험\"",
+  "source": "영어 짝꿍 (추가)",
+  "pair": {
+   "mod": "difficult",
+   "modPos": "A",
+   "head": "test",
+   "headPos": "N"
+  }
+ },
+ {
+  "id": "03-052",
+  "type": 3,
+  "level": 1,
+  "prompt": "walk ___  (천천히 걷다)",
+  "answer": "slowly",
+  "options": [
+   "slowly",
+   "slow",
+   "slowness",
+   "slower"
+  ],
+  "explain": "동사 walk와(과) 짝 → < 부사 > slowly. 부사는 동사를 꾸민다! \"천천히 걷다\"",
+  "source": "영어 짝꿍 (추가)",
+  "pair": {
+   "mod": "slowly",
+   "modPos": "D",
+   "head": "walk",
+   "headPos": "V"
+  }
+ },
+ {
+  "id": "03-053",
+  "type": 3,
+  "level": 1,
+  "prompt": "speak ___  (조용히 말하다)",
+  "answer": "quietly",
+  "options": [
+   "quietly",
+   "quiet",
+   "quietness",
+   "quieter"
+  ],
+  "explain": "동사 speak와(과) 짝 → < 부사 > quietly. 부사는 동사를 꾸민다! \"조용히 말하다\"",
+  "source": "영어 짝꿍 (추가)",
+  "pair": {
+   "mod": "quietly",
+   "modPos": "D",
+   "head": "speak",
+   "headPos": "V"
+  }
+ },
+ {
+  "id": "03-054",
+  "type": 3,
+  "level": 3,
+  "prompt": "study ___  (열심히 공부하다)",
+  "answer": "hard",
+  "options": [
+   "hard",
+   "hardly",
+   "hardness",
+   "harden"
+  ],
+  "explain": "동사 study와(과) 짝 → < 부사 > hard. 부사는 동사를 꾸민다! \"열심히 공부하다\" (hard는 형용사·부사 둘 다! hardly는 \"거의 ~않다\")",
+  "source": "영어 짝꿍 (추가)",
+  "pair": {
+   "mod": "hard",
+   "modPos": "D",
+   "head": "study",
+   "headPos": "V"
+  }
+ },
+ {
+  "id": "03-055",
+  "type": 3,
+  "level": 1,
+  "prompt": "eat ___  (빨리 먹다)",
+  "answer": "quickly",
+  "options": [
+   "quickly",
+   "quick",
+   "quickness",
+   "quicken"
+  ],
+  "explain": "동사 eat와(과) 짝 → < 부사 > quickly. 부사는 동사를 꾸민다! \"빨리 먹다\"",
+  "source": "영어 짝꿍 (추가)",
+  "pair": {
+   "mod": "quickly",
+   "modPos": "D",
+   "head": "eat",
+   "headPos": "V"
+  }
+ },
+ {
+  "id": "03-056",
+  "type": 3,
+  "level": 2,
+  "prompt": "___ arrive  (마침내 도착하다)",
+  "answer": "finally",
+  "options": [
+   "finally",
+   "final",
+   "finalize",
+   "finals"
+  ],
+  "explain": "동사 arrive와(과) 짝 → < 부사 > finally. 부사는 동사를 꾸민다! \"마침내 도착하다\"",
+  "source": "영어 짝꿍 (추가)",
+  "pair": {
+   "mod": "finally",
+   "modPos": "D",
+   "head": "arrive",
+   "headPos": "V"
+  }
+ },
+ {
+  "id": "03-057",
+  "type": 3,
+  "level": 2,
+  "prompt": "smile ___  (환하게 웃다)",
+  "answer": "brightly",
+  "options": [
+   "brightly",
+   "bright",
+   "brightness",
+   "brighten"
+  ],
+  "explain": "동사 smile와(과) 짝 → < 부사 > brightly. 부사는 동사를 꾸민다! \"환하게 웃다\"",
+  "source": "영어 짝꿍 (추가)",
+  "pair": {
+   "mod": "brightly",
+   "modPos": "D",
+   "head": "smile",
+   "headPos": "V"
+  }
+ },
+ {
+  "id": "03-058",
+  "type": 3,
+  "level": 2,
+  "prompt": "drive ___  (조심스럽게 운전하다)",
+  "answer": "carefully",
+  "options": [
+   "carefully",
+   "careful",
+   "care",
+   "careless"
+  ],
+  "explain": "동사 drive와(과) 짝 → < 부사 > carefully. 부사는 동사를 꾸민다! \"조심스럽게 운전하다\"",
+  "source": "영어 짝꿍 (추가)",
+  "pair": {
+   "mod": "carefully",
+   "modPos": "D",
+   "head": "drive",
+   "headPos": "V"
+  }
+ },
+ {
+  "id": "03-059",
+  "type": 3,
+  "level": 3,
+  "prompt": "a ___ friend  (다정한 친구)",
+  "answer": "friendly",
+  "options": [
+   "friendly",
+   "friend",
+   "friendship",
+   "friends"
+  ],
+  "explain": "명사 friend와(과) 짝 → ( 형용사 ) friendly. 형용사는 명사를 꾸민다! \"다정한 친구\" (-ly로 끝나도 friendly는 형용사!)",
+  "source": "영어 짝꿍 (추가)",
+  "pair": {
+   "mod": "friendly",
+   "modPos": "A",
+   "head": "friend",
+   "headPos": "N"
+  }
+ },
+ {
+  "id": "03-060",
+  "type": 3,
+  "level": 2,
+  "prompt": "an ___ story  (흥미로운 이야기)",
+  "answer": "interesting",
+  "options": [
+   "interesting",
+   "interestingly",
+   "interest",
+   "interests"
+  ],
+  "explain": "명사 story와(과) 짝 → ( 형용사 ) interesting. 형용사는 명사를 꾸민다! \"흥미로운 이야기\"",
+  "source": "영어 짝꿍 (추가)",
+  "pair": {
+   "mod": "interesting",
+   "modPos": "A",
+   "head": "story",
+   "headPos": "N"
+  }
+ },
+ {
+  "id": "03-061",
+  "type": 3,
+  "level": 3,
+  "prompt": "sleep ___  (잘 자다)",
+  "answer": "well",
+  "options": [
+   "well",
+   "good",
+   "goodness",
+   "better"
+  ],
+  "explain": "동사 sleep와(과) 짝 → < 부사 > well. 부사는 동사를 꾸민다! \"잘 자다\" (good의 부사 = well)",
+  "source": "영어 짝꿍 (추가)",
+  "pair": {
+   "mod": "well",
+   "modPos": "D",
+   "head": "sleep",
+   "headPos": "V"
+  }
  }
 ]

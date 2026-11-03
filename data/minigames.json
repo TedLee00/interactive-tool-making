@@ -2,7 +2,7 @@
  "run": {
   "missions": [
    {
-    "title": "형용사 + 명사로 바르게 꾸민 음식만 먹어라!",
+    "title": "<span class=\"tg\">형용사 + 명사</span>로 바르게 꾸민 음식만 먹어라!",
     "hint": "명사를 꾸미는 건 형용사 → sweet cake ⭕ / sweetly cake ❌",
     "good": [
      "sweet cake",
@@ -28,7 +28,7 @@
     ]
    },
    {
-    "title": "a / an 을 바르게 쓴 음식만 먹어라!",
+    "title": "<span class=\"tg\">a / an</span> 을 바르게 쓴 음식만 먹어라!",
     "hint": "첫 소리가 모음이면 an → an apple ⭕ / a apple ❌",
     "good": [
      "an apple",
@@ -52,7 +52,7 @@
     ]
    },
    {
-    "title": "셀 수 없는 음식은 a 없이! 바른 것만 먹어라!",
+    "title": "셀 수 없는 음식은 <span class=\"tg\">a 없이!</span> 바른 것만 먹어라!",
     "hint": "milk · water · bread · rice는 셀 수 없어요 → some milk ⭕ / a milk ❌",
     "good": [
      "some milk",
@@ -73,7 +73,7 @@
     ]
    },
    {
-    "title": "very + 형용사 + 명사! 바른 음식만 먹어라!",
+    "title": "<span class=\"tg\">very + 형용사 + 명사!</span> 바른 음식만 먹어라!",
     "hint": "very 뒤에도 형용사 → very sweet cake ⭕ / very sweetly cake ❌",
     "good": [
      "very hot soup",
@@ -90,6 +90,48 @@
      "very softly bread",
      "really bigly pizza",
      "very freshly salad"
+    ]
+   },
+   {
+    "title": "둘 이상이면 <span class=\"tg\">-s</span>! 바른 음식만 먹어라!",
+    "hint": "two · three · many 뒤엔 복수형 → two apples ⭕ / two apple ❌",
+    "good": [
+     "two apples",
+     "three eggs",
+     "many cookies",
+     "five donuts",
+     "two sandwiches",
+     "many tomatoes",
+     "three bananas"
+    ],
+    "bad": [
+     "two apple",
+     "three egg",
+     "many cookie",
+     "five donut",
+     "two sandwich",
+     "many tomato",
+     "three banana"
+    ]
+   },
+   {
+    "title": "<span class=\"tg\">this / these</span> 를 바르게 쓴 음식만!",
+    "hint": "하나면 this, 여럿이면 these → these cookies ⭕ / these cookie ❌",
+    "good": [
+     "this cake",
+     "these cookies",
+     "this pizza",
+     "these apples",
+     "this soup",
+     "these eggs"
+    ],
+    "bad": [
+     "these cake",
+     "this cookies",
+     "these pizza",
+     "this apples",
+     "these soup",
+     "this eggs"
     ]
    }
   ],
@@ -115,7 +157,14 @@
    "water": "💧",
    "rice": "🍚",
    "cheese": "🧀",
-   "sandwich": "🥪"
+   "sandwich": "🥪",
+   "tomatoes": "🍅",
+   "tomato": "🍅",
+   "apples": "🍎",
+   "eggs": "🥚",
+   "donuts": "🍩",
+   "sandwiches": "🥪",
+   "bananas": "🍌"
   }
  },
  "pos": {

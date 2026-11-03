@@ -1,13 +1,36 @@
 {
   "questionsPerCell": 5,
   "rewards": {
-    "perfect": { "move": 2, "coins": 10, "label": "PERFECT" },
-    "good": { "move": 1, "coins": 5 },
+    "perfect": {
+      "move": 2,
+      "coins": 10,
+      "label": "PERFECT"
+    },
+    "good": {
+      "move": 1,
+      "coins": 5
+    },
     "perCorrectCoin": 1
   },
   "grading": {
-    "mergeAdjacent": ["D"],
+    "mergeAdjacent": [
+      "D"
+    ],
     "type12Mode": "typing"
   },
-  "signature": "Ted"
+  "signature": "Ted",
+  "danceEvery": 20,
+  "timeLimit": {
+    "byRegion": [
+      15,
+      15,
+      20,
+      25
+    ],
+    "byType": {
+      "3": 20,
+      "12": 40
+    },
+    "note": "문제당 제한시간(초). byRegion = 품사 마을, 청크 시티, 절단 협곡, 문장의 성 / byType = 두 단계 문제(짝꿍 ②품사, 번역의 탑)는 따로"
+  }
 }

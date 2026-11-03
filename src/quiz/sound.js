@@ -41,6 +41,8 @@ export function sfx(kind) {
   else if (kind === 'hop') tone([520, 780], 'sine', 0.05, 0.05, 0.08);
   else if (kind === 'bounce') tone([140 + Math.random() * 40], 'square', 0.05, 0, 0.06);
   else if (kind === 'reveal') tone([784, 1047], 'triangle', 0.1, 0.07, 0.16);
+  else if (kind === 'tick') tone([1200], 'square', 0.035, 0, 0.04);
+  else if (kind === 'timeup') tone([330, 262, 196], 'sawtooth', 0.06, 0.12, 0.2);
   else if (kind === 'whoosh') tone([300, 420, 560], 'sawtooth', 0.025, 0.03, 0.1);
 }
 

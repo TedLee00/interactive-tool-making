@@ -23,7 +23,11 @@
 
 .mg-mission { position: absolute; top: 8px; left: 8px; right: 8px; text-align: center; background: rgba(255, 251, 240, .94); border: 3px solid #F2B84B; border-radius: 18px; padding: 6px 10px; box-shadow: 0 4px 12px rgba(43, 35, 80, .15); }
 .mg-mission small { display: block; font-size: 11px; color: #D9822B; font-weight: 800; }
-.mg-mission b { display: block; font-family: 'Jua', sans-serif; font-weight: 400; font-size: 17px; color: var(--plum); line-height: 1.3; }
+.mg-mission b { display: block; font-family: 'Jua', sans-serif; font-weight: 400; font-size: 20px; color: var(--plum); line-height: 1.3; }
+/* 게임 조건의 핵심 단어: 빨간색 · 크게 */
+.mg-mission .tg, .mg-card .red { color: #E0453A; }
+.mg-mission .tg { font-size: 1.3em; -webkit-text-stroke: .4px #9E1E16; }
+.mg-mission em .tg { font-size: 1.15em; font-weight: 900; }
 .mg-mission em { display: block; font-style: normal; font-size: 12px; color: #6B5F8A; }
 .mg-mission.pop { animation: pop .45s ease-out; }
 .mg-kart .mg-mission, .mg-arena .mg-mission { top: auto; bottom: 8px; }
@@ -73,18 +77,35 @@
 .gbar { display: inline-block; vertical-align: middle; width: 64px; height: 10px; border-radius: 5px; background: rgba(43, 35, 80, .2); overflow: hidden; margin-left: 4px; }
 .gbar i { display: block; height: 100%; background: linear-gradient(90deg, #8FD8FF, #FFD43B); }
 .gbar.low i { background: #E0453A; }
-.mg-kart .mg-btn.pedal { flex: 1.3; }
+
 .mg-kart .kmsg b { font-size: 15px; }
 @keyframes fadein { from { opacity: 0; } }
 
-/* 악셀 버튼 위 게이지 */
-.mg-kart .mg-btn.pedal { position: relative; padding-top: 18px; }
-.mg-btn .pgauge { position: absolute; left: 8px; right: 8px; top: 6px; height: 14px; border-radius: 7px; background: rgba(43, 35, 80, .25); overflow: hidden; border: 2px solid #fff; }
-.mg-btn .pgauge i { position: absolute; left: 0; top: 0; bottom: 0; background: linear-gradient(90deg, #5BE0FF, #8FE08A, #FFD43B); transition: width .1s linear; }
-.mg-btn .pgauge em { position: absolute; inset: 0; font-style: normal; font-family: 'Noto Sans KR', sans-serif; font-size: 10px; font-weight: 900; color: #2B2350; line-height: 10px; text-align: center; }
-.mg-btn.pedal.low .pgauge i { background: #E0453A; animation: blink .5s steps(2) infinite; }
+/* 카트 조작부: 왼쪽 핸들(◀▶ 붙임) · 오른쪽 큰 게이지 + 악셀 */
+.mg-kart .mg-ctrl { align-items: flex-end; gap: 12px; }
+.kwheel { position: relative; flex: 0 0 176px; height: 150px; display: flex; align-items: center; justify-content: center; gap: 0; }
+.kwheel .rim { position: absolute; inset: 0 13px; border-radius: 50%; border: 12px solid #2B2350; box-shadow: inset 0 0 0 3px #6B5F8A, 0 6px 14px rgba(43, 35, 80, .3); background: radial-gradient(circle, rgba(255,255,255,.0) 55%, rgba(43,35,80,.12) 56%); pointer-events: none; }
+.kwheel .rim::before, .kwheel .rim::after { content: ''; position: absolute; left: 50%; width: 12px; background: #2B2350; transform: translateX(-50%); }
+.kwheel .rim::before { top: -2px; height: 18px; border-radius: 0 0 6px 6px; background: #E0453A; }
+.kwheel .rim::after { bottom: 0; height: 24px; }
+.kwheel .hub { position: absolute; left: 50%; top: 50%; width: 28px; height: 28px; margin: -14px 0 0 -14px; border-radius: 50%; background: #2B2350; border: 3px solid #FFD43B; pointer-events: none; z-index: 2; }
+.kwheel .mg-btn { position: relative; z-index: 1; flex: 0 0 74px; min-height: 74px; height: 74px; font-size: 34px; padding: 0; }
+.kwheel .mg-btn.left { border-radius: 38px 10px 10px 38px; margin-right: 2px; }
+.kwheel .mg-btn.right { border-radius: 10px 38px 38px 10px; }
+.kpcol { flex: 1; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.kgauge { background: #2B2350; border-radius: 16px; padding: 6px 10px 8px; color: #fff; box-shadow: 0 4px 12px rgba(43, 35, 80, .3); }
+.kgauge span { display: block; font-family: 'Jua', sans-serif; font-size: 14px; color: #FFD43B; }
+.kgauge .bar { position: relative; height: 22px; border-radius: 11px; background: rgba(255, 255, 255, .2); overflow: hidden; border: 2px solid #fff; margin-top: 3px; }
+.kgauge .bar i { position: absolute; left: 0; top: 0; bottom: 0; background: linear-gradient(90deg, #5BE0FF, #8FE08A, #FFD43B); transition: width .1s linear; }
+.kgauge b { float: right; margin-top: -40px; font-family: 'Jua', sans-serif; font-weight: 400; font-size: 18px; }
+.kpcol.low .kgauge .bar i { background: #E0453A; animation: blink .5s steps(2) infinite; }
+.kpcol.low .kgauge span { color: #FF8F8F; }
+.mg-kart .mg-btn.pedal { flex: none; width: 100%; min-height: 70px; font-size: 26px; }
 @keyframes blink { 50% { opacity: .35; } }
 .mg-shoot .mg-ctrl { display: none; }
 .mg-shoot .shoot-ban { top: 48px; }
 .mg-shoot .shoot-ban b { font-size: 22px; }
 .mg-shoot .shoot-ban .tg { color: #E0453A; font-size: 1.2em; }
+
+.mg-btn.stop { background: linear-gradient(180deg, #FF8F8F, #E0453A); color: #fff; box-shadow: 0 5px 0 #A8261C, 0 8px 16px rgba(224, 69, 58, .3); }
+.mg-crane .mg-btn.drop { flex: 1.3; }
