@@ -1,0 +1,407 @@
+[
+ {
+  "id": "04-001",
+  "type": 4,
+  "level": 1,
+  "sentence": "We play ___ soccer on Sports Day.",
+  "answer": "X",
+  "explain": "운동 이름은 \"경기 종류\" 자체 → 관사 X. (악기는 play the piano!)",
+  "source": "교재 1-5"
+ },
+ {
+  "id": "04-002",
+  "type": 4,
+  "level": 1,
+  "sentence": "We play ___ basketball at lunchtime.",
+  "answer": "X",
+  "explain": "운동 이름은 \"경기 종류\" 자체 → 관사 X. (악기는 play the piano!)",
+  "source": "교재 1-5"
+ },
+ {
+  "id": "04-003",
+  "type": 4,
+  "level": 1,
+  "sentence": "Junho plays ___ drums in the school band.",
+  "answer": "the",
+  "explain": "악기는 \"그 악기\"라는 물건을 연주 → the",
+  "source": "교재 1-5"
+ },
+ {
+  "id": "04-004",
+  "type": 4,
+  "level": 1,
+  "sentence": "She plays ___ piano every day after school.",
+  "answer": "the",
+  "explain": "악기는 \"그 악기\"라는 물건을 연주 → the",
+  "source": "교재 1-5"
+ },
+ {
+  "id": "04-005",
+  "type": 4,
+  "level": 1,
+  "sentence": "My cousin plays ___ guitar very well.",
+  "answer": "the",
+  "explain": "악기는 \"그 악기\"라는 물건을 연주 → the",
+  "source": "교재 1-5"
+ },
+ {
+  "id": "04-006",
+  "type": 4,
+  "level": 2,
+  "sentence": "Jiwoo is ___ honest student.",
+  "answer": "an",
+  "explain": "honest의 h는 소리가 안 남 → 첫 소리가 모음 → an. 철자가 아니라 소리!",
+  "source": "교재 1-5"
+ },
+ {
+  "id": "04-007",
+  "type": 4,
+  "level": 2,
+  "sentence": "It takes ___ hour to get to the academy.",
+  "answer": "an",
+  "explain": "hour의 h는 소리가 안 남 → 첫 소리가 모음 → an",
+  "source": "교재 1-5"
+ },
+ {
+  "id": "04-008",
+  "type": 4,
+  "level": 1,
+  "sentence": "I eat ___ apple at break time.",
+  "answer": "an",
+  "explain": "apple의 첫 소리가 모음 [æ] → an",
+  "source": "교재 1-5"
+ },
+ {
+  "id": "04-009",
+  "type": 4,
+  "level": 1,
+  "sentence": "Jisu ate ___ orange after lunch.",
+  "answer": "an",
+  "explain": "orange의 첫 소리가 모음 → an",
+  "source": "교재 1-5"
+ },
+ {
+  "id": "04-010",
+  "type": 4,
+  "level": 1,
+  "sentence": "I need ___ umbrella today.",
+  "answer": "an",
+  "explain": "umbrella의 첫 소리가 모음 [ʌ] → an",
+  "source": "교재 1-5"
+ },
+ {
+  "id": "04-011",
+  "type": 4,
+  "level": 1,
+  "sentence": "I have ___ idea! Let's play soccer.",
+  "answer": "an",
+  "explain": "idea의 첫 소리가 모음 [aɪ] → an",
+  "source": "교재 1-5"
+ },
+ {
+  "id": "04-012",
+  "type": 4,
+  "level": 2,
+  "sentence": "That's ___ interesting story!",
+  "answer": "an",
+  "explain": "형용사가 붙으면 형용사 소리로! interesting의 첫 소리가 모음 → an",
+  "source": "교재 1-5"
+ },
+ {
+  "id": "04-013",
+  "type": 4,
+  "level": 2,
+  "sentence": "There is ___ old computer in our classroom.",
+  "answer": "an",
+  "explain": "형용사가 붙으면 형용사 소리로! old의 첫 소리 o → an old computer",
+  "source": "교재 1-5"
+ },
+ {
+  "id": "04-014",
+  "type": 4,
+  "level": 3,
+  "sentence": "My sister is ___ university student.",
+  "answer": "a",
+  "explain": "university는 u로 시작하지만 첫 소리가 [j] (자음) → a. 철자가 아니라 소리!",
+  "source": "교재 1-5"
+ },
+ {
+  "id": "04-015",
+  "type": 4,
+  "level": 3,
+  "sentence": "We wear ___ uniform at our school.",
+  "answer": "a",
+  "explain": "uniform의 첫 소리가 [j] (자음) → a",
+  "source": "교재 1-5"
+ },
+ {
+  "id": "04-016",
+  "type": 4,
+  "level": 1,
+  "sentence": "He has ___ big backpack.",
+  "answer": "a",
+  "explain": "처음 말하는 셀 수 있는 단수 명사, 첫 소리가 자음 → a",
+  "source": "교재 1-5"
+ },
+ {
+  "id": "04-017",
+  "type": 4,
+  "level": 2,
+  "sentence": "Minsu is ___ very tall boy.",
+  "answer": "a",
+  "explain": "관사는 형용사보다 맨 앞에! a very tall boy",
+  "source": "교재 1-5"
+ },
+ {
+  "id": "04-018",
+  "type": 4,
+  "level": 1,
+  "sentence": "My brother is ___ middle school student.",
+  "answer": "a",
+  "explain": "처음 말하는 셀 수 있는 단수 명사 앞 → a \"한 명의\"",
+  "source": "교재 1-5"
+ },
+ {
+  "id": "04-019",
+  "type": 4,
+  "level": 1,
+  "sentence": "I saw ___ cat on the way to school.",
+  "answer": "a",
+  "explain": "처음 말하는 셀 수 있는 단수 명사 → a",
+  "source": "교재 1-5"
+ },
+ {
+  "id": "04-020",
+  "type": 4,
+  "level": 2,
+  "sentence": "I saw a cat. ___ cat was really cute.",
+  "answer": "the",
+  "explain": "앞에서 말한 그 고양이 → the",
+  "source": "교재 1-5"
+ },
+ {
+  "id": "04-021",
+  "type": 4,
+  "level": 2,
+  "sentence": "I got a new phone. ___ phone is really fast.",
+  "answer": "the",
+  "explain": "앞에서 말한 그 휴대폰 → the",
+  "source": "교재 1-5"
+ },
+ {
+  "id": "04-022",
+  "type": 4,
+  "level": 1,
+  "sentence": "Look at ___ moon! It's so bright.",
+  "answer": "the",
+  "explain": "세상에 하나뿐 → the moon",
+  "source": "교재 1-5"
+ },
+ {
+  "id": "04-023",
+  "type": 4,
+  "level": 1,
+  "sentence": "___ sun rises in the east.",
+  "answer": "the",
+  "explain": "세상에 하나뿐 → the sun",
+  "source": "교재 1-5"
+ },
+ {
+  "id": "04-024",
+  "type": 4,
+  "level": 2,
+  "sentence": "___ earth goes around the sun.",
+  "answer": "the",
+  "explain": "세상에 하나뿐 → the earth",
+  "source": "교재 1-5"
+ },
+ {
+  "id": "04-025",
+  "type": 4,
+  "level": 1,
+  "sentence": "Turn off ___ light, please.",
+  "answer": "the",
+  "explain": "서로 아는 그 불 → the",
+  "source": "교재 1-5"
+ },
+ {
+  "id": "04-026",
+  "type": 4,
+  "level": 1,
+  "sentence": "Close ___ door, please. It's cold.",
+  "answer": "the",
+  "explain": "서로 아는 그 문 → the",
+  "source": "교재 1-5"
+ },
+ {
+  "id": "04-027",
+  "type": 4,
+  "level": 2,
+  "sentence": "He is ___ best player on our team.",
+  "answer": "the",
+  "explain": "best 앞 → the (가장 ~한 것은 하나뿐)",
+  "source": "교재 1-5"
+ },
+ {
+  "id": "04-028",
+  "type": 4,
+  "level": 2,
+  "sentence": "This is ___ first day of our vacation.",
+  "answer": "the",
+  "explain": "first 앞 → the",
+  "source": "교재 1-5"
+ },
+ {
+  "id": "04-029",
+  "type": 4,
+  "level": 3,
+  "sentence": "She is ___ only girl in the dance club.",
+  "answer": "the",
+  "explain": "only 앞 → the (오직 하나)",
+  "source": "교재 1-5"
+ },
+ {
+  "id": "04-030",
+  "type": 4,
+  "level": 3,
+  "sentence": "We all wear ___ same T-shirt on Sports Day.",
+  "answer": "the",
+  "explain": "same 앞 → the",
+  "source": "교재 1-5"
+ },
+ {
+  "id": "04-031",
+  "type": 4,
+  "level": 1,
+  "sentence": "We study ___ math at the academy.",
+  "answer": "X",
+  "explain": "과목 이름은 셀 수 없는 \"분야 이름\" → 관사 X",
+  "source": "교재 1-5"
+ },
+ {
+  "id": "04-032",
+  "type": 4,
+  "level": 1,
+  "sentence": "Can you speak ___ English?",
+  "answer": "X",
+  "explain": "언어 이름은 셀 수 없는 \"분야 이름\" → 관사 X",
+  "source": "교재 1-5"
+ },
+ {
+  "id": "04-033",
+  "type": 4,
+  "level": 1,
+  "sentence": "I go to school by ___ bus.",
+  "answer": "X",
+  "explain": "by + 교통수단 → \"수단\"만 말함 → 관사 X",
+  "source": "교재 1-5"
+ },
+ {
+  "id": "04-034",
+  "type": 4,
+  "level": 2,
+  "sentence": "I take ___ bus to the academy.",
+  "answer": "the",
+  "explain": "take the bus → \"그\" 버스를 탄다 → the. (by bus는 관사 X!)",
+  "source": "교재 1-5"
+ },
+ {
+  "id": "04-035",
+  "type": 4,
+  "level": 1,
+  "sentence": "We have ___ lunch at 12:30.",
+  "answer": "X",
+  "explain": "식사는 매일 하는 \"일과\" 이름 → 관사 X",
+  "source": "교재 1-5"
+ },
+ {
+  "id": "04-036",
+  "type": 4,
+  "level": 1,
+  "sentence": "I had ___ breakfast at 7.",
+  "answer": "X",
+  "explain": "식사는 매일 하는 \"일과\" 이름 → 관사 X",
+  "source": "교재 1-5"
+ },
+ {
+  "id": "04-037",
+  "type": 4,
+  "level": 3,
+  "sentence": "___ lunch at school today was amazing.",
+  "answer": "the",
+  "explain": "\"오늘 학교의 그\" 점심 → 특정한 식사 → the",
+  "source": "교재 1-5"
+ },
+ {
+  "id": "04-038",
+  "type": 4,
+  "level": 2,
+  "sentence": "I go to ___ bed at 11 every night.",
+  "answer": "X",
+  "explain": "go to bed는 \"잠\"이라는 본래 목적 → 관사 X",
+  "source": "교재 1-5"
+ },
+ {
+  "id": "04-039",
+  "type": 4,
+  "level": 2,
+  "sentence": "I go to ___ school at 8 every morning.",
+  "answer": "X",
+  "explain": "go to school은 건물이 아니라 \"공부\"라는 본래 목적 → 관사 X",
+  "source": "교재 1-5"
+ },
+ {
+  "id": "04-040",
+  "type": 4,
+  "level": 2,
+  "sentence": "My dad stays at ___ home on Sundays.",
+  "answer": "X",
+  "explain": "at home은 굳어진 표현 → 관사 X",
+  "source": "교재 1-5"
+ },
+ {
+  "id": "04-041",
+  "type": 4,
+  "level": 1,
+  "sentence": "She is in ___ kitchen now.",
+  "answer": "the",
+  "explain": "특정한 그 장소 → in the kitchen",
+  "source": "교재 1-5"
+ },
+ {
+  "id": "04-042",
+  "type": 4,
+  "level": 2,
+  "sentence": "Let's meet at ___ library after school.",
+  "answer": "the",
+  "explain": "서로 아는 그 도서관 → at the library",
+  "source": "교재 1-5"
+ },
+ {
+  "id": "04-043",
+  "type": 4,
+  "level": 2,
+  "sentence": "I do my homework in ___ evening.",
+  "answer": "the",
+  "explain": "in the morning / afternoon / evening → 하루를 나눈 \"그\" 시간대 → the",
+  "source": "교재 1-5"
+ },
+ {
+  "id": "04-044",
+  "type": 4,
+  "level": 2,
+  "sentence": "I play games at ___ night.",
+  "answer": "X",
+  "explain": "at night은 콕 찍는 \"때\" → 굳어진 표현, 관사 X",
+  "source": "교재 1-5"
+ },
+ {
+  "id": "04-045",
+  "type": 4,
+  "level": 2,
+  "sentence": "We have no classes on ___ Sunday.",
+  "answer": "X",
+  "explain": "요일 앞 → 관사 X (on Sunday)",
+  "source": "교재 1-5"
+ }
+]

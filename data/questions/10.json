@@ -1,0 +1,664 @@
+[
+ {
+  "id": "10-001",
+  "type": 10,
+  "level": 1,
+  "en": "N:The boy | A:in the blue cap | V:is | N:my friend",
+  "end": ".",
+  "error": {
+   "kind": "label",
+   "chunk": 1,
+   "shown": "D"
+  },
+  "explain": "명사 boy를 꾸미니까 ( 형용사구 ). 판별 비법: 꾸미는 말이 명사 → ( )",
+  "source": "교재 1-4 · 2-5 · 5품사 청크 독해 법칙"
+ },
+ {
+  "id": "10-002",
+  "type": 10,
+  "level": 2,
+  "en": "N:She | V:looks | A:tired | D:after Sports Day",
+  "end": ".",
+  "error": {
+   "kind": "label",
+   "chunk": 2,
+   "shown": "D"
+  },
+  "explain": "She = tired, 주어를 설명하는 보어 → ( 형용사 ). \"~하게\"로 해석돼도 형용사!",
+  "source": "교재 1-4 · 2-5 · 5품사 청크 독해 법칙"
+ },
+ {
+  "id": "10-003",
+  "type": 10,
+  "level": 2,
+  "en": "N:The new student | V:sits | D:next to me | D:in math class",
+  "end": ".",
+  "error": {
+   "kind": "split",
+   "chunk": 0,
+   "after": 2,
+   "shown": [
+    "A",
+    "N"
+   ]
+  },
+  "explain": "법칙 ① 명사 앞 형용사는 명사의 일부! 잘게 자르면 청크 독해가 아니에요 → ○ 명사구 한 덩어리",
+  "source": "5품사 청크 독해 법칙"
+ },
+ {
+  "id": "10-004",
+  "type": 10,
+  "level": 2,
+  "en": "N:I | V:was | A:very hungry | D:after P.E. class",
+  "end": ".",
+  "error": {
+   "kind": "split",
+   "chunk": 2,
+   "after": 1,
+   "shown": [
+    "D",
+    "A"
+   ]
+  },
+  "explain": "법칙 ② 보어 자리 형용사 앞 부사는 형용사의 일부! 합쳐서 보어 역할 → ( 형용사구 ) 한 덩어리",
+  "source": "5품사 청크 독해 법칙"
+ },
+ {
+  "id": "10-005",
+  "type": 10,
+  "level": 2,
+  "en": "N:I | V:like | N:playing soccer | D:after school",
+  "end": ".",
+  "error": {
+   "kind": "label",
+   "chunk": 2,
+   "shown": "D"
+  },
+  "explain": "like 뒤 목적어 자리, \"축구하는 것\" → ○ 명사구",
+  "source": "교재 1-4 · 2-5 · 5품사 청크 독해 법칙"
+ },
+ {
+  "id": "10-006",
+  "type": 10,
+  "level": 2,
+  "en": "N:My dream | V:is | N:to become a doctor",
+  "end": ".",
+  "error": {
+   "kind": "label",
+   "chunk": 2,
+   "shown": "D"
+  },
+  "explain": "보어 자리 to부정사구 \"~하는 것\" → ○ 명사구",
+  "source": "교재 1-4 · 2-5 · 5품사 청크 독해 법칙"
+ },
+ {
+  "id": "10-007",
+  "type": 10,
+  "level": 2,
+  "en": "N:Jiho | V:went | D:to the store | D:to buy snacks",
+  "end": ".",
+  "error": {
+   "kind": "label",
+   "chunk": 3,
+   "shown": "A"
+  },
+  "explain": "동사 went를 꾸미는 \"~하기 위해\" → < 부사구 >",
+  "source": "교재 1-4 · 2-5 · 5품사 청크 독해 법칙"
+ },
+ {
+  "id": "10-008",
+  "type": 10,
+  "level": 3,
+  "en": "N:I | V:need | N:some water | A:to drink",
+  "end": ".",
+  "error": {
+   "kind": "label",
+   "chunk": 3,
+   "shown": "D"
+  },
+  "explain": "명사 water를 꾸미는 \"마실\" → ( 형용사구 )",
+  "source": "교재 1-4 · 2-5 · 5품사 청크 독해 법칙"
+ },
+ {
+  "id": "10-009",
+  "type": 10,
+  "level": 2,
+  "en": "N:The cookies | A:on the table | V:look | A:delicious",
+  "end": ".",
+  "error": {
+   "kind": "label",
+   "chunk": 1,
+   "shown": "D"
+  },
+  "explain": "명사 cookies를 꾸미니까 ( 형용사구 )",
+  "source": "교재 1-4 · 2-5 · 5품사 청크 독해 법칙"
+ },
+ {
+  "id": "10-010",
+  "type": 10,
+  "level": 3,
+  "en": "N:We | V:put | N:the cookies | D:on the table",
+  "end": ".",
+  "error": {
+   "kind": "label",
+   "chunk": 3,
+   "shown": "A"
+  },
+  "explain": "동사 put을 꾸미니까 < 부사구 >. 같은 모양, 다른 역할!",
+  "source": "교재 1-4 · 2-5 · 5품사 청크 독해 법칙"
+ },
+ {
+  "id": "10-011",
+  "type": 10,
+  "level": 1,
+  "en": "N:My little sister | V:plays | N:the piano | D:every day",
+  "end": ".",
+  "error": {
+   "kind": "split",
+   "chunk": 0,
+   "after": 2,
+   "shown": [
+    "A",
+    "N"
+   ]
+  },
+  "explain": "법칙 ① 명사 앞 형용사는 명사의 일부! 잘게 자르면 청크 독해가 아니에요 → ○ 명사구 한 덩어리",
+  "source": "5품사 청크 독해 법칙"
+ },
+ {
+  "id": "10-012",
+  "type": 10,
+  "level": 2,
+  "en": "N:This soup | V:smells | A:really good",
+  "end": ".",
+  "error": {
+   "kind": "split",
+   "chunk": 2,
+   "after": 1,
+   "shown": [
+    "D",
+    "A"
+   ]
+  },
+  "explain": "법칙 ② 보어 자리 형용사 앞 부사는 형용사의 일부! 합쳐서 보어 역할 → ( 형용사구 ) 한 덩어리",
+  "source": "5품사 청크 독해 법칙"
+ },
+ {
+  "id": "10-013",
+  "type": 10,
+  "level": 2,
+  "en": "N:He | V:runs | D:very fast",
+  "end": ".",
+  "error": {
+   "kind": "label",
+   "chunk": 2,
+   "shown": "A"
+  },
+  "explain": "동사 runs를 꾸미니까 < 부사 >. 보어가 아니라 수식어!",
+  "source": "교재 1-4 · 2-5 · 5품사 청크 독해 법칙"
+ },
+ {
+  "id": "10-014",
+  "type": 10,
+  "level": 2,
+  "en": "N:The test | V:was | A:really difficult",
+  "end": ".",
+  "error": {
+   "kind": "label",
+   "chunk": 2,
+   "shown": "D"
+  },
+  "explain": "test = really difficult, 보어 자리 → ( 형용사구 )",
+  "source": "교재 1-4 · 2-5 · 5품사 청크 독해 법칙"
+ },
+ {
+  "id": "10-015",
+  "type": 10,
+  "level": 2,
+  "en": "N:My mom | V:is cooking | N:dinner | D:in the kitchen",
+  "end": ".",
+  "error": {
+   "kind": "split",
+   "chunk": 1,
+   "after": 1,
+   "shown": [
+    "V",
+    "N"
+   ]
+  },
+  "explain": "is cooking은 동사 덩어리 하나 → □. 진행형을 쪼개지 않아요",
+  "source": "5품사 청크 독해 법칙"
+ },
+ {
+  "id": "10-016",
+  "type": 10,
+  "level": 2,
+  "en": "N:We | V:can play | N:soccer | D:after lunch",
+  "end": ".",
+  "error": {
+   "kind": "split",
+   "chunk": 1,
+   "after": 1,
+   "shown": [
+    "V",
+    "V"
+   ]
+  },
+  "explain": "can play는 동사 덩어리 하나 → □ (조동사 포함)",
+  "source": "5품사 청크 독해 법칙"
+ },
+ {
+  "id": "10-017",
+  "type": 10,
+  "level": 3,
+  "en": "D:When I got home, | N:my dog | V:was sleeping",
+  "end": ".",
+  "error": {
+   "kind": "label",
+   "chunk": 0,
+   "shown": "N"
+  },
+  "explain": "주어 + 동사가 있고 동사를 꾸민다 → < 부사절 >",
+  "source": "교재 1-4 · 2-5 · 5품사 청크 독해 법칙"
+ },
+ {
+  "id": "10-018",
+  "type": 10,
+  "level": 3,
+  "en": "N:I | V:know | N:that she is kind",
+  "end": ".",
+  "error": {
+   "kind": "label",
+   "chunk": 2,
+   "shown": "D"
+  },
+  "explain": "know 뒤 목적어 자리 that절 → ○ 명사절",
+  "source": "교재 1-4 · 2-5 · 5품사 청크 독해 법칙"
+ },
+ {
+  "id": "10-019",
+  "type": 10,
+  "level": 1,
+  "en": "N:Tom | C:and | N:I | V:are | N:best friends",
+  "end": ".",
+  "error": {
+   "kind": "label",
+   "chunk": 1,
+   "shown": "D"
+  },
+  "explain": "and는 말과 말을 잇는 △ 접속사",
+  "source": "교재 1-4 · 2-5 · 5품사 청크 독해 법칙"
+ },
+ {
+  "id": "10-020",
+  "type": 10,
+  "level": 2,
+  "en": "N:The girl | A:with long hair | V:is | N:our new teacher",
+  "end": ".",
+  "error": {
+   "kind": "label",
+   "chunk": 1,
+   "shown": "N"
+  },
+  "explain": "명사 girl을 꾸미니까 ( 형용사구 )",
+  "source": "교재 1-4 · 2-5 · 5품사 청크 독해 법칙"
+ },
+ {
+  "id": "10-021",
+  "type": 10,
+  "level": 1,
+  "en": "N:Our school | V:has | N:a big playground",
+  "end": ".",
+  "error": {
+   "kind": "split",
+   "chunk": 2,
+   "after": 2,
+   "shown": [
+    "A",
+    "N"
+   ]
+  },
+  "explain": "법칙 ① 명사 앞 형용사는 명사의 일부! 잘게 자르면 청크 독해가 아니에요 → ○ 명사구 한 덩어리",
+  "source": "5품사 청크 독해 법칙"
+ },
+ {
+  "id": "10-022",
+  "type": 10,
+  "level": 2,
+  "en": "N:My friends | V:became | A:very excited",
+  "end": ".",
+  "error": {
+   "kind": "split",
+   "chunk": 2,
+   "after": 1,
+   "shown": [
+    "D",
+    "A"
+   ]
+  },
+  "explain": "법칙 ② 보어 자리 형용사 앞 부사는 형용사의 일부! 합쳐서 보어 역할 → ( 형용사구 ) 한 덩어리",
+  "source": "5품사 청크 독해 법칙"
+ },
+ {
+  "id": "10-023",
+  "type": 10,
+  "level": 1,
+  "en": "N:She | V:sings | D:beautifully",
+  "end": ".",
+  "error": {
+   "kind": "label",
+   "chunk": 2,
+   "shown": "A"
+  },
+  "explain": "동사 sings를 꾸미니까 < 부사 >",
+  "source": "교재 1-4 · 2-5 · 5품사 청크 독해 법칙"
+ },
+ {
+  "id": "10-024",
+  "type": 10,
+  "level": 1,
+  "en": "N:You | V:look | A:happy | D:today",
+  "end": ".",
+  "error": {
+   "kind": "label",
+   "chunk": 2,
+   "shown": "D"
+  },
+  "explain": "You = happy, 보어 자리 → ( 형용사 )",
+  "source": "교재 1-4 · 2-5 · 5품사 청크 독해 법칙"
+ },
+ {
+  "id": "10-025",
+  "type": 10,
+  "level": 3,
+  "en": "N:The news | V:made | N:me | A:happy",
+  "end": ".",
+  "error": {
+   "kind": "label",
+   "chunk": 3,
+   "shown": "D"
+  },
+  "explain": "5형식 — me = happy, 목적어를 설명하는 보어 → ( 형용사 )",
+  "source": "교재 1-4 · 2-5 · 5품사 청크 독해 법칙"
+ },
+ {
+  "id": "10-026",
+  "type": 10,
+  "level": 3,
+  "en": "N:Swimming in the sea | V:is | A:fun",
+  "end": ".",
+  "error": {
+   "kind": "split",
+   "chunk": 0,
+   "after": 1,
+   "shown": [
+    "N",
+    "D"
+   ]
+  },
+  "explain": "주어 자리 동명사구 \"바다에서 수영하는 것\" 전체가 ○ 명사구 한 덩어리",
+  "source": "5품사 청크 독해 법칙"
+ },
+ {
+  "id": "10-027",
+  "type": 10,
+  "level": 3,
+  "en": "N:To learn a new language | V:is | A:really exciting",
+  "end": ".",
+  "error": {
+   "kind": "split",
+   "chunk": 0,
+   "after": 2,
+   "shown": [
+    "N",
+    "N"
+   ]
+  },
+  "explain": "주어 자리 to부정사구 전체가 ○ 명사구 한 덩어리",
+  "source": "5품사 청크 독해 법칙"
+ },
+ {
+  "id": "10-028",
+  "type": 10,
+  "level": 2,
+  "en": "N:I | V:met | N:my friend | D:at the bus stop",
+  "end": ".",
+  "error": {
+   "kind": "label",
+   "chunk": 3,
+   "shown": "A"
+  },
+  "explain": "동사 met을 꾸미니까 < 부사구 > \"어디서?\"",
+  "source": "교재 1-4 · 2-5 · 5품사 청크 독해 법칙"
+ },
+ {
+  "id": "10-029",
+  "type": 10,
+  "level": 2,
+  "en": "N:The book | A:about dinosaurs | V:is | A:very interesting",
+  "end": ".",
+  "error": {
+   "kind": "label",
+   "chunk": 1,
+   "shown": "D"
+  },
+  "explain": "명사 book을 꾸미니까 ( 형용사구 )",
+  "source": "교재 1-4 · 2-5 · 5품사 청크 독해 법칙"
+ },
+ {
+  "id": "10-030",
+  "type": 10,
+  "level": 2,
+  "en": "N:My brother | V:studies | D:hard | D:for the test",
+  "end": ".",
+  "error": {
+   "kind": "label",
+   "chunk": 2,
+   "shown": "A"
+  },
+  "explain": "동사 studies를 꾸미니까 < 부사 > \"열심히\". a hard test라면 형용사!",
+  "source": "교재 1-4 · 2-5 · 5품사 청크 독해 법칙"
+ },
+ {
+  "id": "10-031",
+  "type": 10,
+  "level": 1,
+  "en": "N:This | V:is | N:a hard question",
+  "end": ".",
+  "error": {
+   "kind": "split",
+   "chunk": 2,
+   "after": 2,
+   "shown": [
+    "A",
+    "N"
+   ]
+  },
+  "explain": "법칙 ① 명사 앞 형용사는 명사의 일부! 잘게 자르면 청크 독해가 아니에요 → ○ 명사구 한 덩어리",
+  "source": "5품사 청크 독해 법칙"
+ },
+ {
+  "id": "10-032",
+  "type": 10,
+  "level": 1,
+  "en": "N:We | V:ate | N:spicy tteokbokki | D:after school",
+  "end": ".",
+  "error": {
+   "kind": "split",
+   "chunk": 2,
+   "after": 1,
+   "shown": [
+    "A",
+    "N"
+   ]
+  },
+  "explain": "법칙 ① 명사 앞 형용사는 명사의 일부! 잘게 자르면 청크 독해가 아니에요 → ○ 명사구 한 덩어리",
+  "source": "5품사 청크 독해 법칙"
+ },
+ {
+  "id": "10-033",
+  "type": 10,
+  "level": 2,
+  "en": "N:My dad | D:always | V:drinks | N:coffee | D:in the morning",
+  "end": ".",
+  "error": {
+   "kind": "label",
+   "chunk": 1,
+   "shown": "A"
+  },
+  "explain": "빈도부사 always는 동사를 꾸미는 < 부사 >",
+  "source": "교재 1-4 · 2-5 · 5품사 청크 독해 법칙"
+ },
+ {
+  "id": "10-034",
+  "type": 10,
+  "level": 2,
+  "en": "N:I | V:was | A:tired, | C:but | N:I | V:finished | N:my homework",
+  "end": ".",
+  "error": {
+   "kind": "label",
+   "chunk": 2,
+   "shown": "D"
+  },
+  "explain": "I = tired, 보어 자리 → ( 형용사 )",
+  "source": "교재 1-4 · 2-5 · 5품사 청크 독해 법칙"
+ },
+ {
+  "id": "10-035",
+  "type": 10,
+  "level": 2,
+  "en": "N:They | V:practiced | N:dancing | D:for the school festival",
+  "end": ".",
+  "error": {
+   "kind": "label",
+   "chunk": 2,
+   "shown": "D"
+  },
+  "explain": "practiced 뒤 목적어 자리 \"춤추는 것\" → ○ 명사",
+  "source": "교재 1-4 · 2-5 · 5품사 청크 독해 법칙"
+ },
+ {
+  "id": "10-036",
+  "type": 10,
+  "level": 2,
+  "en": "N:The students | A:in my class | V:are | A:very kind",
+  "end": ".",
+  "error": {
+   "kind": "split",
+   "chunk": 3,
+   "after": 1,
+   "shown": [
+    "D",
+    "A"
+   ]
+  },
+  "explain": "법칙 ② 보어 자리 형용사 앞 부사는 형용사의 일부! 합쳐서 보어 역할 → ( 형용사구 ) 한 덩어리",
+  "source": "5품사 청크 독해 법칙"
+ },
+ {
+  "id": "10-037",
+  "type": 10,
+  "level": 1,
+  "en": "N:My favorite subject | V:is | N:English",
+  "end": ".",
+  "error": {
+   "kind": "split",
+   "chunk": 0,
+   "after": 2,
+   "shown": [
+    "A",
+    "N"
+   ]
+  },
+  "explain": "법칙 ① 명사 앞 형용사는 명사의 일부! 잘게 자르면 청크 독해가 아니에요 → ○ 명사구 한 덩어리",
+  "source": "5품사 청크 독해 법칙"
+ },
+ {
+  "id": "10-038",
+  "type": 10,
+  "level": 1,
+  "en": "N:She | V:smiled | D:at me",
+  "end": ".",
+  "error": {
+   "kind": "label",
+   "chunk": 2,
+   "shown": "A"
+  },
+  "explain": "동사 smiled를 꾸미니까 < 부사구 >",
+  "source": "교재 1-4 · 2-5 · 5품사 청크 독해 법칙"
+ },
+ {
+  "id": "10-039",
+  "type": 10,
+  "level": 2,
+  "en": "N:The bench | A:under the tree | V:is | A:wet",
+  "end": ".",
+  "error": {
+   "kind": "label",
+   "chunk": 1,
+   "shown": "D"
+  },
+  "explain": "명사 bench를 꾸미니까 ( 형용사구 )",
+  "source": "교재 1-4 · 2-5 · 5품사 청크 독해 법칙"
+ },
+ {
+  "id": "10-040",
+  "type": 10,
+  "level": 2,
+  "en": "D:Before class, | N:we | V:chat | D:with our friends",
+  "end": ".",
+  "error": {
+   "kind": "label",
+   "chunk": 0,
+   "shown": "N"
+  },
+  "explain": "문장을 꾸미는 \"수업 전에\" → < 부사구 >",
+  "source": "교재 1-4 · 2-5 · 5품사 청크 독해 법칙"
+ },
+ {
+  "id": "10-041",
+  "type": 10,
+  "level": 3,
+  "en": "N:My teacher | V:gave | N:us | N:a lot of homework",
+  "end": ".",
+  "error": {
+   "kind": "label",
+   "chunk": 2,
+   "shown": "D"
+  },
+  "explain": "4형식 S V O O — \"우리에게\"도 목적어 → ○",
+  "source": "교재 1-4 · 2-5 · 5품사 청크 독해 법칙"
+ },
+ {
+  "id": "10-042",
+  "type": 10,
+  "level": 3,
+  "en": "N:I | V:enjoy | N:baking cookies | D:on weekends",
+  "end": ".",
+  "error": {
+   "kind": "split",
+   "chunk": 2,
+   "after": 1,
+   "shown": [
+    "V",
+    "N"
+   ]
+  },
+  "explain": "enjoy 뒤 목적어 \"쿠키 굽는 것\" 전체가 ○ 명사구. baking은 동사가 아니에요!",
+  "source": "5품사 청크 독해 법칙"
+ },
+ {
+  "id": "10-043",
+  "type": 10,
+  "level": 3,
+  "en": "N:We | V:call | N:our dog | N:Coco",
+  "end": ".",
+  "error": {
+   "kind": "label",
+   "chunk": 3,
+   "shown": "A"
+  },
+  "explain": "5형식 — dog = Coco, 보어 자리 명사 → ○",
+  "source": "교재 1-4 · 2-5 · 5품사 청크 독해 법칙"
+ }
+]

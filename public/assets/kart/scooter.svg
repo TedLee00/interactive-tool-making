@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 84"><g stroke="#1B2F4E" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round">
+    <rect x="26.5" y="1" width="7" height="16" rx="3.5" fill="#26262C"/><rect x="26.5" y="67" width="7" height="16" rx="3.5" fill="#26262C"/>
+    <path d="M30 14 L30 70" stroke-width="4" stroke="#2E9BDA"/>
+    <path d="M14 18 Q30 13 46 18" fill="none" stroke-width="3.5"/><rect x="10" y="15" width="7" height="6" rx="2.5" fill="#E0453A"/><rect x="43" y="15" width="7" height="6" rx="2.5" fill="#E0453A"/>
+    <rect x="23" y="58" width="14" height="10" rx="2" fill="#B98A55"/>
+    <path d="M19 36 L14 19 M41 36 L46 19" stroke-width="5.5"/><path d="M19 36 L14 19 M41 36 L46 19" stroke="#FFE3CC" stroke-width="3"/>
+    <ellipse cx="30" cy="38" rx="12.5" ry="8" fill="#fff"/>
+    <path d="M20 31 Q19 22 30 20.5 Q41 22 40 31 Q40.5 39 30 39.5 Q19.5 39 20 31 Z" fill="#C8955A"/>
+    <path d="M17 58 Q20 44 30 46 Q40 44 43 58" fill="none" stroke-width="5"/><path d="M17 58 Q20 44 30 46 Q40 44 43 58" fill="none" stroke="#B07CC6" stroke-width="2.6"/>
+    <ellipse cx="30" cy="60" rx="13" ry="8" fill="#9B6BC6"/>
+    <circle cx="30" cy="57" r="9.5" fill="#5A3A22"/><circle cx="30" cy="51" r="4.6" fill="#5A3A22"/></g>
+    <path d="M30 21.5 L30 29" stroke="#9A6B3A" stroke-width="1.4"/>
+    <path d="M24 25 Q26 22.5 28.5 22.5 M31.5 22.5 Q34 22.5 36 25" stroke="#EAC27A" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+    <path d="M25 59 Q30 55 35 59" stroke="#7A5032" stroke-width="1.4" fill="none"/>
+    <rect x="14" y="70" width="32" height="9" rx="4.5" fill="#1B2F4E"/><text x="30" y="76.8" text-anchor="middle" font-family="'Noto Sans KR',sans-serif" font-weight="900" font-size="6.6" fill="#fff">묵언수행</text></svg>

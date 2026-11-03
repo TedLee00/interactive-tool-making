@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 84"><g stroke="#1B2F4E" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round">
+    <rect x="3" y="12" width="10" height="17" rx="3" fill="#26262C"/><rect x="47" y="12" width="10" height="17" rx="3" fill="#26262C"/>
+    <rect x="1" y="52" width="13" height="21" rx="3.5" fill="#26262C"/><rect x="46" y="52" width="13" height="21" rx="3.5" fill="#26262C"/>
+    <path d="M19 3 Q30 -1 41 3 L45 26 Q52 34 50 58 Q49 74 30 75 Q11 74 10 58 Q8 34 15 26 Z" fill="#751A19"/>
+    <path d="M21 6 Q30 3 39 6 L40 13 L20 13 Z" fill="#E9C27A" stroke="none"/><path d="M28.5 14 L31.5 14 L32 46 L28 46 Z" fill="#A63A2E" stroke="none"/>
+    <ellipse cx="30" cy="58" rx="15" ry="11" fill="#E9C27A"/>
+    <path d="M17 50 L22 34 M43 50 L38 34" stroke-width="6"/><path d="M17 50 L22 34 M43 50 L38 34" stroke="#fff" stroke-width="3.2"/>
+    <ellipse cx="30" cy="33" rx="10" ry="3.6" fill="none" stroke-width="3"/>
+    <ellipse cx="30" cy="52" rx="14" ry="8" fill="#fff"/>
+    <circle cx="18.5" cy="44" r="3" fill="#FFE0C2"/><circle cx="41.5" cy="44" r="3" fill="#FFE0C2"/>
+    <path d="M20 39 L19 33 L23.5 35 L24.5 30 L27.5 34 L30 28.5 L32.5 34 L35.5 30 L36.5 35 L41 33 L40 39 Z" fill="#2B2724"/>
+    <circle cx="30" cy="44" r="10.5" fill="#2B2724"/></g>
+    <path d="M17 41 L21.5 42 M43 41 L38.5 42" stroke="#111" stroke-width="1.8"/>
+    <path d="M16.5 46 q2 3 4.5 1 M43.5 46 q-2 3 -4.5 1" stroke="#fff" stroke-width="1.4" fill="none"/>
+    <rect x="7" y="73" width="46" height="8.5" rx="2.5" fill="#1B2F4E"/>
+    <text x="30" y="80" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-weight="900" font-size="7" fill="#FFD43B">Ted</text></svg>

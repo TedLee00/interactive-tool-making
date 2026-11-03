@@ -1,0 +1,330 @@
+{
+ "regions": [
+  {
+   "id": "village",
+   "name": "품사 마을",
+   "level": "하",
+   "color": "#4FA65B",
+   "ground": "#B6E88E",
+   "accent": "#F2C14E",
+   "types": [
+    1,
+    2,
+    3,
+    4
+   ]
+  },
+  {
+   "id": "city",
+   "name": "청크 시티",
+   "level": "중",
+   "color": "#2E7BC4",
+   "ground": "#F6E7CF",
+   "accent": "#5BC0EB",
+   "types": [
+    4,
+    5,
+    6,
+    7
+   ]
+  },
+  {
+   "id": "canyon",
+   "name": "절단 협곡",
+   "level": "중상",
+   "color": "#C2602D",
+   "ground": "#FFD9B5",
+   "accent": "#8C3B1E",
+   "types": [
+    8,
+    9,
+    10
+   ]
+  },
+  {
+   "id": "castle",
+   "name": "문장의 성",
+   "level": "상",
+   "color": "#7A3FA8",
+   "ground": "#EBDDFF",
+   "accent": "#C9A84C",
+   "types": [
+    11,
+    12
+   ]
+  }
+ ],
+ "cells": [
+  {
+   "i": 0,
+   "kind": "start",
+   "region": 0
+  },
+  {
+   "i": 1,
+   "kind": "quiz",
+   "region": 0,
+   "type": 1
+  },
+  {
+   "i": 2,
+   "kind": "quiz",
+   "region": 0,
+   "type": 2
+  },
+  {
+   "i": 3,
+   "kind": "quiz",
+   "region": 0,
+   "type": 3
+  },
+  {
+   "i": 4,
+   "kind": "snack",
+   "region": 0,
+   "game": "crane"
+  },
+  {
+   "i": 5,
+   "kind": "quiz",
+   "region": 0,
+   "type": 4
+  },
+  {
+   "i": 6,
+   "kind": "quiz",
+   "region": 0,
+   "type": 1
+  },
+  {
+   "i": 7,
+   "kind": "trap",
+   "region": 0
+  },
+  {
+   "i": 8,
+   "kind": "quiz",
+   "region": 0,
+   "type": 2
+  },
+  {
+   "i": 9,
+   "kind": "quiz",
+   "region": 0,
+   "type": 3
+  },
+  {
+   "i": 10,
+   "kind": "gate",
+   "region": 0,
+   "game": "run"
+  },
+  {
+   "i": 11,
+   "kind": "quiz",
+   "region": 1,
+   "type": 4
+  },
+  {
+   "i": 12,
+   "kind": "quiz",
+   "region": 1,
+   "type": 5
+  },
+  {
+   "i": 13,
+   "kind": "quiz",
+   "region": 1,
+   "type": 6
+  },
+  {
+   "i": 14,
+   "kind": "snack",
+   "region": 1,
+   "game": "crane"
+  },
+  {
+   "i": 15,
+   "kind": "quiz",
+   "region": 1,
+   "type": 7
+  },
+  {
+   "i": 16,
+   "kind": "portal",
+   "region": 1
+  },
+  {
+   "i": 17,
+   "kind": "quiz",
+   "region": 1,
+   "type": 5
+  },
+  {
+   "i": 18,
+   "kind": "quiz",
+   "region": 1,
+   "type": 6
+  },
+  {
+   "i": 19,
+   "kind": "quiz",
+   "region": 1,
+   "type": 7
+  },
+  {
+   "i": 20,
+   "kind": "gate",
+   "region": 1,
+   "game": "kart"
+  },
+  {
+   "i": 21,
+   "kind": "quiz",
+   "region": 2,
+   "type": 8
+  },
+  {
+   "i": 22,
+   "kind": "quiz",
+   "region": 2,
+   "type": 9
+  },
+  {
+   "i": 23,
+   "kind": "snack",
+   "region": 2,
+   "game": "crane"
+  },
+  {
+   "i": 24,
+   "kind": "quiz",
+   "region": 2,
+   "type": 10
+  },
+  {
+   "i": 25,
+   "kind": "quiz",
+   "region": 2,
+   "type": 8
+  },
+  {
+   "i": 26,
+   "kind": "trap",
+   "region": 2
+  },
+  {
+   "i": 27,
+   "kind": "quiz",
+   "region": 2,
+   "type": 9
+  },
+  {
+   "i": 28,
+   "kind": "quiz",
+   "region": 2,
+   "type": 10
+  },
+  {
+   "i": 29,
+   "kind": "bonus",
+   "region": 2
+  },
+  {
+   "i": 30,
+   "kind": "gate",
+   "region": 2,
+   "game": "arena"
+  },
+  {
+   "i": 31,
+   "kind": "quiz",
+   "region": 3,
+   "type": 11
+  },
+  {
+   "i": 32,
+   "kind": "quiz",
+   "region": 3,
+   "type": 12
+  },
+  {
+   "i": 33,
+   "kind": "snack",
+   "region": 3,
+   "game": "crane"
+  },
+  {
+   "i": 34,
+   "kind": "quiz",
+   "region": 3,
+   "type": 11
+  },
+  {
+   "i": 35,
+   "kind": "quiz",
+   "region": 3,
+   "type": 12
+  },
+  {
+   "i": 36,
+   "kind": "trap",
+   "region": 3
+  },
+  {
+   "i": 37,
+   "kind": "quiz",
+   "region": 3,
+   "type": 11
+  },
+  {
+   "i": 38,
+   "kind": "quiz",
+   "region": 3,
+   "type": 12
+  },
+  {
+   "i": 39,
+   "kind": "snack",
+   "region": 3,
+   "game": "crane"
+  },
+  {
+   "i": 40,
+   "kind": "goal",
+   "region": 3
+  }
+ ],
+ "kinds": {
+  "start": {
+   "label": "출발"
+  },
+  "quiz": {
+   "label": "문제"
+  },
+  "snack": {
+   "label": "간식 뽑기",
+   "icon": "🎁"
+  },
+  "gate": {
+   "label": "미니게임 게이트",
+   "icon": "🎮"
+  },
+  "trap": {
+   "label": "함정",
+   "icon": "⚠️"
+  },
+  "portal": {
+   "label": "순간이동 포털",
+   "icon": "🌀"
+  },
+  "bonus": {
+   "label": "보너스 주사위",
+   "icon": "🎲"
+  },
+  "goal": {
+   "label": "목적지",
+   "icon": "🏆"
+  }
+ }
+}

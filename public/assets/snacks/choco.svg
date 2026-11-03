@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 78">
+    <path d="M14 9 Q65 3 116 9 L116 69 Q65 75 14 69 Z" fill="#E3202F" stroke="#1B2F4E" stroke-width="2.4" stroke-linejoin="round"/>
+    <path d="M14 9 Q65 3 116 9 L116 22 Q65 16 14 22 Z" fill="#F2505A"/>
+    <path d="M14 40 Q40 31 66 39 T116 36 L116 69 Q65 75 14 69 Z" fill="#EFD9AE"/>
+    <path d="M14 62 Q65 56 116 62 L116 69 Q65 75 14 69 Z" fill="#D8B983"/>
+    <path d="M14 40 Q40 31 66 39 T116 36" stroke="#FFF3DC" stroke-width="2.2" fill="none"/>
+    <path d="M3 10 L14 9 L14 69 L3 68 L7 63 L3 58 L7 53 L3 48 L7 43 L3 38 L7 33 L3 28 L7 23 L3 18 L7 14 Z" fill="#B8121F" stroke="#1B2F4E" stroke-width="2.4" stroke-linejoin="round"/> <path d="M127 10 L116 9 L116 69 L127 68 L123 63 L127 58 L123 53 L127 48 L123 43 L127 38 L123 33 L127 28 L123 23 L127 18 L123 14 Z" fill="#B8121F" stroke="#1B2F4E" stroke-width="2.4" stroke-linejoin="round"/>
+    <ellipse cx="89" cy="50" rx="23" ry="8.5" fill="#3E1C0B" stroke="#fff" stroke-width="1.8"/>
+    <rect x="66" y="41" width="46" height="8" fill="#FFF6E8"/>
+    <ellipse cx="89" cy="40" rx="23" ry="10.5" fill="#4A220E" stroke="#fff" stroke-width="1.8"/>
+    <path d="M73 36 Q82 30 93 31" stroke="#8A5A3A" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+    <text x="39" y="31.2" text-anchor="middle" font-family="'Noto Sans KR',sans-serif" font-weight="900" font-size="13.5" fill="#8E0C18">초코파이</text><text x="38" y="30" text-anchor="middle" font-family="'Noto Sans KR',sans-serif" font-weight="900" font-size="13.5" fill="#FFFFFF">초코파이</text>
+    <path d="M24 53 L56 53" stroke="#B5833F" stroke-width="1.4" stroke-linecap="round"/>
+    <circle cx="40" cy="59" r="1.6" fill="#B5833F"/><circle cx="33" cy="59" r="1.2" fill="#B5833F"/><circle cx="47" cy="59" r="1.2" fill="#B5833F"/></svg>

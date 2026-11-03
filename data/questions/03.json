@@ -1,0 +1,647 @@
+[
+ {
+  "id": "03-001",
+  "type": 3,
+  "level": 1,
+  "prompt": "맛있는 ___",
+  "answer": "급식",
+  "options": [
+   "급식",
+   "먹는다",
+   "빨리",
+   "친절한"
+  ],
+  "explain": "\"맛있는\"은(는) 명사 \"급식\"과(와) 짝 → \"맛있는\"은(는) ( 형용사 ). 형용사는 명사를 꾸민다!",
+  "source": "교재 1-2"
+ },
+ {
+  "id": "03-002",
+  "type": 3,
+  "level": 1,
+  "prompt": "조용히 ___",
+  "answer": "잔다",
+  "options": [
+   "잔다",
+   "교실",
+   "친절한",
+   "숙제"
+  ],
+  "explain": "\"조용히\"은(는) 동사 \"잔다\"와(과) 짝 → \"조용히\"은(는) < 부사 >. 부사는 동사를 꾸민다!",
+  "source": "교재 1-2"
+ },
+ {
+  "id": "03-003",
+  "type": 3,
+  "level": 1,
+  "prompt": "예쁜 ___",
+  "answer": "필통",
+  "options": [
+   "필통",
+   "웃는다",
+   "천천히",
+   "시끄러운"
+  ],
+  "explain": "\"예쁜\"은(는) 명사 \"필통\"과(와) 짝 → \"예쁜\"은(는) ( 형용사 ). 형용사는 명사를 꾸민다!",
+  "source": "교재 1-2"
+ },
+ {
+  "id": "03-004",
+  "type": 3,
+  "level": 1,
+  "prompt": "열심히 ___",
+  "answer": "공부한다",
+  "options": [
+   "공부한다",
+   "학원",
+   "행복한",
+   "시험"
+  ],
+  "explain": "\"열심히\"은(는) 동사 \"공부한다\"와(과) 짝 → \"열심히\"은(는) < 부사 >. 부사는 동사를 꾸민다!",
+  "source": "교재 1-2"
+ },
+ {
+  "id": "03-005",
+  "type": 3,
+  "level": 1,
+  "prompt": "빨리 ___",
+  "answer": "달린다",
+  "options": [
+   "달린다",
+   "운동장",
+   "빠른",
+   "체육복"
+  ],
+  "explain": "\"빨리\"은(는) 동사 \"달린다\"와(과) 짝 → \"빨리\"은(는) < 부사 >. 부사는 동사를 꾸민다!",
+  "source": "교재 1-2"
+ },
+ {
+  "id": "03-006",
+  "type": 3,
+  "level": 1,
+  "prompt": "친절한 ___",
+  "answer": "선생님",
+  "options": [
+   "선생님",
+   "가르친다",
+   "항상",
+   "조용히"
+  ],
+  "explain": "\"친절한\"은(는) 명사 \"선생님\"과(와) 짝 → \"친절한\"은(는) ( 형용사 ). 형용사는 명사를 꾸민다!",
+  "source": "교재 1-2"
+ },
+ {
+  "id": "03-007",
+  "type": 3,
+  "level": 1,
+  "prompt": "무서운 ___",
+  "answer": "영화",
+  "options": [
+   "영화",
+   "본다",
+   "늦게",
+   "크게"
+  ],
+  "explain": "\"무서운\"은(는) 명사 \"영화\"과(와) 짝 → \"무서운\"은(는) ( 형용사 ). 형용사는 명사를 꾸민다!",
+  "source": "교재 1-2"
+ },
+ {
+  "id": "03-008",
+  "type": 3,
+  "level": 2,
+  "prompt": "항상 ___",
+  "answer": "늦는다",
+  "options": [
+   "늦는다",
+   "지각생",
+   "게으른",
+   "학원"
+  ],
+  "explain": "\"항상\"은(는) 동사 \"늦는다\"와(과) 짝 → \"항상\"은(는) < 부사 >. 부사는 동사를 꾸민다! (빈도부사)",
+  "source": "교재 1-2"
+ },
+ {
+  "id": "03-009",
+  "type": 3,
+  "level": 1,
+  "prompt": "시끄러운 ___",
+  "answer": "교실",
+  "options": [
+   "교실",
+   "떠든다",
+   "크게",
+   "매우"
+  ],
+  "explain": "\"시끄러운\"은(는) 명사 \"교실\"과(와) 짝 → \"시끄러운\"은(는) ( 형용사 ). 형용사는 명사를 꾸민다!",
+  "source": "교재 1-2"
+ },
+ {
+  "id": "03-010",
+  "type": 3,
+  "level": 1,
+  "prompt": "천천히 ___",
+  "answer": "걷는다",
+  "options": [
+   "걷는다",
+   "복도",
+   "긴",
+   "친구"
+  ],
+  "explain": "\"천천히\"은(는) 동사 \"걷는다\"와(과) 짝 → \"천천히\"은(는) < 부사 >. 부사는 동사를 꾸민다!",
+  "source": "교재 1-2"
+ },
+ {
+  "id": "03-011",
+  "type": 3,
+  "level": 2,
+  "prompt": "___ 떡볶이",
+  "answer": "매운",
+  "options": [
+   "매운",
+   "맵게",
+   "먹는다",
+   "빨리"
+  ],
+  "explain": "명사 \"떡볶이\" 앞에서 꾸미는 말 → ( 형용사 ) \"매운\"",
+  "source": "교재 1-2"
+ },
+ {
+  "id": "03-012",
+  "type": 3,
+  "level": 2,
+  "prompt": "___ 웃는다",
+  "answer": "크게",
+  "options": [
+   "크게",
+   "큰",
+   "웃음",
+   "책상"
+  ],
+  "explain": "동사 \"웃는다\"를 꾸미는 말 → < 부사 > \"크게\"",
+  "source": "교재 1-2"
+ },
+ {
+  "id": "03-013",
+  "type": 3,
+  "level": 2,
+  "prompt": "___ 일어난다",
+  "answer": "일찍",
+  "options": [
+   "일찍",
+   "이른",
+   "아침",
+   "알람"
+  ],
+  "explain": "동사 \"일어난다\"를 꾸미는 말 → < 부사 > \"일찍\"",
+  "source": "교재 1-2"
+ },
+ {
+  "id": "03-014",
+  "type": 3,
+  "level": 2,
+  "prompt": "___ 가방",
+  "answer": "무거운",
+  "options": [
+   "무거운",
+   "무겁게",
+   "든다",
+   "매우"
+  ],
+  "explain": "명사 \"가방\"을 꾸미는 말 → ( 형용사 ) \"무거운\"",
+  "source": "교재 1-2"
+ },
+ {
+  "id": "03-015",
+  "type": 3,
+  "level": 3,
+  "prompt": "매우 ___",
+  "answer": "어려운",
+  "options": [
+   "어려운",
+   "시험",
+   "공부",
+   "학생"
+  ],
+  "explain": "\"매우\"는 형용사 \"어려운\"과 짝 → \"매우\"는 < 부사 >. 부사는 형용사도 꾸민다!",
+  "source": "교재 1-2"
+ },
+ {
+  "id": "03-016",
+  "type": 3,
+  "level": 2,
+  "prompt": "___ 친구",
+  "answer": "착한",
+  "options": [
+   "착한",
+   "착하게",
+   "돕는다",
+   "항상"
+  ],
+  "explain": "명사 \"친구\"를 꾸미는 말 → ( 형용사 ) \"착한\"",
+  "source": "교재 1-2"
+ },
+ {
+  "id": "03-017",
+  "type": 3,
+  "level": 3,
+  "prompt": "정말 ___ 게임",
+  "answer": "재미있는",
+  "options": [
+   "재미있는",
+   "재미",
+   "한다",
+   "친구"
+  ],
+  "explain": "\"게임\"을 꾸미는 ( 형용사 ) \"재미있는\", 그 형용사를 꾸미는 < 부사 > \"정말\"",
+  "source": "교재 1-2"
+ },
+ {
+  "id": "03-018",
+  "type": 3,
+  "level": 2,
+  "prompt": "___ 공부한다",
+  "answer": "조용히",
+  "options": [
+   "조용히",
+   "조용한",
+   "도서관",
+   "책상"
+  ],
+  "explain": "동사 \"공부한다\"를 꾸미는 말 → < 부사 > \"조용히\"",
+  "source": "교재 1-2"
+ },
+ {
+  "id": "03-019",
+  "type": 3,
+  "level": 2,
+  "prompt": "___ 대답했다",
+  "answer": "정확하게",
+  "options": [
+   "정확하게",
+   "정확한",
+   "정답",
+   "질문"
+  ],
+  "explain": "동사 \"대답했다\"를 꾸미는 말 → < 부사 > \"정확하게\"",
+  "source": "교재 1-2"
+ },
+ {
+  "id": "03-020",
+  "type": 3,
+  "level": 1,
+  "prompt": "귀여운 ___",
+  "answer": "강아지",
+  "options": [
+   "강아지",
+   "짖는다",
+   "조용히",
+   "작게"
+  ],
+  "explain": "\"귀여운\"은(는) 명사 \"강아지\"과(와) 짝 → \"귀여운\"은(는) ( 형용사 ). 형용사는 명사를 꾸민다!",
+  "source": "교재 1-2"
+ },
+ {
+  "id": "03-021",
+  "type": 3,
+  "level": 1,
+  "prompt": "늦게 ___",
+  "answer": "잔다",
+  "options": [
+   "잔다",
+   "밤",
+   "늦은",
+   "게임"
+  ],
+  "explain": "\"늦게\"은(는) 동사 \"잔다\"와(과) 짝 → \"늦게\"은(는) < 부사 >. 부사는 동사를 꾸민다!",
+  "source": "교재 1-2"
+ },
+ {
+  "id": "03-022",
+  "type": 3,
+  "level": 2,
+  "prompt": "___ 소리",
+  "answer": "큰",
+  "options": [
+   "큰",
+   "크게",
+   "외친다",
+   "매우"
+  ],
+  "explain": "명사 \"소리\"를 꾸미는 말 → ( 형용사 ) \"큰\"",
+  "source": "교재 1-2"
+ },
+ {
+  "id": "03-023",
+  "type": 3,
+  "level": 2,
+  "prompt": "___ 기다린다",
+  "answer": "오래",
+  "options": [
+   "오래",
+   "긴",
+   "줄",
+   "급식"
+  ],
+  "explain": "동사 \"기다린다\"를 꾸미는 말 → < 부사 > \"오래\"",
+  "source": "교재 1-2"
+ },
+ {
+  "id": "03-024",
+  "type": 3,
+  "level": 1,
+  "prompt": "차가운 ___",
+  "answer": "물",
+  "options": [
+   "물",
+   "마신다",
+   "차갑게",
+   "빨리"
+  ],
+  "explain": "\"차가운\"은(는) 명사 \"물\"과(와) 짝 → \"차가운\"은(는) ( 형용사 ). 형용사는 명사를 꾸민다!",
+  "source": "교재 1-2"
+ },
+ {
+  "id": "03-025",
+  "type": 3,
+  "level": 2,
+  "prompt": "a ___ driver",
+  "answer": "careful",
+  "options": [
+   "careful",
+   "carefully",
+   "care",
+   "carefulness"
+  ],
+  "explain": "명사 driver와 짝 → ( 형용사 ) careful. -ful은 형용사 꼬리!",
+  "source": "교재 1-1 연습①-D · 2-5"
+ },
+ {
+  "id": "03-026",
+  "type": 3,
+  "level": 2,
+  "prompt": "She smiled ___ at me.",
+  "answer": "happily",
+  "options": [
+   "happily",
+   "happy",
+   "happiness",
+   "happen"
+  ],
+  "explain": "동사 smiled와 짝 → < 부사 > happily. 형용사 + -ly = 부사",
+  "source": "교재 1-1 연습①-D · 2-5"
+ },
+ {
+  "id": "03-027",
+  "type": 3,
+  "level": 2,
+  "prompt": "an ___ movie",
+  "answer": "exciting",
+  "options": [
+   "exciting",
+   "excitedly",
+   "excitement",
+   "excite"
+  ],
+  "explain": "명사 movie와 짝 → ( 형용사 ) exciting",
+  "source": "교재 1-1 연습①-D · 2-5"
+ },
+ {
+  "id": "03-028",
+  "type": 3,
+  "level": 2,
+  "prompt": "He solved the problem ___.",
+  "answer": "easily",
+  "options": [
+   "easily",
+   "easy",
+   "ease",
+   "easiness"
+  ],
+  "explain": "동사 solved를 꾸민다 → < 부사 > easily",
+  "source": "교재 1-1 연습①-D · 2-5"
+ },
+ {
+  "id": "03-029",
+  "type": 3,
+  "level": 3,
+  "prompt": "This cake tastes ___.",
+  "answer": "sweet",
+  "options": [
+   "sweet",
+   "sweetly",
+   "sweetness",
+   "sweeten"
+  ],
+  "explain": "cake = sweet, 주어를 설명하는 보어 → ( 형용사 ). 감각동사 taste 뒤엔 형용사!",
+  "source": "교재 1-1 연습①-D · 2-5"
+ },
+ {
+  "id": "03-030",
+  "type": 3,
+  "level": 3,
+  "prompt": "You look ___ today.",
+  "answer": "tired",
+  "options": [
+   "tired",
+   "tiredly",
+   "tiredness",
+   "tire"
+  ],
+  "explain": "You = tired, 보어 자리 → ( 형용사 ). \"~해 보이다\" look 뒤엔 형용사!",
+  "source": "교재 1-1 연습①-D · 2-5"
+ },
+ {
+  "id": "03-031",
+  "type": 3,
+  "level": 2,
+  "prompt": "a ___ place",
+  "answer": "dangerous",
+  "options": [
+   "dangerous",
+   "dangerously",
+   "danger",
+   "endanger"
+  ],
+  "explain": "명사 place와 짝 → ( 형용사 ) dangerous. -ous는 형용사 꼬리!",
+  "source": "교재 1-1 연습①-D · 2-5"
+ },
+ {
+  "id": "03-032",
+  "type": 3,
+  "level": 2,
+  "prompt": "He answered the question ___.",
+  "answer": "correctly",
+  "options": [
+   "correctly",
+   "correct",
+   "correction",
+   "correctness"
+  ],
+  "explain": "동사 answered를 꾸민다 → < 부사 > correctly",
+  "source": "교재 1-1 연습①-D · 2-5"
+ },
+ {
+  "id": "03-033",
+  "type": 3,
+  "level": 2,
+  "prompt": "a ___ idea",
+  "answer": "creative",
+  "options": [
+   "creative",
+   "creatively",
+   "creation",
+   "create"
+  ],
+  "explain": "명사 idea와 짝 → ( 형용사 ) creative. -ive는 형용사 꼬리!",
+  "source": "교재 1-1 연습①-D · 2-5"
+ },
+ {
+  "id": "03-034",
+  "type": 3,
+  "level": 3,
+  "prompt": "The milk went ___.",
+  "answer": "bad",
+  "options": [
+   "bad",
+   "badly",
+   "badness",
+   "worse"
+  ],
+  "explain": "milk = bad, 상태 변화 go 뒤 보어 → ( 형용사 ) \"상했다\"",
+  "source": "교재 1-1 연습①-D · 2-5"
+ },
+ {
+  "id": "03-035",
+  "type": 3,
+  "level": 2,
+  "prompt": "She sings ___.",
+  "answer": "beautifully",
+  "options": [
+   "beautifully",
+   "beautiful",
+   "beauty",
+   "beautify"
+  ],
+  "explain": "동사 sings를 꾸민다 → < 부사 > beautifully",
+  "source": "교재 1-1 연습①-D · 2-5"
+ },
+ {
+  "id": "03-036",
+  "type": 3,
+  "level": 3,
+  "prompt": "Stay ___!",
+  "answer": "calm",
+  "options": [
+   "calm",
+   "calmly",
+   "calmness",
+   "calming"
+  ],
+  "explain": "상태 유지 stay 뒤 보어 → ( 형용사 ) calm. \"~하게\"로 해석돼도 형용사!",
+  "source": "교재 1-1 연습①-D · 2-5"
+ },
+ {
+  "id": "03-037",
+  "type": 3,
+  "level": 2,
+  "prompt": "a ___ student",
+  "answer": "smart",
+  "options": [
+   "smart",
+   "smartly",
+   "smartness",
+   "smarten"
+  ],
+  "explain": "명사 student와 짝 → ( 형용사 ) smart",
+  "source": "교재 1-1 연습①-D · 2-5"
+ },
+ {
+  "id": "03-038",
+  "type": 3,
+  "level": 2,
+  "prompt": "He runs ___ in the relay race.",
+  "answer": "quickly",
+  "options": [
+   "quickly",
+   "quick",
+   "quickness",
+   "quicken"
+  ],
+  "explain": "동사 runs를 꾸민다 → < 부사 > quickly",
+  "source": "교재 1-1 연습①-D · 2-5"
+ },
+ {
+  "id": "03-039",
+  "type": 3,
+  "level": 3,
+  "prompt": "The news made me ___.",
+  "answer": "happy",
+  "options": [
+   "happy",
+   "happily",
+   "happiness",
+   "happen"
+  ],
+  "explain": "me = happy, 목적어를 설명하는 보어 → ( 형용사 ). 5형식도 같은 원리!",
+  "source": "교재 1-1 연습①-D · 2-5"
+ },
+ {
+  "id": "03-040",
+  "type": 3,
+  "level": 3,
+  "prompt": "___, I passed the test!",
+  "answer": "Fortunately",
+  "options": [
+   "Fortunately",
+   "Fortunate",
+   "Fortune",
+   "Fortunes"
+  ],
+  "explain": "문장 전체를 꾸민다 → < 부사 > Fortunately \"다행히\"",
+  "source": "교재 1-1 연습①-D · 2-5"
+ },
+ {
+  "id": "03-041",
+  "type": 3,
+  "level": 2,
+  "prompt": "a ___ game",
+  "answer": "popular",
+  "options": [
+   "popular",
+   "popularly",
+   "popularity",
+   "populate"
+  ],
+  "explain": "명사 game과 짝 → ( 형용사 ) popular",
+  "source": "교재 1-1 연습①-D · 2-5"
+ },
+ {
+  "id": "03-042",
+  "type": 3,
+  "level": 3,
+  "prompt": "It is getting ___.",
+  "answer": "dark",
+  "options": [
+   "dark",
+   "darkly",
+   "darkness",
+   "darken"
+  ],
+  "explain": "It = dark, 상태 변화 get 뒤 보어 → ( 형용사 )",
+  "source": "교재 1-1 연습①-D · 2-5"
+ },
+ {
+  "id": "03-043",
+  "type": 3,
+  "level": 2,
+  "prompt": "The baby slept ___.",
+  "answer": "peacefully",
+  "options": [
+   "peacefully",
+   "peaceful",
+   "peace",
+   "peacemaker"
+  ],
+  "explain": "동사 slept를 꾸민다 → < 부사 > peacefully",
+  "source": "교재 1-1 연습①-D · 2-5"
+ }
+]

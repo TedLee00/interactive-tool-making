@@ -1,0 +1,852 @@
+[
+ {
+  "id": "01-001",
+  "type": 1,
+  "level": 1,
+  "word": "happiness",
+  "answer": "명사",
+  "options": [
+   "명사",
+   "동사",
+   "형용사",
+   "부사",
+   "대명사"
+  ],
+  "explain": "-ness는 명사 꼬리! happy(형) → happiness(명). 생각의 이름 → ○ 명사",
+  "source": "교재 1-1 연습①-D 꼬리"
+ },
+ {
+  "id": "01-002",
+  "type": 1,
+  "level": 1,
+  "word": "friendship",
+  "answer": "명사",
+  "options": [
+   "명사",
+   "동사",
+   "형용사",
+   "부사",
+   "대명사"
+  ],
+  "explain": "-ship은 명사 꼬리! friend(명) → friendship(명). 생각의 이름 → ○ 명사",
+  "source": "교재 1-1 연습①-D 꼬리"
+ },
+ {
+  "id": "01-003",
+  "type": 1,
+  "level": 1,
+  "word": "excitement",
+  "answer": "명사",
+  "options": [
+   "명사",
+   "동사",
+   "형용사",
+   "부사",
+   "대명사"
+  ],
+  "explain": "-ment는 명사 꼬리! excite(동) → excitement(명) → ○ 명사",
+  "source": "교재 1-1 연습①-D 꼬리"
+ },
+ {
+  "id": "01-004",
+  "type": 1,
+  "level": 2,
+  "word": "creation",
+  "answer": "명사",
+  "options": [
+   "명사",
+   "동사",
+   "형용사",
+   "부사",
+   "대명사"
+  ],
+  "explain": "-tion은 명사 꼬리! create(동) → creation(명) → ○ 명사",
+  "source": "교재 1-1 연습①-D 꼬리"
+ },
+ {
+  "id": "01-005",
+  "type": 1,
+  "level": 2,
+  "word": "safety",
+  "answer": "명사",
+  "options": [
+   "명사",
+   "동사",
+   "형용사",
+   "부사",
+   "대명사"
+  ],
+  "explain": "-ty는 명사 꼬리! safe(형) → safety(명) → ○ 명사",
+  "source": "교재 1-1 연습①-D 꼬리"
+ },
+ {
+  "id": "01-006",
+  "type": 1,
+  "level": 2,
+  "word": "strength",
+  "answer": "명사",
+  "options": [
+   "명사",
+   "형용사",
+   "동사",
+   "부사",
+   "대명사"
+  ],
+  "explain": "strong(형) → strength(명). 힘이라는 이름 → ○ 명사",
+  "source": "교재 1-1 연습①"
+ },
+ {
+  "id": "01-007",
+  "type": 1,
+  "level": 1,
+  "word": "teacher",
+  "answer": "명사",
+  "options": [
+   "명사",
+   "동사",
+   "형용사",
+   "부사",
+   "대명사"
+  ],
+  "explain": "사람의 이름 → ○ 명사. -er은 \"~하는 사람\"",
+  "source": "교재 1-1 연습①"
+ },
+ {
+  "id": "01-008",
+  "type": 1,
+  "level": 1,
+  "word": "carefully",
+  "answer": "부사",
+  "options": [
+   "부사",
+   "명사",
+   "동사",
+   "형용사",
+   "대명사"
+  ],
+  "explain": "형용사 careful + -ly → 부사 < >. 동사를 꾸민다",
+  "source": "교재 1-1 연습①-D 꼬리"
+ },
+ {
+  "id": "01-009",
+  "type": 1,
+  "level": 1,
+  "word": "slowly",
+  "answer": "부사",
+  "options": [
+   "부사",
+   "명사",
+   "동사",
+   "형용사",
+   "대명사"
+  ],
+  "explain": "형용사 slow + -ly → 부사 < >. 어떻게? 천천히",
+  "source": "교재 1-1 연습①-D 꼬리"
+ },
+ {
+  "id": "01-010",
+  "type": 1,
+  "level": 1,
+  "word": "quietly",
+  "answer": "부사",
+  "options": [
+   "부사",
+   "명사",
+   "동사",
+   "형용사",
+   "대명사"
+  ],
+  "explain": "형용사 quiet + -ly → 부사 < >. 어떻게? 조용히",
+  "source": "교재 1-1 연습①-D 꼬리"
+ },
+ {
+  "id": "01-011",
+  "type": 1,
+  "level": 2,
+  "word": "fortunately",
+  "answer": "부사",
+  "options": [
+   "부사",
+   "명사",
+   "동사",
+   "형용사",
+   "대명사"
+  ],
+  "explain": "형용사 fortunate + -ly → 부사 < >. 문장 전체를 꾸민다",
+  "source": "교재 1-1 연습①-D 꼬리"
+ },
+ {
+  "id": "01-012",
+  "type": 1,
+  "level": 1,
+  "word": "always",
+  "answer": "부사",
+  "options": [
+   "부사",
+   "명사",
+   "동사",
+   "형용사",
+   "대명사"
+  ],
+  "explain": "얼마나 자주? → 빈도부사 < >. 빈도부사는 동사 앞!",
+  "source": "교재 2-1"
+ },
+ {
+  "id": "01-013",
+  "type": 1,
+  "level": 3,
+  "word": "however",
+  "answer": "부사",
+  "options": [
+   "부사",
+   "접속사",
+   "명사",
+   "동사",
+   "형용사"
+  ],
+  "explain": "however는 접속사처럼 보이지만 부사! \"그러나\"라는 뜻으로 문장을 꾸민다 (but은 접속사)",
+  "source": "교재 1-1 연습①"
+ },
+ {
+  "id": "01-014",
+  "type": 1,
+  "level": 1,
+  "word": "beautiful",
+  "answer": "형용사",
+  "options": [
+   "형용사",
+   "명사",
+   "동사",
+   "부사",
+   "대명사"
+  ],
+  "explain": "-ful은 형용사 꼬리! beauty(명) → beautiful(형). 명사를 꾸민다 → ( 형용사 )",
+  "source": "교재 1-1 연습①-D 꼬리"
+ },
+ {
+  "id": "01-015",
+  "type": 1,
+  "level": 1,
+  "word": "dangerous",
+  "answer": "형용사",
+  "options": [
+   "형용사",
+   "명사",
+   "동사",
+   "부사",
+   "대명사"
+  ],
+  "explain": "-ous는 형용사 꼬리! danger(명) → dangerous(형) → ( 형용사 )",
+  "source": "교재 1-1 연습①-D 꼬리"
+ },
+ {
+  "id": "01-016",
+  "type": 1,
+  "level": 2,
+  "word": "creative",
+  "answer": "형용사",
+  "options": [
+   "형용사",
+   "명사",
+   "동사",
+   "부사",
+   "대명사"
+  ],
+  "explain": "-ive는 형용사 꼬리! create(동) → creative(형) → ( 형용사 )",
+  "source": "교재 1-1 연습①-D 꼬리"
+ },
+ {
+  "id": "01-017",
+  "type": 1,
+  "level": 2,
+  "word": "national",
+  "answer": "형용사",
+  "options": [
+   "형용사",
+   "명사",
+   "동사",
+   "부사",
+   "대명사"
+  ],
+  "explain": "-al은 형용사 꼬리! nation(명) → national(형) → ( 형용사 )",
+  "source": "교재 1-1 연습①-D 꼬리"
+ },
+ {
+  "id": "01-018",
+  "type": 1,
+  "level": 2,
+  "word": "sunny",
+  "answer": "형용사",
+  "options": [
+   "형용사",
+   "명사",
+   "동사",
+   "부사",
+   "대명사"
+  ],
+  "explain": "-y는 형용사 꼬리! sun(명) → sunny(형). 어떤 날? 화창한 날 → ( 형용사 )",
+  "source": "교재 1-1 연습①-D 꼬리"
+ },
+ {
+  "id": "01-019",
+  "type": 1,
+  "level": 1,
+  "word": "delicious",
+  "answer": "형용사",
+  "options": [
+   "형용사",
+   "명사",
+   "동사",
+   "부사",
+   "대명사"
+  ],
+  "explain": "어떤 급식? 맛있는 급식 → 명사를 꾸미는 ( 형용사 )",
+  "source": "교재 1-1 연습①"
+ },
+ {
+  "id": "01-020",
+  "type": 1,
+  "level": 1,
+  "word": "brave",
+  "answer": "형용사",
+  "options": [
+   "형용사",
+   "명사",
+   "동사",
+   "부사",
+   "대명사"
+  ],
+  "explain": "어떤 사람? 용감한 사람 → 명사를 꾸미는 ( 형용사 )",
+  "source": "교재 1-1 연습①"
+ },
+ {
+  "id": "01-021",
+  "type": 1,
+  "level": 2,
+  "word": "realize",
+  "answer": "동사",
+  "options": [
+   "동사",
+   "명사",
+   "형용사",
+   "부사",
+   "대명사"
+  ],
+  "explain": "-ize는 동사 꼬리! real(형) → realize(동) → □ 동사",
+  "source": "교재 1-1 연습①-D 꼬리"
+ },
+ {
+  "id": "01-022",
+  "type": 1,
+  "level": 3,
+  "word": "beautify",
+  "answer": "동사",
+  "options": [
+   "동사",
+   "명사",
+   "형용사",
+   "부사",
+   "대명사"
+  ],
+  "explain": "-fy는 동사 꼬리! beauty(명) → beautify(동) \"아름답게 하다\" → □ 동사",
+  "source": "교재 1-1 연습①-D 꼬리"
+ },
+ {
+  "id": "01-023",
+  "type": 1,
+  "level": 3,
+  "word": "endanger",
+  "answer": "동사",
+  "options": [
+   "동사",
+   "명사",
+   "형용사",
+   "부사",
+   "대명사"
+  ],
+  "explain": "en-은 동사 꼬리(머리)! danger(명) → endanger(동) \"위험에 빠뜨리다\" → □ 동사",
+  "source": "교재 1-1 연습①-D 꼬리"
+ },
+ {
+  "id": "01-024",
+  "type": 1,
+  "level": 1,
+  "word": "eat",
+  "answer": "동사",
+  "options": [
+   "동사",
+   "명사",
+   "형용사",
+   "부사",
+   "대명사"
+  ],
+  "explain": "~하다(먹다) → 동작 → □ 동사",
+  "source": "교재 1-1 연습①"
+ },
+ {
+  "id": "01-025",
+  "type": 1,
+  "level": 1,
+  "word": "swim",
+  "answer": "동사",
+  "options": [
+   "동사",
+   "명사",
+   "형용사",
+   "부사",
+   "대명사"
+  ],
+  "explain": "~하다(수영하다) → 동작 → □ 동사",
+  "source": "교재 1-1 연습①"
+ },
+ {
+  "id": "01-026",
+  "type": 1,
+  "level": 1,
+  "word": "they",
+  "answer": "대명사",
+  "options": [
+   "대명사",
+   "명사",
+   "동사",
+   "형용사",
+   "부사"
+  ],
+  "explain": "명사를 대신하는 말 → 대명사. 명사 자리에 앉는다",
+  "source": "교재 1-1 연습①"
+ },
+ {
+  "id": "01-027",
+  "type": 1,
+  "level": 1,
+  "word": "us",
+  "answer": "대명사",
+  "options": [
+   "대명사",
+   "명사",
+   "동사",
+   "형용사",
+   "부사"
+  ],
+  "explain": "\"우리를\" — 명사를 대신하는 말 → 대명사",
+  "source": "교재 1-1 연습①"
+ },
+ {
+  "id": "01-028",
+  "type": 1,
+  "level": 1,
+  "word": "under",
+  "answer": "전치사",
+  "options": [
+   "전치사",
+   "부사",
+   "명사",
+   "동사",
+   "형용사"
+  ],
+  "explain": "명사 앞에서 위치(~아래에)를 나타냄 → 전치사",
+  "source": "교재 1-1 연습①"
+ },
+ {
+  "id": "01-029",
+  "type": 1,
+  "level": 2,
+  "word": "between",
+  "answer": "전치사",
+  "options": [
+   "전치사",
+   "부사",
+   "명사",
+   "동사",
+   "형용사"
+  ],
+  "explain": "명사 앞에서 위치(~사이에)를 나타냄 → 전치사",
+  "source": "교재 1-1 연습①"
+ },
+ {
+  "id": "01-030",
+  "type": 1,
+  "level": 2,
+  "word": "through",
+  "answer": "전치사",
+  "options": [
+   "전치사",
+   "부사",
+   "명사",
+   "동사",
+   "형용사"
+  ],
+  "explain": "명사 앞에서 방향(~을 통해)을 나타냄 → 전치사",
+  "source": "교재 1-1 연습①"
+ },
+ {
+  "id": "01-031",
+  "type": 1,
+  "level": 3,
+  "word": "because of",
+  "answer": "전치사",
+  "options": [
+   "전치사",
+   "접속사",
+   "명사",
+   "동사",
+   "형용사"
+  ],
+  "explain": "because of 뒤에는 명사가 온다 → 전치사(구). because(접속사) 뒤에는 주어+동사!",
+  "source": "교재 1-1 연습①"
+ },
+ {
+  "id": "01-032",
+  "type": 1,
+  "level": 1,
+  "word": "wow",
+  "answer": "감탄사",
+  "options": [
+   "감탄사",
+   "명사",
+   "동사",
+   "형용사",
+   "부사"
+  ],
+  "explain": "감정을 표현 → 감탄사",
+  "source": "교재 1-1 연습①"
+ },
+ {
+  "id": "01-033",
+  "type": 1,
+  "level": 1,
+  "word": "oops",
+  "answer": "감탄사",
+  "options": [
+   "감탄사",
+   "명사",
+   "동사",
+   "형용사",
+   "부사"
+  ],
+  "explain": "\"아이쿠!\" 감정을 표현 → 감탄사",
+  "source": "교재 1-1 연습①"
+ },
+ {
+  "id": "01-034",
+  "type": 1,
+  "level": 1,
+  "word": "ouch",
+  "answer": "감탄사",
+  "options": [
+   "감탄사",
+   "명사",
+   "동사",
+   "형용사",
+   "부사"
+  ],
+  "explain": "\"아야!\" 감정을 표현 → 감탄사",
+  "source": "교재 1-1 연습①"
+ },
+ {
+  "id": "01-035",
+  "type": 1,
+  "level": 2,
+  "word": "run",
+  "context": "I **run** every morning before school.",
+  "answer": "동사",
+  "options": [
+   "동사",
+   "명사",
+   "형용사",
+   "부사",
+   "대명사"
+  ],
+  "explain": "주어 I 뒤에서 \"달린다\" → □ 동사. 품사는 생김새가 아니라 하는 일로 정해진다!",
+  "source": "교재 1-1 연습①-B 한 단어, 여러 품사"
+ },
+ {
+  "id": "01-036",
+  "type": 1,
+  "level": 3,
+  "word": "run",
+  "context": "Minho hit a home **run** on Sports Day.",
+  "answer": "명사",
+  "options": [
+   "명사",
+   "동사",
+   "형용사",
+   "부사",
+   "대명사"
+  ],
+  "explain": "a home run — 관사 a 뒤, \"홈런\"이라는 이름 → ○ 명사. 품사는 하는 일로 정해진다!",
+  "source": "교재 1-1 연습①-B 한 단어, 여러 품사"
+ },
+ {
+  "id": "01-037",
+  "type": 1,
+  "level": 3,
+  "word": "hard",
+  "context": "She studies **hard** for the test.",
+  "answer": "부사",
+  "options": [
+   "부사",
+   "형용사",
+   "명사",
+   "동사",
+   "대명사"
+  ],
+  "explain": "동사 studies를 꾸민다 → < 부사 > \"열심히\". a hard test라면 형용사!",
+  "source": "교재 1-1 연습①-B 한 단어, 여러 품사"
+ },
+ {
+  "id": "01-038",
+  "type": 1,
+  "level": 3,
+  "word": "hard",
+  "context": "Today's math test was really **hard**.",
+  "answer": "형용사",
+  "options": [
+   "형용사",
+   "부사",
+   "명사",
+   "동사",
+   "대명사"
+  ],
+  "explain": "주어 test를 설명하는 보어 → ( 형용사 ) \"어려운\". studies hard라면 부사!",
+  "source": "교재 1-1 연습①-B 한 단어, 여러 품사"
+ },
+ {
+  "id": "01-039",
+  "type": 1,
+  "level": 2,
+  "word": "help",
+  "context": "Thanks for your **help** with my homework.",
+  "answer": "명사",
+  "options": [
+   "명사",
+   "동사",
+   "형용사",
+   "부사",
+   "대명사"
+  ],
+  "explain": "your 뒤, \"도움\"이라는 이름 → ○ 명사",
+  "source": "교재 1-1 연습①-B 한 단어, 여러 품사"
+ },
+ {
+  "id": "01-040",
+  "type": 1,
+  "level": 2,
+  "word": "help",
+  "context": "Can you **help** me with my homework?",
+  "answer": "동사",
+  "options": [
+   "동사",
+   "명사",
+   "형용사",
+   "부사",
+   "대명사"
+  ],
+  "explain": "Can you 뒤에서 \"도와주다\" → □ 동사",
+  "source": "교재 1-1 연습①-B 한 단어, 여러 품사"
+ },
+ {
+  "id": "01-041",
+  "type": 1,
+  "level": 3,
+  "word": "water",
+  "context": "I **water** the plants in our classroom.",
+  "answer": "동사",
+  "options": [
+   "동사",
+   "명사",
+   "형용사",
+   "부사",
+   "대명사"
+  ],
+  "explain": "주어 I 뒤에서 \"물을 주다\" → □ 동사. I drink water라면 명사!",
+  "source": "교재 1-1 연습①-B 한 단어, 여러 품사"
+ },
+ {
+  "id": "01-042",
+  "type": 1,
+  "level": 2,
+  "word": "fast",
+  "context": "My brother runs really **fast**.",
+  "answer": "부사",
+  "options": [
+   "부사",
+   "형용사",
+   "명사",
+   "동사",
+   "대명사"
+  ],
+  "explain": "동사 runs를 꾸민다 → < 부사 > \"빨리\". a fast runner라면 형용사!",
+  "source": "교재 1-1 연습①-B 한 단어, 여러 품사"
+ },
+ {
+  "id": "01-043",
+  "type": 1,
+  "level": 2,
+  "word": "fast",
+  "context": "Jiho is a **fast** runner.",
+  "answer": "형용사",
+  "options": [
+   "형용사",
+   "부사",
+   "명사",
+   "동사",
+   "대명사"
+  ],
+  "explain": "명사 runner를 꾸민다 → ( 형용사 ) \"빠른\"",
+  "source": "교재 1-1 연습①-B 한 단어, 여러 품사"
+ },
+ {
+  "id": "01-044",
+  "type": 1,
+  "level": 3,
+  "word": "light",
+  "context": "The **light** in the classroom is too bright.",
+  "answer": "명사",
+  "options": [
+   "명사",
+   "형용사",
+   "동사",
+   "부사",
+   "대명사"
+  ],
+  "explain": "The 뒤, 주어 자리 \"불빛\" → ○ 명사. This bag is light라면 형용사!",
+  "source": "교재 1-1 연습①-B 한 단어, 여러 품사"
+ },
+ {
+  "id": "01-045",
+  "type": 1,
+  "level": 3,
+  "word": "light",
+  "context": "My new school bag is very **light**.",
+  "answer": "형용사",
+  "options": [
+   "형용사",
+   "명사",
+   "동사",
+   "부사",
+   "대명사"
+  ],
+  "explain": "주어 bag을 설명하는 보어 \"가벼운\" → ( 형용사 )",
+  "source": "교재 1-1 연습①-B 한 단어, 여러 품사"
+ },
+ {
+  "id": "01-046",
+  "type": 1,
+  "level": 2,
+  "word": "this",
+  "context": "**This** is my favorite game.",
+  "answer": "대명사",
+  "options": [
+   "대명사",
+   "형용사",
+   "명사",
+   "동사",
+   "부사"
+  ],
+  "explain": "명사 앞에서 꾸미지 않고 혼자 쓰였다 → 대명사. This game이라면 형용사!",
+  "source": "교재 1-1 연습①-C"
+ },
+ {
+  "id": "01-047",
+  "type": 1,
+  "level": 3,
+  "word": "this",
+  "context": "**This** game is so much fun.",
+  "answer": "형용사",
+  "options": [
+   "형용사",
+   "대명사",
+   "명사",
+   "동사",
+   "부사"
+  ],
+  "explain": "명사 game 앞에서 꾸민다 → ( 형용사 ). 혼자 쓰이면 대명사!",
+  "source": "교재 1-1 연습①-C"
+ },
+ {
+  "id": "01-048",
+  "type": 1,
+  "level": 2,
+  "word": "that",
+  "context": "**That** is my new phone.",
+  "answer": "대명사",
+  "options": [
+   "대명사",
+   "형용사",
+   "명사",
+   "동사",
+   "부사"
+  ],
+  "explain": "혼자 쓰여 주어 자리 → 대명사",
+  "source": "교재 1-1 연습①-C"
+ },
+ {
+  "id": "01-049",
+  "type": 1,
+  "level": 3,
+  "word": "that",
+  "context": "Look at **that** cute puppy!",
+  "answer": "형용사",
+  "options": [
+   "형용사",
+   "대명사",
+   "명사",
+   "동사",
+   "부사"
+  ],
+  "explain": "명사 puppy 앞에서 꾸민다 → ( 형용사 )",
+  "source": "교재 1-1 연습①-C"
+ },
+ {
+  "id": "01-050",
+  "type": 1,
+  "level": 2,
+  "word": "well",
+  "context": "Yuna sings really **well**.",
+  "answer": "부사",
+  "options": [
+   "부사",
+   "감탄사",
+   "명사",
+   "동사",
+   "형용사"
+  ],
+  "explain": "동사 sings를 꾸민다 → < 부사 > \"잘\"",
+  "source": "교재 1-1 연습①-B 한 단어, 여러 품사"
+ },
+ {
+  "id": "01-051",
+  "type": 1,
+  "level": 3,
+  "word": "well",
+  "context": "**Well**, I don't know the answer.",
+  "answer": "감탄사",
+  "options": [
+   "감탄사",
+   "부사",
+   "명사",
+   "동사",
+   "형용사"
+  ],
+  "explain": "문장 맨 앞 \"음…\" — 감정을 표현 → 감탄사. sings well이라면 부사!",
+  "source": "교재 1-1 연습①-B 한 단어, 여러 품사"
+ },
+ {
+  "id": "01-052",
+  "type": 1,
+  "level": 3,
+  "word": "after",
+  "context": "I play soccer **after** school.",
+  "answer": "전치사",
+  "options": [
+   "전치사",
+   "접속사",
+   "명사",
+   "동사",
+   "형용사"
+  ],
+  "explain": "뒤에 명사 school이 온다 → 전치사. after I finished처럼 주어+동사가 오면 접속사!",
+  "source": "교재 1-1 연습①-B 한 단어, 여러 품사"
+ }
+]

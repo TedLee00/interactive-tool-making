@@ -1,0 +1,690 @@
+[
+ {
+  "id": "07-001",
+  "type": 7,
+  "level": 1,
+  "sentence": "We play soccer [after lunch].",
+  "answer": "부사구",
+  "options": [
+   "부사구",
+   "명사구",
+   "형용사구",
+   "부사절",
+   "명사절"
+  ],
+  "explain": "동사 play를 꾸미니까 < 부사구 >. 판별 비법: 꾸미는 말이 동사 → < >",
+  "source": "교재 1-4"
+ },
+ {
+  "id": "07-002",
+  "type": 7,
+  "level": 1,
+  "sentence": "My grandma lives [in Busan].",
+  "answer": "부사구",
+  "options": [
+   "부사구",
+   "명사구",
+   "형용사구",
+   "부사절",
+   "명사절"
+  ],
+  "explain": "동사 lives를 꾸미니까 < 부사구 >. 판별 비법: 꾸미는 말이 동사 → < >",
+  "source": "교재 1-4"
+ },
+ {
+  "id": "07-003",
+  "type": 7,
+  "level": 2,
+  "sentence": "I went to the store [to buy snacks].",
+  "answer": "부사구",
+  "options": [
+   "부사구",
+   "명사구",
+   "형용사구",
+   "부사절",
+   "명사절"
+  ],
+  "explain": "\"~하기 위해\" → 동사 went를 꾸미는 to부정사 < 부사구 >",
+  "source": "교재 1-4"
+ },
+ {
+  "id": "07-004",
+  "type": 7,
+  "level": 1,
+  "sentence": "She smiled [at me].",
+  "answer": "부사구",
+  "options": [
+   "부사구",
+   "명사구",
+   "형용사구",
+   "부사절",
+   "명사절"
+  ],
+  "explain": "동사 smiled를 꾸미니까 < 부사구 >. 판별 비법: 꾸미는 말이 동사 → < >",
+  "source": "교재 1-4"
+ },
+ {
+  "id": "07-005",
+  "type": 7,
+  "level": 2,
+  "sentence": "We arrived at school [on time].",
+  "answer": "부사구",
+  "options": [
+   "부사구",
+   "명사구",
+   "형용사구",
+   "부사절",
+   "명사절"
+  ],
+  "explain": "동사 arrived를 꾸미니까 < 부사구 >. 판별 비법: 꾸미는 말이 동사 → < >",
+  "source": "교재 1-4"
+ },
+ {
+  "id": "07-006",
+  "type": 7,
+  "level": 2,
+  "sentence": "[Every morning], I walk my dog.",
+  "answer": "부사구",
+  "options": [
+   "부사구",
+   "명사구",
+   "형용사구",
+   "부사절",
+   "명사절"
+  ],
+  "explain": "언제? → 문장을 꾸미는 < 부사구 >",
+  "source": "교재 1-4"
+ },
+ {
+  "id": "07-007",
+  "type": 7,
+  "level": 1,
+  "sentence": "We go to the academy [by bus].",
+  "answer": "부사구",
+  "options": [
+   "부사구",
+   "명사구",
+   "형용사구",
+   "부사절",
+   "명사절"
+  ],
+  "explain": "동사 go를 꾸미니까 < 부사구 >. 판별 비법: 꾸미는 말이 동사 → < >",
+  "source": "교재 1-4"
+ },
+ {
+  "id": "07-008",
+  "type": 7,
+  "level": 2,
+  "sentence": "He played games [all night].",
+  "answer": "부사구",
+  "options": [
+   "부사구",
+   "명사구",
+   "형용사구",
+   "부사절",
+   "명사절"
+  ],
+  "explain": "동사 played를 꾸미니까 < 부사구 >. 판별 비법: 꾸미는 말이 동사 → < >",
+  "source": "교재 1-4"
+ },
+ {
+  "id": "07-009",
+  "type": 7,
+  "level": 2,
+  "sentence": "They practiced dancing [on the stage].",
+  "answer": "부사구",
+  "options": [
+   "부사구",
+   "명사구",
+   "형용사구",
+   "부사절",
+   "명사절"
+  ],
+  "explain": "동사 practiced를 꾸미니까 < 부사구 >. 판별 비법: 꾸미는 말이 동사 → < >",
+  "source": "교재 1-4"
+ },
+ {
+  "id": "07-010",
+  "type": 7,
+  "level": 3,
+  "sentence": "I got up early [to finish my homework].",
+  "answer": "부사구",
+  "options": [
+   "부사구",
+   "명사구",
+   "형용사구",
+   "부사절",
+   "명사절"
+  ],
+  "explain": "\"~하기 위해\" → 동사 got up을 꾸미는 to부정사 < 부사구 >",
+  "source": "교재 1-4"
+ },
+ {
+  "id": "07-011",
+  "type": 7,
+  "level": 1,
+  "sentence": "He runs [fast].",
+  "answer": "부사",
+  "options": [
+   "부사",
+   "명사구",
+   "형용사구",
+   "부사구",
+   "부사절"
+  ],
+  "explain": "동사 runs를 꾸미는 한 단어 → < 부사 >",
+  "source": "교재 1-1"
+ },
+ {
+  "id": "07-012",
+  "type": 7,
+  "level": 1,
+  "sentence": "She [always] eats breakfast.",
+  "answer": "부사",
+  "options": [
+   "부사",
+   "명사구",
+   "형용사구",
+   "부사구",
+   "부사절"
+  ],
+  "explain": "빈도부사 → < 부사 >. 빈도부사는 동사 앞!",
+  "source": "교재 2-1"
+ },
+ {
+  "id": "07-013",
+  "type": 7,
+  "level": 1,
+  "sentence": "I finished my homework [quickly].",
+  "answer": "부사",
+  "options": [
+   "부사",
+   "명사구",
+   "형용사구",
+   "부사구",
+   "부사절"
+  ],
+  "explain": "형용사 quick + -ly → < 부사 >",
+  "source": "교재 1-1"
+ },
+ {
+  "id": "07-014",
+  "type": 7,
+  "level": 2,
+  "sentence": "My mom was angry [because I came home late].",
+  "answer": "부사절",
+  "options": [
+   "부사절",
+   "명사구",
+   "형용사구",
+   "부사구",
+   "명사절"
+  ],
+  "explain": "주어 + 동사가 있으니 절! 동사를 꾸미니까 < 부사절 >",
+  "source": "교재 1-3"
+ },
+ {
+  "id": "07-015",
+  "type": 7,
+  "level": 2,
+  "sentence": "[When I got home], my dog jumped on me.",
+  "answer": "부사절",
+  "options": [
+   "부사절",
+   "명사구",
+   "형용사구",
+   "부사구",
+   "명사절"
+  ],
+  "explain": "주어 + 동사가 있으니 절! 동사를 꾸미니까 < 부사절 >",
+  "source": "교재 1-3"
+ },
+ {
+  "id": "07-016",
+  "type": 7,
+  "level": 3,
+  "sentence": "We will play soccer [if it doesn't rain].",
+  "answer": "부사절",
+  "options": [
+   "부사절",
+   "명사구",
+   "형용사구",
+   "부사구",
+   "명사절"
+  ],
+  "explain": "주어 + 동사가 있으니 절! 동사를 꾸미니까 < 부사절 > (if: 만약 ~하면)",
+  "source": "교재 1-3"
+ },
+ {
+  "id": "07-017",
+  "type": 7,
+  "level": 3,
+  "sentence": "[Although the test was hard], I passed it.",
+  "answer": "부사절",
+  "options": [
+   "부사절",
+   "명사구",
+   "형용사구",
+   "부사구",
+   "명사절"
+  ],
+  "explain": "주어 + 동사가 있으니 절! 동사를 꾸미니까 < 부사절 > (although: 비록 ~지만)",
+  "source": "교재 1-3"
+ },
+ {
+  "id": "07-018",
+  "type": 7,
+  "level": 2,
+  "sentence": "I watched TV [after I finished my homework].",
+  "answer": "부사절",
+  "options": [
+   "부사절",
+   "명사구",
+   "형용사구",
+   "부사구",
+   "명사절"
+  ],
+  "explain": "주어 + 동사가 있으니 절! 동사를 꾸미니까 < 부사절 >. after 뒤에 주어 + 동사 → 접속사!",
+  "source": "교재 1-3"
+ },
+ {
+  "id": "07-019",
+  "type": 7,
+  "level": 3,
+  "sentence": "[Before class starts], we chat with friends.",
+  "answer": "부사절",
+  "options": [
+   "부사절",
+   "명사구",
+   "형용사구",
+   "부사구",
+   "명사절"
+  ],
+  "explain": "주어 + 동사가 있으니 절! 동사를 꾸미니까 < 부사절 >",
+  "source": "교재 1-3"
+ },
+ {
+  "id": "07-020",
+  "type": 7,
+  "level": 2,
+  "sentence": "I was sleepy [because I played games all night].",
+  "answer": "부사절",
+  "options": [
+   "부사절",
+   "명사구",
+   "형용사구",
+   "부사구",
+   "명사절"
+  ],
+  "explain": "주어 + 동사가 있으니 절! 동사를 꾸미니까 < 부사절 >",
+  "source": "교재 1-3"
+ },
+ {
+  "id": "07-021",
+  "type": 7,
+  "level": 1,
+  "sentence": "The boy [with the big backpack] is my desk partner.",
+  "answer": "형용사구",
+  "options": [
+   "형용사구",
+   "명사구",
+   "부사구",
+   "부사절",
+   "명사절"
+  ],
+  "explain": "명사 boy을(를) 꾸미니까 ( 형용사구 ). 판별 비법: 꾸미는 말이 명사 → ( )",
+  "source": "교재 1-4"
+ },
+ {
+  "id": "07-022",
+  "type": 7,
+  "level": 1,
+  "sentence": "The cookies [on the table] are mine.",
+  "answer": "형용사구",
+  "options": [
+   "형용사구",
+   "명사구",
+   "부사구",
+   "부사절",
+   "명사절"
+  ],
+  "explain": "명사 cookies을(를) 꾸미니까 ( 형용사구 ). 판별 비법: 꾸미는 말이 명사 → ( )",
+  "source": "교재 1-4"
+ },
+ {
+  "id": "07-023",
+  "type": 7,
+  "level": 2,
+  "sentence": "The student [from Canada] speaks Korean well.",
+  "answer": "형용사구",
+  "options": [
+   "형용사구",
+   "명사구",
+   "부사구",
+   "부사절",
+   "명사절"
+  ],
+  "explain": "명사 student을(를) 꾸미니까 ( 형용사구 ). 판별 비법: 꾸미는 말이 명사 → ( )",
+  "source": "교재 1-4"
+ },
+ {
+  "id": "07-024",
+  "type": 7,
+  "level": 3,
+  "sentence": "I need some water [to drink].",
+  "answer": "형용사구",
+  "options": [
+   "형용사구",
+   "명사구",
+   "부사구",
+   "부사절",
+   "명사절"
+  ],
+  "explain": "\"~할\" → 명사 water를 꾸미는 to부정사 ( 형용사구 )",
+  "source": "교재 1-4"
+ },
+ {
+  "id": "07-025",
+  "type": 7,
+  "level": 1,
+  "sentence": "The book [about dinosaurs] is interesting.",
+  "answer": "형용사구",
+  "options": [
+   "형용사구",
+   "명사구",
+   "부사구",
+   "부사절",
+   "명사절"
+  ],
+  "explain": "명사 book을(를) 꾸미니까 ( 형용사구 ). 판별 비법: 꾸미는 말이 명사 → ( )",
+  "source": "교재 1-4"
+ },
+ {
+  "id": "07-026",
+  "type": 7,
+  "level": 3,
+  "sentence": "Do you have anything [to eat]?",
+  "answer": "형용사구",
+  "options": [
+   "형용사구",
+   "명사구",
+   "부사구",
+   "부사절",
+   "명사절"
+  ],
+  "explain": "\"~할\" → anything을 꾸미는 to부정사 ( 형용사구 )",
+  "source": "교재 1-4"
+ },
+ {
+  "id": "07-027",
+  "type": 7,
+  "level": 1,
+  "sentence": "The girl [in the red jacket] is my sister.",
+  "answer": "형용사구",
+  "options": [
+   "형용사구",
+   "명사구",
+   "부사구",
+   "부사절",
+   "명사절"
+  ],
+  "explain": "명사 girl을(를) 꾸미니까 ( 형용사구 ). 판별 비법: 꾸미는 말이 명사 → ( )",
+  "source": "교재 1-4"
+ },
+ {
+  "id": "07-028",
+  "type": 7,
+  "level": 3,
+  "sentence": "The test was [very hard].",
+  "answer": "형용사구",
+  "options": [
+   "형용사구",
+   "명사구",
+   "부사구",
+   "부사절",
+   "명사절"
+  ],
+  "explain": "5품사 청크 독해 법칙 ② — 보어 자리 형용사 앞 부사는 형용사의 일부! 통째로 ( 형용사구 )",
+  "source": "교재 2-5 · 원장님 법칙 ②"
+ },
+ {
+  "id": "07-029",
+  "type": 7,
+  "level": 1,
+  "sentence": "[Playing games] is fun.",
+  "answer": "명사구",
+  "options": [
+   "명사구",
+   "형용사구",
+   "부사구",
+   "부사절",
+   "명사절"
+  ],
+  "explain": "\"~하는 것\" → ○ 명사구. 덩어리가 길어져도 명사 자리면 명사! (주어 자리)",
+  "source": "교재 1-4"
+ },
+ {
+  "id": "07-030",
+  "type": 7,
+  "level": 1,
+  "sentence": "I like [playing soccer].",
+  "answer": "명사구",
+  "options": [
+   "명사구",
+   "형용사구",
+   "부사구",
+   "부사절",
+   "명사절"
+  ],
+  "explain": "\"~하는 것\" → ○ 명사구. 덩어리가 길어져도 명사 자리면 명사! (목적어 자리)",
+  "source": "교재 1-4"
+ },
+ {
+  "id": "07-031",
+  "type": 7,
+  "level": 2,
+  "sentence": "[To learn English] is exciting.",
+  "answer": "명사구",
+  "options": [
+   "명사구",
+   "형용사구",
+   "부사구",
+   "부사절",
+   "명사절"
+  ],
+  "explain": "\"~하는 것\" → ○ 명사구. 덩어리가 길어져도 명사 자리면 명사! (주어 자리 to부정사구)",
+  "source": "교재 1-4"
+ },
+ {
+  "id": "07-032",
+  "type": 7,
+  "level": 2,
+  "sentence": "My dream is [to become a YouTuber].",
+  "answer": "명사구",
+  "options": [
+   "명사구",
+   "형용사구",
+   "부사구",
+   "부사절",
+   "명사절"
+  ],
+  "explain": "\"~하는 것\" → ○ 명사구. 덩어리가 길어져도 명사 자리면 명사! (보어 자리)",
+  "source": "교재 1-4"
+ },
+ {
+  "id": "07-033",
+  "type": 7,
+  "level": 2,
+  "sentence": "I want [to eat tteokbokki].",
+  "answer": "명사구",
+  "options": [
+   "명사구",
+   "형용사구",
+   "부사구",
+   "부사절",
+   "명사절"
+  ],
+  "explain": "\"~하는 것\" → ○ 명사구. 덩어리가 길어져도 명사 자리면 명사! (목적어 자리)",
+  "source": "교재 1-4"
+ },
+ {
+  "id": "07-034",
+  "type": 7,
+  "level": 2,
+  "sentence": "[The tall boy] is my brother.",
+  "answer": "명사구",
+  "options": [
+   "명사구",
+   "형용사구",
+   "부사구",
+   "부사절",
+   "명사절"
+  ],
+  "explain": "5품사 청크 독해 법칙 ① — 명사 앞 형용사는 명사의 일부! 통째로 ○ 명사구",
+  "source": "원장님 법칙 ①"
+ },
+ {
+  "id": "07-035",
+  "type": 7,
+  "level": 2,
+  "sentence": "[My new phone] is really fast.",
+  "answer": "명사구",
+  "options": [
+   "명사구",
+   "형용사구",
+   "부사구",
+   "부사절",
+   "명사절"
+  ],
+  "explain": "5품사 청크 독해 법칙 ① — 명사 앞 꾸밈말(my, new)은 명사의 일부! ○ 명사구",
+  "source": "원장님 법칙 ①"
+ },
+ {
+  "id": "07-036",
+  "type": 7,
+  "level": 2,
+  "sentence": "I heard [that today's lunch is spaghetti].",
+  "answer": "명사절",
+  "options": [
+   "명사절",
+   "명사구",
+   "형용사구",
+   "부사구",
+   "부사절"
+  ],
+  "explain": "주어 + 동사가 있으니 절! 목적어 자리(무엇을?) → ○ 명사절",
+  "source": "교재 2-4 연결표"
+ },
+ {
+  "id": "07-037",
+  "type": 7,
+  "level": 2,
+  "sentence": "I think [that English is fun].",
+  "answer": "명사절",
+  "options": [
+   "명사절",
+   "명사구",
+   "형용사구",
+   "부사구",
+   "부사절"
+  ],
+  "explain": "주어 + 동사가 있으니 절! 목적어 자리(무엇을?) → ○ 명사절",
+  "source": "교재 2-4 연결표"
+ },
+ {
+  "id": "07-038",
+  "type": 7,
+  "level": 2,
+  "sentence": "I know [that she is kind].",
+  "answer": "명사절",
+  "options": [
+   "명사절",
+   "명사구",
+   "형용사구",
+   "부사구",
+   "부사절"
+  ],
+  "explain": "주어 + 동사가 있으니 절! 목적어 자리(무엇을?) → ○ 명사절",
+  "source": "교재 2-4 연결표"
+ },
+ {
+  "id": "07-039",
+  "type": 7,
+  "level": 3,
+  "sentence": "Mom said [that dinner was ready].",
+  "answer": "명사절",
+  "options": [
+   "명사절",
+   "명사구",
+   "형용사구",
+   "부사구",
+   "부사절"
+  ],
+  "explain": "주어 + 동사가 있으니 절! 목적어 자리(무엇을?) → ○ 명사절",
+  "source": "교재 2-4 연결표"
+ },
+ {
+  "id": "07-040",
+  "type": 7,
+  "level": 2,
+  "sentence": "The news made me [happy].",
+  "answer": "형용사",
+  "options": [
+   "형용사",
+   "명사구",
+   "형용사구",
+   "부사구",
+   "부사절"
+  ],
+  "explain": "me = happy, 목적어를 설명하는 보어 → ( 형용사 ) 한 단어",
+  "source": "교재 2-5"
+ },
+ {
+  "id": "07-041",
+  "type": 7,
+  "level": 1,
+  "sentence": "She looks [tired].",
+  "answer": "형용사",
+  "options": [
+   "형용사",
+   "명사구",
+   "형용사구",
+   "부사구",
+   "부사절"
+  ],
+  "explain": "She = tired, 보어 자리 → ( 형용사 ) 한 단어",
+  "source": "교재 2-5"
+ },
+ {
+  "id": "07-042",
+  "type": 7,
+  "level": 1,
+  "sentence": "The baby [is sleeping].",
+  "answer": "동사",
+  "options": [
+   "동사",
+   "명사구",
+   "형용사구",
+   "부사구",
+   "부사절"
+  ],
+  "explain": "is sleeping은 동사 덩어리 하나 → □ 동사",
+  "source": "교재 1-4"
+ },
+ {
+  "id": "07-043",
+  "type": 7,
+  "level": 2,
+  "sentence": "We [can win] the game.",
+  "answer": "동사",
+  "options": [
+   "동사",
+   "명사구",
+   "형용사구",
+   "부사구",
+   "부사절"
+  ],
+  "explain": "can win은 동사 덩어리 하나 → □ 동사 (조동사 포함)",
+  "source": "교재 1-4"
+ }
+]

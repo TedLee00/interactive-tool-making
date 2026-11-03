@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 78">
+    <path d="M14 9 Q65 3 116 9 L116 69 Q65 75 14 69 Z" fill="#C9142B" stroke="#1B2F4E" stroke-width="2.4" stroke-linejoin="round"/>
+    <path d="M14 9 Q65 3 116 9 L116 22 Q65 16 14 22 Z" fill="#E03648"/>
+    <path d="M14 54 Q36 44 60 54 T116 50 L116 60 Q90 68 60 60 T14 64 Z" fill="#F6E3C6"/>
+    <path d="M3 10 L14 9 L14 69 L3 68 L7 63 L3 58 L7 53 L3 48 L7 43 L3 38 L7 33 L3 28 L7 23 L3 18 L7 14 Z" fill="#9E0B1E" stroke="#1B2F4E" stroke-width="2.4" stroke-linejoin="round"/><path d="M127 10 L116 9 L116 69 L127 68 L123 63 L127 58 L123 53 L127 48 L123 43 L127 38 L123 33 L127 28 L123 23 L127 18 L123 14 Z" fill="#9E0B1E" stroke="#1B2F4E" stroke-width="2.4" stroke-linejoin="round"/>
+    <rect x="70" y="26" width="36" height="27" rx="5" fill="#4E2410" stroke="#fff" stroke-width="1.8"/>
+    <rect x="70" y="36.5" width="36" height="6" fill="#FFF6E8"/>
+    <path d="M70 30 Q75 36 80 30 Q85 37 90 30 Q95 36 100 30 Q103 35 106 30 L106 26 L70 26 Z" fill="#2E1306"/>
+    <text x="41.5" y="44.5" text-anchor="middle" font-family="'Noto Sans KR',sans-serif" font-weight="900" font-size="17" fill="#7A0816">오예스</text>
+    <text x="40" y="43" text-anchor="middle" font-family="'Noto Sans KR',sans-serif" font-weight="900" font-size="17" fill="#FFFFFF">오예스</text>
+    <path d="M60 18 l1.6 3.2 3.4 .6 -3.4 .6 -1.6 3.2 -1.6 -3.2 -3.4 -.6 3.4 -.6z" fill="#FFD43B"/></svg>
