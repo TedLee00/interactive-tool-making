@@ -16,23 +16,28 @@ export function playRun({ charId = 'bboy' } = {}) {
     subtitle: '바르게 꾸민 음식만 먹으며 끝까지 달려라!',
     music: 'mgRun',
     howto: [
-      '화면 위쪽 <b>미션</b>에 맞는 음식만 먹어요 (예: <b>달콤한 케이크</b> ⭕ / 달콤하게 케이크 ❌)',
-      '<b>⬆ 점프</b> (두 번 누르면 2단 점프) · <b>⬇ 슬라이드</b>로 장애물 피하기',
-      '🌮 <b>타코</b>를 먹으면 Ted 선생님으로 변신! 잠깐 무적 + 자석',
-      '하트 5개 (💗 하트를 먹으면 회복) · 미션 6개 → 마지막 <b>보스</b>를 지나 초코파이 깃발에 도착하면 클리어!',
+      '화면 위 <b class="red">미션에 맞게 바르게 쓴 음식만</b> 먹어요 — <b>sweet cake</b> ⭕ / <b class="red">sweetly cake ❌ 불량식품!</b>',
+      '<b class="red">⬆ 점프</b> 버튼 · 공중에서 한 번 더 누르면 <b class="red">2단 점프!</b>',
+      '<b class="red">⬇ 슬라이드</b> 버튼 · 축구 슬라이딩처럼 쭉 누워서 지나가요',
+      '불량식품이 <b>땅</b>에 있으면 <b class="red">점프로 넘고</b>, <b>머리 높이</b>에 있으면 <b class="red">슬라이드로 밑으로!</b>',
+      '<b>보강 여신 · 묵언수행 · 보강대장</b>이 길을 막아요 — 점프로 피하기!',
+      '🌮 <b>타코</b> = Ted 선생님 변신(잠깐 무적) · 💗 하트 회복 · 하트 5개 · 미션 6개 → 보스 → 🏁 깃발',
     ],
     async setup(ctx) {
       const { g } = ctx;
-      const [me, ted, mukeon, yeosin, daejang, choco, cake, cookie] = await Promise.all([
+      const [me, ted, mukeon, yeosin, daejang, choco] = await Promise.all([
         charSprite(charId), charSprite('ted'), charSprite('mukeon'), charSprite('yeosin'), charSprite('daejang'),
-        loadImage(asset('snacks/choco.svg')), loadImage(asset('snacks/cake.svg')), loadImage(asset('snacks/cookie.svg')),
+        loadImage(asset('snacks/choco.svg')),
       ]);
-      const SN = [choco, cake, cookie];
-      const KIDS = [[mukeon, '…'], [yeosin, '반짝!'], [daejang, '보강 와라!']];
+      const KIDS = [[mukeon, '…', '묵언수행'], [yeosin, '반짝!', '보강 여신'], [daejang, '보강 와라!', '보강대장']];
+      const POSC = { 명사: '#E0453A', 동사: '#2E7BC4', 형용사: '#28A064', 부사: '#D9822B' };
+      const POSAB = { 명사: 'n.', 동사: 'v.', 형용사: 'adj.', 부사: 'adv.' };
+      // 배경 집 간판: 영어 단어 + 품사
+      const SIGNS = Object.entries(data.pos).flatMap(([p, ws]) => ws.slice(0, 6).map((w) => ({ w, p })));
       const missions = data.run.missions;
       const GY = () => ctx.H * 0.74; // 땅 높이
       const S = {
-        x: 0, speed: 220, y: 0, vy: 0, jumps: 0, slide: 0, hearts: 5, inv: 0, score: 0, combo: 0, best: 0,
+        x: 0, speed: 198, y: 0, vy: 0, jumps: 0, slide: 0, hearts: 5, inv: 0, score: 0, combo: 0, best: 0,
         good: 0, bad: 0, mission: 0, phase: 'run', t: 0, taco: 0, ents: [], nextSpawn: 1.2, bossHP: 0, goalX: 0, finished: false, msgT: 0,
       };
       const PX = 86;
@@ -61,7 +66,7 @@ export function playRun({ charId = 'bboy' } = {}) {
         if (S.y === 0 && S.slide <= 0) { S.vy = -560; S.jumps = 1; ctx.sfx('hop'); }
         else if (S.jumps === 1) { S.vy = -500; S.jumps = 2; ctx.sfx('hop'); ctx.burst(PX, GY() + S.y - 20, 8, ['#fff', '#8FD8FF']); }
       };
-      ctx.button('⬇<small>슬라이드</small>', 'slide', { onDown: () => { if (S.y === 0) S.slide = 0.55; } });
+      ctx.button('⬇<small>슬라이드</small>', 'slide', { onDown: () => { if (S.y === 0) { S.slide = 0.7; ctx.sfx('whoosh'); } } });
       ctx.button('⬆<small>점프</small>', 'jump', { onDown: jump });
 
       function spawn() {
@@ -70,12 +75,13 @@ export function playRun({ charId = 'bboy' } = {}) {
         const m = missions[S.mission];
         if (S.phase === 'boss') return; // 보스 구간은 보스가 던진다
         if (r < 0.52) {
-          const good = Math.random() < 0.58;
-          const air = Math.random() < 0.4;
-          { const label = pick(good ? m.good : m.bad); S.ents.push({ kind: 'food', good, label, icon: iconFor(label), x: ctx.W + 40, y: air ? gy - 120 : gy - 30, w: 50, h: 40 }); }
+          const good = Math.random() < 0.55;
+          // 좋은 음식: 땅 또는 공중(점프해서 먹기) · 불량식품: 땅(점프로 넘기) 또는 머리 높이(슬라이드로 지나가기)
+          const y = good ? (Math.random() < 0.4 ? gy - 120 : gy - 30) : (Math.random() < 0.5 ? gy - 52 : gy - 4);
+          { const label = pick(good ? m.good : m.bad); S.ents.push({ kind: 'food', good, label, icon: iconFor(label), x: ctx.W + 40, y, w: 46, h: 38, head: !good && y < gy - 20 }); }
         } else if (r < 0.74) {
           const k = pick(KIDS);
-          S.ents.push({ kind: 'kid', img: k[0], say: k[1], x: ctx.W + 40, y: gy, w: 40, h: 58 });
+          S.ents.push({ kind: 'kid', img: k[0], say: k[1], name: k[2], x: ctx.W + 40, y: gy, w: 40, h: 62 });
         } else if (r < 0.9) {
           S.ents.push({ kind: Math.random() < 0.5 ? 'cone' : 'crate', x: ctx.W + 40, y: gy, w: 30, h: 32 });
         } else if (r < 0.97) {
@@ -140,7 +146,7 @@ export function playRun({ charId = 'bboy' } = {}) {
           }
 
           // 속도·위치
-          S.speed = Math.min(330, 220 + S.t * 1.4) * (S.taco > 0 ? 1.15 : 1);
+          S.speed = Math.min(297, 198 + S.t * 1.1) * (S.taco > 0 ? 1.15 : 1); // 원래보다 10% 느리게 (글자를 읽을 시간)
           const move = S.speed * dt;
           S.x += move;
           S.vy += 1500 * dt;
@@ -151,7 +157,7 @@ export function playRun({ charId = 'bboy' } = {}) {
           if (S.taco > 0) { S.taco -= dt; if (S.taco <= 0) { setForm('bboy'); ctx.floatText('변신 끝!', PX, GY() - 120, '#6B5F8A'); } }
 
           S.nextSpawn -= dt;
-          if (S.nextSpawn <= 0 && S.phase === 'run') { spawn(); const ease = S.t < MISSION_SEC ? 1.35 : 1; S.nextSpawn = rand(0.6, 1.1) * ease * (240 / S.speed); }
+          if (S.nextSpawn <= 0 && S.phase === 'run') { spawn(); const ease = S.t < MISSION_SEC ? 1.35 : 1; S.nextSpawn = rand(0.75, 1.25) * ease * (220 / S.speed); }
 
           const gy = GY();
           const ph = S.slide > 0 ? PH * 0.5 : PH;
@@ -221,6 +227,38 @@ export function playRun({ charId = 'bboy' } = {}) {
             for (let x = 0; x <= W + 10; x += 10) gc.lineTo(x, gy - 50 - layerI * -20 - 30 * Math.sin((x + S.x * (0.3 + layerI * 0.2)) / (90 - layerI * 20)));
             gc.lineTo(W, gy); gc.fill();
           });
+          // 품사 마을: 집과 영어 단어 간판 (시차 스크롤)
+          for (let k = 0; k < 5; k++) {
+            const span = 210;
+            const raw = k * span - S.x * 0.45;
+            const n = Math.floor(-raw / (span * 5));
+            const x = ((raw % (span * 5)) + span * 5) % (span * 5) - 90;
+            const idx = Math.abs(k + n * 5);
+            const sign = SIGNS[(idx * 7) % SIGNS.length];
+            const hw = 92; const hh = 70; const hy = gy - 26;
+            gc.fillStyle = ['#FFF1D0', '#FFE3F0', '#E2F4FF', '#EAFBE0'][idx % 4]; gc.fillRect(x, hy - hh, hw, hh);
+            gc.strokeStyle = '#2B2350'; gc.lineWidth = 2; gc.strokeRect(x, hy - hh, hw, hh);
+            gc.fillStyle = ['#E0453A', '#9B6BE0', '#2E7BC4', '#F2A01E'][idx % 4];
+            gc.beginPath(); gc.moveTo(x - 8, hy - hh); gc.lineTo(x + hw / 2, hy - hh - 34); gc.lineTo(x + hw + 8, hy - hh); gc.closePath(); gc.fill(); gc.stroke();
+            gc.fillStyle = '#8FD8FF'; gc.fillRect(x + 10, hy - hh + 22, 18, 16); gc.strokeRect(x + 10, hy - hh + 22, 18, 16);
+            gc.fillStyle = '#B07A4F'; gc.fillRect(x + hw - 30, hy - 30, 20, 30); gc.strokeRect(x + hw - 30, hy - 30, 20, 30);
+            // 간판: 단어 + 품사
+            const c = POSC[sign.p];
+            gc.font = "400 13px Jua, 'Noto Sans KR', sans-serif";
+            const tw2 = Math.max(70, gc.measureText(sign.w).width + 18);
+            roundRect(gc, x + hw / 2 - tw2 / 2, hy - hh - 6, tw2, 30, 7); gc.fillStyle = '#fff'; gc.fill(); gc.lineWidth = 2.5; gc.strokeStyle = c; gc.stroke();
+            gc.fillStyle = '#2B2350'; gc.textAlign = 'center'; gc.textBaseline = 'middle'; gc.fillText(sign.w, x + hw / 2, hy - hh + 4);
+            gc.font = "900 9px 'Noto Sans KR', sans-serif"; gc.fillStyle = c; gc.fillText(`${POSAB[sign.p]} ${sign.p}`, x + hw / 2, hy - hh + 17);
+          }
+          // 마을 입구 아치 (가끔 지나감)
+          {
+            const ax = ((900 - S.x * 0.6) % 1800 + 1800) % 1800 - 200;
+            if (ax < W + 60) {
+              gc.fillStyle = '#4FA65B'; gc.fillRect(ax, gy - 120, 10, 120); gc.fillRect(ax + 150, gy - 120, 10, 120);
+              roundRect(gc, ax - 14, gy - 150, 188, 40, 12); gc.fillStyle = '#FFD36B'; gc.fill(); gc.strokeStyle = '#2B2350'; gc.lineWidth = 3; gc.stroke();
+              gc.font = "400 20px Jua, 'Noto Sans KR', sans-serif"; gc.fillStyle = '#2B2350'; gc.textAlign = 'center'; gc.fillText('품사 마을 POS VILLAGE', ax + 80, gy - 129);
+            }
+          }
           // 나무
           for (let k = 0; k < 6; k++) {
             const x = ((k * 130 - S.x * 0.6) % (W + 130) + W + 130) % (W + 130) - 50;
@@ -264,7 +302,9 @@ export function playRun({ charId = 'bboy' } = {}) {
               gc.fillText(e.icon, e.x, e.y - e.h / 2 + 2);
               tag(gc, e.label, e.x, e.y - e.h - 16, { size: 16, bg: e.kind === 'shot' ? '#FFE3E3' : '#FFFBF0', pad: 7 });
             } else if (e.kind === 'kid') {
-              if (e.img) gc.drawImage(e.img, e.x - e.w / 2, e.y - e.h, e.w, e.h);
+              if (e.img) { const ih = 74; const iw = ih * (e.img.width / e.img.height); gc.drawImage(e.img, e.x - iw / 2, e.y - ih, iw, ih); }
+              tag(gc, e.name, e.x, e.y - 84, { size: 12, bg: '#FFE3F0', pad: 6 });
+              tag(gc, '⬆ 점프!', e.x, e.y - 104, { size: 11, bg: '#FFF4D6', pad: 5 });
             } else if (e.kind === 'cone') {
               gc.fillStyle = '#FF8A3D'; gc.beginPath(); gc.moveTo(e.x, e.y - e.h); gc.lineTo(e.x + 14, e.y); gc.lineTo(e.x - 14, e.y); gc.fill();
               gc.fillStyle = '#fff'; gc.fillRect(e.x - 8, e.y - 16, 16, 5);
@@ -293,9 +333,12 @@ export function playRun({ charId = 'bboy' } = {}) {
             const sc = ctx.scale || 1;
             const PW = form === 'ted' ? 64 : 52;
             const FOOT = form === 'ted' ? PW * 146 / 105 * (141 - 2.6) / 146 : PW * 82 / 64;
-            const want = form === 'ted' ? (S.y < 0 ? 'tj' : 'tr') : (S.y < 0 ? 'jump' : 'run');
-            if (!P.classList.contains(want)) { P.classList.remove('run', 'jump', 'idle', 'tr', 'tj', 'ti'); P.classList.add(want); }
-            const squash = S.slide > 0 ? ' scale(1.15,0.58)' : '';
+            const sliding = S.slide > 0 && S.y === 0;
+            const want = sliding ? 'slide' : form === 'ted' ? (S.y < 0 ? 'tj' : 'tr') : (S.y < 0 ? 'jump' : 'run');
+            if (!P.classList.contains(want)) { P.classList.remove('run', 'jump', 'idle', 'tr', 'tj', 'ti', 'slide'); P.classList.add(want); }
+            // 슬라이딩: 발을 축으로 뒤로 눕기 (축구 슬라이딩 태클)
+            const squash = sliding ? ' translateX(14px) rotate(-68deg)' : '';
+            if (sliding && Math.random() < 0.5) ctx.burst(PX + 18, gy - 2, 2, ['#E8C89A', '#fff']);
             P.style.width = `${PW * sc}px`;
             P.style.transformOrigin = '50% 100%';
             P.style.transform = `translate(${(PX - PW / 2) * sc}px,${(gy + S.y - FOOT) * sc}px)${squash}`;

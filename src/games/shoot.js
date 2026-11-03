@@ -1,5 +1,5 @@
 // 청크 사격장 — 지시된 품사가 적힌 과녁만 정확히 탭해서 맞힌다. 라운드마다 12초!
-import { openGame, rand, pick, shuffle, clamp, roundRect } from './engine.js';
+import { openGame, rand, pick, shuffle, clamp, roundRect, loadImage, asset } from './engine.js';
 import data from '../../data/minigames.json';
 
 // 3단계 × 4라운드 = 12라운드 (약 3분 30초) — 단계가 오를수록 과녁이 빨라진다
@@ -17,7 +17,8 @@ const ROUNDS = [
   { target: '명사구', pool: 'chunks', sec: 18 },
   { target: '부사절', pool: 'chunks', sec: 18 },
 ];
-const PAUSE = 1.8; // 라운드 사이 쉬는 시간(미션 읽기)
+const PAUSE = 2.4; // 라운드 사이: 화면 가운데 큰 경고판이 깜빡이는 시간
+const SNACK_NAME = { choco: '초코파이', cake: '오예스', cookie: '쿠키앤크림' };
 const RING = ['#E0453A', '#fff', '#2E7BC4', '#fff', '#FFD43B'];
 
 export function playShoot() {
@@ -30,10 +31,16 @@ export function playShoot() {
       '화면 위 <b>지시된 품사</b>의 과녁만 <b>정확히 탭</b>해서 쏘기',
       '라운드 <b>12개</b>(각 14~18초): 명사·부사·형용사·동사 → 마지막엔 <b>부사구·형용사구·명사구·부사절</b>',
       '틀린 과녁을 쏘면 <b>-1초</b> · 빈 곳을 쏘면 콤보가 끊겨요',
-      '연속으로 맞히면 점수가 쑥쑥! <b>55발</b> 이상 맞히면 오예스 쿠폰 🍫',
+      '🍫 <b class="red">과자 과녁</b>이 가끔 아주 빠르게 지나가요! 맞는 품사면 과자 획득, <b class="red">틀리면 -300점 · -3초</b>',
+      '과녁 품사가 바뀌면 화면 가운데에 <b>큰 경고판</b>이 떠요. 연속으로 맞히면 점수가 쑥쑥!',
     ],
     async setup(ctx) {
-      const S = { round: -1, t: 0, left: 0, targets: [], spawnT: 0, score: 0, hits: 0, wrong: 0, combo: 0, best: 0, holes: [], gun: 0, aim: { x: 180, y: 300 }, finished: false, flash: 0 };
+      const SNK = {};
+      await Promise.all(Object.keys(SNACK_NAME).map(async (k) => { SNK[k] = await loadImage(asset(`snacks/${k}.svg`)).catch(() => null); }));
+      const warn = document.createElement('div');
+      warn.className = 'shoot-warn';
+      ctx.layer.appendChild(warn);
+      const S = { snacks: [], snackT: 4, round: -1, t: 0, left: 0, targets: [], spawnT: 0, score: 0, hits: 0, wrong: 0, combo: 0, best: 0, holes: [], gun: 0, aim: { x: 180, y: 300 }, finished: false, flash: 0 };
       const banner = document.createElement('div');
       banner.className = 'mg-mission shoot-ban';
       ctx.layer.appendChild(banner);
@@ -47,10 +54,14 @@ export function playShoot() {
         S.round++;
         if (S.round >= ROUNDS.length) return finish();
         const R = ROUNDS[S.round];
-        S.left = R.sec; S.targets = []; S.spawnT = 0; S.roundHits = 0; S.pause = S.round > 0 ? PAUSE : 0.6;
+        S.left = R.sec; S.targets = []; S.spawnT = 0; S.roundHits = 0; S.pause = PAUSE;
         banner.innerHTML = `<small>ROUND ${S.round + 1}/${ROUNDS.length}</small><b>「<span class="tg">${R.target}</span>」만 쏴라!</b>${R.pool === 'chunks' ? '<em>💡 단어 하나가 아니라 <span class="tg">덩어리(구·절)</span>의 품사!</em>' : ''}`;
         banner.classList.remove('pop'); void banner.offsetWidth; banner.classList.add('pop');
-        if (S.round > 0) ctx.callout('nice', `${R.target}만!`);
+        // 화면 가운데: 주의 표지판처럼 크게 깜빡! (그동안 게임은 잠깐 멈춤)
+        warn.innerHTML = `<div class="sw-in"><small>⚠ 과녁이 바뀌었어요 ⚠</small><b>「<span>${R.target}</span>」만</b><b>쏴라!</b>${R.pool === 'chunks' ? '<em>단어 하나가 아니라 덩어리(구·절)!</em>' : ''}</div>`;
+        warn.classList.remove('on'); void warn.offsetWidth; warn.classList.add('on');
+        ctx.sfx('reveal');
+        S.snackT = rand(3, 6);
       }
 
       function spawn() {
@@ -97,6 +108,19 @@ export function playShoot() {
           return;
         }
         hit.alive = false;
+        if (hit.kind === 'snack') {
+          if (hit.good) {
+            S.hits++; S.combo++; S.best = Math.max(S.best, S.combo); S.score += 400; S.snacks.push(hit.snack);
+            ctx.burst(hit.x, hit.ty, 30, ['#FFD43B', '#fff', '#E21E8C']);
+            ctx.floatText(`🍫 ${SNACK_NAME[hit.snack]} GET! +400`, hit.x, hit.ty + 40, '#FFD43B', 20);
+            ctx.callout('yar', `${SNACK_NAME[hit.snack]} 획득!`); ctx.sfx('perfect');
+          } else {
+            S.wrong++; S.combo = 0; S.left = Math.max(0, S.left - 3); S.score = Math.max(0, S.score - 300);
+            ctx.shake(12, 0.4); ctx.sfx('no');
+            ctx.floatText(`✘ ${hit.label}는 ${ROUNDS[S.round].target} 아님! -300 · -3초`, ctx.W / 2, hit.ty + 46, '#FF6B6B', 18);
+          }
+          return;
+        }
         if (hit.good) {
           S.hits++; S.roundHits++; S.combo++; S.best = Math.max(S.best, S.combo);
           const pts = 100 + Math.min(10, S.combo) * 25;
@@ -116,11 +140,12 @@ export function playShoot() {
       function finish() {
         if (S.finished) return;
         S.finished = true;
-        const snack = S.hits >= 55 ? 'cake' : null;
+        // 과자 과녁을 맞혔으면 그 과자, 아니면 55발 이상 명중 시 오예스
+        const snack = S.snacks.length ? (S.snacks.includes('cookie') ? 'cookie' : S.snacks.includes('cake') ? 'cake' : 'choco') : S.hits >= 55 ? 'cake' : null;
         ctx.end({
           score: S.score, cleared: S.hits >= 35, coins: Math.min(30, Math.round(S.hits / 2)), snack,
           headline: S.hits >= 55 ? '명사수 등장!' : S.hits >= 35 ? '사격 성공!' : '조금만 더 정확하게!', legendAt: 9000,
-          lines: [`명중 <b>${S.hits}</b> · 잘못 쏜 과녁 ${S.wrong}`, `최고 콤보 <b>${S.best}</b> · 35발 명중하면 성공 · 55발 이상이면 오예스 쿠폰!`],
+          lines: [`명중 <b>${S.hits}</b> · 잘못 쏜 과녁 ${S.wrong} · 🍫 과자 과녁 <b>${S.snacks.length}</b>개`, `최고 콤보 <b>${S.best}</b> · 35발 명중하면 성공 · 55발 이상이면 오예스 쿠폰!`],
         });
       }
 
@@ -135,12 +160,23 @@ export function playShoot() {
           S.gun = Math.max(0, S.gun - dt);
           S.flash = Math.max(0, S.flash - dt);
           if (S.left <= 0) { ctx.floatText('TIME!', ctx.W / 2, ctx.H * 0.45, '#D9822B', 30); nextRound(); return; }
+          // 🍫 과자 과녁: 가끔 아주 빠르게 지나간다 (정답이면 과자 획득, 오답이면 크게 감점)
+          S.snackT -= dt;
+          if (S.snackT <= 0) {
+            S.snackT = rand(7, 11);
+            const R = ROUNDS[S.round]; const Wd = words(R);
+            const good = Math.random() < 0.5;
+            const dir = Math.random() < 0.5 ? 1 : -1;
+            S.targets.push({ kind: 'snack', snack: pick(Object.keys(SNACK_NAME)), label: pick(good ? Wd.good : Wd.bad), good, x: dir > 0 ? -50 : ctx.W + 50, y: ctx.H * 0.16 + 6, vx: dir * (230 + Math.min(6, S.round) * 18), r: R.pool === 'chunks' ? 34 : 30, t: 0, alive: true });
+            ctx.floatText('🍫 과자 과녁이 온다!', ctx.W / 2, ctx.H * 0.12, '#FFD43B', 18);
+          }
           S.spawnT -= dt;
           const alive = S.targets.filter((t) => t.alive).length;
           if (S.spawnT <= 0 && alive < 6) { spawn(); S.spawnT = Math.max(0.42, 0.78 - Math.min(6, S.round) * 0.06); }
           S.targets.forEach((t) => {
             t.t += dt;
-            if (t.kind === 'slide') { t.x += t.vx * dt; t.ty = t.y + Math.sin(t.t * 4) * 3; if (t.x < -60 || t.x > ctx.W + 60) t.alive = false; }
+            if (t.kind === 'snack') { t.x += t.vx * dt; t.ty = t.y + Math.sin(t.t * 9) * 4; if (t.x < -70 || t.x > ctx.W + 70) t.alive = false; }
+            else if (t.kind === 'slide') { t.x += t.vx * dt; t.ty = t.y + Math.sin(t.t * 4) * 3; if (t.x < -60 || t.x > ctx.W + 60) t.alive = false; }
             else {
               t.life -= dt;
               t.up = t.life > 0.4 ? Math.min(1, t.up + dt * 4) : Math.max(0, t.up - dt * 4);
@@ -167,6 +203,12 @@ export function playShoot() {
           // 과녁
           S.targets.forEach((t) => {
             const y = t.ty ?? t.y;
+            if (t.kind === 'snack') {
+              // 줄에 매달린 과자 + 반짝이는 테두리
+              g.strokeStyle = '#FFD43B'; g.lineWidth = 2; g.beginPath(); g.moveTo(t.x + t.r * 0.7, y); g.lineTo(t.x + t.r + 18, y + 22); g.stroke();
+              const im = SNK[t.snack]; if (im) g.drawImage(im, t.x + t.r - 6, y + 16, 62, 38);
+              g.strokeStyle = `rgba(255,212,59,${0.5 + 0.5 * Math.sin(S.t * 18)})`; g.lineWidth = 5; g.beginPath(); g.arc(t.x, y, t.r + 6, 0, 7); g.stroke();
+            }
             if (t.kind === 'pop') { g.fillStyle = '#6B4F2A'; g.fillRect(t.x - 4, y, 8, H * 0.8 + 30 - y); }
             else { g.fillStyle = '#6B4F2A'; g.fillRect(t.x - 3, y + t.r - 4, 6, 14); }
             RING.forEach((c, i) => { g.fillStyle = c; g.beginPath(); g.arc(t.x, y, t.r * (1 - i * 0.18), 0, 7); g.fill(); });
@@ -178,6 +220,8 @@ export function playShoot() {
             g.fillStyle = '#FFFBF0'; g.fill(); g.lineWidth = 2.5; g.strokeStyle = '#2B2350'; g.stroke();
             g.fillStyle = '#2B2350'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(t.label, t.x, y + 1);
           });
+          // 과자 과녁 줄
+          g.fillStyle = 'rgba(255,212,59,.25)'; g.fillRect(0, H * 0.16 + 6 - 1, W, 2);
           // 총알 자국
           S.holes.forEach((h) => { g.globalAlpha = Math.min(1, h.life); g.fillStyle = '#2B2350'; g.beginPath(); g.arc(h.x, h.y, 4, 0, 7); g.fill(); g.globalAlpha = 1; });
           // 조준선
