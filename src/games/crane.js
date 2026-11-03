@@ -54,6 +54,8 @@ export function playCrane() {
         return items.slice(0, 8).map((it, i) => makeDoll(it.text, it, slots[i]));
       }
       function startRound(i) {
+        S.switching = false;
+        if (i >= rounds.length) return finish(S.ok >= 6);
         S.round = i; S.roundT = 0; S.got = 0;
         const R = rounds[i];
         if (R.kind === 'pos') {
@@ -83,6 +85,7 @@ export function playCrane() {
 
       function judge(d) {
         const R = rounds[S.round];
+        if (!R || S.finished) return;
         let ok;
         if (R.kind === 'pos') ok = d.info.pos === R.target;
         else ok = d.info.order === S.seqIdx;
@@ -102,7 +105,7 @@ export function playCrane() {
             if (S.seqIdx >= S.seq.chunks.length) { S.score += 600; ctx.callout('legend', '문장 완성!'); return finish(true); }
           } else if (S.got >= R.need) {
             ctx.floatText('ROUND CLEAR!', ctx.W / 2, ctx.H * 0.4, '#D9822B', 26);
-            setTimeout(() => startRound(S.round + 1), 900);
+            if (!S.switching) { S.switching = true; const nx = S.round + 1; setTimeout(() => { if (!S.finished) startRound(nx); }, 900); }
           }
         } else {
           S.combo = 0; S.wrong++;
@@ -131,7 +134,7 @@ export function playCrane() {
           if (S.finished) return;
           S.t += dt; S.roundT += dt;
           const R = rounds[S.round];
-          if (S.roundT > R.sec && S.mode === 'move') {
+          if (S.roundT > R.sec && S.mode === 'move' && !S.switching) {
             if (S.round < 2) { ctx.floatText('시간 끝! 다음 라운드', ctx.W / 2, ctx.H * 0.4, '#6B5F8A', 20); startRound(S.round + 1); } else finish(false);
           }
           const k = ctx.input.keys;

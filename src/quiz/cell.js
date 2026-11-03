@@ -23,6 +23,7 @@ export async function runCell(root, { type, questions, config, showIntro = true,
     wrap.innerHTML = `<div class="intro card">
       <div class="kicker">유형 ${type} · 난이도 ${esc(T.level)}</div>
       <h2>${esc(T.name)}</h2>
+      <div class="how">✏️ 이렇게 풀어요<b>${T.how}</b></div>
       <p>${questions.length}문제 · 5개 다 맞히면 <b>2칸 전진 + PERFECT!</b><br>4개 맞히면 1칸 전진</p>
       ${T.chunkRule ? `<div class="rule">${CHUNK_RULE_HTML}</div>` : ''}
       <button class="primary big" id="go">시작 ▶</button></div>`;

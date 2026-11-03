@@ -1,6 +1,6 @@
 // 유형별 채점 — 순수 함수 (UI와 분리해 테스트한다)
 import { parseChunks, chunksToTokens, tokensToChunks } from './notation.js';
-import { matchesAny } from './normalize.js';
+import { matchesAny, nearMatch } from './normalize.js';
 
 /** 선택형 (유형 1~7) */
 export function gradeChoice(q, picked) {
@@ -93,9 +93,15 @@ export function gradeRepair(q, tappedIdx, fixPos) {
 
 /** 청크 퍼즐 (유형 11): order = 학생이 놓은 청크 원래 번호 순서 */
 export function gradePuzzle(q, order) {
-  const n = parseChunks(q.en).length;
+  const chunks = parseChunks(q.en);
+  const n = chunks.length;
   const allowed = [Array.from({ length: n }, (_, i) => i), ...(q.alts || [])];
-  return allowed.some((a) => a.length === order.length && a.every((v, i) => v === order[i]));
+  if (allowed.some((a) => a.length === order.length && a.every((v, i) => v === order[i]))) return true;
+  // 맨 뒤 부사 덩어리들끼리 순서만 바뀐 것은 인정 (<어디서> <언제> 순서 차이)
+  let tail = n;
+  while (tail > 0 && chunks[tail - 1].pos === 'D') tail--;
+  if (n - tail < 2) return false;
+  return order.slice(0, tail).every((v, i) => v === i) && [...order.slice(tail)].sort((a, b) => a - b).every((v, k) => v === tail + k);
 }
 
 /** 번역의 탑 (유형 12)
@@ -106,12 +112,31 @@ export function towerOrders(q) {
   return [q.order, ...(q.alts || [])];
 }
 export function gradeTowerOrder(q, order) {
-  return towerOrders(q).some((a) => a.length === order.length && a.every((v, i) => v === order[i]));
+  if (towerOrders(q).some((a) => a.length === order.length && a.every((v, i) => v === order[i]))) return true;
+  // 뼈대(명사·동사·형용사) 순서가 같고 부사 덩어리 자리만 다르면 인정
+  const chunks = parseChunks(q.ko);
+  // (부사 덩어리는 문장 맨 앞이나 맨 뒤 쪽에만 올 수 있음: 주어와 동사 사이 X)
+  const isD = (i) => chunks[i].pos === 'D';
+  const core = (o) => o.filter((i) => !isD(i)).join(',');
+  if (order.length !== q.order.length || core(order) !== core(q.order)) return false;
+  const inner = (o) => {
+    const f = o.findIndex((x) => !isD(x));
+    const l = o.length - 1 - [...o].reverse().findIndex((x) => !isD(x));
+    return o.slice(f, l + 1).join(',');
+  };
+  return inner(order) === inner(q.order); // 문장 안쪽은 그대로, 바깥(맨 앞/맨 뒤) 부사구만 자유
 }
 export function gradeTowerTyping(q, inputs /* 한글 덩어리 번호 → 입력 */) {
   const chunks = parseChunks(q.ko);
-  const each = chunks.map((c, i) => matchesAny(inputs[i] ?? '', c.answers || []));
-  return { ok: each.every(Boolean), each };
+  const near = {};
+  const each = chunks.map((c, i) => {
+    const v = inputs[i] ?? '';
+    if (matchesAny(v, c.answers || [])) return true;
+    const n = nearMatch(v, c.answers || []);
+    if (n) { near[i] = n; return true; } // 비슷한 답도 정답 (더 정확한 표현은 따로 보여 준다)
+    return false;
+  });
+  return { ok: each.every(Boolean), each, near };
 }
 
 /** 칸 보상 규칙 (기획서 2번) */

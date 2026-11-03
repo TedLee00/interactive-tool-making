@@ -1,6 +1,10 @@
 // 청크런 — 횡스크롤 러너. 미션에 맞는 "바르게 꾸민" 음식만 먹고, 장애물은 점프·슬라이드로 피한다.
 import { openGame, loadImage, asset, charSprite, rand, pick, clamp, roundRect, tag } from './engine.js';
 import data from '../../data/minigames.json';
+import { sideSVG, tedSVG } from './runner-art.js';
+import '../fx/legacy-run.css';
+
+const iconFor = (label) => { const I = data.run.icons; const k = Object.keys(I).sort((a, b) => b.length - a.length).find((n) => label.endsWith(n)); return k ? I[k] : '🍽️'; };
 
 const MISSION_SEC = 15;
 const BOSS_SEC = 14;
@@ -37,6 +41,13 @@ export function playRun({ charId = 'bboy' } = {}) {
       const banner = document.createElement('div');
       banner.className = 'mg-mission';
       ctx.layer.appendChild(banner);
+      // 기존 앱 쿠키런의 옆모습 달리기 캐릭터 (팔다리가 움직인다)
+      const P = document.createElement('div');
+      P.className = 'rg-p sv run';
+      P.innerHTML = sideSVG('bboy');
+      ctx.layer.appendChild(P);
+      let form = 'bboy';
+      const setForm = (f) => { form = f; P.className = f === 'ted' ? 'rg-p ted tr' : 'rg-p sv run'; P.innerHTML = f === 'ted' ? tedSVG() : sideSVG('bboy'); };
       function setMission(i) {
         S.mission = i;
         const m = missions[i];
@@ -61,7 +72,7 @@ export function playRun({ charId = 'bboy' } = {}) {
         if (r < 0.52) {
           const good = Math.random() < 0.58;
           const air = Math.random() < 0.4;
-          S.ents.push({ kind: 'food', good, label: pick(good ? m.good : m.bad), img: pick(SN), x: ctx.W + 40, y: air ? gy - 120 : gy - 30, w: 54, h: 34 });
+          { const label = pick(good ? m.good : m.bad); S.ents.push({ kind: 'food', good, label, icon: iconFor(label), x: ctx.W + 40, y: air ? gy - 120 : gy - 30, w: 50, h: 40 }); }
         } else if (r < 0.74) {
           const k = pick(KIDS);
           S.ents.push({ kind: 'kid', img: k[0], say: k[1], x: ctx.W + 40, y: gy, w: 40, h: 58 });
@@ -120,11 +131,11 @@ export function playRun({ charId = 'bboy' } = {}) {
             if (S.bossT > BOSS_SEC) { S.phase = 'goal'; S.goalX = ctx.W + 60; }
             if (Math.random() < dt * 1.6) {
               const m = missions[Math.floor(Math.random() * missions.length)];
-              S.ents.push({ kind: 'shot', good: false, label: pick(m.bad), img: pick(SN), x: ctx.W - 60, y: GY() - 170, vx: -rand(160, 240), vy: rand(-80, 40), w: 50, h: 32 });
+              { const label = pick(m.bad); S.ents.push({ kind: 'shot', good: false, label, icon: iconFor(label), x: ctx.W - 60, y: GY() - 170, vx: -rand(160, 240), vy: rand(-80, 40), w: 46, h: 38 }); }
             }
             if (Math.random() < dt * 0.5) {
               const m = missions[Math.floor(Math.random() * missions.length)];
-              S.ents.push({ kind: 'food', good: true, label: pick(m.good), img: pick(SN), x: ctx.W + 40, y: GY() - (Math.random() < 0.5 ? 30 : 120), w: 54, h: 34 });
+              { const label = pick(m.good); S.ents.push({ kind: 'food', good: true, label, icon: iconFor(label), x: ctx.W + 40, y: GY() - (Math.random() < 0.5 ? 30 : 120), w: 50, h: 40 }); }
             }
           }
 
@@ -137,7 +148,7 @@ export function playRun({ charId = 'bboy' } = {}) {
           if (S.y === 0) { S.vy = 0; S.jumps = 0; }
           S.slide = Math.max(0, S.slide - dt);
           S.inv = Math.max(0, S.inv - dt);
-          if (S.taco > 0) { S.taco -= dt; if (S.taco <= 0) ctx.floatText('변신 끝!', PX, GY() - 120, '#6B5F8A'); }
+          if (S.taco > 0) { S.taco -= dt; if (S.taco <= 0) { setForm('bboy'); ctx.floatText('변신 끝!', PX, GY() - 120, '#6B5F8A'); } }
 
           S.nextSpawn -= dt;
           if (S.nextSpawn <= 0 && S.phase === 'run') { spawn(); const ease = S.t < MISSION_SEC ? 1.35 : 1; S.nextSpawn = rand(0.6, 1.1) * ease * (240 / S.speed); }
@@ -171,7 +182,7 @@ export function playRun({ charId = 'bboy' } = {}) {
             } else if (e.kind === 'heart') {
               S.hearts = Math.min(5, S.hearts + 1); S.ents.splice(k, 1); ctx.sfx('reveal'); ctx.floatText('💗 +1', PX, gy - 110, '#E21E8C', 20);
             } else if (e.kind === 'taco') {
-              S.taco = 6; S.ents.splice(k, 1); ctx.burst(PX, gy - 60, 30, ['#FFD43B', '#E21E8C', '#fff']);
+              S.taco = 6; S.ents.splice(k, 1); setForm('ted'); ctx.burst(PX, gy - 60, 30, ['#FFD43B', '#E21E8C', '#fff']);
               ctx.callout('yar', 'Ted 선생님 변신!'); S.score += 200;
             } else if (e.kind === 'bar') {
               if (S.slide <= 0) { e.done = true; hurt('쿵! 슬라이드!'); }
@@ -248,8 +259,10 @@ export function playRun({ charId = 'bboy' } = {}) {
           // 물체
           for (const e of S.ents) {
             if (e.kind === 'food' || e.kind === 'shot') {
-              if (e.img) gc.drawImage(e.img, e.x - e.w / 2, e.y - e.h, e.w, e.h);
-              tag(gc, e.label, e.x, e.y - e.h - 14, { size: 13, bg: e.kind === 'shot' ? '#FFE3E3' : '#FFFBF0' });
+              gc.fillStyle = 'rgba(255,255,255,.85)'; gc.beginPath(); gc.arc(e.x, e.y - e.h / 2, 22, 0, 7); gc.fill();
+              gc.font = "30px 'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji',sans-serif"; gc.textAlign = 'center'; gc.textBaseline = 'middle';
+              gc.fillText(e.icon, e.x, e.y - e.h / 2 + 2);
+              tag(gc, e.label, e.x, e.y - e.h - 16, { size: 16, bg: e.kind === 'shot' ? '#FFE3E3' : '#FFFBF0', pad: 7 });
             } else if (e.kind === 'kid') {
               if (e.img) gc.drawImage(e.img, e.x - e.w / 2, e.y - e.h, e.w, e.h);
             } else if (e.kind === 'cone') {
@@ -277,17 +290,18 @@ export function playRun({ charId = 'bboy' } = {}) {
             }
           }
 
-          // 플레이어
-          const spr = S.taco > 0 ? ted : me;
-          if (spr && !(S.inv > 0 && Math.floor(S.inv * 12) % 2)) {
-            const h = S.slide > 0 ? PH * 0.55 : PH;
-            const w = (spr.width / spr.height) * PH;
-            const bob = S.y === 0 && S.slide <= 0 ? Math.abs(Math.sin(S.t * 14)) * 4 : 0;
-            gc.save();
-            gc.translate(PX, gy + S.y - bob);
-            if (S.y < 0) gc.rotate(clamp(S.vy / 2500, -0.25, 0.25));
-            gc.drawImage(spr, -w / 2, -h, w, h);
-            gc.restore();
+          // 플레이어 (DOM 캐릭터를 캔버스 좌표에 맞춘다)
+          {
+            const sc = ctx.scale || 1;
+            const PW = form === 'ted' ? 64 : 52;
+            const FOOT = form === 'ted' ? PW * 146 / 105 * (141 - 2.6) / 146 : PW * 82 / 64;
+            const want = form === 'ted' ? (S.y < 0 ? 'tj' : 'tr') : (S.y < 0 ? 'jump' : 'run');
+            if (!P.classList.contains(want)) { P.classList.remove('run', 'jump', 'idle', 'tr', 'tj', 'ti'); P.classList.add(want); }
+            const squash = S.slide > 0 ? ' scale(1.15,0.58)' : '';
+            P.style.width = `${PW * sc}px`;
+            P.style.transformOrigin = '50% 100%';
+            P.style.transform = `translate(${(PX - PW / 2) * sc}px,${(gy + S.y - FOOT) * sc}px)${squash}`;
+            P.style.opacity = S.inv > 0 && Math.floor(S.inv * 12) % 2 ? 0.35 : 1;
             if (S.taco > 0) { gc.strokeStyle = `rgba(255,212,59,${0.5 + 0.4 * Math.sin(S.t * 20)})`; gc.lineWidth = 4; gc.beginPath(); gc.arc(PX, gy + S.y - PH / 2, PH * 0.62, 0, 7); gc.stroke(); }
           }
           gc.fillStyle = 'rgba(43,35,80,.18)'; gc.beginPath(); gc.ellipse(PX, gy + 3, 22 + S.y * 0.05, 5, 0, 0, 7); gc.fill();
