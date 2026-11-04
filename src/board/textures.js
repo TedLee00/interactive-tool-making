@@ -63,7 +63,7 @@ export function logoSprite(w = 1.1) {
     x.lineWidth = 10; x.strokeStyle = '#FFD43B'; x.stroke();
     if (im) {
       // 선생님 얼굴: 그림 위쪽(머리)만 잘라서
-      const side = Math.min(im.width, im.height * 0.42);
+      const side = Math.min(im.width, im.height * 0.5);
       x.save(); x.beginPath(); x.arc(128, 104, 64, 0, Math.PI * 2); x.fillStyle = '#FFF4D6'; x.fill(); x.clip();
       x.drawImage(im, (im.width - side) / 2, 0, side, side, 128 - 60, 104 - 58, 120, 120);
       x.restore();
@@ -81,9 +81,8 @@ export function logoSprite(w = 1.1) {
     t.needsUpdate = true;
   };
   draw(null);
-  const im = new Image();
-  im.onload = () => draw(im);
-  im.src = `${import.meta.env.BASE_URL}assets/characters/ted.svg`;
+  // 선생님 그림은 캐릭터 불러오기(잘라 둔 캔버스)를 그대로 쓴다 — SVG를 바로 그리면 크기를 몰라 비어 보임
+  import('./charart.js').then(({ loadChar }) => loadChar('ted')).then((a) => draw(a.full)).catch(() => {});
   return s;
 }
 
