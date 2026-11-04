@@ -101,7 +101,7 @@ export function syncMute() {
   if (!isMuted() && wanted) music(wanted);
 }
 /** 첫 터치에서 오디오 시작 (iOS 정책) */
-export function unlockAudio() { ac(); }
+export function unlockAudio() { ac(); preloadVoices(); }
 
 /* ------------------------------------------------------------------
    콜아웃 — 화면에 쾅! 찍히는 글자 + 목소리 + 효과음
@@ -121,6 +121,33 @@ function say(text, { rate = 1.15, pitch = 1.2 } = {}) {
   } catch { /* 음성 없음 */ }
 }
 
+// 선생님이 직접 녹음한 목소리 (이지 · 야르)
+const CLIPS = { easy: `${BASE}assets/voice/easy.mp3`, yar: `${BASE}assets/voice/yar.mp3` };
+const clipCache = {};
+function playClip(kind) {
+  if (isMuted() || !CLIPS[kind]) return false;
+  try {
+    const a = (clipCache[kind] ||= new Audio(CLIPS[kind]));
+    a.currentTime = 0; a.volume = 1;
+    a.play().catch(() => {});
+    return true;
+  } catch { return false; }
+}
+/** 첫 터치 때 미리 불러 두기 (휴대폰에서 바로 소리 나게) */
+export function preloadVoices() { Object.keys(CLIPS).forEach((k) => { try { (clipCache[k] ||= new Audio(CLIPS[k])).load(); } catch { /* */ } }); }
+/** "LEGEND!" — 영어 목소리로 크고 굵게 */
+function sayLegend() {
+  if (isMuted()) return;
+  try {
+    const en = speechSynthesis.getVoices().find((v) => /^en(-|_)?(US|GB)?/i.test(v.lang));
+    const u = new SpeechSynthesisUtterance('Legend!');
+    if (en) { u.voice = en; u.lang = en.lang; } else u.lang = 'en-US';
+    u.rate = 0.8; u.pitch = 0.75; u.volume = 1;
+    speechSynthesis.cancel();
+    speechSynthesis.speak(u);
+  } catch { /* 음성 없음 */ }
+}
+
 const CALLOUTS = {
   easy: { text: 'EASY!', ko: '이지!', cls: 'co-easy', voice: '이지!', sfx: () => sfxOk() },
   nice: { text: 'NICE!', ko: '나이스!', cls: 'co-easy', voice: '나이스!', sfx: () => sfxOk() },
@@ -132,7 +159,8 @@ export function callout(kind, sub) {
   const c = CALLOUTS[kind];
   if (!c) return;
   if (!isMuted()) { ac(); c.sfx(); }
-  if (c.voice) setTimeout(() => say(c.voice, kind === 'legend' ? { rate: 1, pitch: 1 } : {}), 120);
+  if (kind === 'legend') setTimeout(sayLegend, 120);
+  else if (!playClip(kind) && c.voice) setTimeout(() => say(c.voice), 120);
   const el = document.createElement('div');
   el.className = `callout ${c.cls}`;
   el.innerHTML = `<b>${c.text}</b>${sub || c.ko ? `<small>${sub || c.ko}</small>` : ''}`;

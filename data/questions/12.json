@@ -779,7 +779,7 @@
   "id": "12-049",
   "type": 12,
   "level": 2,
-  "ko": "N:그녀는=she | A:피곤해=tired | V:보였다=looked",
+  "ko": "N:하린이는=harin | A:피곤해=tired | V:보였다=looked",
   "order": [
    0,
    2,
@@ -1087,7 +1087,7 @@
   "id": "12-070",
   "type": 12,
   "level": 3,
-  "ko": "N:그녀는=she | D:무대 위에서=on the stage/on stage | D:아름답게=beautifully | V:노래했다=sang",
+  "ko": "N:소희는=sohee | D:무대 위에서=on the stage/on stage | D:아름답게=beautifully | V:노래했다=sang",
   "order": [
    0,
    3,
@@ -1428,7 +1428,7 @@
   "id": "12-093",
   "type": 12,
   "level": 3,
-  "ko": "N:그는=he | N:가장 빠른 학생=the fastest student | V:이다=is",
+  "ko": "N:민우는=minwoo | N:가장 빠른 학생=the fastest student | V:이다=is",
   "order": [
    0,
    2,
@@ -1452,5 +1452,95 @@
   "end": ".",
   "explain": "운동 이름 dodgeball엔 관사 X",
   "source": "교재 연습④ 거꾸로! 4품사로 영작하기 (확장)"
+ },
+ {
+  "id": "12-095",
+  "type": 12,
+  "level": 3,
+  "ko": "N:테드 선생님은=ted/teacher ted | N:우리에게=us | N:영어를=english | V:가르치신다=teaches",
+  "order": [
+   0,
+   3,
+   1,
+   2
+  ],
+  "end": ".",
+  "explain": "4형식 teach + 사람 + 과목. 과목 English엔 관사 X",
+  "source": "우리 반 이야기 (확장)"
+ },
+ {
+  "id": "12-096",
+  "type": 12,
+  "level": 3,
+  "ko": "N:승희는=seunghee | A:정말 행복해=really happy/very happy | V:보였다=looked",
+  "order": [
+   0,
+   2,
+   1
+  ],
+  "end": ".",
+  "explain": "look + 보어 (really happy). happily X",
+  "source": "우리 반 이야기 (확장)"
+ },
+ {
+  "id": "12-097",
+  "type": 12,
+  "level": 3,
+  "ko": "N:유진이는=yujin | D:버스를 타려고=to take the bus/to catch the bus | D:일찍=early | V:일어났다=got up/woke up",
+  "order": [
+   0,
+   3,
+   2,
+   1
+  ],
+  "end": ".",
+  "explain": "<언제> early → <목적> to부정사",
+  "source": "우리 반 이야기 (확장)"
+ },
+ {
+  "id": "12-098",
+  "type": 12,
+  "level": 3,
+  "ko": "N:원장님은=our principal/the principal | D:매일 아침=every morning | D:정문에서=at the front gate/at the main gate | N:학생들을=the students/students | V:맞이하신다=greets/welcomes",
+  "order": [
+   0,
+   4,
+   3,
+   2,
+   1
+  ],
+  "end": ".",
+  "explain": "목적어 → <어디서> → <언제>",
+  "source": "우리 반 이야기 (확장)"
+ },
+ {
+  "id": "12-099",
+  "type": 12,
+  "level": 3,
+  "ko": "N:경원이는=kyungwon | N:그 영화가=the movie | A:재미있다고=interesting/fun | V:생각했다=found",
+  "order": [
+   0,
+   3,
+   1,
+   2
+  ],
+  "end": ".",
+  "explain": "5형식 find + 목적어 + 보어",
+  "source": "우리 반 이야기 (확장)"
+ },
+ {
+  "id": "12-100",
+  "type": 12,
+  "level": 3,
+  "ko": "N:승태와 지용이는=seungtae and jiyong | N:테드 선생님을=ted/teacher ted | D:복도에서=in the hallway/in the hall | V:만났다=met",
+  "order": [
+   0,
+   3,
+   1,
+   2
+  ],
+  "end": ".",
+  "explain": "목적어 → <어디서>",
+  "source": "우리 반 이야기 (확장)"
  }
 ]

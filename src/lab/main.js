@@ -4,7 +4,7 @@ import { BANK, config, draw, setLevel, getLevel } from '../quiz/bank.js';
 import { runCell, timeLimitFor } from '../quiz/cell.js';
 import { esc } from '../quiz/notation.js';
 import { setMuted, isMuted } from '../quiz/sound.js';
-import { playRun, playCrane, playKart, playShoot, GAMES } from '../games/index.js';
+import { playRun, playCrane, playKart, playShoot, playDrum, GAMES } from '../games/index.js';
 import { syncMute, unlockAudio } from '../fx/fx.js';
 import { runStudy } from '../study/study.js';
 import { setPlayer } from '../rank/rank.js';
@@ -51,7 +51,7 @@ function home() {
       // 순위표에 올릴 이름 (처음 한 번만 묻기)
       if (!S.name) { S.name = (prompt('순위표에 올릴 이름(닉네임)을 써 주세요', '') || '').trim().slice(0, 12) || '연습생'; save(); }
       setPlayer(S.name);
-      const fn = { run: playRun, crane: playCrane, kart: playKart, shoot: playShoot }[b.dataset.g];
+      const fn = { run: playRun, crane: playCrane, kart: playKart, shoot: playShoot, drum: playDrum }[b.dataset.g];
       const r = await fn({ charId: 'bboy', name: S.name });
       S.coins += r.coins || 0; save(); home();
     };

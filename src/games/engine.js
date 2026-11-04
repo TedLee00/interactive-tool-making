@@ -199,7 +199,7 @@ export function openGame(opt) {
         <h2>${r.headline || (r.cleared ? '대성공!' : '아쉬워요!')}</h2>
         <div class="mg-score">${r.score}<small>점</small></div>
         ${r.lines.map((l) => `<p class="ln">${l}</p>`).join('')}
-        <div class="mg-reward"><span class="co">🪙 코인 <b>+${r.coins}</b></span>${r.snack ? `<span class="sn"><img src="${snackURL(r.snack)}" alt="">${SNACKS[r.snack].short} 쿠폰!</span>` : ''}</div>
+        <div class="mg-reward"><span class="co">🪙 코인 <b>+${r.coins}</b></span>${(r.snacks?.length ? r.snacks : r.snack ? [r.snack] : []).map((k) => `<span class="sn"><img src="${snackURL(k)}" alt="">${SNACKS[k].short} 쿠폰!</span>`).join('')}</div>
         <div id="mgRank"><p class="rk-wait">🏆 순위 기록 중…</p></div>
         <button class="primary big" id="mgOk">계속 ▶</button></div>`;
       ov.appendChild(card);

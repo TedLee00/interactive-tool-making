@@ -35,6 +35,7 @@ export function playKart({ charId = 'bboy', name = '나', used } = {}) {
       '왼손 <b>◀ ▶ 핸들</b> · 오른손 <b>⚡ 악셀</b> (꾹 2초 ↑ 2단 가속, 게이지가 줄어요)',
       '<b>❓ 퀴즈 존</b>을 지나면 <b>순간정지!</b> 맞히면 ⚡ 게이지 가득 + 부스터',
       '<b class="red">🛣️ 품사 레인</b>: 화면 위 단어의 품사가 적힌 <b>레인으로 달리면 부스터!</b> 틀린 레인은 감속',
+      '<b class="red">🌧️ 빗길</b>에서는 길이 미끄러워요 — 악셀을 밟으면 차가 흔들려요. <b>악셀을 떼고</b> 지나가기!',
       '🌮 타코 = 게이지 가득 · 🍌 바나나 · 🚧 공사중 벽 · 🚶 영크크·늙크크 조심!',
       '라이벌 5명: <b>보강 여신 · 묵언수행 · 보강대장 · B-BOY · 퀵보드 태오</b> — 1등이면 쿠키앤크림!',
     ],
@@ -78,6 +79,10 @@ export function playKart({ charId = 'bboy', name = '나', used } = {}) {
       const QZ = [0.08, 0.22, 0.4, 0.53, 0.7, 0.88].map((f) => ({ d: Math.round(L * f), done: false }));
       BAN.forEach((b) => { if (QZ.some((z) => Math.abs(b.d - z.d) < 240)) b.gone = true; });
       // 🛣️ 품사 레인: 길이 3줄로 나뉘고 줄마다 품사 이름. 위에 나온 단어의 품사 레인으로 지나가면 부스터!
+      // 🌧️ 빗길 구간: 길이 미끄러워 악셀을 밟으면 차가 흔들리고 미끄러진다 → 악셀을 떼는 게 안전
+      const RAIN = { d0: Math.round(L * 0.355), d1: Math.round(L * 0.425) };
+      const inRain = (d) => d > RAIN.d0 && d < RAIN.d1;
+      let rainShown = false;
       const LANE_LEN = 900;
       const LZ = [0.15, 0.45, 0.6, 0.78, 0.95].map((f) => {
         const target = pick(['명사', '동사', '형용사', '부사']);
@@ -93,12 +98,12 @@ export function playKart({ charId = 'bboy', name = '나', used } = {}) {
       const mk = (o) => Object.assign({ v: 0, spin: 0, boost: 0, head: 0, fin: 0, steerX: 0, lane: o.lane0 || 0, laneT: 0 }, o);
       const R = [
         mk({ id: 'ted', name: MYNAME, col: '#751A19', img: 'ted', base: 238, x: W / 2, d: START - 140, me: true }),
-        mk({ id: 'g', name: '보강 여신', col: '#9B6BE0', img: 'goddess', base: 250, x: W / 2 - RW * 0.2, d: START, lane0: -0.2, hits: 1 }),
-        mk({ id: 'm', name: '묵언수행', col: '#1B2F4E', img: 'scooter', base: 246, x: W / 2 + RW * 0.2, d: START, lane0: 0.2, hits: 1 }),
-        mk({ id: 'b', name: '보강대장', col: '#E0453A', img: 'cart', base: 242, x: W / 2 - RW * 0.2, d: START - 70, lane0: -0.15, hits: 1 }),
-        mk({ id: 's', name: 'B-BOY', col: '#28A064', img: 'skate', base: 245, x: W / 2 + RW * 0.2, d: START - 70, lane0: 0.15, hits: 1 }),
+        mk({ id: 'g', name: '보강 여신', col: '#9B6BE0', img: 'goddess', base: 258, x: W / 2 - RW * 0.2, d: START, lane0: -0.2, hits: 1 }),
+        mk({ id: 'm', name: '묵언수행', col: '#1B2F4E', img: 'scooter', base: 254, x: W / 2 + RW * 0.2, d: START, lane0: 0.2, hits: 1 }),
+        mk({ id: 'b', name: '보강대장', col: '#E0453A', img: 'cart', base: 250, x: W / 2 - RW * 0.2, d: START - 70, lane0: -0.15, hits: 1 }),
+        mk({ id: 's', name: 'B-BOY', col: '#28A064', img: 'skate', base: 253, x: W / 2 + RW * 0.2, d: START - 70, lane0: 0.15, hits: 1 }),
         // 6번째 라이벌: 퀵보드 타는 디스코 태오 (작고 날쌔서 출발이 빠름)
-        mk({ id: 'k', name: '퀵보드 태오', col: '#7B5CD6', img: 'kick', base: 243, x: W / 2, d: START - 200, lane0: 0, hits: 1 })];
+        mk({ id: 'k', name: '퀵보드 태오', col: '#7B5CD6', img: 'kick', base: 251, x: W / 2, d: START - 200, lane0: 0, hits: 1 })];
       const ME = R[0];
       let gauge = 1, accel = false;
       const FUEL_SEC = 10, REGEN_SEC = 9, // 악셀 게이지: 10초 동안 쓸 수 있음 (지난번 7초보다 30% 더 천천히) // 게이지가 천천히 줄고 조금 더 빨리 참 (원래 3.36초 / 12초)
@@ -123,6 +128,11 @@ export function playKart({ charId = 'bboy', name = '나', used } = {}) {
         <path d="M14 112 L72 104 M186 112 L128 104 M100 132 L100 190" stroke="url(#kwG)" stroke-width="20" stroke-linecap="round"/>
         <circle cx="100" cy="106" r="30" fill="url(#kwG)" stroke="#FFD43B" stroke-width="4"/>
         <text x="100" y="113" text-anchor="middle" font-family="Jua, sans-serif" font-size="20" fill="#FFD43B">TED</text>
+        <g stroke="#2B2350" stroke-width="3" stroke-linejoin="round">
+          <path d="M2 128 Q-8 100 14 84 L30 92 Q20 108 26 126 Z" fill="#F2C9A0"/><path d="M8 92 Q20 86 28 94 M6 104 Q18 98 26 106 M8 116 Q18 110 26 118" fill="none" stroke-width="2"/>
+          <path d="M198 128 Q208 100 186 84 L170 92 Q180 108 174 126 Z" fill="#F2C9A0"/><path d="M192 92 Q180 86 172 94 M194 104 Q182 98 174 106 M192 116 Q182 110 174 118" fill="none" stroke-width="2"/>
+          <path d="M-6 132 L6 124 L22 150 L4 164 Z" fill="#E0453A"/><path d="M206 132 L194 124 L178 150 L196 164 Z" fill="#E0453A"/>
+        </g>
       </svg>`;
       E.ctrl.appendChild(wheel);
       wheel.appendChild(E.button('◀', 'left', hold(-1)));
@@ -161,12 +171,23 @@ export function playKart({ charId = 'bboy', name = '나', used } = {}) {
         if (!r.acc && mode === 'race') gauge = Math.min(1, gauge + dt / REGEN_SEC);   // refills slowly by itself while the pedal is up
         if (r.acc) { tgt *= lv === 2 ? ACC2 : ACC1; gauge = Math.max(0, gauge - dt / FUEL_SEC); if (gauge === 0) MSG.textContent = '⚡ 게이지 바닥! 손을 떼면 천천히 차요 · 🌮 타코 = 가득!'; } }
       if (r.spin > 0) { tgt *= .3; r.spin -= dt; }
+      if (inRain(r.d)) {
+        tgt *= r.me ? (r.acc ? 1 : 0.92) : 0.86; // 빗길에서는 모두 조심조심
+        if (r.me && r.acc) {
+          r.slip = (r.slip || 0) + dt;
+          if (r.slip > 1.6 && Math.random() < dt * 0.9 && !(r.spin > 0)) { spinOut(r); MSG.textContent = '🌧️ 빗길에서 악셀! 미끄러졌어요 — 악셀을 떼요!'; r.slip = 0; }
+        } else if (r.me) r.slip = 0;
+      }
       if (!r.me && !r.fin) {   // light rubber-band so the race stays close
-        const gap = ME.d - r.d; if (gap > 380) tgt *= 1.12; else if (gap < -520) tgt *= .95; }
+        const gap = ME.d - r.d; if (gap > 300) tgt *= 1.2; else if (gap > 120) tgt *= 1.08; else if (gap < -600) tgt *= .96; } // 라이벌이 끝까지 따라붙게
       r.v += (tgt - r.v) * Math.min(1, dt * (r.v < tgt * .5 ? 1.6 : 3.2));
       r.d += r.v * dt;
       let vx;
-      if (r.me) { vx = r.fin ? (cx(r.d + 60) - r.x) * 2 : steer * 150; }
+      if (r.me) {
+        vx = r.fin ? (cx(r.d + 60) - r.x) * 2 : steer * 150;
+        // 빗길 + 악셀: 핸들이 잘 안 먹고 차가 좌우로 미끄러짐
+        if (inRain(r.d) && r.acc) vx = vx * 0.45 + Math.sin(t * 5.3) * 95 + Math.sin(t * 13.1) * 40;
+      }
       else {   // AI: follow its lane, dodge bananas (except the one it is scripted to hit)
         r.laneT -= dt; if (r.laneT <= 0) { r.laneT = 1.3 + rnd() * 1.4; r.lane = (rnd() * 2 - 1) * .3; }
         let lane = r.lane;
@@ -362,6 +383,12 @@ export function playKart({ charId = 'bboy', name = '나', used } = {}) {
       TAC.forEach(o => { if (o.gone) return; const y = sy(o.d); if (y > -30 && y < H + 30) taco(cx(o.d) + o.k * RW, y); });
       // speed lines while boosting
       wall();
+      // 🌧️ 빗길: 젖은 도로 + 표지판
+      { const y0 = sy(RAIN.d0); const y1 = sy(RAIN.d1);
+        if (y1 < H + 20 && y0 > -20) {
+          for (let yy = Math.max(-6, y1); yy <= Math.min(H + 6, y0); yy += 6) { const d = ME.d + PY - yy; const c = cx(d); ctx.fillStyle = 'rgba(40,70,120,.28)'; ctx.fillRect(c - RW / 2, yy, RW, 6.5); if (Math.floor(d / 40) % 5 === 0) { ctx.fillStyle = 'rgba(200,230,255,.35)'; ctx.fillRect(c - RW / 4, yy, RW / 2, 2); } }
+          const ys = sy(RAIN.d0 - 80); if (ys > -30 && ys < H + 30) { const c = cx(RAIN.d0 - 80); rr(c - 80, ys - 16, 160, 30, 10, '#FFD43B'); ctx.font = "400 16px Jua, 'Noto Sans KR', sans-serif"; ctx.textAlign = 'center'; ctx.fillStyle = '#2B2350'; ctx.fillText('🌧️ 빗길 · 악셀 조심!', c, ys + 5); ctx.textAlign = 'left'; }
+        } }
       R.slice().sort((a, b) => b.d - a.d).forEach(racer);
       PEDS.forEach(ajussi);
       FX.forEach(f => { ctx.globalAlpha = Math.max(0, Math.min(1, f.life * 1.5)); ctx.font = "900 20px 'Noto Sans KR',sans-serif"; ctx.textAlign = 'center';
@@ -442,12 +469,14 @@ export function playKart({ charId = 'bboy', name = '나', used } = {}) {
           });
           for (let i = FX.length - 1; i >= 0; i--) { FX[i].life -= dt; FX[i].y -= 34 * dt; if (FX[i].life <= 0) FX.splice(i, 1); }
           if (!finished) {
-            const cur = LZ.find((z) => !z.done && ME.d > z.d - LANE_LEN - 1700); // 레인이 나오기 한참 전부터 단어를 미리 보여 줌
+            // 레인이 나오기 한참 전부터 단어를 보여 주고, 레인에 들어서면 반짝반짝 → 조금 달리면 사라짐
+            const cur = LZ.find((z) => !z.done && ME.d > z.d - LANE_LEN - 1700 && ME.d < z.d - LANE_LEN + 320);
             if (cur !== laneShown) {
               laneShown = cur || null;
               laneEl.classList.toggle('on', !!cur);
               if (cur) laneEl.innerHTML = `<small>🛣️ 곧 품사 레인! 이 단어의 품사는?</small><b>${cur.word}</b><em>${cur.labels.map((l) => `<i>${l}</i>`).join('')}</em><u id="lzDist"></u>`;
             }
+            if (laneShown) laneEl.classList.toggle('flash', ME.d >= laneShown.d - LANE_LEN);
             if (laneShown) { const dEl = laneEl.querySelector('#lzDist'); const left = laneShown.d - LANE_LEN - ME.d; if (dEl) dEl.textContent = left > 0 ? `레인까지 ${Math.ceil(left / 10)}m — 미리 정해 두세요!` : '지금! 맞는 레인으로 ◀ ▶'; }
             LZ.forEach((z) => {
               if (!z.shown && ME.d > z.d - LANE_LEN - 1700) { z.shown = true; MSG.textContent = `🛣️ 품사 레인! 「<span class="tg">${z.word}</span>」의 품사 레인으로 달려라!`; lsfx([660, 880], 'square', 0.06, 0.05); }
@@ -469,6 +498,7 @@ export function playKart({ charId = 'bboy', name = '나', used } = {}) {
                 lanes.n++;
               }
             });
+            if (!rainShown && ME.d > RAIN.d0 - 500) { rainShown = true; MSG.textContent = '🌧️ 곧 빗길! 미끄러우니 <span class="tg">악셀을 떼고</span> 천천히!'; }
             const z = QZ.find((q) => !q.done && ME.d >= q.d);
             if (z) { z.done = true; quizStop(z); }
             place = placeOf(ME);
@@ -526,6 +556,13 @@ export function playKart({ charId = 'bboy', name = '나', used } = {}) {
             ctx.font = "400 14px Jua, 'Noto Sans KR', sans-serif"; ctx.textAlign = 'center'; ctx.fillStyle = '#fff';
             ctx.fillText(z.done ? '퀴즈 완료' : '❓ 퀴즈 존 · 정지!', c, y - 19); ctx.textAlign = 'left';
           });
+          // 빗줄기 (내가 빗길에 있을 때 화면 전체)
+          if (inRain(ME.d)) {
+            ctx.strokeStyle = 'rgba(210,230,255,.55)'; ctx.lineWidth = 1.5;
+            const tm = performance.now() / 1000;
+            for (let k = 0; k < 70; k++) { const rx = ((k * 53.7 + tm * 40) % W); const ry = ((k * 97.3 + tm * 620) % (H + 40)) - 20; ctx.beginPath(); ctx.moveTo(rx, ry); ctx.lineTo(rx - 4, ry + 16); ctx.stroke(); }
+            ctx.fillStyle = 'rgba(30,50,90,.12)'; ctx.fillRect(0, 0, W, H);
+          }
           // 내 카트 운전석에 내 캐릭터 얼굴
           if (face && !ME.hide) {
             const y = sy(ME.d);

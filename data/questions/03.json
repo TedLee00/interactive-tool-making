@@ -516,7 +516,7 @@
   "id": "03-026",
   "type": 3,
   "level": 2,
-  "prompt": "She smiled ___ at me.",
+  "prompt": "Hwayoung smiled ___ at me.",
   "answer": "happily",
   "options": [
    "happily",
@@ -558,7 +558,7 @@
   "id": "03-028",
   "type": 3,
   "level": 2,
-  "prompt": "He solved the problem ___.",
+  "prompt": "Jimin solved the problem ___.",
   "answer": "easily",
   "options": [
    "easily",
@@ -630,7 +630,7 @@
   "id": "03-032",
   "type": 3,
   "level": 2,
-  "prompt": "He answered the question ___.",
+  "prompt": "Taeyeon answered the question ___.",
   "answer": "correctly",
   "options": [
    "correctly",
@@ -687,7 +687,7 @@
   "id": "03-035",
   "type": 3,
   "level": 2,
-  "prompt": "She sings ___.",
+  "prompt": "Jaeyeon sings ___.",
   "answer": "beautifully",
   "options": [
    "beautifully",
@@ -744,7 +744,7 @@
   "id": "03-038",
   "type": 3,
   "level": 2,
-  "prompt": "He runs ___ in the relay race.",
+  "prompt": "Yudam runs ___ in the relay race.",
   "answer": "quickly",
   "options": [
    "quickly",
@@ -1581,7 +1581,7 @@
   "id": "03-079",
   "type": 3,
   "level": 3,
-  "prompt": "He became ___.",
+  "prompt": "Suhoon became ___.",
   "answer": "famous",
   "options": [
    "famous",
@@ -1589,14 +1589,14 @@
    "fame",
    "fames"
   ],
-  "explain": "He = famous, become 뒤 보어 → ( 형용사 )",
+  "explain": "Suhoon = famous, become 뒤 보어 → ( 형용사 )",
   "source": "교재 1-2 짝꿍 (확장)"
  },
  {
   "id": "03-080",
   "type": 3,
   "level": 3,
-  "prompt": "She felt ___ after the test.",
+  "prompt": "Eunwoo felt ___ after the test.",
   "answer": "nervous",
   "options": [
    "nervous",
@@ -1604,7 +1604,7 @@
    "nerve",
    "nerves"
   ],
-  "explain": "She = nervous, feel 뒤 보어 → ( 형용사 ) \"긴장한\"",
+  "explain": "Eunwoo = nervous, feel 뒤 보어 → ( 형용사 ) \"긴장한\"",
   "source": "교재 1-2 짝꿍 (확장)"
  },
  {
@@ -1656,7 +1656,7 @@
   "id": "03-084",
   "type": 3,
   "level": 3,
-  "prompt": "He spoke very ___.",
+  "prompt": "Eunseo spoke very ___.",
   "answer": "quietly",
   "options": [
    "quietly",
@@ -1692,7 +1692,7 @@
   "id": "03-086",
   "type": 3,
   "level": 3,
-  "prompt": "She solved it ___ quickly.",
+  "prompt": "Yusin solved it ___ quickly.",
   "answer": "very",
   "options": [
    "very",
@@ -1962,7 +1962,7 @@
   "id": "03-100",
   "type": 3,
   "level": 3,
-  "prompt": "He drives ___.",
+  "prompt": "Harin drives ___.",
   "answer": "dangerously",
   "options": [
    "dangerously",

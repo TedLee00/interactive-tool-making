@@ -78,7 +78,7 @@ export function loadChar(id) {
       const st = sticker(full);
       // 얼굴: 위쪽에서 가로폭 기준 정사각형
       const f = document.createElement('canvas');
-      const side = Math.min(full.width, Math.round(full.height * 0.42));
+      const side = Math.min(full.width, Math.round(full.height * (id === 'ted' ? 0.5 : 0.42))); // Ted는 입까지 보이게
       f.width = 256; f.height = 256;
       const fx = f.getContext('2d');
       const sx = (full.width - side) / 2;

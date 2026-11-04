@@ -25,14 +25,17 @@ export function createDice(scene) {
   world.solver.iterations = 14;
   const dieMat = new CANNON.Material('die');
   const floorMat = new CANNON.Material('floor');
-  world.addContactMaterial(new CANNON.ContactMaterial(dieMat, floorMat, { friction: 0.3, restitution: 0.5 }));
+  // 마을 바닥·물체는 딱딱하지 않고 통통 튕겨 내는 말랑한 느낌 (부드러운 접촉 + 높은 탄성)
+  const bouncyMat = new CANNON.Material('bouncy');
+  world.addContactMaterial(new CANNON.ContactMaterial(dieMat, floorMat, { friction: 0.22, restitution: 0.62, contactEquationStiffness: 6e6, contactEquationRelaxation: 4 }));
+  world.addContactMaterial(new CANNON.ContactMaterial(dieMat, bouncyMat, { friction: 0.04, restitution: 0.85, contactEquationStiffness: 3e6, contactEquationRelaxation: 5 }));
   world.addContactMaterial(new CANNON.ContactMaterial(dieMat, dieMat, { friction: 0.3, restitution: 0.3 }));
   const floor = new CANNON.Body({ mass: 0, material: floorMat, shape: new CANNON.Plane() });
   floor.quaternion.setFromEuler(-Math.PI / 2, 0, 0);
   world.addBody(floor);
   const walls = [];
   for (let k = 0; k < 4; k++) {
-    const w = new CANNON.Body({ mass: 0, material: floorMat, shape: new CANNON.Box(new CANNON.Vec3(7, 8, 0.3)) });
+    const w = new CANNON.Body({ mass: 0, material: bouncyMat, shape: new CANNON.Box(new CANNON.Vec3(7, 8, 0.3)) });
     walls.push(w);
     world.addBody(w);
   }
@@ -42,13 +45,13 @@ export function createDice(scene) {
   function placeObstacles(C) {
     obsBodies.splice(0).forEach((b) => world.removeBody(b));
     obstacles.filter((o) => Math.hypot(o.center.x - C.x, o.center.z - C.z) < 9).slice(0, 24).forEach((o) => {
-      const b = new CANNON.Body({ mass: 0, material: floorMat, shape: new CANNON.Box(new CANNON.Vec3(o.size.x / 2 * 0.8, o.size.y / 2, o.size.z / 2 * 0.8)) });
+      const b = new CANNON.Body({ mass: 0, material: bouncyMat, shape: new CANNON.Box(new CANNON.Vec3(o.size.x / 2 * 0.8, o.size.y / 2, o.size.z / 2 * 0.8)) });
       b.position.set(o.center.x, o.center.y, o.center.z);
       world.addBody(b);
       obsBodies.push(b);
     });
   }
-  const body = new CANNON.Body({ mass: 1, material: dieMat, shape: new CANNON.Box(new CANNON.Vec3(SIZE / 2, SIZE / 2, SIZE / 2)), linearDamping: 0.1, angularDamping: 0.12 });
+  const body = new CANNON.Body({ mass: 1, material: dieMat, shape: new CANNON.Box(new CANNON.Vec3(SIZE / 2, SIZE / 2, SIZE / 2)), linearDamping: 0.06, angularDamping: 0.08 });
   world.addBody(body);
 
   let state = 'hidden'; // hidden · ready · rolling
@@ -81,6 +84,11 @@ export function createDice(scene) {
     }
   }
 
+  /** 위를 보는 면이 얼마나 똑바로 위인지 (1 = 완전히 평평) */
+  function flatness() {
+    const q = new THREE.Quaternion(body.quaternion.x, body.quaternion.y, body.quaternion.z, body.quaternion.w);
+    return Math.max(...NORMALS.map((n) => n.clone().applyQuaternion(q).y));
+  }
   function topValue() {
     const q = new THREE.Quaternion(body.quaternion.x, body.quaternion.y, body.quaternion.z, body.quaternion.w);
     let best = 0;
@@ -148,6 +156,14 @@ export function createDice(scene) {
         if (lastVy < -1.2 && body.velocity.y > 0.2 && body.position.y < SIZE) onBounce?.();
         lastVy = body.velocity.y;
         const calm = body.velocity.length() < 0.12 && body.angularVelocity.length() < 0.15;
+        // 끼임 방지: 거의 멈췄는데 면이 바닥에 평평하지 않으면 (모서리에 기대거나 물체에 걸림) 톡 튕겨서 다시 굴린다
+        if (calm && t < 7.5 && (flatness() < 0.96 || body.position.y > SIZE * 0.75)) {
+          const k = 1 + Math.random();
+          body.velocity.set((Math.random() - 0.5) * 3 * k, 3.5 + Math.random() * 2, (Math.random() - 0.5) * 3 * k);
+          body.angularVelocity.set((Math.random() - 0.5) * 14, (Math.random() - 0.5) * 8, (Math.random() - 0.5) * 14);
+          onBounce?.();
+          still = 0;
+        }
         still = calm ? still + dt : 0;
         if (still > 0.35 || t > 8) {
           state = 'done';
