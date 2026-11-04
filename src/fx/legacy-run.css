@@ -46,3 +46,9 @@
 .rg-tip span{display:inline-block;margin-top:10px;background:rgba(27,47,78,.88);color:#fff;font-weight:900;font-size:14px;padding:7px 14px;border-radius:14px}
 .rg-tip.bump b{animation:tipB .45s cubic-bezier(.2,1.8,.4,1)}@keyframes tipB{from{transform:scale(.2)}to{transform:scale(1)}}
 .rg-p.pop{animation:rgPop .5s cubic-bezier(.2,1.8,.4,1)}@keyframes rgPop{0%{scale:.2}60%{scale:1.35}100%{scale:1}}
+/* 슬라이딩: 축구 슬라이딩 태클처럼 뒤로 눕고 앞다리를 쭉 */
+.rg-p.sv.slide .svLegF{transform:rotate(-12deg)}.rg-p.sv.slide .svShinF{transform:rotate(0deg)}
+.rg-p.sv.slide .svLegB{transform:rotate(40deg)}.rg-p.sv.slide .svShinB{transform:rotate(80deg)}
+.rg-p.sv.slide .svArmF{transform:rotate(-150deg)}.rg-p.sv.slide .svForeF{transform:rotate(-20deg)}
+.rg-p.sv.slide .svArmB{transform:rotate(70deg)}
+.rg-p.ted.slide .tLegL{transform:rotate(-30deg)}.rg-p.ted.slide .tArmL{transform:rotate(150deg) scale(1,2)}

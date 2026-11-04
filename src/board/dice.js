@@ -64,6 +64,7 @@ export function createDice(scene) {
     mats.forEach((m) => { m.opacity = 1; });
     die.visible = true;
     state = 'ready';
+    idleT = 0;
   }
 
   function update(dt) {
@@ -71,6 +72,12 @@ export function createDice(scene) {
       idleT += dt;
       die.position.y = holdPos.y + Math.sin(idleT * 3) * 0.08;
       die.rotation.y += dt * 0.8;
+      // 반짝반짝: "나를 쓸어 올려!" 하고 빛나며 살짝 커졌다 작아졌다
+      const glow = 0.5 + 0.5 * Math.sin(idleT * 6);
+      die.scale.setScalar(1.15 + glow * 0.1);
+      mats.forEach((m) => { m.emissive.setRGB(1, 0.85, 0.3); m.emissiveIntensity = 0.15 + glow * 0.35; });
+    } else if (mats[0].emissiveIntensity > 0) {
+      mats.forEach((m) => { m.emissiveIntensity = 0; });
     }
   }
 
@@ -96,6 +103,8 @@ export function createDice(scene) {
   function roll({ power, lateral = 0, forward, onBounce }) {
     return new Promise((resolve) => {
       state = 'rolling';
+      die.scale.setScalar(1);
+      mats.forEach((m) => { m.emissiveIntensity = 0; });
       const f = forward.clone().setY(0).normalize();
       const right = new THREE.Vector3(-f.z, 0, f.x);
       const start = die.position.clone();

@@ -13,14 +13,15 @@ import { sfx, setMuted, isMuted } from '../quiz/sound.js';
 import { loadChar, fillFaces, charURL } from '../board/charart.js';
 import { bgm, callout, maWarning, teacherDance, crewDance, finaleDance, snackCard, snackCode, SNACKS, syncMute, unlockAudio } from '../fx/fx.js';
 import { playRun, playCrane, playKart, playShoot, GAMES } from '../games/index.js';
+import { runStudy, askStudy } from '../study/study.js';
 
 const BASE = import.meta.env.BASE_URL;
 const LOGO = `${BASE}assets/brand/logo.png`;
 const faceImg = (id, cls = '') => `<img class="face ${cls}" data-face="${id}" alt="">`;
 const SAVE_KEY = 'cq.game.v1';
 const LEVELS = [
-  { id: 'mid', name: '중 난이도', icon: '🙂', desc: '쉬운 문제부터 어려운 문제까지 골고루' },
-  { id: 'high', name: '상 난이도', icon: '🔥', desc: '어려운 문제 위주! 쉬운 문제는 나오지 않아요' },
+  { id: 'mid', name: '난이도 중', icon: '🙂', desc: '쉬운 문제부터 어려운 문제까지 골고루' },
+  { id: 'high', name: '난이도 상', icon: '🔥', desc: '어려운 문제 위주! 쉬운 문제는 나오지 않아요' },
 ];
 const levelName = (id) => (LEVELS.find((l) => l.id === id) || LEVELS[0]).name;
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -78,7 +79,7 @@ function updateCamera(dt) {
     cam.target.lerp(t, 1 - Math.exp(-dt * 4));
     const dir = world.direction(Math.round(S?.pos || 0));
     const yaw = Math.atan2(dir.x, -dir.z) * 0.6;
-    const off = new THREE.Vector3(Math.sin(yaw) * -8, 7.6, Math.cos(yaw) * 8).multiplyScalar(cam.zoom);
+    const off = new THREE.Vector3(Math.sin(yaw) * -8, 7.6, Math.cos(yaw) * 8).multiplyScalar(cam.zoom * 1.2); // 1.2 = 조금 뒤로 물러나 마을이 더 보이게
     cam.pos.lerp(cam.target.clone().add(off), 1 - Math.exp(-dt * 2.5));
   }
   camera.position.copy(cam.pos);
@@ -100,6 +101,7 @@ function loop(now) {
   avatar?.update(dt, camera);
   dice.update(dt);
   updateCamera(dt);
+  if (cam.mode === 'board') placeDiceHint();
   renderer.render(scene, camera);
   requestAnimationFrame(loop);
 }
@@ -180,8 +182,10 @@ function title() {
     <div class="title-btns">
       ${can ? `<button class="primary big" id="cont">이어하기 · ${esc(sv.name)} (${sv.pos}/${board.cells.length - 1}칸)</button>` : ''}
       <button class="${can ? 'ghost big' : 'primary big'}" id="new">${can ? '처음부터 새로 하기' : '시작하기 ▶'}</button>
+      <button class="ghost big study-btn" id="study">📚 개념 학습 (품사·문장 성분)</button>
       <div class="title-links"><a href="./quiz-lab.html">🧪 연습장 · 미니게임</a><a href="./review.html">📋 문제 검수</a></div>
     </div></div>`);
+  ui.querySelector('#study').onclick = async () => { unlockAudio(); await runStudy({ sfx }); };
   ui.querySelector('#new').onclick = () => {
     if (can && !confirm('저장된 진행 상황이 지워져요. 새로 시작할까요?')) return;
     profile();
@@ -219,7 +223,17 @@ function choose(name, grade) {
       <div class="row"><button class="ghost" id="back">◀ 이전</button><button class="primary" id="go">${esc(c.name)}(와)과 출발! ▶</button></div></div></div>`);
     ui.querySelectorAll('.ch').forEach((b) => { b.onclick = () => { pick = b.dataset.id; sfx('tap'); draw(); }; });
     ui.querySelector('#back').onclick = () => profile(name, grade);
-    ui.querySelector('#go').onclick = () => { newGame(name, grade, pick); startBoard(true); };
+    ui.querySelector('#go').onclick = async () => {
+      newGame(name, grade, pick);
+      ui.innerHTML = '';
+      // 게임 전에 먼저 학습할까요? → 네: 4챕터 학습 + OX (맞힌 개수만큼 코인)
+      if (await askStudy()) {
+        const r = await runStudy({ sfx });
+        S.coins += r.correct; S.studied = r; save();
+        if (r.correct) toastLater(`📚 개념 학습 OX ${r.correct}/${r.total} · 코인 +${r.correct}`);
+      }
+      startBoard(true);
+    };
   };
   draw();
 }
@@ -239,17 +253,17 @@ function hud() {
       <button class="menu" id="menu" aria-label="메뉴">☰</button>
     </div>
     <div class="progress"><i style="width:${(S.pos / (board.cells.length - 1)) * 100}%"></i>${board.regions.map((r, k) => `<em style="left:${(board.cells.findIndex((c) => c.region === k) / (board.cells.length - 1)) * 100}%"></em>`).join('')}</div>
+    <div class="talk talk-top" id="talk"><img id="talkImg" class="face" data-face="ted" alt=""><p id="talkTxt"></p></div>
     <div class="hud-bottom">
-      <div class="talk" id="talk"><img id="talkImg" class="face" data-face="ted" alt=""><p id="talkTxt"></p></div>
       <div class="me">${faceImg(p.id)}<span>${esc(S.name)}</span></div>
-      <button class="dice-btn" id="roll"><span class="pip-ico">🎲</span><span class="dl">주사위<small>위로 휙! 쓸어 올리기</small></span></button>
-      <div class="swipe-line" id="swipeLine"></div>
     </div>
+    <div class="dice-hint" id="diceHint"><i class="ring"></i><i class="ring r2"></i><span>👆 주사위를 <b>위로 휙!</b><small>손가락으로 쓸어 올려요</small></span></div>
+    <div class="swipe-line" id="swipeLine"></div>
     <div class="bignum" id="bignum"></div>
     <div class="toast" id="toast"></div>
   </div>`);
-  bindSwipe(ui.querySelector('#roll'));
   ui.querySelector('#menu').onclick = menu;
+  setRollEnabled(canRoll);
 }
 
 function talk(text, who = 'guide') {
@@ -263,54 +277,67 @@ function talk(text, who = 'guide') {
   t.classList.remove('pop'); void t.offsetWidth; t.classList.add('pop');
 }
 
+let canRoll = false;
 function setRollEnabled(on) {
-  const b = ui.querySelector('#roll');
-  if (b) b.disabled = !on;
+  canRoll = on;
+  ui.querySelector('#diceHint')?.classList.toggle('on', on);
   if (on && avatar && dice.state !== 'ready') {
     const base = avatar.root.position.clone().setY(0);
     dice.ready(base, world.direction(S.pos).setY(0).normalize().negate());
   }
 }
 
-/** 주사위 버튼: 꾹 누르고 위로 쓸어 올리면 던진다 (속도 = 세기, 좌우 = 비틀기) */
-function bindSwipe(btn) {
+/** 화면 속 3D 주사위를 손가락으로 위로 쓸어 올리면 던진다 (속도 = 세기, 좌우 = 비틀기) */
+const DIE_PICK_R = 95; // 주사위 화면 위치에서 이 거리 안에서 시작하면 주사위를 잡은 것
+function dieScreen() {
+  const v = dice.mesh.position.clone().project(camera);
+  return { x: (v.x + 1) / 2 * window.innerWidth, y: (1 - v.y) / 2 * window.innerHeight, ok: v.z < 1 };
+}
+let swipeSt = null;
+function swipeStart(e) {
+  if (!canRoll || busy || dice.state !== 'ready' || cam.mode !== 'board') return;
+  if (e.target.closest && e.target.closest('button, .menu-ov, .sheet, .mg-ov, input')) return;
+  const d = dieScreen();
+  if (!d.ok || Math.hypot(e.clientX - d.x, e.clientY - d.y) > DIE_PICK_R) return;
+  e.preventDefault();
+  swipeSt = { x: e.clientX, y: e.clientY, pts: [[e.clientX, e.clientY, performance.now()]] };
+  unlockAudio();
+  ui.querySelector('#diceHint')?.classList.add('hold');
+}
+function swipeMove(e) {
+  if (!swipeSt) return;
+  swipeSt.pts.push([e.clientX, e.clientY, performance.now()]);
+  if (swipeSt.pts.length > 8) swipeSt.pts.shift();
+  const dx = e.clientX - swipeSt.x; const dy = e.clientY - swipeSt.y;
   const line = ui.querySelector('#swipeLine');
-  let st = null;
-  btn.addEventListener('pointerdown', (e) => {
-    if (btn.disabled || busy) return;
-    e.preventDefault();
-    btn.setPointerCapture(e.pointerId);
-    st = { x: e.clientX, y: e.clientY, t: performance.now(), pts: [[e.clientX, e.clientY, performance.now()]] };
-    btn.classList.add('hold');
-    unlockAudio();
-  });
-  btn.addEventListener('pointermove', (e) => {
-    if (!st) return;
-    st.pts.push([e.clientX, e.clientY, performance.now()]);
-    if (st.pts.length > 8) st.pts.shift();
-    const dx = e.clientX - st.x;
-    const dy = e.clientY - st.y;
-    const len = Math.hypot(dx, dy);
-    line.style.cssText = `display:block;left:${st.x}px;top:${st.y}px;width:${len}px;transform:rotate(${Math.atan2(dy, dx)}rad)`;
-  });
-  const end = (e) => {
-    if (!st) return;
-    btn.classList.remove('hold');
-    line.style.display = 'none';
-    const p0 = st.pts[0];
-    const dt = Math.max(16, performance.now() - p0[2]);
-    const up = p0[1] - e.clientY; // 위로 + (최근 손가락 움직임)
-    const total = st.y - e.clientY;
-    const dx = e.clientX - st.x;
-    st = null;
-    if (total < 30) { talk('주사위를 꾹 누르고 위로 휙! 쓸어 올려 던져 봐!'); return; }
-    const speed = up / dt; // px/ms
-    const power = Math.max(0.15, Math.min(1, (speed - 0.2) / 2.2 + total / 900));
-    const lateral = Math.max(-1, Math.min(1, dx / 140));
-    turn({ power, lateral });
-  };
-  btn.addEventListener('pointerup', end);
-  btn.addEventListener('pointercancel', () => { st = null; btn.classList.remove('hold'); line.style.display = 'none'; });
+  if (line) line.style.cssText = `display:block;left:${swipeSt.x}px;top:${swipeSt.y}px;width:${Math.hypot(dx, dy)}px;transform:rotate(${Math.atan2(dy, dx)}rad)`;
+}
+function swipeEnd(e) {
+  if (!swipeSt) return;
+  const st = swipeSt; swipeSt = null;
+  const line = ui.querySelector('#swipeLine'); if (line) line.style.display = 'none';
+  ui.querySelector('#diceHint')?.classList.remove('hold');
+  const p0 = st.pts[0];
+  const dt = Math.max(16, performance.now() - p0[2]);
+  const up = p0[1] - e.clientY;
+  const total = st.y - e.clientY;
+  const dx = e.clientX - st.x;
+  if (total < 30) { talk('주사위를 손가락으로 꾹 누른 채 위로 휙! 쓸어 올려 봐!'); return; }
+  const speed = up / dt;
+  const power = Math.max(0.15, Math.min(1, (speed - 0.2) / 2.2 + total / 900));
+  const lateral = Math.max(-1, Math.min(1, dx / 140));
+  turn({ power, lateral });
+}
+window.addEventListener('pointerdown', swipeStart, { passive: false });
+window.addEventListener('pointermove', swipeMove);
+window.addEventListener('pointerup', swipeEnd);
+window.addEventListener('pointercancel', () => { swipeSt = null; const l = ui.querySelector('#swipeLine'); if (l) l.style.display = 'none'; });
+/** 반짝이는 안내 고리가 화면 속 주사위를 따라다님 */
+function placeDiceHint() {
+  const h = ui.querySelector('#diceHint');
+  if (!h || !canRoll || dice.state !== 'ready') return;
+  const d = dieScreen();
+  h.style.transform = `translate(${d.x}px, ${d.y}px)`;
 }
 
 function menu() {
@@ -318,12 +345,14 @@ function menu() {
   ov.className = 'menu-ov';
   ov.innerHTML = `<div class="card menu-box"><h3>메뉴</h3>
     <button class="ghost" id="snd">${isMuted() ? '🔇 소리 켜기' : '🔊 소리 끄기'}</button>
+    <button class="ghost" id="study">📚 개념 학습 다시 보기</button>
     <button class="ghost" id="note">📒 오답노트 (${S.notes.length})</button>
     <button class="ghost" id="snk">🍫 내 간식 쿠폰 (${(S.snacks || []).length})</button>
     <button class="ghost" id="home">🏠 처음 화면 (자동 저장됨)</button>
     <button class="primary" id="close">닫기</button></div>`;
   document.body.appendChild(ov);
   ov.querySelector('#snd').onclick = () => { setMuted(!isMuted()); syncMute(); ov.remove(); };
+  ov.querySelector('#study').onclick = async () => { ov.remove(); setRollEnabled(false); await runStudy({ sfx }); hud(); if (!busy) setRollEnabled(true); };
   ov.querySelector('#snk').onclick = () => {
     const list = S.snacks || [];
     ov.querySelector('.menu-box').innerHTML = `<h3>🍫 내 간식 쿠폰</h3><div class="notes">${list.length ? list.map((k) => `<div class="cp"><img src="${BASE}assets/snacks/${k.kind}.svg" alt=""><div><b>${esc(SNACKS[k.kind].name)}</b><small>${esc(k.how)} · 코드 ${k.code}</small></div></div>`).join('') : '<p class="muted">간식 뽑기 칸과 미니게임에서 받을 수 있어요.</p>'}</div><button class="primary" id="close2">닫기</button>`;
@@ -342,6 +371,7 @@ function bigNumber(n) {
   el.textContent = n;
   el.classList.remove('show'); void el.offsetWidth; el.classList.add('show');
 }
+const toastLater = (t) => setTimeout(() => toast(t), 1800);
 function toast(text) {
   const el = ui.querySelector('#toast');
   el.textContent = text;
@@ -353,7 +383,7 @@ function snapCamera() {
   const dir = world.direction(S.pos);
   const yaw = Math.atan2(dir.x, -dir.z) * 0.6;
   cam.target.copy(t);
-  cam.pos.copy(t).add(new THREE.Vector3(Math.sin(yaw) * -8, 7.6, Math.cos(yaw) * 8));
+  cam.pos.copy(t).add(new THREE.Vector3(Math.sin(yaw) * -8, 7.6, Math.cos(yaw) * 8).multiplyScalar(1.2));
   cam.look.copy(t).add(new THREE.Vector3(0, 0.6, -2.4));
 }
 

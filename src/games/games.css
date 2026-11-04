@@ -81,26 +81,33 @@
 .mg-kart .kmsg b { font-size: 15px; }
 @keyframes fadein { from { opacity: 0; } }
 
-/* 카트 조작부: 왼쪽 핸들(◀▶ 붙임) · 오른쪽 큰 게이지 + 악셀 */
+/* 카트 조작부: 왼쪽 자동차 핸들(◀▶ 붙임) · 오른쪽 큰 게이지 + 악셀 */
 .mg-kart .mg-ctrl { align-items: flex-end; gap: 12px; }
-.kwheel { position: relative; flex: 0 0 176px; height: 150px; display: flex; align-items: center; justify-content: center; gap: 0; }
-.kwheel .rim { position: absolute; inset: 0 13px; border-radius: 50%; border: 12px solid #2B2350; box-shadow: inset 0 0 0 3px #6B5F8A, 0 6px 14px rgba(43, 35, 80, .3); background: radial-gradient(circle, rgba(255,255,255,.0) 55%, rgba(43,35,80,.12) 56%); pointer-events: none; }
-.kwheel .rim::before, .kwheel .rim::after { content: ''; position: absolute; left: 50%; width: 12px; background: #2B2350; transform: translateX(-50%); }
-.kwheel .rim::before { top: -2px; height: 18px; border-radius: 0 0 6px 6px; background: #E0453A; }
-.kwheel .rim::after { bottom: 0; height: 24px; }
-.kwheel .hub { position: absolute; left: 50%; top: 50%; width: 28px; height: 28px; margin: -14px 0 0 -14px; border-radius: 50%; background: #2B2350; border: 3px solid #FFD43B; pointer-events: none; z-index: 2; }
-.kwheel .mg-btn { position: relative; z-index: 1; flex: 0 0 74px; min-height: 74px; height: 74px; font-size: 34px; padding: 0; }
-.kwheel .mg-btn.left { border-radius: 38px 10px 10px 38px; margin-right: 2px; }
-.kwheel .mg-btn.right { border-radius: 10px 38px 38px 10px; }
+.kwheel { position: relative; flex: 0 0 168px; height: 168px; display: flex; align-items: center; justify-content: center; margin-bottom: -6px; }
+.kwheel .wsvg { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; filter: drop-shadow(0 6px 10px rgba(27, 23, 48, .4)); }
+.kwheel .mg-btn { position: relative; z-index: 1; flex: 0 0 62px; min-height: 66px; height: 66px; font-size: 30px; padding: 0; margin-top: -8px; background: linear-gradient(180deg, #fff, #E7E1F5); }
+.kwheel .mg-btn.left { border-radius: 34px 8px 8px 34px; margin-right: 2px; }
+.kwheel .mg-btn.right { border-radius: 8px 34px 34px 8px; }
+.kwheel .mg-btn.on { background: #FFD43B; }
 .kpcol { flex: 1; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
-.kgauge { background: #2B2350; border-radius: 16px; padding: 6px 10px 8px; color: #fff; box-shadow: 0 4px 12px rgba(43, 35, 80, .3); }
-.kgauge span { display: block; font-family: 'Jua', sans-serif; font-size: 14px; color: #FFD43B; }
-.kgauge .bar { position: relative; height: 22px; border-radius: 11px; background: rgba(255, 255, 255, .2); overflow: hidden; border: 2px solid #fff; margin-top: 3px; }
+.kgauge { background: #2B2350; border-radius: 16px; padding: 7px 10px 9px; color: #fff; box-shadow: 0 4px 12px rgba(43, 35, 80, .3); }
+.kgauge .kgh { display: flex; align-items: baseline; justify-content: space-between; gap: 6px; white-space: nowrap; }
+.kgauge .kgh span { font-family: 'Jua', sans-serif; font-size: 15px; color: #FFD43B; }
+.kgauge .kgh b { font-family: 'Jua', sans-serif; font-weight: 400; font-size: 20px; line-height: 1; }
+.kgauge .bar { position: relative; height: 24px; border-radius: 12px; background: rgba(255, 255, 255, .2); overflow: hidden; border: 2px solid #fff; margin-top: 4px; }
 .kgauge .bar i { position: absolute; left: 0; top: 0; bottom: 0; background: linear-gradient(90deg, #5BE0FF, #8FE08A, #FFD43B); transition: width .1s linear; }
-.kgauge b { float: right; margin-top: -40px; font-family: 'Jua', sans-serif; font-weight: 400; font-size: 18px; }
 .kpcol.low .kgauge .bar i { background: #E0453A; animation: blink .5s steps(2) infinite; }
-.kpcol.low .kgauge span { color: #FF8F8F; }
+.kpcol.low .kgauge .kgh span, .kpcol.low .kgauge .kgh b { color: #FF8F8F; }
 .mg-kart .mg-btn.pedal { flex: none; width: 100%; min-height: 70px; font-size: 26px; }
+/* 품사 레인: 화면 위에 단어를 크게 빨갛게 */
+.klane { position: absolute; left: 10px; right: 26px; top: 8px; text-align: center; background: #FFFBF0; border: 4px solid #E0453A; border-radius: 18px; padding: 6px 8px 8px; box-shadow: 0 6px 16px rgba(224, 69, 58, .35); transform: translateY(-140%); transition: transform .3s; pointer-events: none !important; z-index: 4; }
+.klane.on { transform: none; animation: klPulse 1s ease-in-out infinite; }
+.klane small { display: block; font-weight: 900; font-size: 13px; color: #7A1F1F; }
+.klane b { display: block; font-family: 'Jua', sans-serif; font-weight: 400; font-size: 44px; line-height: 1.05; color: #E0453A; -webkit-text-stroke: 1.5px #7A1F1F; }
+.klane em { display: flex; justify-content: center; gap: 6px; font-style: normal; margin-top: 2px; }
+.klane em i { font-style: normal; font-family: 'Jua', sans-serif; font-size: 15px; color: #fff; padding: 1px 10px; border-radius: 10px; }
+.klane em i:nth-child(1) { background: #E0453A; } .klane em i:nth-child(2) { background: #2E7BC4; } .klane em i:nth-child(3) { background: #28A064; }
+@keyframes klPulse { 50% { box-shadow: 0 0 0 6px rgba(224, 69, 58, .25), 0 6px 16px rgba(224, 69, 58, .35); } }
 @keyframes blink { 50% { opacity: .35; } }
 .mg-shoot .mg-ctrl { display: none; }
 .mg-shoot .shoot-ban { top: 48px; }
@@ -109,3 +116,46 @@
 
 .mg-btn.stop { background: linear-gradient(180deg, #FF8F8F, #E0453A); color: #fff; box-shadow: 0 5px 0 #A8261C, 0 8px 16px rgba(224, 69, 58, .3); }
 .mg-crane .mg-btn.drop { flex: 1.3; }
+
+/* ===== 청크 크레인: 예전 앱 인형뽑기 기계 ===== */
+.mg-crane .mg-stage { border-color: #FFD43B; box-shadow: 0 0 0 3px #fff, 0 0 30px rgba(255, 212, 59, .45); }
+.cm-glass2 { position: absolute; left: 8px; right: 8px; top: 104px; bottom: 8px; border-radius: 12px; overflow: hidden; background: linear-gradient(180deg, #DFF3FF 0%, #C7E8FA 60%, #F7D9EA 100%); box-shadow: inset 0 0 0 4px #fff, inset 0 0 26px rgba(46, 155, 218, .35); pointer-events: none; }
+.cm-glass2::after { content: ""; position: absolute; inset: 0; background: linear-gradient(115deg, rgba(255,255,255,.5) 0 8%, transparent 8% 18%, rgba(255,255,255,.22) 18% 21%, transparent 21%); pointer-events: none; z-index: 9; }
+.cm-glass2 .cm-rail { position: absolute; left: 0; right: 0; top: 0; height: 10px; background: repeating-linear-gradient(90deg, #9AA6B6 0 8px, #7D8899 8px 16px); z-index: 6; }
+.cm-glass2 .cm-car { position: absolute; top: 2px; left: 0; width: 60px; height: 0; z-index: 7; will-change: transform; }
+.cm-glass2 .cm-car .blk { position: absolute; left: 12px; top: 0; width: 36px; height: 18px; border-radius: 5px; background: #FFD43B; box-shadow: inset 0 -4px 0 #D9A916, 0 0 0 2px #1B2F4E; }
+.cm-glass2 .cm-cable { position: absolute; left: 28.5px; top: 18px; width: 3px; background: #1B2F4E; height: 40px; }
+.cm-glass2 .cm-claw { position: absolute; left: -8px; top: 58px; width: 76px; height: 66px; }
+.cm-glass2 .cm-claw svg { width: 76px; height: 66px; }
+.cm-glass2 .cm-claw .pL, .cm-glass2 .cm-claw .pR { transition: transform .25s ease; }
+.cm-glass2 .cm-claw.open .pL { transform: rotate(26deg); }
+.cm-glass2 .cm-claw.open .pR { transform: rotate(-26deg); }
+.cm-glass2 .cm-it { position: absolute; left: 0; top: 0; z-index: 3; will-change: transform; }
+.cm-glass2 .cm-it svg { width: 100%; display: block; filter: drop-shadow(0 3px 3px rgba(27, 47, 78, .25)); }
+.cm-glass2 .cm-tag2 { position: absolute; left: 50%; top: -14px; transform: translateX(-50%) rotate(-3deg); background: #fff; color: #B3121F; border: 2.5px solid #1B2F4E; border-radius: 9px; padding: 1px 7px; font-family: 'Jua', sans-serif; font-size: 15px; line-height: 1.25; text-align: center; max-width: 112px; width: max-content; word-break: keep-all; box-shadow: 0 2px 0 rgba(27, 47, 78, .25); }
+.cm-glass2 .cm-chute { position: absolute; left: 0; bottom: 0; width: 78px; height: 96px; z-index: 4; background: repeating-linear-gradient(-45deg, #FFD43B 0 10px, #1B2F4E 10px 20px); border-radius: 0 10px 0 0; box-shadow: inset 0 0 0 4px #fff; }
+.cm-glass2 .cm-chute span { position: absolute; left: 8px; right: 8px; top: 30px; background: #1B2F4E; color: #FFD43B; font-weight: 900; font-size: 14px; text-align: center; border-radius: 6px; padding: 6px 0; }
+.cm-glass2 .cm-msg2 { position: absolute; left: 86px; right: 8px; top: 16px; z-index: 5; opacity: .9; text-align: center; font-size: 14px; font-weight: 800; color: #2B2350; background: rgba(255, 255, 255, .85); border-radius: 12px; padding: 4px 8px; }
+.cm-glass2 .cm-msg2 b { color: #E0453A; }
+.mg-crane .mg-btn.cm-stop { background: radial-gradient(circle at 40% 30%, #FFE680, #FFC300 55%, #E09F00); color: #7A0B48; box-shadow: 0 6px 0 #A86F00, 0 0 0 3px #fff; font-style: italic; }
+.mg-crane .mg-btn.cm-hold { background: radial-gradient(circle at 40% 30%, #9FE8FF, #2E9BDA 55%, #1B6FA8); color: #fff; box-shadow: 0 6px 0 #145483, 0 0 0 3px #fff; font-style: italic; }
+.mg-crane .mg-btn small { font-style: normal; }
+.mg-crane .mg-mission { background: rgba(255, 251, 240, .97); }
+/* 사격장: 과녁이 바뀔 때 화면 가운데 경고판 */
+.shoot-warn { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none !important; opacity: 0; z-index: 6; }
+.shoot-warn.on { animation: swShow 2.4s ease-out forwards; }
+.shoot-warn .sw-in { text-align: center; padding: 18px 26px; border-radius: 22px; background: #FFD43B; border: 10px solid transparent; background-clip: padding-box; box-shadow: 0 0 0 8px #2B2350, 0 0 0 14px #FFD43B, 0 18px 40px rgba(0, 0, 0, .45); position: relative; }
+.shoot-warn .sw-in::before { content: ''; position: absolute; inset: -10px; border-radius: 26px; background: repeating-linear-gradient(-45deg, #2B2350 0 14px, #FFD43B 14px 28px); z-index: -1; }
+.shoot-warn small { display: block; font-family: 'Jua', sans-serif; font-size: 18px; color: #2B2350; }
+.shoot-warn b { display: block; font-family: 'Jua', sans-serif; font-weight: 400; font-size: 50px; line-height: 1.1; color: #2B2350; }
+.shoot-warn b span { color: #E0453A; font-size: 1.15em; -webkit-text-stroke: 2px #7A1F1F; }
+.shoot-warn em { display: block; font-style: normal; font-weight: 900; font-size: 15px; color: #7A1F1F; margin-top: 4px; }
+@keyframes swShow {
+  0% { opacity: 0; transform: scale(.3); }
+  12% { opacity: 1; transform: scale(1.12); }
+  20% { transform: scale(1); }
+  28%, 44%, 60% { opacity: .25; }
+  36%, 52%, 68% { opacity: 1; }
+  85% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(.8); }
+}
