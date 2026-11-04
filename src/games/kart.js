@@ -32,7 +32,7 @@ export function playKart({ charId = 'bboy', name = '나', used } = {}) {
     subtitle: '6명이 겨루는 레이스! 퀴즈 존에서 게이지를 채워라',
     music: 'mgKart',
     howto: [
-      '왼손 <b>◀ ▶ 핸들</b> · 오른손 <b>⚡ 악셀</b> (꾹 2초 ↑ 2단 가속, 게이지가 줄어요)',
+      '왼손 <b>◀ ▶ 핸들</b> · 오른발 <b>악셀 페달</b> (꾹 2초 ↑ 2단 가속, 게이지가 줄어요)',
       '<b>❓ 퀴즈 존</b>을 지나면 <b>순간정지!</b> 맞히면 ⚡ 게이지 가득 + 부스터',
       '<b class="red">🛣️ 품사 레인</b>: 화면 위 단어의 품사가 적힌 <b>레인으로 달리면 부스터!</b> 틀린 레인은 감속',
       '<b class="red">🌧️ 빗길</b>에서는 길이 미끄러워요 — 악셀을 밟으면 차가 흔들려요. <b>악셀을 떼고</b> 지나가기!',
@@ -51,7 +51,7 @@ export function playKart({ charId = 'bboy', name = '나', used } = {}) {
       E.layer.appendChild(msgEl);
       let lastMsg = '';
       const MSG = { set textContent(v) { if (v === lastMsg) return; lastMsg = v; msgEl.innerHTML = `<b>${v}</b>`; msgEl.classList.remove('pop'); void msgEl.offsetWidth; msgEl.classList.add('pop'); } };
-      MSG.textContent = '왼손 핸들 ◀ ▶ · 오른손 ⚡ 악셀';
+      MSG.textContent = '왼손 핸들 ◀ ▶ · 오른발 악셀 페달';
 
       // ---- 코스 (legacy 값 그대로) ----
       const L = 42000; // 원래 22100 → 약 3분 넘게 달리도록 늘림
@@ -128,11 +128,26 @@ export function playKart({ charId = 'bboy', name = '나', used } = {}) {
         <path d="M14 112 L72 104 M186 112 L128 104 M100 132 L100 190" stroke="url(#kwG)" stroke-width="20" stroke-linecap="round"/>
         <circle cx="100" cy="106" r="30" fill="url(#kwG)" stroke="#FFD43B" stroke-width="4"/>
         <text x="100" y="113" text-anchor="middle" font-family="Jua, sans-serif" font-size="20" fill="#FFD43B">TED</text>
-        <g stroke="#2B2350" stroke-width="3" stroke-linejoin="round">
-          <path d="M2 128 Q-8 100 14 84 L30 92 Q20 108 26 126 Z" fill="#F2C9A0"/><path d="M8 92 Q20 86 28 94 M6 104 Q18 98 26 106 M8 116 Q18 110 26 118" fill="none" stroke-width="2"/>
-          <path d="M198 128 Q208 100 186 84 L170 92 Q180 108 174 126 Z" fill="#F2C9A0"/><path d="M192 92 Q180 86 172 94 M194 104 Q182 98 174 106 M192 116 Q182 110 174 118" fill="none" stroke-width="2"/>
-          <path d="M-6 132 L6 124 L22 150 L4 164 Z" fill="#E0453A"/><path d="M206 132 L194 124 L178 150 L196 164 Z" fill="#E0453A"/>
-        </g>
+        <!-- 운전자 시점: 손등이 보이게 검은 림을 꽉 감싸 쥔 두 손 (손가락이 림 안쪽으로 말려 들어감, 핸들과 함께 돌아감) -->
+        <defs><linearGradient id="kwSkin" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFE2C4"/><stop offset="1" stop-color="#E8B486"/></linearGradient></defs>
+        <g transform="translate(10 80) rotate(14)"><g stroke="#2B2350" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round">
+            <path d="M-12 -14 L-46 -6 L-46 26 L-12 18 Z" fill="#2E7BC4"/>
+            <path d="M-46 -6 L-40 -7 L-40 25 L-46 26 Z" fill="#1F5C99"/>
+            <path d="M-14 -18 Q-6 -24 6 -22 L14 -18 L14 20 Q4 24 -8 22 Q-16 18 -16 0 Z" fill="url(#kwSkin)"/>
+            <path d="M8 -20 Q20 -22 22 -14 Q22 -9 12 -9 Z" fill="url(#kwSkin)"/>
+            <path d="M10 -9 Q21 -10 21 -3 Q21 3 10 2 Z M10 2 Q21 1 21 8 Q21 14 10 13 Z M10 13 Q20 13 19 19 Q18 24 9 21 Z" fill="url(#kwSkin)"/>
+            <path d="M-4 -12 Q2 -13 6 -10 M-5 -1 Q1 -2 6 0 M-5 10 Q1 9 6 11" fill="none" stroke-width="1.4" opacity=".55"/>
+            <path d="M-12 -12 Q-14 0 -11 14" fill="none" stroke="#fff" stroke-width="2" opacity=".35"/>
+          </g></g>
+        <g transform="translate(190 80) scale(-1 1) rotate(14)"><g stroke="#2B2350" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round">
+            <path d="M-12 -14 L-46 -6 L-46 26 L-12 18 Z" fill="#2E7BC4"/>
+            <path d="M-46 -6 L-40 -7 L-40 25 L-46 26 Z" fill="#1F5C99"/>
+            <path d="M-14 -18 Q-6 -24 6 -22 L14 -18 L14 20 Q4 24 -8 22 Q-16 18 -16 0 Z" fill="url(#kwSkin)"/>
+            <path d="M8 -20 Q20 -22 22 -14 Q22 -9 12 -9 Z" fill="url(#kwSkin)"/>
+            <path d="M10 -9 Q21 -10 21 -3 Q21 3 10 2 Z M10 2 Q21 1 21 8 Q21 14 10 13 Z M10 13 Q20 13 19 19 Q18 24 9 21 Z" fill="url(#kwSkin)"/>
+            <path d="M-4 -12 Q2 -13 6 -10 M-5 -1 Q1 -2 6 0 M-5 10 Q1 9 6 11" fill="none" stroke-width="1.4" opacity=".55"/>
+            <path d="M-12 -12 Q-14 0 -11 14" fill="none" stroke="#fff" stroke-width="2" opacity=".35"/>
+          </g></g>
       </svg>`;
       E.ctrl.appendChild(wheel);
       wheel.appendChild(E.button('◀', 'left', hold(-1)));
@@ -144,7 +159,16 @@ export function playKart({ charId = 'bboy', name = '나', used } = {}) {
       pcol.className = 'kpcol';
       pcol.innerHTML = '<div class="kgauge"><div class="bar"><i id="pgFill"></i><b id="pgTxt">100%</b></div></div>';
       E.ctrl.appendChild(pcol);
-      const pedal = E.button('⚡ 악셀', 'drop pedal', { onDown: () => { accel = true; }, onUp: () => { accel = false; } });
+      const pedal = E.button(`<svg class="pdsvg" viewBox="0 0 70 100" aria-hidden="true"><g stroke="#2B2350" stroke-linejoin="round">
+        <rect x="27" y="86" width="16" height="12" rx="3" fill="#55507A" stroke-width="2.5"/>
+        <g class="pdp"><path d="M12 6 Q35 0 58 6 L54 88 Q35 92 16 88 Z" fill="#3A3550" stroke-width="3"/><path d="M16 9 Q35 4 54 9 L51 85 Q35 88 19 85 Z" fill="#6B6590" stroke="none"/>
+        ${[16, 27, 38, 49, 60, 71].map((y) => `<rect x="20" y="${y}" width="30" height="5" rx="2.5" fill="#2B2350" stroke="none" opacity=".7"/>`).join('')}</g>
+        <g class="pdf"><path d="M20 100 L19 70 Q19 54 35 52 Q51 54 51 70 L50 100 Z" fill="#fff" stroke-width="3"/>
+        <path d="M20 66 Q35 61 50 66" fill="none" stroke="#E0453A" stroke-width="3.5"/>
+        <path d="M27 76 L43 76 M27 83 L43 83" stroke="#4F7CC4" stroke-width="3" stroke-linecap="round"/>
+        <path d="M35 54 Q26 56 24 64" fill="none" stroke="#fff" stroke-width="2.5" opacity=".8"/>
+        <path d="M21 92 L49 92 L50 100 L20 100 Z" fill="#4F7CC4" stroke-width="2.5"/></g>
+      </g></svg><span class="pdt">악셀<small>꾹 밟기</small></span>`, 'drop pedal', { onDown: () => { accel = true; }, onUp: () => { accel = false; } });
       pcol.appendChild(pedal);
       const laneEl = document.createElement('div');
       laneEl.className = 'klane';
@@ -157,7 +181,7 @@ export function playKart({ charId = 'bboy', name = '나', used } = {}) {
     function spinOut(r) { r.nSpin = (r.nSpin || 0) + 1; (r.spinD = r.spinD || []).push(Math.round(r.d)); r.spin = 1.15; r.boost = 0; r.v *= .6; say('빙글!', r.x, PY - (r.d - ME.d) - KH * .7, '#F2A01E');
       if (r.me) { lsfxNo(); MSG.textContent = '🍌 바나나! 빙글빙글~ 다음엔 피해요!'; } }
     function boost(r) { gauge = 1; say('타코! 게이지 FULL!', r.x, PY - KH * .8, '#E21E8C');
-      lsfx([392, 523, 659, 784, 1047], 'square', .09, .04); MSG.textContent = '🌮 타코! ⚡ 악셀 게이지가 가득 찼어요!'; }
+      lsfx([392, 523, 659, 784, 1047], 'square', .09, .04); MSG.textContent = '🌮 타코! 악셀 게이지가 가득 찼어요!'; }
     function stepRacer(r, dt) {
       if (r.fin && !r.me) { r.v += (r.base * .55 - r.v) * dt; r.d += r.v * dt; return; }
       if (r.fin && r.me) { r.v -= r.v * Math.min(1, dt * 2.2); r.d += r.v * dt; r.x += (cx(r.d) - r.x) * Math.min(1, dt * 2); r.head *= .9; return; }   // brake past the finish line
@@ -469,15 +493,20 @@ export function playKart({ charId = 'bboy', name = '나', used } = {}) {
           });
           for (let i = FX.length - 1; i >= 0; i--) { FX[i].life -= dt; FX[i].y -= 34 * dt; if (FX[i].life <= 0) FX.splice(i, 1); }
           if (!finished) {
-            // 레인이 나오기 한참 전부터 단어를 보여 주고, 레인에 들어서면 반짝반짝 → 조금 달리면 사라짐
-            const cur = LZ.find((z) => !z.done && ME.d > z.d - LANE_LEN - 1700 && ME.d < z.d - LANE_LEN + 320);
-            if (cur !== laneShown) {
-              laneShown = cur || null;
-              laneEl.classList.toggle('on', !!cur);
-              if (cur) laneEl.innerHTML = `<small>🛣️ 곧 품사 레인! 이 단어의 품사는?</small><b>${cur.word}</b><em>${cur.labels.map((l) => `<i>${l}</i>`).join('')}</em><u id="lzDist"></u>`;
+            // 품사 레인 안내: 레인 한참 전부터 단어를 보여 주고 → 레인 바로 앞에서 단어만 빨갛게 반짝 → 레인에 들어서면 사라짐 (다시 안 나옴)
+            {
+              const z = LZ.find((q) => !q.bannerDone && ME.d > q.d - LANE_LEN - 1700);
+              const start = z ? z.d - LANE_LEN : 0;
+              if (z && ME.d >= start) z.bannerDone = true;
+              const show = z && ME.d < start;
+              if (show && laneShown !== z) {
+                laneShown = z;
+                laneEl.innerHTML = `<small>🛣️ 곧 품사 레인! 이 단어의 품사는?</small><b>${z.word}</b><em>${z.labels.map((l) => `<i>${l}</i>`).join('')}</em><u id="lzDist"></u>`;
+              }
+              if (!show) laneShown = null;
+              laneEl.className = `klane${show ? ' on' : ''}${show && start - ME.d < 300 ? ' flash' : ''}`;
+              if (show) { const dEl = laneEl.querySelector('#lzDist'); if (dEl) dEl.textContent = `레인까지 ${Math.ceil((start - ME.d) / 10)}m — 미리 정해 두세요!`; }
             }
-            if (laneShown) laneEl.classList.toggle('flash', ME.d >= laneShown.d - LANE_LEN);
-            if (laneShown) { const dEl = laneEl.querySelector('#lzDist'); const left = laneShown.d - LANE_LEN - ME.d; if (dEl) dEl.textContent = left > 0 ? `레인까지 ${Math.ceil(left / 10)}m — 미리 정해 두세요!` : '지금! 맞는 레인으로 ◀ ▶'; }
             LZ.forEach((z) => {
               if (!z.shown && ME.d > z.d - LANE_LEN - 1700) { z.shown = true; MSG.textContent = `🛣️ 품사 레인! 「<span class="tg">${z.word}</span>」의 품사 레인으로 달려라!`; lsfx([660, 880], 'square', 0.06, 0.05); }
               if (!z.done && ME.d >= z.d) {

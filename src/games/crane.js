@@ -9,7 +9,16 @@ import data from '../../data/minigames.json';
 import { snackURL } from '../fx/fx.js';
 
 const POSLIST = ['명사', '동사', '형용사', '부사'];
-const DOLLS = ['bear', 'bunny', 'chick', 'dino'];
+const ST = 'stroke="#1B2F4E" stroke-width="2.4" stroke-linejoin="round"';
+// 인형 종류 늘리기: 예전 앱 곰·토끼·병아리·공룡 + 새로 그린 고양이·돼지·펭귄·개구리
+const EXTRA = {
+  cat: () => `<svg viewBox="0 0 80 86"><path d="M18 30 L22 8 L36 22 Z M62 30 L58 8 L44 22 Z" fill="#FFB35C" ${ST}/><ellipse cx="40" cy="62" rx="24" ry="20" fill="#FFB35C" ${ST}/><circle cx="40" cy="36" r="22" fill="#FFB35C" ${ST}/><path d="M22 34 L30 36 M58 34 L50 36" stroke="#E08A2E" stroke-width="3" stroke-linecap="round"/><circle cx="32" cy="35" r="3" fill="#1B2F4E"/><circle cx="48" cy="35" r="3" fill="#1B2F4E"/><path d="M37 42 Q40 45 43 42" stroke="#1B2F4E" stroke-width="2" fill="none"/><circle cx="27" cy="42" r="3.5" fill="#FF9C9C" opacity=".6"/><circle cx="53" cy="42" r="3.5" fill="#FF9C9C" opacity=".6"/></svg>`,
+  pig: () => `<svg viewBox="0 0 80 86"><ellipse cx="40" cy="62" rx="24" ry="20" fill="#FFB7C5" ${ST}/><path d="M20 22 L24 8 L34 18 Z M60 22 L56 8 L46 18 Z" fill="#FF8FA8" ${ST}/><circle cx="40" cy="36" r="22" fill="#FFB7C5" ${ST}/><ellipse cx="40" cy="42" rx="9" ry="6.5" fill="#FF8FA8" ${ST}/><circle cx="37" cy="42" r="1.6" fill="#1B2F4E"/><circle cx="43" cy="42" r="1.6" fill="#1B2F4E"/><circle cx="31" cy="32" r="3" fill="#1B2F4E"/><circle cx="49" cy="32" r="3" fill="#1B2F4E"/></svg>`,
+  penguin: () => `<svg viewBox="0 0 80 86"><ellipse cx="40" cy="58" rx="24" ry="24" fill="#2B2350" ${ST}/><ellipse cx="40" cy="62" rx="15" ry="17" fill="#fff"/><circle cx="40" cy="32" r="20" fill="#2B2350" ${ST}/><ellipse cx="40" cy="36" rx="13" ry="11" fill="#fff"/><circle cx="34" cy="33" r="2.8" fill="#1B2F4E"/><circle cx="46" cy="33" r="2.8" fill="#1B2F4E"/><path d="M35 40 L45 40 L40 46 Z" fill="#FFA94D" ${ST}/><path d="M28 82 L36 78 M52 82 L44 78" stroke="#FFA94D" stroke-width="5" stroke-linecap="round"/></svg>`,
+  frog: () => `<svg viewBox="0 0 80 86"><ellipse cx="40" cy="62" rx="25" ry="19" fill="#7ED07A" ${ST}/><ellipse cx="40" cy="40" rx="24" ry="17" fill="#7ED07A" ${ST}/><circle cx="27" cy="26" r="9" fill="#7ED07A" ${ST}/><circle cx="53" cy="26" r="9" fill="#7ED07A" ${ST}/><circle cx="27" cy="26" r="4" fill="#1B2F4E"/><circle cx="53" cy="26" r="4" fill="#1B2F4E"/><path d="M28 44 Q40 52 52 44" stroke="#1B2F4E" stroke-width="2.4" fill="none" stroke-linecap="round"/><circle cx="24" cy="44" r="3.5" fill="#FF9C9C" opacity=".6"/><circle cx="56" cy="44" r="3.5" fill="#FF9C9C" opacity=".6"/></svg>`,
+};
+const ART = (k) => (EXTRA[k] ? EXTRA[k]() : PRIZE_ART[k]());
+const DOLLS = ['bear', 'bunny', 'chick', 'dino', 'cat', 'pig', 'penguin', 'frog'];
 const NUM = '①②③④⑤⑥';
 // 예전 앱 집게 그림 그대로
 const CLAW_SVG = `<svg viewBox="0 0 60 52" width="60" height="52">
@@ -62,7 +71,8 @@ export function playCrane({ short = false } = {}) {
       G.className = 'cm-glass2';
       G.innerHTML = `<div class="cm-rail"></div><div class="cm-chute"><span>OUT ⬇</span></div>
         <div class="cm-car" id="cmCar"><div class="blk"></div><div class="cm-cable" id="cmCable"></div><div class="cm-claw open" id="cmClaw">${CLAW_SVG}</div></div>
-        <div class="cm-msg2" id="cmMsg"></div>`;
+        <div class="cm-msg2" id="cmMsg"></div>
+        <div class="cm-show"><div class="cm-bun l">${ART('bunny')}</div><div class="cm-neon" id="cmNeon"></div><div class="cm-bun r">${ART('bunny')}</div></div>`;
       ctx.layer.appendChild(G);
       // Ted 선생님이 가끔 기계 옆에서 빼꼼
       const peekEl = document.createElement('div');
@@ -78,9 +88,13 @@ export function playCrane({ short = false } = {}) {
       let items = [];
       const W = () => G.clientWidth; const H = () => G.clientHeight;
       const CAB0 = 40; const SWEEP = 80; const DESCEND = 95;
+      // 레일: 원래보다 약 13% 아래
+      let RAIL = 0;
+      const placeRail = () => { RAIL = Math.round(H() * 0.13); /* 원래 위치(맨 위)에서 약 13%만 아래로 */ G.querySelector('.cm-rail').style.top = `${RAIL}px`; car.style.top = `${RAIL + 2}px`; };
       let x = 140; let dir = 1; let L = CAB0; let mode = 'sweep'; let stopL = 0; let block = null;
       const setCar = () => { car.style.transform = `translateX(${x - 30}px)`; cable.style.height = `${L}px`; claw.style.top = `${18 + L}px`; };
-      const tipY = () => 2 + 18 + L + 60;
+      const tipY = () => RAIL + 2 + 18 + L + 60;
+      placeRail();
       setCar();
 
       function place(it) { it.el.style.transform = `translate(${it.cx - it.w / 2}px,${it.cy - it.h / 2}px) rotate(${it.rot}deg)`; }
@@ -89,7 +103,7 @@ export function playCrane({ short = false } = {}) {
         const el = document.createElement('div');
         el.className = 'cm-it';
         el.style.width = `${w}px`;
-        el.innerHTML = `${PRIZE_ART[k]()}<span class="cm-tag2">${text}</span>`;
+        el.innerHTML = `${ART(k)}<span class="cm-tag2">${text}</span>`;
         G.appendChild(el);
         const it = { k, w, h, text, info, slot, el, rot: (Math.random() * 2 - 1) * 16, cx: 0, cy: 0 };
         layoutOne(it);
@@ -127,7 +141,7 @@ export function playCrane({ short = false } = {}) {
         const el = document.createElement('div');
         el.className = 'cm-it cm-walker';
         el.style.width = '58px';
-        el.innerHTML = `<img class="wsn" src="${snackURL(snack)}" alt="">${PRIZE_ART[pick(DOLLS)]()}<span class="cm-tag2 gold">${word}</span>`;
+        el.innerHTML = `<img class="wsn" src="${snackURL(snack)}" alt="">${ART(pick(DOLLS))}<span class="cm-tag2 gold">${word}</span>`;
         G.appendChild(el);
         const it = { walker: true, snack, k: 'w', w: 58, h: 62, text: word, info: { text: word, pos: R.target }, el, rot: 0, cx: 90, cy: H() - 12 - 31 - 4, vx: 32, life: 16 };
         el.style.zIndex = 6;
@@ -135,6 +149,18 @@ export function playCrane({ short = false } = {}) {
         ctx.floatText('🍫 과자 인형 등장! (무조건 정답)', ctx.W / 2, ctx.H * 0.42, '#FFD43B', 18);
       }
       function popBanner() { banner.classList.remove('pop'); void banner.offsetWidth; banner.classList.add('pop'); }
+      // 기계 안을 가득 채우는 장식 인형 더미 (뽑는 인형 뒤쪽, 꼬리표 없음)
+      for (let k = 0; k < 9; k++) {
+        const el = document.createElement('div');
+        el.className = 'cm-it cm-deco';
+        const w = 40 + Math.random() * 10;
+        el.style.width = `${w}px`;
+        el.innerHTML = ART(DOLLS[k % DOLLS.length]);
+        const cx = 96 + ((W() - 120) * (k + 0.5)) / 9 + (Math.random() - 0.5) * 14;
+        const cy = H() - 8 - w * 0.5 - (k % 3) * 6;
+        el.style.transform = `translate(${cx - w / 2}px,${cy - w * 0.55}px) rotate(${(Math.random() - 0.5) * 50}deg)`;
+        G.appendChild(el);
+      }
       function startRound(i) {
         S.switching = false;
         if (i >= rounds.length) return finish();
@@ -150,6 +176,7 @@ export function playCrane({ short = false } = {}) {
           ]);
           list.forEach((it, k) => addItem(it.text, it, slots[k]));
           banner.innerHTML = `<small>라운드 ${i + 1}/${rounds.length}</small><b><span class="tg">「${R.target}」</span> 인형 <span class="tg">${R.need}개</span>!</b>`;
+          G.querySelector('#cmNeon').innerHTML = `<b>「${R.target}」</b>만 찾기!<small>${R.need}개 뽑기</small>`;
           showWarn(`<small>⚠ 라운드 ${i + 1} ⚠</small><b>「<span>${R.target}</span>」</b><b>인형을 뽑아라!</b><em>${R.need}개 뽑으면 다음 라운드</em>`);
         } else {
           const pool = BANK[11].filter((q) => parseChunks(q.en).length <= 3 && !(S.usedSeq ||= new Set()).has(q.id));
@@ -160,6 +187,7 @@ export function playCrane({ short = false } = {}) {
           const decoys = shuffle(BANK[11].filter((x2) => x2.id !== q.id).flatMap((x2) => parseChunks(x2.en))).slice(0, SLOTS - chunks.length);
           shuffle([...chunks.map((c, k) => ({ text: c.text, order: k })), ...decoys.map((c) => ({ text: c.text, order: -1 }))])
             .forEach((it, k) => addItem(it.text, it, slots[k]));
+          G.querySelector('#cmNeon').innerHTML = `<b>순서대로</b> 뽑기!<small>문장 완성</small>`;
           banner.innerHTML = `<small>라운드 ${i + 1}/${rounds.length} · 문장 완성</small><b>${q.ko}</b><em id="seqLine"><span class="tg">① 번째</span> 영어 조각을 뽑아요</em>`;
           showWarn(`<small>⚠ 마지막 라운드 ⚠</small><b><span>문장 완성!</span></b><em>${q.ko}<br>영어 조각을 순서대로 뽑아요</em>`);
         }
@@ -179,7 +207,7 @@ export function playCrane({ short = false } = {}) {
         ctx.sfx('tap');
         const under = items.filter((it) => Math.abs(it.cx - x) < it.w * 0.5).sort((a, b) => (a.cy - a.h / 2) - (b.cy - b.h / 2));
         block = under[0] || null;
-        stopL = Math.max(CAB0, (block ? block.cy - block.h / 2 + block.h * 0.9 : H() - 12) - 80);
+        stopL = Math.max(CAB0, (block ? block.cy - block.h / 2 + block.h * 0.9 : H() - 12) - 80 - RAIL);
       }
       async function grab(pressed) {
         if (mode !== 'down' && mode !== 'wait') return;

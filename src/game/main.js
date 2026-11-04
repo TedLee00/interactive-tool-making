@@ -178,13 +178,16 @@ async function hopTo(i) {
   to.y = 0.3;
   avatar.root.rotation.y = Math.atan2(to.x - from.x, to.z - from.z);
   avatar.setAnim('hop');
-  const D = 360;
+  const D = 420;
   const t0 = performance.now();
   await new Promise((res) => {
     const step = (now) => {
       const p = Math.min(1, (now - t0) / D);
-      avatar.root.position.lerpVectors(from, to, p);
-      avatar.root.position.y = 0.3 + Math.sin(p * Math.PI) * 0.9;
+      // 웅크렸다가(0~16%) 점프 → 착지(80%) → 찌그러짐 (avatar.js 'hop' 과 박자를 맞춤)
+      const q = Math.min(1, Math.max(0, (p - 0.16) / 0.64));
+      const e = q * q * (3 - 2 * q);
+      avatar.root.position.lerpVectors(from, to, e);
+      avatar.root.position.y = 0.3 + Math.sin(q * Math.PI) * 1.05;
       if (p < 1) requestAnimationFrame(step); else res();
     };
     requestAnimationFrame(step);
@@ -231,7 +234,15 @@ function title() {
   screen(`<div class="title-screen">
     <div class="logo-card">
       <div class="ted-logo"><img class="face" data-face="ted" alt=""><div class="tl-t"><b>TED</b><span>와 함께하는</span></div></div>
-      <h1>품사 <b>원정대</b></h1>
+      <h1><span>품사 <b>원정대</b></span><svg class="castle" viewBox="0 0 64 64" aria-hidden="true"><g stroke="#2B2350" stroke-width="2.4" stroke-linejoin="round">
+        <path d="M31 6 L31 0" stroke-linecap="round"/><path d="M31 1 L41 4 L31 7 Z" fill="#E21E8C"/>
+        <path d="M10 26 L10 18 L14 18 L14 21 L18 21 L18 18 L22 18 L22 26 Z" fill="#B9A9E8"/><path d="M42 26 L42 18 L46 18 L46 21 L50 21 L50 18 L54 18 L54 26 Z" fill="#B9A9E8"/>
+        <path d="M24 22 L31 8 L38 22 Z" fill="#F29A2E"/>
+        <rect x="24" y="22" width="14" height="14" fill="#D8CCF5"/><rect x="10" y="26" width="12" height="34" fill="#D8CCF5"/><rect x="42" y="26" width="12" height="34" fill="#D8CCF5"/>
+        <path d="M6 60 L6 36 L10 36 L10 40 L14 40 L14 36 L18 36 L18 40 L22 40 L22 36 L26 36 L26 40 L30 40 L30 36 L34 36 L34 40 L38 40 L38 36 L42 36 L42 40 L46 40 L46 36 L50 36 L50 40 L54 40 L54 36 L58 36 L58 60 Z" fill="#EDE6FF"/>
+        <path d="M25 60 L25 50 Q32 42 39 50 L39 60 Z" fill="#8A5A35"/>
+        <rect x="29" y="26" width="4" height="6" rx="2" fill="#FFD43B"/><rect x="14" y="30" width="4" height="6" rx="2" fill="#FFD43B"/><rect x="46" y="30" width="4" height="6" rx="2" fill="#FFD43B"/></g>
+        <path d="M32 46 L32 60" stroke="#5A3A20" stroke-width="1.5"/></svg></h1>
       <div class="kicker">CHUNK QUEST</div>
       <p>주사위를 굴려 「문장의 성」까지!</p>
     </div>

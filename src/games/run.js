@@ -73,11 +73,11 @@ export function playRun({ charId = 'bboy' } = {}) {
 
       const jump = () => {
         if (S.finished) return;
-        if (S.y === 0 && S.slide <= 0) { S.vy = -560; S.jumps = 1; ctx.sfx('hop'); }
-        else if (S.jumps === 1) { S.vy = -500; S.jumps = 2; ctx.sfx('hop'); ctx.burst(PX, GY() + S.y - 20, 8, ['#fff', '#8FD8FF']); }
+        if (S.y === 0 && S.slide <= 0) { S.vy = -690; S.jumps = 1; ctx.sfx('hop'); } // 점프력 UP (원래 560)
+        else if (S.jumps === 1) { S.vy = -620; S.jumps = 2; ctx.sfx('hop'); ctx.burst(PX, GY() + S.y - 20, 8, ['#fff', '#8FD8FF']); }
       };
       ctx.button('⬇<small>슬라이드</small>', 'slide', { onDown: () => { if (S.y === 0) { S.slide = 0.875; ctx.sfx('whoosh'); } } }); // 슬라이딩 25% 더 길게
-      ctx.button('⬆<small>점프</small>', 'jump', { onDown: jump });
+      ctx.button('⬆<small>점프 · 공중에서 한 번 더 = 2단!</small>', 'jump', { onDown: jump });
 
       function spawn() {
         const gy = GY();
@@ -94,13 +94,15 @@ export function playRun({ charId = 'bboy' } = {}) {
           S.ents.push({ ...k, kind: 'kid', x: ctx.W + 40, y: gy, w: k.f === 'pigeon' ? 54 : 40, h: k.f === 'pigeon' ? 36 : 62 });
         } else if (r < 0.8) {
           // 💧 물웅덩이: 점프로 건너기 (가끔 2~3개가 이어지는 연속 점프 구간)
-          const n = S.t > 25 && Math.random() < 0.4 ? 2 + Math.floor(Math.random() * 2) : 1;
-          for (let k = 0; k < n; k++) S.ents.push({ kind: 'puddle', x: ctx.W + 50 + k * 150, y: gy + 4, w: 62, h: 8 });
-          if (n > 1) S.nextSpawn += 0.9;
-        } else if (r < 0.9) {
-          S.ents.push({ kind: Math.random() < 0.5 ? 'cone' : 'crate', x: ctx.W + 40, y: gy, w: 30, h: 32 });
+          const n = S.t > 25 && Math.random() < 0.45 ? 2 + Math.floor(Math.random() * 2) : 1;
+          for (let k = 0; k < n; k++) { const w = 64 + Math.random() * 30; S.ents.push({ kind: 'puddle', x: ctx.W + 60 + k * 175, y: gy + 4, w, h: 8, lily: Math.random() < 0.5, duck: Math.random() < 0.3, seed: Math.random() * 6 }); }
+          if (n > 1) S.nextSpawn += 1.0;
+        } else if (r < 0.86) {
+          // 귀여운 땅 장애물: 점프로 넘기
+          S.ents.push({ kind: pick(['cone', 'crate', 'snail', 'hedgehog', 'mushroom']), x: ctx.W + 40, y: gy, w: 30, h: 32 });
         } else if (r < 0.97) {
-          S.ents.push({ kind: 'bar', x: ctx.W + 40, y: gy - 70, w: 70, h: 18 }); // 슬라이드로 통과
+          // 머리 높이 장애물: 슬라이드로 통과 (빨래줄 · 낮은 나뭇가지 · 새 · 풍선)
+          S.ents.push({ kind: 'bar', look: pick(['bar', 'branch', 'bird', 'balloons', 'laundry']), x: ctx.W + 40, y: gy - 70, w: 74, h: 18 });
         } else if (S.hearts < 5 && Math.random() < 0.7) {
           S.ents.push({ kind: 'heart', x: ctx.W + 40, y: gy - 100, w: 30, h: 28 });
         } else if (!S.taco) {
@@ -163,6 +165,9 @@ export function playRun({ charId = 'bboy' } = {}) {
             }
           }
 
+          // 시작할 때 크게: 2단 점프 · 슬라이드 안내
+          if (S.t < 5.5) S.tipTxt = S.t < 2.8 ? '⬆⬆ 2단 점프! 공중에서 한 번 더 누르기' : '⬇ 슬라이드! 머리 높이 장애물은 쭉 누워서';
+          else S.tipTxt = '';
           // Ted 빼꼼
           peek.t -= dt;
           if (peek.t <= 0 && !peek.on) { peek.on = 2.6; peek.x = rand(ctx.W * 0.45, ctx.W - 50); peek.say = pick(PEEK_SAY); }
@@ -334,21 +339,27 @@ export function playRun({ charId = 'bboy' } = {}) {
               tag(gc, e.name, e.x, e.y - 84, { size: 12, bg: '#FFE3F0', pad: 6 });
               tag(gc, '⬆ 점프!', e.x, e.y - 104, { size: 11, bg: '#FFF4D6', pad: 5 });
             } else if (e.kind === 'puddle') {
-              const wob = Math.sin(S.t * 6 + e.x * 0.05) * 2;
-              gc.fillStyle = '#4FA3E8'; gc.beginPath(); gc.ellipse(e.x, gy + 3, e.w / 2 + wob, 7, 0, 0, 7); gc.fill();
-              gc.fillStyle = '#8FD8FF'; gc.beginPath(); gc.ellipse(e.x - 6, gy + 2, e.w / 3, 3.5, 0, 0, 7); gc.fill();
-              gc.strokeStyle = 'rgba(255,255,255,.8)'; gc.lineWidth = 1.5; gc.beginPath(); gc.ellipse(e.x + 10, gy + 3, 8 + (S.t * 10 % 8), 2.5, 0, 0, 7); gc.stroke();
-              if (!e.tip) tag(gc, '💧 점프!', e.x, gy - 18, { size: 11, bg: '#E2F4FF', pad: 5 });
+              // 💧 물웅덩이: 진흙 테두리 · 물결 · 하늘 반사 · 연잎/고무오리 · 튀는 물방울
+              const wob = Math.sin(S.t * 6 + e.seed) * 2;
+              gc.fillStyle = '#B98A5A'; gc.beginPath(); gc.ellipse(e.x, gy + 4, e.w / 2 + 6 + wob, 10, 0, 0, 7); gc.fill();
+              const pg = gc.createLinearGradient(0, gy - 4, 0, gy + 12); pg.addColorStop(0, '#8FD8FF'); pg.addColorStop(1, '#2E7BC4');
+              gc.fillStyle = pg; gc.beginPath(); gc.ellipse(e.x, gy + 4, e.w / 2 + wob, 7.5, 0, 0, 7); gc.fill();
+              gc.fillStyle = 'rgba(255,255,255,.55)'; gc.beginPath(); gc.ellipse(e.x - e.w * 0.18, gy + 2, e.w * 0.16, 2, -0.1, 0, 7); gc.fill();
+              gc.strokeStyle = 'rgba(255,255,255,.75)'; gc.lineWidth = 1.5;
+              [0, 0.5].forEach((o) => { const rr2 = ((S.t * 0.8 + o + e.seed) % 1); gc.globalAlpha = 1 - rr2; gc.beginPath(); gc.ellipse(e.x + e.w * 0.15, gy + 4, 4 + rr2 * e.w * 0.25, 1.5 + rr2 * 3, 0, 0, 7); gc.stroke(); });
+              gc.globalAlpha = 1;
+              if (e.lily) { gc.fillStyle = '#5FB85A'; gc.beginPath(); gc.ellipse(e.x - e.w * 0.25, gy + 4, 7, 3, 0, 0.3, Math.PI * 2 - 0.3); gc.lineTo(e.x - e.w * 0.25, gy + 4); gc.fill(); }
+              if (e.duck) { const dx = e.x + e.w * 0.22; const dy = gy + 1 + Math.sin(S.t * 4) * 1.2; gc.fillStyle = '#FFD43B'; gc.beginPath(); gc.ellipse(dx, dy, 7, 4.5, 0, 0, 7); gc.arc(dx + 4, dy - 5, 3.5, 0, 7); gc.fill(); gc.fillStyle = '#F2A01E'; gc.fillRect(dx + 7, dy - 6, 3, 2); gc.fillStyle = '#2B2350'; gc.beginPath(); gc.arc(dx + 5, dy - 6, 0.9, 0, 7); gc.fill(); }
+              if (!e.tip) tag(gc, '💧 점프!', e.x, gy - 22, { size: 11, bg: '#E2F4FF', pad: 5 });
+            } else if (e.kind === 'snail' || e.kind === 'hedgehog' || e.kind === 'mushroom') {
+              drawCute(gc, e.kind, e.x, gy, S.t);
             } else if (e.kind === 'cone') {
               gc.fillStyle = '#FF8A3D'; gc.beginPath(); gc.moveTo(e.x, e.y - e.h); gc.lineTo(e.x + 14, e.y); gc.lineTo(e.x - 14, e.y); gc.fill();
               gc.fillStyle = '#fff'; gc.fillRect(e.x - 8, e.y - 16, 16, 5);
             } else if (e.kind === 'crate') {
               roundRect(gc, e.x - 15, e.y - 30, 30, 30, 5); gc.fillStyle = '#E8B47E'; gc.fill(); gc.strokeStyle = '#B07A4F'; gc.lineWidth = 3; gc.stroke();
             } else if (e.kind === 'bar') {
-              gc.fillStyle = '#B07A4F'; gc.fillRect(e.x - e.w / 2, e.y - e.h, 6, gy - e.y + e.h); gc.fillRect(e.x + e.w / 2 - 6, e.y - e.h, 6, gy - e.y + e.h);
-              roundRect(gc, e.x - e.w / 2, e.y - e.h, e.w, e.h, 6);
-              gc.fillStyle = '#FF9ECB'; gc.fill();
-              tag(gc, '⬇ 슬라이드', e.x, e.y - e.h - 12, { size: 11, bg: '#fff' });
+              drawSlideObs(gc, e, gy, S.t);
             } else if (e.kind === 'heart') {
               const hy = e.y - 14 + Math.sin(S.t * 6) * 4;
               gc.fillStyle = '#FF6FA8'; gc.beginPath(); gc.moveTo(e.x, hy + 10);
@@ -362,6 +373,12 @@ export function playRun({ charId = 'bboy' } = {}) {
             }
           }
 
+          if (S.tipTxt) {
+            gc.font = "400 21px Jua, 'Noto Sans KR', sans-serif"; gc.textAlign = 'center'; gc.textBaseline = 'middle';
+            const tw3 = gc.measureText(S.tipTxt).width + 30; const ty3 = ctx.H * 0.3;
+            roundRect(gc, ctx.W / 2 - tw3 / 2, ty3 - 22, tw3, 44, 20); gc.fillStyle = 'rgba(224,69,58,.92)'; gc.fill();
+            gc.lineWidth = 3; gc.strokeStyle = '#fff'; gc.stroke(); gc.fillStyle = '#fff'; gc.fillText(S.tipTxt, ctx.W / 2, ty3 + 1);
+          }
           // Ted 선생님 빼꼼 (수풀 위로 고개만)
           if (peek.on && ted) {
             const up = Math.min(1, peek.on * 2, (2.6 - peek.on) * 3);
@@ -449,4 +466,50 @@ function drawFunny(g, f, x, y, t) {
     });
   }
   g.lineCap = 'butt';
+}
+
+/** 귀여운 땅 장애물 (점프로 넘기): 달팽이 · 고슴도치 · 버섯 */
+function drawCute(g, k, x, gy, t) {
+  const ink = '#2B2350'; g.lineWidth = 2.2; g.strokeStyle = ink; g.lineJoin = 'round';
+  if (k === 'snail') {
+    g.fillStyle = '#FFD9A0'; g.beginPath(); g.ellipse(x, gy - 5, 18, 6, 0, 0, 7); g.fill(); g.stroke();
+    g.fillStyle = '#E4801A'; g.beginPath(); g.arc(x - 2, gy - 17, 13, 0, 7); g.fill(); g.stroke();
+    g.strokeStyle = '#FFD43B'; g.lineWidth = 2; g.beginPath(); for (let a = 0; a < 9; a += 0.3) { const r = 10 - a; g.lineTo(x - 2 + Math.cos(a) * r, gy - 17 + Math.sin(a) * r); } g.stroke();
+    g.strokeStyle = ink; g.lineWidth = 1.6; g.beginPath(); g.moveTo(x + 14, gy - 8); g.lineTo(x + 17, gy - 20 + Math.sin(t * 5)); g.moveTo(x + 11, gy - 8); g.lineTo(x + 11, gy - 21); g.stroke();
+    g.fillStyle = ink; g.beginPath(); g.arc(x + 17, gy - 21 + Math.sin(t * 5), 1.8, 0, 7); g.arc(x + 11, gy - 22, 1.8, 0, 7); g.fill();
+  } else if (k === 'hedgehog') {
+    g.fillStyle = '#8A5A35'; g.beginPath(); for (let a = Math.PI; a <= Math.PI * 2.01; a += 0.32) { const r = a % 0.64 < 0.32 ? 20 : 14; g.lineTo(x - 2 + Math.cos(a) * r, gy - 2 + Math.sin(a) * r); } g.closePath(); g.fill(); g.stroke();
+    g.fillStyle = '#F2C9A0'; g.beginPath(); g.ellipse(x + 13, gy - 8, 8, 7, 0, 0, 7); g.fill(); g.stroke();
+    g.fillStyle = ink; g.beginPath(); g.arc(x + 15, gy - 10, 1.6, 0, 7); g.arc(x + 21, gy - 8, 2, 0, 7); g.fill();
+  } else {
+    g.fillStyle = '#FFF4E0'; g.fillRect(x - 6, gy - 16, 12, 16); g.strokeRect(x - 6, gy - 16, 12, 16);
+    g.fillStyle = '#E0453A'; g.beginPath(); g.arc(x, gy - 16, 16, Math.PI, 0); g.closePath(); g.fill(); g.stroke();
+    g.fillStyle = '#fff'; [[-7, -22], [5, -25], [9, -18]].forEach(([dx, dy]) => { g.beginPath(); g.arc(x + dx, gy + dy, 3, 0, 7); g.fill(); });
+    g.fillStyle = ink; g.beginPath(); g.arc(x - 2, gy - 8, 1.3, 0, 7); g.arc(x + 2, gy - 8, 1.3, 0, 7); g.fill();
+  }
+}
+/** 머리 높이 장애물 (슬라이드로 통과): 빨래줄 · 나뭇가지 · 새 · 풍선 · 막대 */
+function drawSlideObs(g, e, gy, t) {
+  const ink = '#2B2350'; const x = e.x; const y = e.y - e.h; g.lineWidth = 2.2; g.strokeStyle = ink;
+  const label = () => tag(g, '⬇ 슬라이드', x, y - 14, { size: 11, bg: '#fff' });
+  if (e.look === 'branch') {
+    g.fillStyle = '#8A5A35'; g.fillRect(x - e.w / 2 - 20, y + 4, e.w + 20, 9); g.strokeRect(x - e.w / 2 - 20, y + 4, e.w + 20, 9);
+    g.fillStyle = '#5FB85A'; [-24, -4, 16, 30].forEach((dx, k) => { g.beginPath(); g.ellipse(x + dx, y + 4 + (k % 2) * 4, 12, 7, 0.3, 0, 7); g.fill(); g.stroke(); });
+  } else if (e.look === 'bird') {
+    const fy = y + 8 + Math.sin(t * 8) * 3; const flap = Math.sin(t * 16) * 8;
+    g.fillStyle = '#8FD8FF'; g.beginPath(); g.ellipse(x, fy, 16, 11, 0, 0, 7); g.fill(); g.stroke();
+    g.beginPath(); g.moveTo(x - 2, fy - 4); g.quadraticCurveTo(x - 10, fy - 16 - flap, x - 18, fy - 6); g.closePath(); g.fill(); g.stroke();
+    g.fillStyle = '#FFA94D'; g.beginPath(); g.moveTo(x - 16, fy); g.lineTo(x - 24, fy + 2); g.lineTo(x - 16, fy + 4); g.fill();
+    g.fillStyle = ink; g.beginPath(); g.arc(x - 9, fy - 3, 1.8, 0, 7); g.fill();
+  } else if (e.look === 'balloons') {
+    [['#FF6FA8', -16], ['#FFD43B', 0], ['#8FD8FF', 16]].forEach(([c, dx], k) => { const by = y + 4 + Math.sin(t * 3 + k) * 3; g.strokeStyle = '#9A90B5'; g.beginPath(); g.moveTo(x + dx, by + 12); g.lineTo(x, y + 40); g.stroke(); g.fillStyle = c; g.strokeStyle = ink; g.beginPath(); g.ellipse(x + dx, by, 10, 12, 0, 0, 7); g.fill(); g.stroke(); });
+  } else if (e.look === 'laundry') {
+    g.strokeStyle = '#6B5F8A'; g.beginPath(); g.moveTo(x - e.w / 2, y); g.quadraticCurveTo(x, y + 8, x + e.w / 2, y); g.stroke();
+    g.fillStyle = '#B07A4F'; g.fillRect(x - e.w / 2 - 3, y - 4, 6, gy - y + 4); g.fillRect(x + e.w / 2 - 3, y - 4, 6, gy - y + 4);
+    [['#FF9ECB', -22], ['#8FE08A', 0], ['#FFD43B', 20]].forEach(([c, dx]) => { g.fillStyle = c; g.strokeStyle = ink; g.beginPath(); g.roundRect(x + dx - 8, y + 3, 16, 18, 3); g.fill(); g.stroke(); });
+  } else {
+    g.fillStyle = '#B07A4F'; g.fillRect(x - e.w / 2, y, 6, gy - y); g.fillRect(x + e.w / 2 - 6, y, 6, gy - y);
+    g.beginPath(); g.roundRect(x - e.w / 2, y, e.w, e.h, 6); g.fillStyle = '#FF9ECB'; g.fill(); g.stroke();
+  }
+  label();
 }

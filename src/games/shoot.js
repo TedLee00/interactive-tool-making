@@ -1,5 +1,5 @@
 // 청크 사격장 — 지시된 품사가 적힌 과녁만 정확히 탭해서 맞힌다. 라운드마다 12초!
-import { openGame, rand, pick, shuffle, clamp, roundRect, loadImage, asset, charSprite, tag } from './engine.js';
+import { openGame, rand, pick, shuffle, clamp, roundRect, loadImage, asset } from './engine.js';
 import data from '../../data/minigames.json';
 
 // 5라운드 × 25초 — 라운드마다 품사가 바뀐다
@@ -25,11 +25,9 @@ export function playShoot() {
       '라운드 <b>5개</b> × <b>25초</b>: 명사 → 동사 → 형용사 → 부사 → 부사구 (라운드마다 품사가 바뀌어요)',
       '틀린 과녁을 쏘면 <b>-1초</b> · 빈 곳을 쏘면 콤보가 끊겨요',
       '🍫 <b class="red">과자 과녁</b>이 가끔 아주 빠르게 지나가요! 맞는 품사면 과자 획득, <b class="red">틀리면 -300점 · -3초</b>',
-      '👨‍🏫 <b>Ted 선생님</b>이 팻말을 들고 지나가요 — <b class="red">팻말</b>이 맞는 품사면 점수 ×2, <b class="red">선생님을 맞히면 감점 2배!</b>',
       '과녁 품사가 바뀌면 화면 가운데에 <b>큰 경고판</b>이 떠요. 연속으로 맞히면 점수가 쑥쑥!',
     ],
     async setup(ctx) {
-      const tedImg = await charSprite('ted').catch(() => null);
       const SNK = {};
       await Promise.all(Object.keys(SNACK_NAME).map(async (k) => { SNK[k] = await loadImage(asset(`snacks/${k}.svg`)).catch(() => null); }));
       // 과자 과녁은 초코파이 · 오예스 · 쿠키앤크림이 골고루 (주머니 뽑기)
@@ -38,7 +36,7 @@ export function playShoot() {
       const warn = document.createElement('div');
       warn.className = 'shoot-warn';
       ctx.layer.appendChild(warn);
-      const S = { tedT: 7, snacks: [], snackT: 4, round: -1, t: 0, left: 0, targets: [], spawnT: 0, score: 0, hits: 0, wrong: 0, combo: 0, best: 0, holes: [], gun: 0, aim: { x: 180, y: 300 }, finished: false, flash: 0 };
+      const S = { snacks: [], snackT: 4, round: -1, t: 0, left: 0, targets: [], spawnT: 0, score: 0, hits: 0, wrong: 0, combo: 0, best: 0, holes: [], gun: 0, aim: { x: 180, y: 300 }, finished: false, flash: 0 };
       const banner = document.createElement('div');
       banner.className = 'mg-mission shoot-ban';
       ctx.layer.appendChild(banner);
@@ -98,30 +96,7 @@ export function playShoot() {
         if (S.finished || S.round < 0) return;
         S.gun = 0.15; S.flash = 0.06; S.aim = p;
         ctx.sfx('bounce');
-        // 👨‍🏫 Ted 선생님: 팻말(단어) 정답이면 ×2 점수, 선생님 몸을 맞히면 오답 감점의 2배
-        const tedT = S.targets.find((t) => t.alive && t.kind === 'ted' && !t.hurt);
-        if (tedT) {
-          const sx = tedT.x + tedT.dir * 50; const sy = tedT.ty - 40;
-          if ((sx - p.x) ** 2 + (sy - p.y) ** 2 <= 34 * 34) {
-            tedT.alive = false;
-            if (tedT.good) {
-              S.hits++; S.combo++; S.best = Math.max(S.best, S.combo);
-              const pts = (100 + Math.min(10, S.combo) * 25) * 2; S.score += pts;
-              ctx.burst(sx, sy, 28, ['#FFD43B', '#fff', '#E21E8C']); ctx.floatText(`×2! +${pts}`, sx, sy - 30, '#FFD43B', 24); ctx.callout('yar', '선생님 팻말 ×2!');
-            } else {
-              S.wrong++; S.combo = 0; S.left = Math.max(0, S.left - 1); S.score = Math.max(0, S.score - 50);
-              ctx.shake(6); ctx.sfx('no'); ctx.floatText(`✘ ${ROUNDS[S.round].target} 아님! -1초`, sx, sy - 30, '#E0453A', 16);
-            }
-            return;
-          }
-          if (p.x > tedT.x - 26 && p.x < tedT.x + 26 && p.y > tedT.ty - 88 && p.y < tedT.ty + 6) {
-            tedT.hurt = 1.2; // 놀란 표정 애니메이션 후 퇴장
-            S.wrong++; S.combo = 0; S.left = Math.max(0, S.left - 2); S.score = Math.max(0, S.score - 100);
-            ctx.shake(12, 0.4); ctx.sfx('no'); ctx.floatText('헉!! 선생님을 쏘다니! -100 · -2초', ctx.W / 2, tedT.ty - 110, '#E0453A', 18);
-            return;
-          }
-        }
-        const hit = [...S.targets].reverse().find((t) => t.alive && t.kind !== 'ted' && (t.x - p.x) ** 2 + (t.ty - p.y) ** 2 <= t.r * t.r);
+        const hit = [...S.targets].reverse().find((t) => t.alive && (t.x - p.x) ** 2 + (t.ty - p.y) ** 2 <= t.r * t.r);
         if (!hit) {
           S.holes.push({ x: p.x, y: p.y, life: 1.2 });
           if (S.combo > 0) ctx.floatText('빗나감!', p.x, p.y - 20, '#6B5F8A', 15);
@@ -183,14 +158,6 @@ export function playShoot() {
           S.gun = Math.max(0, S.gun - dt);
           S.flash = Math.max(0, S.flash - dt);
           if (S.left <= 0) { ctx.floatText('TIME!', ctx.W / 2, ctx.H * 0.45, '#D9822B', 30); nextRound(); return; }
-          // 👨‍🏫 Ted 선생님이 단어 팻말을 들고 천천히 지나감 (라운드마다 한두 번)
-          S.tedT -= dt;
-          if (S.tedT <= 0 && !S.targets.some((t) => t.kind === 'ted' && t.alive)) {
-            S.tedT = rand(11, 15);
-            const R = ROUNDS[S.round]; const Wd = words(R);
-            const good = Math.random() < 0.6; const dir = Math.random() < 0.5 ? 1 : -1;
-            S.targets.push({ kind: 'ted', label: pick(good ? Wd.good : Wd.bad), good, dir, x: dir > 0 ? -70 : ctx.W + 70, y: ctx.H * 0.61 + 30, vx: dir * 70, r: 30, t: 0, alive: true });
-          }
           // 🍫 과자 과녁: 가끔 아주 빠르게 지나간다 (정답이면 과자 획득, 오답이면 크게 감점)
           S.snackT -= dt;
           if (S.snackT <= 0) {
@@ -206,11 +173,6 @@ export function playShoot() {
           if (S.spawnT <= 0 && alive < 6) { spawn(); S.spawnT = Math.max(0.45, 0.78 - S.round * 0.08); }
           S.targets.forEach((t) => {
             t.t += dt;
-            if (t.kind === 'ted') {
-              if (t.hurt) { t.hurt -= dt; t.ty = t.y - Math.abs(Math.sin(t.hurt * 9)) * 26; if (t.hurt <= 0) t.alive = false; }
-              else { t.x += t.vx * dt; t.ty = t.y - Math.abs(Math.sin(t.t * 7)) * 5; if (t.x < -90 || t.x > ctx.W + 90) t.alive = false; }
-              return;
-            }
             if (t.kind === 'snack') { t.x += t.vx * dt; t.ty = t.y + Math.sin(t.t * 9) * 4; if (t.x < -70 || t.x > ctx.W + 70) t.alive = false; }
             else if (t.kind === 'slide') { t.x += t.vx * dt; t.ty = t.y + Math.sin(t.t * 4) * 3; if (t.x < -60 || t.x > ctx.W + 60) t.alive = false; }
             else {
@@ -239,35 +201,6 @@ export function playShoot() {
           // 과녁
           S.targets.forEach((t) => {
             const y = t.ty ?? t.y;
-            if (t.kind === 'ted') {
-              // 선생님 + 옆에 든 팻말
-              const sx = t.x + t.dir * 50; const sy = y - 40;
-              g.strokeStyle = '#6B4F2A'; g.lineWidth = 4; g.beginPath(); g.moveTo(t.x + t.dir * 14, y - 46); g.lineTo(sx, sy + 26); g.stroke();
-              if (!t.hurt) {
-                RING.forEach((c, i) => { g.fillStyle = c; g.beginPath(); g.arc(sx, sy, 30 * (1 - i * 0.18), 0, 7); g.fill(); });
-                g.lineWidth = 3; g.strokeStyle = '#2B2350'; g.beginPath(); g.arc(sx, sy, 30, 0, 7); g.stroke();
-                g.font = `400 ${t.label.length > 9 ? 12 : 15}px Jua, 'Noto Sans KR', sans-serif`;
-                const tw = Math.max(48, g.measureText(t.label).width + 14);
-                roundRect(g, sx - tw / 2, sy - 12, tw, 24, 12); g.fillStyle = '#FFF4D6'; g.fill(); g.lineWidth = 2.5; g.strokeStyle = '#E0453A'; g.stroke();
-                g.fillStyle = '#2B2350'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(t.label, sx, sy + 1);
-                tag(g, '선생님 팻말 ×2', sx, sy - 42, { size: 11, bg: '#FFD43B', pad: 5 });
-              }
-              if (tedImg) {
-                const ih = 92; const iw = ih * (tedImg.width / tedImg.height);
-                g.save(); g.translate(t.x, y);
-                if (t.hurt) g.rotate(Math.sin(t.hurt * 20) * 0.25);
-                g.drawImage(tedImg, -iw / 2, -ih, iw, ih);
-                if (t.hurt) {
-                  // 깜짝 놀란 표정: 휘둥그레진 눈 · 땀 · 느낌표
-                  g.fillStyle = '#fff'; g.strokeStyle = '#2B2350'; g.lineWidth = 2;
-                  [-8, 8].forEach((dx) => { g.beginPath(); g.arc(dx, -ih * 0.8, 6.5, 0, 7); g.fill(); g.stroke(); g.fillStyle = '#2B2350'; g.beginPath(); g.arc(dx, -ih * 0.8, 2.2, 0, 7); g.fill(); g.fillStyle = '#fff'; });
-                  g.fillStyle = '#8FD8FF'; g.beginPath(); g.ellipse(22, -ih * 0.86, 4, 7, 0.3, 0, 7); g.fill();
-                  g.font = "400 34px Jua, sans-serif"; g.fillStyle = '#E0453A'; g.textAlign = 'center'; g.fillText('!!', 0, -ih - 8);
-                }
-                g.restore();
-              }
-              return;
-            }
             if (t.kind === 'snack') {
               // 줄에 매달린 과자 + 반짝이는 테두리
               g.strokeStyle = '#FFD43B'; g.lineWidth = 2; g.beginPath(); g.moveTo(t.x + t.r * 0.7, y); g.lineTo(t.x + t.r + 18, y + 22); g.stroke();
@@ -298,13 +231,14 @@ export function playShoot() {
             const rec = S.gun * 22;
             const ink = '#2B2350';
             const cx = W / 2 + clamp((a.x - W / 2) * 0.1, -22, 22);
-            const hy = H - 96 + rec; // 머리 중심
+            const hy = H - 62 + rec; // 머리 중심 (화면 아래로 더 내려 과녁을 가리지 않게)
             const by = H + 10 + rec;
             const shX = cx + 22; const shY = hy + 40; // 개머리판이 닿는 오른쪽 어깨
             const ang = clamp(Math.atan2(a.y - shY, a.x - shX), -Math.PI + 0.35, -0.35);
             const ux = Math.cos(ang); const uy = Math.sin(ang);
             const nx = -uy; const ny = ux;
-            const at = (d, o = 0) => [shX + ux * d + nx * o, shY + uy * d + ny * o];
+            const GK = 0.66; // 총 길이를 짧게 (과녁 가림 방지)
+            const at = (d, o = 0) => [shX + ux * d * GK + nx * o, shY + uy * d * GK + ny * o];
             const poly = (pts, fill, lw = 2.2) => { g.fillStyle = fill; g.beginPath(); g.moveTo(...pts[0]); pts.slice(1).forEach((q) => g.lineTo(...q)); g.closePath(); g.fill(); g.lineWidth = lw; g.strokeStyle = ink; g.stroke(); };
             const bar = (d0, d1, o0, o1, fill) => poly([at(d0, o0), at(d1, o0), at(d1, o1), at(d0, o1)], fill);
             g.lineCap = 'round'; g.lineJoin = 'round';
