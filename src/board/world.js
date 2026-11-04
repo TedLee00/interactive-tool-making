@@ -2,6 +2,7 @@
 // 동화책 분위기: 툰 셰이딩 + 파스텔 색 + 둥근 나무·버섯·무지개·반짝이
 import * as THREE from 'three';
 import { TYPES } from '../quiz/constants.js';
+import { makeAnimal, animateAnimal, ANIMAL_KINDS } from './animals.js';
 import { signSprite, bannerSprite, iconSprite, numberTexture, logoSprite, skyTexture } from './textures.js';
 import { createAvatar } from './avatar.js';
 
@@ -345,7 +346,7 @@ export function buildWorld(scene, board, guide) {
     const reg = regions[c.region];
     const p = cellPosition(c.i);
     const special = c.kind !== 'quiz';
-    const col = { arcade: 0xff9ecb, start: 0xffd36b, goal: 0xffd36b, snack: 0xffb36b, gate: 0x8fc8ff, trap: 0xff8a8a, portal: 0xc9a2ff, bonus: 0x8fe08a }[c.kind] ?? shade(reg.color, 0.22);
+    const col = { play: 0xc9a2ff, arcade: 0xff9ecb, start: 0xffd36b, goal: 0xffd36b, snack: 0xffb36b, gate: 0x8fc8ff, trap: 0xff8a8a, portal: 0xc9a2ff, bonus: 0x8fe08a }[c.kind] ?? shade(reg.color, 0.22);
     const tile = new THREE.Mesh(new THREE.CylinderGeometry(0.95, 1.02, 0.32, 28), m(col));
     tile.position.set(p.x, 0.16, p.z);
     tile.castShadow = true;
@@ -591,6 +592,13 @@ export function buildWorld(scene, board, guide) {
     gp.needsUpdate = true;
     glitter.material.opacity = 0.6 + Math.sin(t * 3) * 0.25;
     npcs.forEach((n) => n.update(dt, camera));
+    critters.forEach((c) => {
+      const d = c.target.clone().sub(c.a.position); d.y = 0;
+      const moving = d.length() > 0.05;
+      if (moving) { const step = Math.min(d.length(), dt * 0.7); d.normalize(); c.a.position.addScaledVector(d, step); c.a.rotation.y = Math.atan2(d.x, d.z); }
+      else { c.wait -= dt; if (c.wait <= 0) { c.wait = 1.5 + Math.random() * 3; c.target.set(c.home.x + (Math.random() - 0.5) * 3, 0, c.home.z + (Math.random() - 0.5) * 3); } }
+      animateAnimal(c.a, t, moving);
+    });
     for (let k = sparkles.length - 1; k >= 0; k--) {
       const s = sparkles[k];
       if (s.isPulse) {
@@ -628,6 +636,18 @@ export function buildWorld(scene, board, guide) {
     if (onPath) return;
     obstacles.push({ center: c, size });
   });
+
+  // 🐰 마을을 돌아다니는 동물 친구들 (길 옆 풀밭에서 어슬렁 · 통통)
+  const critters = [];
+  for (let k = 0; k < 18; k++) {
+    const i = Math.floor(((k + 0.5) / 18) * (N - 2)) + 1;
+    const side = k % 2 ? 1 : -1;
+    const home = new THREE.Vector3(pathX(i) + side * (2.4 + r() * 2.2), 0, -i * SP + (r() - 0.5) * 2);
+    const a = makeAnimal(ANIMAL_KINDS[k % ANIMAL_KINDS.length], 1.15);
+    a.position.copy(home);
+    scene.add(a);
+    critters.push({ a, home, target: home.clone(), wait: r() * 3 });
+  }
 
   return { N, cellPosition, direction, sparkle, update, focus, sun, tiles, obstacles };
 }

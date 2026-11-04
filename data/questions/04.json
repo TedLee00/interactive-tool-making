@@ -808,5 +808,59 @@
   "answer": "an",
   "explain": "unhappy의 첫 소리 [ʌ] (모음) → an",
   "source": "교재 1-5 관사 (확장)"
+ },
+ {
+  "id": "04-091",
+  "type": 4,
+  "level": 1,
+  "sentence": "Seungtae ate ___ orange after lunch.",
+  "answer": "an",
+  "explain": "orange의 첫 소리 [ɔ] (모음) → an",
+  "source": "우리 반 이야기 (확장)"
+ },
+ {
+  "id": "04-092",
+  "type": 4,
+  "level": 2,
+  "sentence": "Ted is ___ English teacher.",
+  "answer": "an",
+  "explain": "English의 첫 소리 [i] (모음) → an. 직업 앞엔 a/an",
+  "source": "우리 반 이야기 (확장)"
+ },
+ {
+  "id": "04-093",
+  "type": 4,
+  "level": 1,
+  "sentence": "Jiyong plays ___ violin very well.",
+  "answer": "the",
+  "explain": "악기 앞엔 the → play the violin",
+  "source": "우리 반 이야기 (확장)"
+ },
+ {
+  "id": "04-094",
+  "type": 4,
+  "level": 3,
+  "sentence": "Our principal has ___ honest smile.",
+  "answer": "an",
+  "explain": "honest의 h는 소리가 안 나요 → 첫 소리 모음 → an",
+  "source": "우리 반 이야기 (확장)"
+ },
+ {
+  "id": "04-095",
+  "type": 4,
+  "level": 2,
+  "sentence": "Suyeon goes to ___ bed at ten.",
+  "answer": "X",
+  "explain": "자러(본래 목적) 간다 → go to bed (관사 X)",
+  "source": "우리 반 이야기 (확장)"
+ },
+ {
+  "id": "04-096",
+  "type": 4,
+  "level": 3,
+  "sentence": "Ted showed us ___ old map of Seoul.",
+  "answer": "an",
+  "explain": "형용사 old의 첫 소리 [o] → an old map",
+  "source": "우리 반 이야기 (확장)"
  }
 ]

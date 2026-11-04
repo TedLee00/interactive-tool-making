@@ -871,5 +871,77 @@
   "answer": "C",
   "explain": "answer = that절 → 보어(C). 명사절도 보어 의자에!",
   "source": "교재 2-1 · 2-2 · 2-4 (확장)"
+ },
+ {
+  "id": "05-098",
+  "type": 5,
+  "level": 1,
+  "sentence": "[Seungtae] plays the drums in the school band.",
+  "answer": "S",
+  "explain": "동사 plays 앞, 누가? → 주어(S)",
+  "source": "우리 반 이야기 (확장)"
+ },
+ {
+  "id": "05-099",
+  "type": 5,
+  "level": 3,
+  "sentence": "Seunghee sent [Ted] a thank-you card.",
+  "answer": "O",
+  "explain": "4형식 S V O O — \"Ted에게\" → 간접목적어(O)",
+  "source": "우리 반 이야기 (확장)"
+ },
+ {
+  "id": "05-100",
+  "type": 5,
+  "level": 3,
+  "sentence": "Our principal made the classroom [warm and bright].",
+  "answer": "C",
+  "explain": "5형식 — classroom = warm and bright → 목적격 보어(C)",
+  "source": "우리 반 이야기 (확장)"
+ },
+ {
+  "id": "05-101",
+  "type": 5,
+  "level": 3,
+  "sentence": "Suyeon looks [very calm] before tests.",
+  "answer": "C",
+  "explain": "Suyeon = very calm, look 뒤 보어(C). 법칙 ② (very calm) 한 덩어리",
+  "source": "우리 반 이야기 (확장)"
+ },
+ {
+  "id": "05-102",
+  "type": 5,
+  "level": 3,
+  "sentence": "Kyungwon [has studied] English for five years.",
+  "answer": "V",
+  "explain": "현재완료 has studied 통째로 → 서술어(동사)(V)",
+  "source": "우리 반 이야기 (확장)"
+ },
+ {
+  "id": "05-103",
+  "type": 5,
+  "level": 3,
+  "sentence": "Sangjin found the puzzle [easy].",
+  "answer": "C",
+  "explain": "5형식 — puzzle = easy → 목적격 보어(C)",
+  "source": "우리 반 이야기 (확장)"
+ },
+ {
+  "id": "05-104",
+  "type": 5,
+  "level": 2,
+  "sentence": "[Jiyong and Yujin] are in the same class.",
+  "answer": "S",
+  "explain": "동사 are 앞 → 주어(S). and로 이어진 두 사람이 함께 주어",
+  "source": "우리 반 이야기 (확장)"
+ },
+ {
+  "id": "05-105",
+  "type": 5,
+  "level": 2,
+  "sentence": "Ted reads a story to us [every Friday].",
+  "answer": "M",
+  "explain": "언제? 빼도 문장이 된다 → 수식어(M)",
+  "source": "우리 반 이야기 (확장)"
  }
 ]

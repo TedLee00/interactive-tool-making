@@ -138,8 +138,9 @@
   },
   {
    "i": 14,
-   "kind": "bonus",
-   "region": 1
+   "kind": "play",
+   "region": 1,
+   "game": "drum"
   },
   {
    "i": 15,

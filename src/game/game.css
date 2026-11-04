@@ -164,3 +164,14 @@ img.face { border-radius: 50%; background: radial-gradient(circle at 50% 35%, #F
 .total-score b { font-family: var(--cute); font-weight: 400; font-size: 34px; color: #FFD43B; }
 .total-score em { font-style: normal; font-size: 16px; margin-left: 2px; }
 .hud-top .pos b.trn { color: #2E7BC4; }
+.honors { text-align: center; font-family: var(--cute); font-size: 18px; color: #7A0B48; background: linear-gradient(90deg, #FFF1C2, #FFE3F0); border-radius: 14px; padding: 6px; margin-bottom: 8px; }
+.honors b { font-weight: 400; color: #E21E8C; font-size: 22px; }
+
+/* 🐾 펫 */
+.pet-card .pet-ico { font-size: 84px; animation: petBounce .8s ease-in-out infinite; }
+@keyframes petBounce { 50% { transform: translateY(-10px) rotate(-6deg); } }
+.goal-pets { text-align: center; margin: 0 0 8px; }
+.goal-pets small { display: block; color: var(--muted); font-size: 12px; }
+.goal-pets span { font-size: 34px; letter-spacing: 4px; }
+.goal-pets i { font-style: normal; display: inline-block; animation: petBounce 1s ease-in-out infinite; }
+.goal-pets i:nth-child(2n) { animation-delay: .25s; }

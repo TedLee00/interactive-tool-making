@@ -1244,5 +1244,65 @@
   },
   "explain": "□will have — 조동사 will까지 한 덩어리",
   "source": "교재 1-4 · 2-5 · 5품사 청크 독해 법칙 (확장)"
+ },
+ {
+  "id": "10-082",
+  "type": 10,
+  "level": 3,
+  "en": "N:Ted | V:gave | N:Jiyong | N:a gold sticker",
+  "end": ".",
+  "error": {
+   "kind": "label",
+   "chunk": 2,
+   "shown": "D"
+  },
+  "explain": "4형식 간접목적어 \"지용이에게\" → ○ 명사 (부사 X)",
+  "source": "우리 반 이야기 (확장)"
+ },
+ {
+  "id": "10-083",
+  "type": 10,
+  "level": 3,
+  "en": "N:Yujin's little brother | V:is | A:very shy",
+  "end": ".",
+  "error": {
+   "kind": "split",
+   "chunk": 0,
+   "after": 2,
+   "shown": [
+    "A",
+    "N"
+   ]
+  },
+  "explain": "법칙 ① 명사 앞 꾸밈말은 명사의 일부 → 통째로 ○ ○Yujin's little brother — 소유격도 명사구 안에",
+  "source": "우리 반 이야기 (확장)"
+ },
+ {
+  "id": "10-084",
+  "type": 10,
+  "level": 3,
+  "en": "N:Kyungwon | V:runs | D:very fast | D:in the morning",
+  "end": ".",
+  "error": {
+   "kind": "label",
+   "chunk": 2,
+   "shown": "A"
+  },
+  "explain": "동사 runs를 꾸미는 < 부사구 > (very fast). fast는 여기서 부사!",
+  "source": "우리 반 이야기 (확장)"
+ },
+ {
+  "id": "10-085",
+  "type": 10,
+  "level": 3,
+  "en": "N:Our principal | V:looked | A:very proud",
+  "end": ".",
+  "error": {
+   "kind": "label",
+   "chunk": 2,
+   "shown": "D"
+  },
+  "explain": "법칙 ② look 뒤 보어 → (very proud) 형용사구",
+  "source": "우리 반 이야기 (확장)"
  }
 ]

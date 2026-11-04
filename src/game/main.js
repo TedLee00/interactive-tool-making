@@ -5,6 +5,7 @@ import chars from '../../data/characters.json';
 import { buildWorld } from '../board/world.js';
 import { createAvatar } from '../board/avatar.js';
 import { createDice } from '../board/dice.js';
+import { makeAnimal, animateAnimal, ANIMALS, ANIMAL_KINDS } from '../board/animals.js';
 import { draw, config, setLevel } from '../quiz/bank.js';
 import { runCell, timeLimitFor } from '../quiz/cell.js';
 import { TYPES } from '../quiz/constants.js';
@@ -12,7 +13,7 @@ import { esc } from '../quiz/notation.js';
 import { sfx, setMuted, isMuted } from '../quiz/sound.js';
 import { loadChar, fillFaces, charURL } from '../board/charart.js';
 import { bgm, callout, maWarning, teacherDance, crewDance, finaleDance, dancerShow, snackCard, snackCode, SNACKS, syncMute, unlockAudio } from '../fx/fx.js';
-import { playRun, playCrane, playKart, playShoot, GAMES } from '../games/index.js';
+import { playRun, playCrane, playKart, playShoot, playDrum, GAMES } from '../games/index.js';
 import { runStudy, askStudy } from '../study/study.js';
 import { setPlayer, submitScore, getRanking, rankTableHTML } from '../rank/rank.js';
 
@@ -100,13 +101,65 @@ function loop(now) {
   elapsed += dt;
   world.update(dt, elapsed, camera);
   avatar?.update(dt, camera);
+  updatePets(dt, elapsed);
   dice.update(dt);
   updateCamera(dt);
   if (cam.mode === 'board') placeDiceHint();
   renderer.render(scene, camera);
   requestAnimationFrame(loop);
 }
-window.__CQ = { get S() { return S; }, get world() { return world; }, cam, get avatar() { return avatar; }, fx: { maWarning, teacherDance, callout }, cell: (i) => resolveCell(board.cells[i]), dice, turn: (sw) => turn(sw), move: (n) => moveBy(n) }; // 테스트용
+window.__CQ = { pets: () => pets, award: (t) => awardPet(t), get S() { return S; }, get world() { return world; }, cam, get avatar() { return avatar; }, fx: { maWarning, teacherDance, callout }, cell: (i) => resolveCell(board.cells[i]), dice, turn: (sw) => turn(sw), move: (n) => moveBy(n) }; // 테스트용
+
+/* ---------------- 🐾 펫: 미니게임에 성공하면 동물 친구가 생겨 끝까지 따라온다 ---------------- */
+let pets = [];
+function clearPets() { pets.forEach((p) => scene.remove(p.mesh)); pets = []; }
+function buildPets() {
+  clearPets();
+  (S?.pets || []).forEach((kind, k) => {
+    const mesh = makeAnimal(kind, 0.85);
+    if (avatar) mesh.position.copy(avatar.root.position).setY(0.3).add(new THREE.Vector3((k % 2 ? 0.5 : -0.5), 0, 0.6 + k * 0.5));
+    scene.add(mesh);
+    pets.push({ mesh, kind });
+  });
+}
+function updatePets(dt, t) {
+  if (!avatar || !pets.length) return;
+  const back = world.direction(Math.round(S.pos)).setY(0).normalize().negate();
+  const right = new THREE.Vector3(-back.z, 0, back.x);
+  pets.forEach((p, k) => {
+    const row = Math.floor(k / 2) + 1;
+    const want = avatar.root.position.clone().addScaledVector(back, 0.55 * row).addScaledVector(right, k % 2 ? 0.45 : -0.45);
+    want.y = 0.3;
+    const d = want.clone().sub(p.mesh.position);
+    const moving = d.length() > 0.08;
+    p.mesh.position.lerp(want, 1 - Math.exp(-dt * (3.5 - k * 0.25)));
+    if (moving) p.mesh.rotation.y = Math.atan2(d.x, d.z); else p.mesh.rotation.y += ((Math.atan2(-back.x, -back.z)) - p.mesh.rotation.y) * Math.min(1, dt * 3);
+    animateAnimal(p.mesh, t, moving);
+  });
+}
+/** 받침에 따라 조사 고르기: 이/가 · 을/를 */
+const hasBatchim = (w) => { const c = String(w).charCodeAt(String(w).length - 1); return c >= 0xAC00 && c <= 0xD7A3 && (c - 0xAC00) % 28 !== 0; };
+const josa = (w, a, b) => `${w}${hasBatchim(w) ? a : b}`;
+/** 새 펫 친구 받기 (최대 6마리, 겹치지 않게) */
+async function awardPet(gameTitle) {
+  S.pets ||= [];
+  const left = ANIMAL_KINDS.filter((k) => !S.pets.includes(k));
+  if (!left.length) return;
+  const kind = left[Math.floor(Math.random() * left.length)];
+  S.pets.push(kind); save();
+  buildPets();
+  const A = ANIMALS[kind];
+  await new Promise((res) => {
+    const ov = document.createElement('div');
+    ov.className = 'study-ask pet-card';
+    ov.innerHTML = `<div class="sa-card"><div class="sa-ico pet-ico">${A.emoji}</div><h2>${gameTitle} 성공 상품!<br><em>${josa(A.name, '이', '가')}</em> 친구가 됐어요</h2>
+      <p>이제 ${josa(A.name, '이', '가')} ${esc(josa(S.name, '을', '를'))} <b>끝까지 따라다녀요</b> 🐾<br>성에 도착할 때까지 함께 가요!</p>
+      <div class="sa-btns"><button class="primary big" id="petOk">같이 가자! ▶</button></div></div>`;
+    document.body.appendChild(ov);
+    callout('yar', `${A.emoji} 새 친구!`);
+    ov.querySelector('#petOk').onclick = () => { ov.remove(); res(); };
+  });
+}
 
 function placeAvatar(charId) {
   if (avatar) scene.remove(avatar.root);
@@ -115,6 +168,7 @@ function placeAvatar(charId) {
   avatar.root.position.copy(world.cellPosition(S.pos));
   avatar.root.position.y = 0.3;
   scene.add(avatar.root);
+  buildPets();
 }
 
 /** 한 칸씩 콩콩 뛰어 이동 */
@@ -171,6 +225,7 @@ function title() {
   cam.mode = 'title';
   bgm('title');
   if (avatar) { scene.remove(avatar.root); avatar = null; }
+  clearPets();
   const sv = loadSave();
   const can = sv && !sv.finished;
   screen(`<div class="title-screen">
@@ -573,9 +628,9 @@ async function enterRegion(k) {
 async function playCellGame(cell) {
   const G = GAMES[cell.game];
   toast(`${G.icon} ${G.title}!`);
-  talk(cell.kind === 'gate' ? `미니게임 게이트! 「${G.title}」에 도전해 보자!` : cell.kind === 'arcade' ? `잘하고 있어! 「${G.title}」 한 판 더!` : '간식 뽑기 칸이야! 품사 인형을 뽑아 간식을 노려 봐!');
+  talk(cell.kind === 'gate' ? `미니게임 게이트! 「${G.title}」에 도전해 보자!` : cell.kind === 'arcade' ? `잘하고 있어! 「${G.title}」 한 판 더!` : cell.kind === 'play' ? `🎵 「${G.title}」 칸이야! 박자에 맞춰 품사 북을 쳐 보자!` : '간식 뽑기 칸이야! 품사 인형을 뽑아 간식을 노려 봐!');
   await sleep(1300);
-  const play = { run: playRun, crane: playCrane, kart: playKart, shoot: playShoot }[cell.game];
+  const play = { run: playRun, crane: playCrane, kart: playKart, shoot: playShoot, drum: playDrum }[cell.game];
   const r = await play({ charId: S.char, name: S.name, short: cell.kind === 'snack' });
   bgm(regionOf(S.pos).id);
   S.coins += r.coins || 0;
@@ -589,6 +644,7 @@ async function playCellGame(cell) {
   }
   save();
   hud();
+  if (r.cleared) await awardPet(G.title);
   if (r.cleared) {
     // 미니게임 성공 → 선생님 댄스
     avatar.setAnim('joy');
@@ -622,7 +678,7 @@ async function teleport(i) {
   save(); hud();
 }
 
-function quizSheet(type, region = board.cells[S.pos].region) {
+function quizSheet(type, region = board.cells[S.pos].region, extraSec = 0) {
   const ov = document.createElement('div');
   ov.className = 'sheet';
   ov.innerHTML = '<div class="sheet-inner wrap" id="cellRoot"></div>';
@@ -647,7 +703,7 @@ function quizSheet(type, region = board.cells[S.pos].region) {
     },
     onResult(reward) { if (reward.perfect) callout('legend', 'PERFECT 5/5'); },
   };
-  return runCell(ov.querySelector('#cellRoot'), { type, questions: qs, config, hooks, timeLimit: timeLimitFor(type, region, config) }).then(async (r) => {
+  return runCell(ov.querySelector('#cellRoot'), { type, questions: qs, config, hooks, timeLimit: timeLimitFor(type, region, config) + extraSec }).then(async (r) => {
     ov.classList.remove('open');
     setTimeout(() => ov.remove(), 300);
     bgm(regionOf(S.pos).id);
@@ -701,6 +757,37 @@ async function finalChecks() {
 
 }
 
+/** 🏆 아너스 미션 — 정답률 80% 이상인 학생만: 오류 수리 · 청크 퍼즐 · 번역의 탑을 「상」 난이도로 한 번 더 */
+async function honorsMission() {
+  const acc = S.answered ? S.correct / S.answered : 0;
+  if (acc < 0.8 || S.honors) return;
+  const yes = await new Promise((res) => {
+    const ov = document.createElement('div');
+    ov.className = 'study-ask';
+    ov.innerHTML = `<div class="sa-card"><div class="sa-ico">🏆</div><h2>아너스 미션<br><em>도전할까요?</em></h2>
+      <p>정답률 <b>${Math.round(acc * 100)}%</b>! 실력자에게만 열리는 마지막 도전<br>🛠️ 오류 수리 · 🧩 청크 퍼즐 · 🗼 번역의 탑 — <b>난이도 상</b><br>맞힌 문제마다 코인 <b>+5</b> 보너스</p>
+      <div class="sa-btns"><button class="primary big" id="hY">도전! 🔥</button><button class="ghost big" id="hN">다음에 할래요</button></div></div>`;
+    document.body.appendChild(ov);
+    ov.querySelector('#hY').onclick = () => { ov.remove(); res(true); };
+    ov.querySelector('#hN').onclick = () => { ov.remove(); res(false); };
+  });
+  if (!yes) return;
+  const keep = S.level;
+  setLevel('high');
+  let ok = 0; let n = 0;
+  for (const t of [10, 11, 12]) {
+    talk(`아너스 미션 ${[10, 11, 12].indexOf(t) + 1}/3 — 「${TYPES[t].short}」 상 난이도!`);
+    const r = await quizSheet(t, 3, 10);
+    ok += r.correct; n += r.total;
+    S.coins += r.reward.coins + r.correct * 5;
+  }
+  setLevel(keep);
+  S.honors = { correct: ok, total: n };
+  save();
+  callout(ok >= n - 2 ? 'legend' : 'yar', `아너스 ${ok}/${n}`);
+  await sleep(1600);
+}
+
 async function goal() {
   const first = !S.finished;
   if (first) await finalChecks();
@@ -708,6 +795,7 @@ async function goal() {
   save();
   avatar.setAnim('win');
   if (first) { bgm('castle'); await finaleDance(`🎉 ALL CLEAR! ${S.name} 문장의 성 도착`); }
+  if (first) await honorsMission();
   avatar.root.rotation.y = 0;
   cam.zoom = 0.7;
   const acc = S.answered ? Math.round((S.correct / S.answered) * 100) : 0;
@@ -715,6 +803,8 @@ async function goal() {
     <div class="kicker">GOAL!</div><h2>문장의 성 도착!</h2>
     <p>${esc(player().lines.win)}</p>
     <div class="goal-stats"><div><b>${S.correct}</b><small>정답</small></div><div><b>${acc}%</b><small>정답률</small></div><div><b>🪙 ${S.coins}</b><small>코인</small></div><div><b>🎲 ${S.turns || 0}</b><small>턴</small></div></div>
+    ${(S.pets || []).length ? `<div class="goal-pets"><small>끝까지 함께한 친구들</small><span>${S.pets.map((k) => `<i title="${ANIMALS[k].name}">${ANIMALS[k].emoji}</i>`).join('')}</span></div>` : ''}
+    ${S.honors ? `<div class="honors">🏆 아너스 미션 <b>${S.honors.correct}/${S.honors.total}</b></div>` : ''}
     <div class="total-score"><small>총점 = 코인 ${S.coins} × 10 + 빠른 도착 보너스 ${turnBonus()}</small><b>${totalScore()}<em>점</em></b></div>
     ${(S.snacks || []).length ? `<div class="goal-snacks">${S.snacks.map((k) => `<img src="${BASE}assets/snacks/${k.kind}.svg" alt="">`).join('')}</div>` : ''}
     ${rankHTML()}

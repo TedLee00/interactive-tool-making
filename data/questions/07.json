@@ -1406,5 +1406,133 @@
   ],
   "explain": "\"~하지 않으면\" 주어 + 동사 → < 부사절 >",
   "source": "교재 1-3 · 1-4 · 2-4 (확장)"
+ },
+ {
+  "id": "07-100",
+  "type": 7,
+  "level": 2,
+  "sentence": "The bag [on Sangjin's desk] is new.",
+  "answer": "형용사구",
+  "options": [
+   "형용사구",
+   "명사구",
+   "부사절",
+   "형용사",
+   "부사구"
+  ],
+  "explain": "명사 bag을 꾸미니까 ( 형용사구 )",
+  "source": "우리 반 이야기 (확장)"
+ },
+ {
+  "id": "07-101",
+  "type": 7,
+  "level": 1,
+  "sentence": "Seungtae practices the piano [every evening].",
+  "answer": "부사구",
+  "options": [
+   "부사구",
+   "형용사구",
+   "명사구",
+   "부사절",
+   "형용사"
+  ],
+  "explain": "언제? 동사 practices를 꾸미는 < 부사구 >",
+  "source": "우리 반 이야기 (확장)"
+ },
+ {
+  "id": "07-102",
+  "type": 7,
+  "level": 3,
+  "sentence": "[Talking with Ted] is always fun.",
+  "answer": "명사구",
+  "options": [
+   "명사구",
+   "부사절",
+   "형용사구",
+   "형용사",
+   "부사구"
+  ],
+  "explain": "동사 is 앞 주어 자리 동명사구 → ○ 명사구",
+  "source": "우리 반 이야기 (확장)"
+ },
+ {
+  "id": "07-103",
+  "type": 7,
+  "level": 3,
+  "sentence": "Kyungwon came to class [although it was raining].",
+  "answer": "부사절",
+  "options": [
+   "부사절",
+   "형용사",
+   "부사구",
+   "형용사구",
+   "명사구"
+  ],
+  "explain": "주어 it + 동사 was → 절! \"~지만\" → < 부사절 >",
+  "source": "우리 반 이야기 (확장)"
+ },
+ {
+  "id": "07-104",
+  "type": 7,
+  "level": 3,
+  "sentence": "Our principal wants [to start a reading club].",
+  "answer": "명사구",
+  "options": [
+   "명사구",
+   "부사절",
+   "형용사",
+   "부사구",
+   "형용사구"
+  ],
+  "explain": "wants의 목적어 \"~하는 것\" → ○ 명사구 (to부정사구)",
+  "source": "우리 반 이야기 (확장)"
+ },
+ {
+  "id": "07-105",
+  "type": 7,
+  "level": 3,
+  "sentence": "Suyeon was [really happy] today.",
+  "answer": "형용사구",
+  "options": [
+   "형용사구",
+   "부사구",
+   "명사구",
+   "부사절",
+   "형용사"
+  ],
+  "explain": "법칙 ② 보어 형용사 앞 부사까지 → ( 형용사구 )",
+  "source": "우리 반 이야기 (확장)"
+ },
+ {
+  "id": "07-106",
+  "type": 7,
+  "level": 3,
+  "sentence": "Jiyong stayed up late [to finish the project].",
+  "answer": "부사구",
+  "options": [
+   "부사구",
+   "형용사",
+   "부사절",
+   "형용사구",
+   "명사구"
+  ],
+  "explain": "\"~하기 위해\" 동사를 꾸미는 to부정사 → < 부사구 >",
+  "source": "우리 반 이야기 (확장)"
+ },
+ {
+  "id": "07-107",
+  "type": 7,
+  "level": 3,
+  "sentence": "Yujin needs a quiet place [to study].",
+  "answer": "형용사구",
+  "options": [
+   "형용사구",
+   "부사절",
+   "형용사",
+   "명사구",
+   "부사구"
+  ],
+  "explain": "명사 place를 꾸미는 to부정사 \"공부할\" → ( 형용사구 )",
+  "source": "우리 반 이야기 (확장)"
  }
 ]

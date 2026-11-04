@@ -902,5 +902,65 @@
   "end": ".",
   "explain": "목적어 자리 if절 \"~인지\" → ○ 명사절",
   "source": "교재 연습④ · 5품사 청크 독해 법칙 (확장)"
+ },
+ {
+  "id": "11-088",
+  "type": 11,
+  "level": 3,
+  "ko": "테드 선생님은 금요일마다 우리에게 재미있는 이야기를 들려주신다.",
+  "en": "N:Ted | V:tells | N:us | N:a funny story | D:every Friday",
+  "end": ".",
+  "explain": "4형식 tell + 사람 + 이야기, <언제>는 맨 뒤",
+  "source": "우리 반 이야기 (확장)"
+ },
+ {
+  "id": "11-089",
+  "type": 11,
+  "level": 2,
+  "ko": "원장님은 도서관에 새 책들을 가져오셨다.",
+  "en": "N:Our principal | V:brought | N:new books | D:to the library",
+  "end": ".",
+  "explain": "주어 → 동사 → 목적어 → <어디로>",
+  "source": "우리 반 이야기 (확장)"
+ },
+ {
+  "id": "11-090",
+  "type": 11,
+  "level": 2,
+  "ko": "승태와 지용이는 방과 후에 함께 농구를 한다.",
+  "en": "N:Seungtae | C:and | N:Jiyong | V:play | N:basketball | D:together | D:after school",
+  "end": ".",
+  "explain": "운동 이름 basketball엔 관사 X. 주어가 두 명 → play",
+  "source": "우리 반 이야기 (확장)"
+ },
+ {
+  "id": "11-091",
+  "type": 11,
+  "level": 3,
+  "ko": "빨간 운동화를 신은 소녀는 수연이다.",
+  "en": "N:The girl | A:in red sneakers | V:is | N:Suyeon",
+  "end": ".",
+  "explain": "긴 꾸밈말 ( )는 명사 뒤!",
+  "source": "우리 반 이야기 (확장)"
+ },
+ {
+  "id": "11-092",
+  "type": 11,
+  "level": 3,
+  "ko": "상진이는 시험에 통과하기 위해 열심히 공부했다.",
+  "en": "N:Sangjin | V:studied | D:hard | D:to pass the test",
+  "end": ".",
+  "explain": "<어떻게> hard → <목적> to부정사",
+  "source": "우리 반 이야기 (확장)"
+ },
+ {
+  "id": "11-093",
+  "type": 11,
+  "level": 3,
+  "ko": "유진이는 테드 선생님께 감사 카드를 드렸다.",
+  "en": "N:Yujin | V:gave | N:Ted | N:a thank-you card",
+  "end": ".",
+  "explain": "4형식 give + 사람 + 물건",
+  "source": "우리 반 이야기 (확장)"
  }
 ]

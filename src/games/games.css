@@ -187,3 +187,12 @@
 .cm-peek span { position: absolute; right: 64px; top: 4px; white-space: nowrap; background: #FFF4D6; border: 2.5px solid #2B2350; border-radius: 12px; padding: 2px 8px; font-family: 'Jua', sans-serif; font-size: 14px; color: #2B2350; }
 .cm-peek.on { animation: cmPeek 3s ease-in-out forwards; }
 @keyframes cmPeek { 0% { transform: translateX(110%) rotate(-12deg); } 15%, 80% { transform: translateX(38%) rotate(-12deg); } 100% { transform: translateX(110%) rotate(-12deg); } }
+/* ===== 품사 드럼 ===== */
+.mg-drum .mg-stage { border-color: #FFD43B; }
+.mg-drum .mg-ctrl { display: grid; grid-template-columns: 1fr 1fr 0.8fr 1fr 1fr; gap: 6px; align-items: center; padding-bottom: calc(env(safe-area-inset-bottom) + 22px); background: linear-gradient(180deg, #2B1E4A, #120C2E); }
+.mg-drum .mg-btn.dpad { position: relative; min-height: 78px; height: 78px; border-radius: 50%; border: 5px solid #C9D3E0; background: radial-gradient(circle at 50% 40%, #fff 0 52%, #F1EEE6 53% 64%, var(--dc) 65%); box-shadow: 0 6px 0 #3A3550, 0 0 0 3px #1B1430; color: var(--dc); font-size: 17px; padding: 0; }
+.mg-drum .mg-btn.dpad b { position: relative; font-family: 'Jua', sans-serif; font-weight: 400; letter-spacing: -.5px; }
+.mg-drum .mg-btn.dpad.gong { height: 62px; min-height: 62px; border-color: #C9A04A; background: radial-gradient(circle at 45% 40%, #FFF4C2, #E9C35A 55%, #B8892A); color: #5A3A10; font-size: 14px; box-shadow: 0 5px 0 #7A5A1A, 0 0 0 3px #1B1430; }
+.mg-drum .mg-btn.dpad.on { transform: translateY(4px) scale(.96); box-shadow: 0 2px 0 #3A3550, 0 0 0 3px #1B1430, 0 0 18px var(--dc); }
+.mg-drum .mg-btn.dpad.boom { animation: dBoom .25s ease-out; }
+@keyframes dBoom { 0% { filter: brightness(1.6); } 100% { filter: none; } }

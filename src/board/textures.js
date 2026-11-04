@@ -121,7 +121,7 @@ export function iconSprite(kind) {
   const c = document.createElement('canvas');
   c.width = 256; c.height = 256;
   const x = c.getContext('2d');
-  const bg = { arcade: '#E21E8C', snack: '#F2A01E', gate: '#2E7BC4', trap: '#D2463B', portal: '#7A3FA8', bonus: '#1E9B5B', goal: '#C9A84C', start: '#C9A84C' }[kind] || '#0D2144';
+  const bg = { play: '#7A3FA8', arcade: '#E21E8C', snack: '#F2A01E', gate: '#2E7BC4', trap: '#D2463B', portal: '#7A3FA8', bonus: '#1E9B5B', goal: '#C9A84C', start: '#C9A84C' }[kind] || '#0D2144';
   x.beginPath(); x.arc(128, 128, 118, 0, Math.PI * 2);
   x.fillStyle = bg; x.fill();
   x.lineWidth = 14; x.strokeStyle = '#fff'; x.stroke();
@@ -130,7 +130,7 @@ export function iconSprite(kind) {
     x.fillRect(64, 112, 128, 88); x.fillRect(52, 84, 152, 32);
     x.fillStyle = bg; x.fillRect(120, 84, 16, 116);
     x.strokeStyle = '#fff'; x.beginPath(); x.moveTo(128, 82); x.quadraticCurveTo(92, 40, 82, 76); x.moveTo(128, 82); x.quadraticCurveTo(164, 40, 174, 76); x.stroke();
-  } else if (kind === 'gate' || kind === 'arcade') { // 게임패드
+  } else if (kind === 'gate' || kind === 'arcade' || kind === 'play') { // 게임패드
     roundRect(x, 50, 92, 156, 84, 40); x.fill();
     x.fillStyle = bg; x.fillRect(82, 126, 40, 14); x.fillRect(95, 113, 14, 40);
     x.beginPath(); x.arc(162, 122, 9, 0, 7); x.arc(180, 142, 9, 0, 7); x.fill();
