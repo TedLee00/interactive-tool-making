@@ -848,5 +848,796 @@
   ],
   "explain": "뒤에 명사 school이 온다 → 전치사. after I finished처럼 주어+동사가 오면 접속사!",
   "source": "교재 1-1 연습①-B 한 단어, 여러 품사"
+ },
+ {
+  "id": "01-053",
+  "type": 1,
+  "level": 1,
+  "word": "kindness",
+  "answer": "명사",
+  "options": [
+   "명사",
+   "동사",
+   "대명사",
+   "전치사",
+   "부사"
+  ],
+  "explain": "-ness는 명사 꼬리! kind(형) → kindness(명) \"친절\" → ○ 명사",
+  "source": "교재 1-1 연습① (확장)"
+ },
+ {
+  "id": "01-054",
+  "type": 1,
+  "level": 1,
+  "word": "movement",
+  "answer": "명사",
+  "options": [
+   "명사",
+   "부사",
+   "접속사",
+   "대명사",
+   "형용사"
+  ],
+  "explain": "-ment는 명사 꼬리! move(동) → movement(명) \"움직임\" → ○ 명사",
+  "source": "교재 1-1 연습① (확장)"
+ },
+ {
+  "id": "01-055",
+  "type": 1,
+  "level": 1,
+  "word": "education",
+  "answer": "명사",
+  "options": [
+   "명사",
+   "대명사",
+   "부사",
+   "형용사",
+   "동사"
+  ],
+  "explain": "-tion은 명사 꼬리! educate(동) → education(명) \"교육\" → ○ 명사",
+  "source": "교재 1-1 연습① (확장)"
+ },
+ {
+  "id": "01-056",
+  "type": 1,
+  "level": 1,
+  "word": "wonderful",
+  "answer": "형용사",
+  "options": [
+   "형용사",
+   "접속사",
+   "전치사",
+   "부사",
+   "동사"
+  ],
+  "explain": "-ful은 형용사 꼬리! wonder(명) → wonderful(형) \"멋진\" → ( 형용사 )",
+  "source": "교재 1-1 연습① (확장)"
+ },
+ {
+  "id": "01-057",
+  "type": 1,
+  "level": 1,
+  "word": "famous",
+  "answer": "형용사",
+  "options": [
+   "형용사",
+   "대명사",
+   "부사",
+   "전치사",
+   "명사"
+  ],
+  "explain": "-ous는 형용사 꼬리! fame(명) → famous(형) \"유명한\" → ( 형용사 )",
+  "source": "교재 1-1 연습① (확장)"
+ },
+ {
+  "id": "01-058",
+  "type": 1,
+  "level": 1,
+  "word": "quickly",
+  "answer": "부사",
+  "options": [
+   "부사",
+   "전치사",
+   "접속사",
+   "대명사",
+   "형용사"
+  ],
+  "explain": "형용사 quick + -ly = 부사 \"빨리\" → < 부사 >",
+  "source": "교재 1-1 연습① (확장)"
+ },
+ {
+  "id": "01-059",
+  "type": 1,
+  "level": 1,
+  "word": "sing",
+  "answer": "동사",
+  "options": [
+   "동사",
+   "명사",
+   "형용사",
+   "부사",
+   "접속사"
+  ],
+  "explain": "동작 \"노래하다\" → □ 동사",
+  "source": "교재 1-1 연습① (확장)"
+ },
+ {
+  "id": "01-060",
+  "type": 1,
+  "level": 1,
+  "word": "me",
+  "answer": "대명사",
+  "options": [
+   "대명사",
+   "전치사",
+   "감탄사",
+   "명사",
+   "접속사"
+  ],
+  "explain": "\"나를\" — 명사 I/me를 대신하는 말 → 대명사 (5품사 청크에서는 ○ 명사 무리)",
+  "source": "교재 1-1 연습① (확장)"
+ },
+ {
+  "id": "01-061",
+  "type": 1,
+  "level": 2,
+  "word": "careful",
+  "answer": "형용사",
+  "options": [
+   "형용사",
+   "전치사",
+   "동사",
+   "대명사",
+   "부사"
+  ],
+  "explain": "-ful은 형용사 꼬리! care(명) → careful(형) \"조심하는\"",
+  "source": "교재 1-1 연습① (확장)"
+ },
+ {
+  "id": "01-062",
+  "type": 1,
+  "level": 2,
+  "word": "decide",
+  "answer": "동사",
+  "options": [
+   "동사",
+   "접속사",
+   "대명사",
+   "형용사",
+   "부사"
+  ],
+  "explain": "동작 \"결정하다\" → □ 동사. 명사는 decision!",
+  "source": "교재 1-1 연습① (확장)"
+ },
+ {
+  "id": "01-063",
+  "type": 1,
+  "level": 2,
+  "word": "freedom",
+  "answer": "명사",
+  "options": [
+   "명사",
+   "접속사",
+   "동사",
+   "부사",
+   "전치사"
+  ],
+  "explain": "-dom은 명사 꼬리! free(형) → freedom(명) \"자유\"",
+  "source": "교재 1-1 연습① (확장)"
+ },
+ {
+  "id": "01-064",
+  "type": 1,
+  "level": 2,
+  "word": "active",
+  "answer": "형용사",
+  "options": [
+   "형용사",
+   "명사",
+   "접속사",
+   "부사",
+   "동사"
+  ],
+  "explain": "-ive는 형용사 꼬리! act(동) → active(형) \"활동적인\"",
+  "source": "교재 1-1 연습① (확장)"
+ },
+ {
+  "id": "01-065",
+  "type": 1,
+  "level": 2,
+  "word": "simplify",
+  "answer": "동사",
+  "options": [
+   "동사",
+   "형용사",
+   "부사",
+   "전치사",
+   "명사"
+  ],
+  "explain": "-fy는 동사 꼬리! simple(형) → simplify(동) \"단순하게 하다\"",
+  "source": "교재 1-1 연습① (확장)"
+ },
+ {
+  "id": "01-066",
+  "type": 1,
+  "level": 2,
+  "word": "widen",
+  "answer": "동사",
+  "options": [
+   "동사",
+   "전치사",
+   "명사",
+   "접속사",
+   "형용사"
+  ],
+  "explain": "-en은 동사 꼬리! wide(형) → widen(동) \"넓히다\"",
+  "source": "교재 1-1 연습① (확장)"
+ },
+ {
+  "id": "01-067",
+  "type": 1,
+  "level": 2,
+  "word": "although",
+  "answer": "접속사",
+  "options": [
+   "접속사",
+   "동사",
+   "부사",
+   "명사",
+   "전치사"
+  ],
+  "explain": "\"비록 ~이지만\" — 문장과 문장을 잇는 △ 접속사 (뒤에 주어 + 동사가 와요)",
+  "source": "교재 1-1 연습① (확장)"
+ },
+ {
+  "id": "01-068",
+  "type": 1,
+  "level": 2,
+  "word": "unless",
+  "answer": "접속사",
+  "options": [
+   "접속사",
+   "감탄사",
+   "동사",
+   "부사",
+   "대명사"
+  ],
+  "explain": "\"~하지 않으면\" — 뒤에 주어 + 동사를 이끄는 △ 접속사",
+  "source": "교재 1-1 연습① (확장)"
+ },
+ {
+  "id": "01-069",
+  "type": 1,
+  "level": 2,
+  "word": "during",
+  "answer": "전치사",
+  "options": [
+   "전치사",
+   "형용사",
+   "접속사",
+   "명사",
+   "대명사"
+  ],
+  "explain": "\"~ 동안\" — 명사 앞에 오는 전치사 → during the vacation <부사구>",
+  "source": "교재 1-1 연습① (확장)"
+ },
+ {
+  "id": "01-070",
+  "type": 1,
+  "level": 2,
+  "word": "among",
+  "answer": "전치사",
+  "options": [
+   "전치사",
+   "감탄사",
+   "대명사",
+   "형용사",
+   "명사"
+  ],
+  "explain": "\"~ 사이에(셋 이상)\" — 명사 앞에 오는 전치사",
+  "source": "교재 1-1 연습① (확장)"
+ },
+ {
+  "id": "01-071",
+  "type": 1,
+  "level": 2,
+  "word": "himself",
+  "answer": "대명사",
+  "options": [
+   "대명사",
+   "형용사",
+   "동사",
+   "명사",
+   "부사"
+  ],
+  "explain": "\"그 자신\" — 명사(he)를 대신하는 재귀대명사",
+  "source": "교재 1-1 연습① (확장)"
+ },
+ {
+  "id": "01-072",
+  "type": 1,
+  "level": 2,
+  "word": "everyone",
+  "answer": "대명사",
+  "options": [
+   "대명사",
+   "접속사",
+   "전치사",
+   "형용사",
+   "동사"
+  ],
+  "explain": "\"모든 사람\" — 명사를 대신하는 대명사",
+  "source": "교재 1-1 연습① (확장)"
+ },
+ {
+  "id": "01-073",
+  "type": 1,
+  "level": 2,
+  "word": "loudly",
+  "answer": "부사",
+  "options": [
+   "부사",
+   "접속사",
+   "명사",
+   "대명사",
+   "형용사"
+  ],
+  "explain": "형용사 loud + -ly = 부사 \"크게, 시끄럽게\"",
+  "source": "교재 1-1 연습① (확장)"
+ },
+ {
+  "id": "01-074",
+  "type": 1,
+  "level": 2,
+  "word": "hooray",
+  "answer": "감탄사",
+  "options": [
+   "감탄사",
+   "동사",
+   "대명사",
+   "접속사",
+   "명사"
+  ],
+  "explain": "기쁨을 나타내는 감탄사 \"만세!\"",
+  "source": "교재 1-1 연습① (확장)"
+ },
+ {
+  "id": "01-075",
+  "type": 1,
+  "level": 3,
+  "word": "friendly",
+  "answer": "형용사",
+  "options": [
+   "형용사",
+   "대명사",
+   "전치사",
+   "부사",
+   "명사"
+  ],
+  "explain": "-ly로 끝나지만 부사가 아니다! friend(명) + -ly = 형용사 \"다정한\". 명사 + -ly는 형용사!",
+  "source": "교재 1-1 연습① (확장)"
+ },
+ {
+  "id": "01-076",
+  "type": 1,
+  "level": 3,
+  "word": "lovely",
+  "answer": "형용사",
+  "options": [
+   "형용사",
+   "부사",
+   "전치사",
+   "접속사",
+   "동사"
+  ],
+  "explain": "love(명) + -ly = 형용사 \"사랑스러운\". -ly라고 다 부사가 아니에요",
+  "source": "교재 1-1 연습① (확장)"
+ },
+ {
+  "id": "01-077",
+  "type": 1,
+  "level": 3,
+  "word": "daily",
+  "answer": "형용사",
+  "options": [
+   "형용사",
+   "대명사",
+   "전치사",
+   "명사",
+   "동사"
+  ],
+  "explain": "명사 routine을 꾸민다 → ( 형용사 ) \"매일의\". day(명) + -ly = 형용사",
+  "source": "교재 1-1 연습① (확장)",
+  "context": "This is my **daily** routine."
+ },
+ {
+  "id": "01-078",
+  "type": 1,
+  "level": 3,
+  "word": "therefore",
+  "answer": "부사",
+  "options": [
+   "부사",
+   "대명사",
+   "접속사",
+   "동사",
+   "전치사"
+  ],
+  "explain": "\"그러므로\" — 접속사처럼 보이지만 however처럼 부사!",
+  "source": "교재 1-1 연습① (확장)"
+ },
+ {
+  "id": "01-079",
+  "type": 1,
+  "level": 3,
+  "word": "look",
+  "answer": "동사",
+  "options": [
+   "동사",
+   "형용사",
+   "전치사",
+   "명사",
+   "접속사"
+  ],
+  "explain": "명령문의 동작 \"봐라\" → □ 동사",
+  "source": "교재 1-1 연습① (확장)",
+  "context": "**Look** at the board, please."
+ },
+ {
+  "id": "01-080",
+  "type": 1,
+  "level": 3,
+  "word": "look",
+  "answer": "명사",
+  "options": [
+   "명사",
+   "전치사",
+   "형용사",
+   "동사",
+   "부사"
+  ],
+  "explain": "a 뒤, take의 목적어 → ○ 명사 \"한번 봄\". 같은 단어, 다른 일!",
+  "source": "교재 1-1 연습① (확장)",
+  "context": "Can I take a **look** at your notebook?"
+ },
+ {
+  "id": "01-081",
+  "type": 1,
+  "level": 3,
+  "word": "late",
+  "answer": "부사",
+  "options": [
+   "부사",
+   "형용사",
+   "접속사",
+   "동사",
+   "전치사"
+  ],
+  "explain": "동사 came을 꾸민다 → < 부사 > \"늦게\" (lately는 \"최근에\"!)",
+  "source": "교재 1-1 연습① (확장)",
+  "context": "He came home **late** last night."
+ },
+ {
+  "id": "01-082",
+  "type": 1,
+  "level": 3,
+  "word": "late",
+  "answer": "형용사",
+  "options": [
+   "형용사",
+   "명사",
+   "전치사",
+   "대명사",
+   "접속사"
+  ],
+  "explain": "I = late, 주어를 설명하는 보어 → ( 형용사 ) \"늦은\"",
+  "source": "교재 1-1 연습① (확장)",
+  "context": "I was **late** for school."
+ },
+ {
+  "id": "01-083",
+  "type": 1,
+  "level": 3,
+  "word": "since",
+  "answer": "접속사",
+  "options": [
+   "접속사",
+   "부사",
+   "감탄사",
+   "명사",
+   "대명사"
+  ],
+  "explain": "뒤에 주어 it + 동사 rained → 절을 이끄는 △ 접속사 \"~ 때문에\"",
+  "source": "교재 1-1 연습① (확장)",
+  "context": "**Since** it rained, we stayed home."
+ },
+ {
+  "id": "01-084",
+  "type": 1,
+  "level": 3,
+  "word": "since",
+  "answer": "전치사",
+  "options": [
+   "전치사",
+   "동사",
+   "대명사",
+   "부사",
+   "명사"
+  ],
+  "explain": "뒤에 명사 2020만 → 전치사 \"~ 이후로\"",
+  "source": "교재 1-1 연습① (확장)",
+  "context": "I have lived here **since** 2020."
+ },
+ {
+  "id": "01-085",
+  "type": 1,
+  "level": 3,
+  "word": "before",
+  "answer": "접속사",
+  "options": [
+   "접속사",
+   "부사",
+   "감탄사",
+   "전치사",
+   "대명사"
+  ],
+  "explain": "뒤에 주어 you + 동사 eat → △ 접속사",
+  "source": "교재 1-1 연습① (확장)",
+  "context": "Wash your hands **before** you eat."
+ },
+ {
+  "id": "01-086",
+  "type": 1,
+  "level": 3,
+  "word": "before",
+  "answer": "전치사",
+  "options": [
+   "전치사",
+   "형용사",
+   "부사",
+   "감탄사",
+   "명사"
+  ],
+  "explain": "뒤에 명사 school만 → 전치사. 같은 단어도 뒤를 보면 안다!",
+  "source": "교재 1-1 연습① (확장)",
+  "context": "I always eat breakfast **before** school."
+ },
+ {
+  "id": "01-087",
+  "type": 1,
+  "level": 3,
+  "word": "like",
+  "answer": "전치사",
+  "options": [
+   "전치사",
+   "대명사",
+   "동사",
+   "감탄사",
+   "명사"
+  ],
+  "explain": "\"~처럼\" — 명사 a bird 앞의 전치사 (I like pizza의 like는 동사)",
+  "source": "교재 1-1 연습① (확장)",
+  "context": "She sings **like** a bird."
+ },
+ {
+  "id": "01-088",
+  "type": 1,
+  "level": 3,
+  "word": "only",
+  "answer": "형용사",
+  "options": [
+   "형용사",
+   "전치사",
+   "명사",
+   "부사",
+   "접속사"
+  ],
+  "explain": "명사 student를 꾸민다 → ( 형용사 ) \"유일한\"",
+  "source": "교재 1-1 연습① (확장)",
+  "context": "She is the **only** student in the room."
+ },
+ {
+  "id": "01-089",
+  "type": 1,
+  "level": 3,
+  "word": "only",
+  "answer": "부사",
+  "options": [
+   "부사",
+   "대명사",
+   "명사",
+   "형용사",
+   "접속사"
+  ],
+  "explain": "\"단지, 겨우\" — one pencil을 꾸미는 < 부사 >",
+  "source": "교재 1-1 연습① (확장)",
+  "context": "I have **only** one pencil."
+ },
+ {
+  "id": "01-090",
+  "type": 1,
+  "level": 3,
+  "word": "early",
+  "answer": "형용사",
+  "options": [
+   "형용사",
+   "동사",
+   "부사",
+   "전치사",
+   "대명사"
+  ],
+  "explain": "명사 bird를 꾸민다 → ( 형용사 ) \"일찍 일어나는\"",
+  "source": "교재 1-1 연습① (확장)",
+  "context": "The **early** bird catches the worm."
+ },
+ {
+  "id": "01-091",
+  "type": 1,
+  "level": 3,
+  "word": "early",
+  "answer": "부사",
+  "options": [
+   "부사",
+   "전치사",
+   "형용사",
+   "대명사",
+   "동사"
+  ],
+  "explain": "동사 got up을 꾸민다 → < 부사 > \"일찍\"",
+  "source": "교재 1-1 연습① (확장)",
+  "context": "I got up **early** today."
+ },
+ {
+  "id": "01-092",
+  "type": 1,
+  "level": 3,
+  "word": "these",
+  "answer": "대명사",
+  "options": [
+   "대명사",
+   "감탄사",
+   "전치사",
+   "동사",
+   "명사"
+  ],
+  "explain": "혼자 주어로 쓰였다 → 대명사 (these shoes처럼 명사 앞이면 형용사)",
+  "source": "교재 1-1 연습① (확장)",
+  "context": "**These** are my new shoes."
+ },
+ {
+  "id": "01-093",
+  "type": 1,
+  "level": 3,
+  "word": "these",
+  "answer": "형용사",
+  "options": [
+   "형용사",
+   "대명사",
+   "접속사",
+   "부사",
+   "동사"
+  ],
+  "explain": "명사 shoes 앞에서 꾸민다 → 형용사 (청크로는 ○these shoes 명사구)",
+  "source": "교재 1-1 연습① (확장)",
+  "context": "I like **these** shoes."
+ },
+ {
+  "id": "01-094",
+  "type": 1,
+  "level": 3,
+  "word": "cook",
+  "answer": "명사",
+  "options": [
+   "명사",
+   "대명사",
+   "동사",
+   "접속사",
+   "전치사"
+  ],
+  "explain": "a great 뒤 → ○ 명사 \"요리사\" (cooker는 \"조리 기구\"!)",
+  "source": "교재 1-1 연습① (확장)",
+  "context": "My dad is a great **cook**."
+ },
+ {
+  "id": "01-095",
+  "type": 1,
+  "level": 3,
+  "word": "smile",
+  "answer": "명사",
+  "options": [
+   "명사",
+   "부사",
+   "대명사",
+   "접속사",
+   "전치사"
+  ],
+  "explain": "a beautiful 뒤 → ○ 명사 \"미소\"",
+  "source": "교재 1-1 연습① (확장)",
+  "context": "She has a beautiful **smile**."
+ },
+ {
+  "id": "01-096",
+  "type": 1,
+  "level": 3,
+  "word": "dry",
+  "answer": "동사",
+  "options": [
+   "동사",
+   "대명사",
+   "전치사",
+   "형용사",
+   "부사"
+  ],
+  "explain": "목적어 your hair를 갖는 동작 → □ 동사 \"말리다\"",
+  "source": "교재 1-1 연습① (확장)",
+  "context": "Please **dry** your hair."
+ },
+ {
+  "id": "01-097",
+  "type": 1,
+  "level": 3,
+  "word": "open",
+  "answer": "형용사",
+  "options": [
+   "형용사",
+   "부사",
+   "전치사",
+   "접속사",
+   "대명사"
+  ],
+  "explain": "library = open, 보어 → ( 형용사 ) \"열려 있는\"",
+  "source": "교재 1-1 연습① (확장)",
+  "context": "The library is **open** on Sundays."
+ },
+ {
+  "id": "01-098",
+  "type": 1,
+  "level": 3,
+  "word": "so",
+  "answer": "접속사",
+  "options": [
+   "접속사",
+   "대명사",
+   "형용사",
+   "동사",
+   "감탄사"
+  ],
+  "explain": "문장과 문장을 잇는 △ 접속사 \"그래서\"",
+  "source": "교재 1-1 연습① (확장)",
+  "context": "I was tired, **so** I went to bed."
+ },
+ {
+  "id": "01-099",
+  "type": 1,
+  "level": 3,
+  "word": "still",
+  "answer": "부사",
+  "options": [
+   "부사",
+   "명사",
+   "접속사",
+   "대명사",
+   "형용사"
+  ],
+  "explain": "동사 is sleeping을 꾸민다 → < 부사 > \"아직도\"",
+  "source": "교재 1-1 연습① (확장)",
+  "context": "He is **still** sleeping."
+ },
+ {
+  "id": "01-100",
+  "type": 1,
+  "level": 3,
+  "word": "near",
+  "answer": "전치사",
+  "options": [
+   "전치사",
+   "동사",
+   "접속사",
+   "대명사",
+   "형용사"
+  ],
+  "explain": "명사 my house 앞 → 전치사 \"~ 가까이\". near my house = ( 형용사구 )",
+  "source": "교재 1-1 연습① (확장)",
+  "context": "There is a bank **near** my house."
  }
 ]

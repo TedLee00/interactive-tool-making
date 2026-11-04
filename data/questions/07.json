@@ -686,5 +686,901 @@
   ],
   "explain": "can win은 동사 덩어리 하나 → □ 동사 (조동사 포함)",
   "source": "교재 1-4"
+ },
+ {
+  "id": "07-044",
+  "type": 7,
+  "level": 1,
+  "sentence": "I read books [in the library].",
+  "answer": "부사구",
+  "options": [
+   "부사구",
+   "명사절",
+   "부사절",
+   "명사구",
+   "형용사구"
+  ],
+  "explain": "동사 read를 꾸미니까 < 부사구 > (어디서?)",
+  "source": "교재 1-3 · 1-4 · 2-4 (확장)"
+ },
+ {
+  "id": "07-045",
+  "type": 7,
+  "level": 1,
+  "sentence": "[My older brother] is a firefighter.",
+  "answer": "명사구",
+  "options": [
+   "명사구",
+   "부사구",
+   "명사절",
+   "부사절",
+   "형용사구"
+  ],
+  "explain": "법칙 ① 명사 앞 꾸밈말까지 ○ 명사구",
+  "source": "교재 1-3 · 1-4 · 2-4 (확장)"
+ },
+ {
+  "id": "07-046",
+  "type": 7,
+  "level": 1,
+  "sentence": "We have a test [on Friday].",
+  "answer": "부사구",
+  "options": [
+   "부사구",
+   "부사절",
+   "형용사구",
+   "명사절",
+   "명사구"
+  ],
+  "explain": "언제? 동사 have를 꾸미는 < 부사구 >",
+  "source": "교재 1-3 · 1-4 · 2-4 (확장)"
+ },
+ {
+  "id": "07-047",
+  "type": 7,
+  "level": 2,
+  "sentence": "The girl [with the red bag] is Jimin.",
+  "answer": "형용사구",
+  "options": [
+   "형용사구",
+   "명사구",
+   "부사구",
+   "명사절",
+   "부사절"
+  ],
+  "explain": "명사 girl을 꾸미니까 ( 형용사구 ). 판별 비법: 꾸밈받는 말이 명사!",
+  "source": "교재 1-3 · 1-4 · 2-4 (확장)"
+ },
+ {
+  "id": "07-048",
+  "type": 7,
+  "level": 2,
+  "sentence": "I put my phone [on the desk].",
+  "answer": "부사구",
+  "options": [
+   "부사구",
+   "부사절",
+   "명사구",
+   "형용사구",
+   "명사절"
+  ],
+  "explain": "동사 put을 꾸미니까 < 부사구 > (어디에?)",
+  "source": "교재 1-3 · 1-4 · 2-4 (확장)"
+ },
+ {
+  "id": "07-049",
+  "type": 7,
+  "level": 2,
+  "sentence": "The phone [on the desk] is mine.",
+  "answer": "형용사구",
+  "options": [
+   "형용사구",
+   "명사구",
+   "부사구",
+   "명사절",
+   "부사절"
+  ],
+  "explain": "명사 phone을 꾸미니까 ( 형용사구 ). 같은 모양, 다른 역할!",
+  "source": "교재 1-3 · 1-4 · 2-4 (확장)"
+ },
+ {
+  "id": "07-050",
+  "type": 7,
+  "level": 2,
+  "sentence": "[Playing the piano] is my hobby.",
+  "answer": "명사구",
+  "options": [
+   "명사구",
+   "명사절",
+   "부사구",
+   "부사절",
+   "형용사구"
+  ],
+  "explain": "동사 is 앞 주어, \"~하는 것\" → ○ 명사구 (동명사구)",
+  "source": "교재 1-3 · 1-4 · 2-4 (확장)"
+ },
+ {
+  "id": "07-051",
+  "type": 7,
+  "level": 2,
+  "sentence": "I like [watching movies].",
+  "answer": "명사구",
+  "options": [
+   "명사구",
+   "형용사구",
+   "부사절",
+   "부사구",
+   "명사절"
+  ],
+  "explain": "like의 목적어, \"~하는 것\" → ○ 명사구",
+  "source": "교재 1-3 · 1-4 · 2-4 (확장)"
+ },
+ {
+  "id": "07-052",
+  "type": 7,
+  "level": 1,
+  "sentence": "She went out [after dinner].",
+  "answer": "부사구",
+  "options": [
+   "부사구",
+   "부사절",
+   "명사절",
+   "명사구",
+   "형용사구"
+  ],
+  "explain": "언제? → < 부사구 >",
+  "source": "교재 1-3 · 1-4 · 2-4 (확장)"
+ },
+ {
+  "id": "07-053",
+  "type": 7,
+  "level": 2,
+  "sentence": "I was happy [because I won the game].",
+  "answer": "부사절",
+  "options": [
+   "부사절",
+   "명사구",
+   "형용사구",
+   "부사구",
+   "명사절"
+  ],
+  "explain": "주어 I + 동사 won → 절! 이유 → < 부사절 >",
+  "source": "교재 1-3 · 1-4 · 2-4 (확장)"
+ },
+ {
+  "id": "07-054",
+  "type": 7,
+  "level": 2,
+  "sentence": "Call me [when you get home].",
+  "answer": "부사절",
+  "options": [
+   "부사절",
+   "명사절",
+   "명사구",
+   "부사구",
+   "형용사구"
+  ],
+  "explain": "주어 you + 동사 get → 절! \"~할 때\" → < 부사절 >",
+  "source": "교재 1-3 · 1-4 · 2-4 (확장)"
+ },
+ {
+  "id": "07-055",
+  "type": 7,
+  "level": 3,
+  "sentence": "I have some homework [to do].",
+  "answer": "형용사구",
+  "options": [
+   "형용사구",
+   "부사절",
+   "부사구",
+   "명사구",
+   "명사절"
+  ],
+  "explain": "명사 homework를 꾸미는 to부정사 \"할\" → ( 형용사구 )",
+  "source": "교재 1-3 · 1-4 · 2-4 (확장)"
+ },
+ {
+  "id": "07-056",
+  "type": 7,
+  "level": 3,
+  "sentence": "He studied hard [to pass the exam].",
+  "answer": "부사구",
+  "options": [
+   "부사구",
+   "명사구",
+   "부사절",
+   "명사절",
+   "형용사구"
+  ],
+  "explain": "\"~하기 위해\" 동사 studied를 꾸미는 to부정사 → < 부사구 >",
+  "source": "교재 1-3 · 1-4 · 2-4 (확장)"
+ },
+ {
+  "id": "07-057",
+  "type": 7,
+  "level": 3,
+  "sentence": "[To travel around the world] is my dream.",
+  "answer": "명사구",
+  "options": [
+   "명사구",
+   "형용사구",
+   "부사구",
+   "부사절",
+   "명사절"
+  ],
+  "explain": "주어 자리 to부정사구 \"~하는 것\" → ○ 명사구",
+  "source": "교재 1-3 · 1-4 · 2-4 (확장)"
+ },
+ {
+  "id": "07-058",
+  "type": 7,
+  "level": 3,
+  "sentence": "My dream is [to travel around the world].",
+  "answer": "명사구",
+  "options": [
+   "명사구",
+   "부사구",
+   "형용사구",
+   "부사절",
+   "명사절"
+  ],
+  "explain": "보어 자리 to부정사구 \"~하는 것\" → ○ 명사구 (명사 무리가 보어 의자에)",
+  "source": "교재 1-3 · 1-4 · 2-4 (확장)"
+ },
+ {
+  "id": "07-059",
+  "type": 7,
+  "level": 3,
+  "sentence": "I know [that he is from Canada].",
+  "answer": "명사절",
+  "options": [
+   "명사절",
+   "부사절",
+   "명사구",
+   "형용사구",
+   "부사구"
+  ],
+  "explain": "know의 목적어, 주어 + 동사 있음 → ○ 명사절",
+  "source": "교재 1-3 · 1-4 · 2-4 (확장)"
+ },
+ {
+  "id": "07-060",
+  "type": 7,
+  "level": 3,
+  "sentence": "[What she said] surprised me.",
+  "answer": "명사절",
+  "options": [
+   "명사절",
+   "부사구",
+   "부사절",
+   "명사구",
+   "형용사구"
+  ],
+  "explain": "동사 surprised 앞 주어, 주어 she + 동사 said → ○ 명사절",
+  "source": "교재 1-3 · 1-4 · 2-4 (확장)"
+ },
+ {
+  "id": "07-061",
+  "type": 7,
+  "level": 3,
+  "sentence": "I wonder [if he will come].",
+  "answer": "명사절",
+  "options": [
+   "명사절",
+   "명사구",
+   "부사구",
+   "부사절",
+   "형용사구"
+  ],
+  "explain": "wonder의 목적어 \"~인지\" → ○ 명사절. (조건 \"~하면\"의 if는 부사절!)",
+  "source": "교재 1-3 · 1-4 · 2-4 (확장)"
+ },
+ {
+  "id": "07-062",
+  "type": 7,
+  "level": 3,
+  "sentence": "We will go hiking [if it is sunny].",
+  "answer": "부사절",
+  "options": [
+   "부사절",
+   "명사절",
+   "명사구",
+   "형용사구",
+   "부사구"
+  ],
+  "explain": "조건 \"만약 ~하면\" → 동사를 꾸미는 < 부사절 >. if라도 하는 일이 다르다!",
+  "source": "교재 1-3 · 1-4 · 2-4 (확장)"
+ },
+ {
+  "id": "07-063",
+  "type": 7,
+  "level": 3,
+  "sentence": "The man [from Japan] speaks Korean well.",
+  "answer": "형용사구",
+  "options": [
+   "형용사구",
+   "부사절",
+   "명사절",
+   "명사구",
+   "부사구"
+  ],
+  "explain": "명사 man을 꾸미는 ( 형용사구 ) (일본에서 온)",
+  "source": "교재 1-3 · 1-4 · 2-4 (확장)"
+ },
+ {
+  "id": "07-064",
+  "type": 7,
+  "level": 3,
+  "sentence": "I need a chair [to sit on].",
+  "answer": "형용사구",
+  "options": [
+   "형용사구",
+   "부사절",
+   "명사구",
+   "부사구",
+   "명사절"
+  ],
+  "explain": "명사 chair를 꾸미는 to부정사 \"앉을\" → ( 형용사구 )",
+  "source": "교재 1-3 · 1-4 · 2-4 (확장)"
+ },
+ {
+  "id": "07-065",
+  "type": 7,
+  "level": 3,
+  "sentence": "She was [very excited].",
+  "answer": "형용사구",
+  "options": [
+   "형용사구",
+   "부사절",
+   "명사구",
+   "부사구",
+   "명사절"
+  ],
+  "explain": "법칙 ② 보어 형용사 앞 부사까지 한 덩어리 → ( 형용사구 )",
+  "source": "교재 1-3 · 1-4 · 2-4 (확장)"
+ },
+ {
+  "id": "07-066",
+  "type": 7,
+  "level": 3,
+  "sentence": "He ran [very fast].",
+  "answer": "부사구",
+  "options": [
+   "부사구",
+   "부사절",
+   "명사구",
+   "형용사구",
+   "명사절"
+  ],
+  "explain": "동사 ran을 꾸미는 부사 덩어리 → < 부사구 > (very fast)",
+  "source": "교재 1-3 · 1-4 · 2-4 (확장)"
+ },
+ {
+  "id": "07-067",
+  "type": 7,
+  "level": 3,
+  "sentence": "[Although it was cold], we played outside.",
+  "answer": "부사절",
+  "options": [
+   "부사절",
+   "명사절",
+   "형용사구",
+   "명사구",
+   "부사구"
+  ],
+  "explain": "주어 it + 동사 was → 절! \"~지만\" → < 부사절 >",
+  "source": "교재 1-3 · 1-4 · 2-4 (확장)"
+ },
+ {
+  "id": "07-068",
+  "type": 7,
+  "level": 3,
+  "sentence": "I don't know [where she lives].",
+  "answer": "명사절",
+  "options": [
+   "명사절",
+   "부사구",
+   "형용사구",
+   "부사절",
+   "명사구"
+  ],
+  "explain": "know의 목적어, 주어 she + 동사 lives → ○ 명사절",
+  "source": "교재 1-3 · 1-4 · 2-4 (확장)"
+ },
+ {
+  "id": "07-069",
+  "type": 7,
+  "level": 3,
+  "sentence": "[Eating breakfast] is important.",
+  "answer": "명사구",
+  "options": [
+   "명사구",
+   "명사절",
+   "형용사구",
+   "부사절",
+   "부사구"
+  ],
+  "explain": "주어 자리 동명사구 → ○ 명사구",
+  "source": "교재 1-3 · 1-4 · 2-4 (확장)"
+ },
+ {
+  "id": "07-070",
+  "type": 7,
+  "level": 3,
+  "sentence": "There are many people [in the park].",
+  "answer": "부사구",
+  "options": [
+   "부사구",
+   "형용사구",
+   "명사절",
+   "명사구",
+   "부사절"
+  ],
+  "explain": "There are ~ \"어디에 있다\" → 동사를 꾸미는 < 부사구 >",
+  "source": "교재 1-3 · 1-4 · 2-4 (확장)"
+ },
+ {
+  "id": "07-071",
+  "type": 7,
+  "level": 3,
+  "sentence": "The people [in the park] look happy.",
+  "answer": "형용사구",
+  "options": [
+   "형용사구",
+   "부사절",
+   "부사구",
+   "명사구",
+   "명사절"
+  ],
+  "explain": "명사 people을 꾸미니까 ( 형용사구 )",
+  "source": "교재 1-3 · 1-4 · 2-4 (확장)"
+ },
+ {
+  "id": "07-072",
+  "type": 7,
+  "level": 3,
+  "sentence": "[Before you leave], turn off the lights.",
+  "answer": "부사절",
+  "options": [
+   "부사절",
+   "형용사구",
+   "명사절",
+   "부사구",
+   "명사구"
+  ],
+  "explain": "주어 you + 동사 leave → 절! 시간 → < 부사절 >",
+  "source": "교재 1-3 · 1-4 · 2-4 (확장)"
+ },
+ {
+  "id": "07-073",
+  "type": 7,
+  "level": 3,
+  "sentence": "She has a dog [named Max].",
+  "answer": "형용사구",
+  "options": [
+   "형용사구",
+   "부사절",
+   "명사구",
+   "명사절",
+   "부사구"
+  ],
+  "explain": "명사 dog을 뒤에서 꾸민다 \"Max라는 이름의\" → ( 형용사구 )",
+  "source": "교재 1-3 · 1-4 · 2-4 (확장)"
+ },
+ {
+  "id": "07-074",
+  "type": 7,
+  "level": 2,
+  "sentence": "[Every Saturday], I visit my grandma.",
+  "answer": "부사구",
+  "options": [
+   "부사구",
+   "명사절",
+   "형용사구",
+   "부사절",
+   "명사구"
+  ],
+  "explain": "언제? → < 부사구 >",
+  "source": "교재 1-3 · 1-4 · 2-4 (확장)"
+ },
+ {
+  "id": "07-075",
+  "type": 7,
+  "level": 3,
+  "sentence": "It is easy [to make friends].",
+  "answer": "명사구",
+  "options": [
+   "명사구",
+   "부사구",
+   "명사절",
+   "부사절",
+   "형용사구"
+  ],
+  "explain": "가주어 It의 진짜 주어 \"친구를 사귀는 것\" → ○ 명사구",
+  "source": "교재 1-3 · 1-4 · 2-4 (확장)"
+ },
+ {
+  "id": "07-076",
+  "type": 7,
+  "level": 3,
+  "sentence": "I got up early [so that I could catch the bus].",
+  "answer": "부사절",
+  "options": [
+   "부사절",
+   "부사구",
+   "명사구",
+   "명사절",
+   "형용사구"
+  ],
+  "explain": "\"~하도록\" 주어 + 동사 있음 → < 부사절 >",
+  "source": "교재 1-3 · 1-4 · 2-4 (확장)"
+ },
+ {
+  "id": "07-077",
+  "type": 7,
+  "level": 2,
+  "sentence": "I [can speak] three languages.",
+  "answer": "동사",
+  "options": [
+   "동사",
+   "부사",
+   "형용사",
+   "부사구",
+   "명사"
+  ],
+  "explain": "조동사 can까지 동사 덩어리 □ → 동사",
+  "source": "교재 1-3 · 1-4 · 2-4 (확장)"
+ },
+ {
+  "id": "07-078",
+  "type": 7,
+  "level": 2,
+  "sentence": "[Fortunately], nobody was hurt.",
+  "answer": "부사",
+  "options": [
+   "부사",
+   "명사",
+   "형용사",
+   "부사구",
+   "동사"
+  ],
+  "explain": "문장 전체를 꾸미는 단어 하나 → < 부사 >",
+  "source": "교재 1-3 · 1-4 · 2-4 (확장)"
+ },
+ {
+  "id": "07-079",
+  "type": 7,
+  "level": 3,
+  "sentence": "My grandma lives [alone].",
+  "answer": "부사",
+  "options": [
+   "부사",
+   "부사구",
+   "동사",
+   "형용사",
+   "명사"
+  ],
+  "explain": "동사 lives를 꾸미는 단어 하나 → < 부사 > \"혼자\"",
+  "source": "교재 1-3 · 1-4 · 2-4 (확장)"
+ },
+ {
+  "id": "07-080",
+  "type": 7,
+  "level": 3,
+  "sentence": "I hope [to see you again].",
+  "answer": "명사구",
+  "options": [
+   "명사구",
+   "부사절",
+   "명사절",
+   "형용사구",
+   "부사구"
+  ],
+  "explain": "hope의 목적어 \"~하는 것\" → ○ 명사구 (to부정사구)",
+  "source": "교재 1-3 · 1-4 · 2-4 (확장)"
+ },
+ {
+  "id": "07-081",
+  "type": 7,
+  "level": 3,
+  "sentence": "She stopped [to buy a coffee].",
+  "answer": "부사구",
+  "options": [
+   "부사구",
+   "부사절",
+   "형용사구",
+   "명사절",
+   "명사구"
+  ],
+  "explain": "\"~하려고\" 멈췄다 → 동사를 꾸미는 < 부사구 > (stop + to부정사 = 목적)",
+  "source": "교재 1-3 · 1-4 · 2-4 (확장)"
+ },
+ {
+  "id": "07-082",
+  "type": 7,
+  "level": 3,
+  "sentence": "She stopped [eating snacks].",
+  "answer": "명사구",
+  "options": [
+   "명사구",
+   "형용사구",
+   "부사구",
+   "부사절",
+   "명사절"
+  ],
+  "explain": "stopped의 목적어 \"~하는 것을\" → ○ 명사구 (동명사구). to부정사와 뜻이 다르다!",
+  "source": "교재 1-3 · 1-4 · 2-4 (확장)"
+ },
+ {
+  "id": "07-083",
+  "type": 7,
+  "level": 2,
+  "sentence": "The woman [in the white coat] is a doctor.",
+  "answer": "형용사구",
+  "options": [
+   "형용사구",
+   "명사구",
+   "부사절",
+   "명사절",
+   "부사구"
+  ],
+  "explain": "명사 woman을 꾸미니까 ( 형용사구 )",
+  "source": "교재 1-3 · 1-4 · 2-4 (확장)"
+ },
+ {
+  "id": "07-084",
+  "type": 7,
+  "level": 2,
+  "sentence": "He jumped [into the pool].",
+  "answer": "부사구",
+  "options": [
+   "부사구",
+   "형용사구",
+   "명사구",
+   "부사절",
+   "명사절"
+  ],
+  "explain": "동사 jumped를 꾸미는 < 부사구 > (어디로?)",
+  "source": "교재 1-3 · 1-4 · 2-4 (확장)"
+ },
+ {
+  "id": "07-085",
+  "type": 7,
+  "level": 3,
+  "sentence": "[That he won the prize] surprised everyone.",
+  "answer": "명사절",
+  "options": [
+   "명사절",
+   "부사구",
+   "부사절",
+   "명사구",
+   "형용사구"
+  ],
+  "explain": "주어 자리 that절 → ○ 명사절",
+  "source": "교재 1-3 · 1-4 · 2-4 (확장)"
+ },
+ {
+  "id": "07-086",
+  "type": 7,
+  "level": 3,
+  "sentence": "Do you know [when the movie starts]?",
+  "answer": "명사절",
+  "options": [
+   "명사절",
+   "명사구",
+   "부사절",
+   "부사구",
+   "형용사구"
+  ],
+  "explain": "know의 목적어, 주어 + 동사 있음 → ○ 명사절",
+  "source": "교재 1-3 · 1-4 · 2-4 (확장)"
+ },
+ {
+  "id": "07-087",
+  "type": 7,
+  "level": 3,
+  "sentence": "Let's go out [when the movie ends].",
+  "answer": "부사절",
+  "options": [
+   "부사절",
+   "명사절",
+   "부사구",
+   "형용사구",
+   "명사구"
+  ],
+  "explain": "\"~할 때\" 시간 → < 부사절 >. 같은 when이라도 하는 일이 다르다!",
+  "source": "교재 1-3 · 1-4 · 2-4 (확장)"
+ },
+ {
+  "id": "07-088",
+  "type": 7,
+  "level": 3,
+  "sentence": "The music [from the radio] was too loud.",
+  "answer": "형용사구",
+  "options": [
+   "형용사구",
+   "부사구",
+   "명사절",
+   "명사구",
+   "부사절"
+  ],
+  "explain": "명사 music을 꾸미는 ( 형용사구 )",
+  "source": "교재 1-3 · 1-4 · 2-4 (확장)"
+ },
+ {
+  "id": "07-089",
+  "type": 7,
+  "level": 3,
+  "sentence": "There is nothing [to eat] in the fridge.",
+  "answer": "형용사구",
+  "options": [
+   "형용사구",
+   "부사구",
+   "부사절",
+   "명사절",
+   "명사구"
+  ],
+  "explain": "대명사 nothing을 꾸미는 to부정사 \"먹을\" → ( 형용사구 )",
+  "source": "교재 1-3 · 1-4 · 2-4 (확장)"
+ },
+ {
+  "id": "07-090",
+  "type": 7,
+  "level": 3,
+  "sentence": "We were [so tired] after the game.",
+  "answer": "형용사구",
+  "options": [
+   "형용사구",
+   "명사절",
+   "명사구",
+   "부사절",
+   "부사구"
+  ],
+  "explain": "법칙 ② 보어 형용사 앞 부사까지 → ( 형용사구 )",
+  "source": "교재 1-3 · 1-4 · 2-4 (확장)"
+ },
+ {
+  "id": "07-091",
+  "type": 7,
+  "level": 3,
+  "sentence": "I will call you [as soon as I arrive].",
+  "answer": "부사절",
+  "options": [
+   "부사절",
+   "명사절",
+   "명사구",
+   "부사구",
+   "형용사구"
+  ],
+  "explain": "\"~하자마자\" 주어 + 동사 → < 부사절 >",
+  "source": "교재 1-3 · 1-4 · 2-4 (확장)"
+ },
+ {
+  "id": "07-092",
+  "type": 7,
+  "level": 3,
+  "sentence": "[Running every day] keeps you healthy.",
+  "answer": "명사구",
+  "options": [
+   "명사구",
+   "명사절",
+   "형용사구",
+   "부사절",
+   "부사구"
+  ],
+  "explain": "주어 자리 동명사구 → ○ 명사구",
+  "source": "교재 1-3 · 1-4 · 2-4 (확장)"
+ },
+ {
+  "id": "07-093",
+  "type": 7,
+  "level": 3,
+  "sentence": "He seems [very nervous] today.",
+  "answer": "형용사구",
+  "options": [
+   "형용사구",
+   "명사절",
+   "부사절",
+   "부사구",
+   "명사구"
+  ],
+  "explain": "seem 뒤 보어 → (very nervous) 형용사구",
+  "source": "교재 1-3 · 1-4 · 2-4 (확장)"
+ },
+ {
+  "id": "07-094",
+  "type": 7,
+  "level": 3,
+  "sentence": "I was surprised [to hear the news].",
+  "answer": "부사구",
+  "options": [
+   "부사구",
+   "형용사구",
+   "부사절",
+   "명사구",
+   "명사절"
+  ],
+  "explain": "감정 형용사 surprised의 이유 \"~해서\" → < 부사구 >",
+  "source": "교재 1-3 · 1-4 · 2-4 (확장)"
+ },
+ {
+  "id": "07-095",
+  "type": 7,
+  "level": 3,
+  "sentence": "My plan is [to save money].",
+  "answer": "명사구",
+  "options": [
+   "명사구",
+   "부사구",
+   "부사절",
+   "형용사구",
+   "명사절"
+  ],
+  "explain": "보어 자리 to부정사구 → ○ 명사구",
+  "source": "교재 1-3 · 1-4 · 2-4 (확장)"
+ },
+ {
+  "id": "07-096",
+  "type": 7,
+  "level": 3,
+  "sentence": "She asked me [where I lived].",
+  "answer": "명사절",
+  "options": [
+   "명사절",
+   "부사절",
+   "부사구",
+   "형용사구",
+   "명사구"
+  ],
+  "explain": "4형식 직접목적어 자리 의문사절 → ○ 명사절",
+  "source": "교재 1-3 · 1-4 · 2-4 (확장)"
+ },
+ {
+  "id": "07-097",
+  "type": 7,
+  "level": 2,
+  "sentence": "We arrived [late].",
+  "answer": "부사",
+  "options": [
+   "부사",
+   "부사구",
+   "형용사구",
+   "명사",
+   "동사"
+  ],
+  "explain": "동사 arrived를 꾸미는 단어 하나 → < 부사 > \"늦게\"",
+  "source": "교재 1-3 · 1-4 · 2-4 (확장)"
+ },
+ {
+  "id": "07-098",
+  "type": 7,
+  "level": 2,
+  "sentence": "I saw her [at the bus stop] this morning.",
+  "answer": "부사구",
+  "options": [
+   "부사구",
+   "명사절",
+   "부사절",
+   "명사구",
+   "형용사구"
+  ],
+  "explain": "동사 saw를 꾸미는 장소 → < 부사구 >",
+  "source": "교재 1-3 · 1-4 · 2-4 (확장)"
+ },
+ {
+  "id": "07-099",
+  "type": 7,
+  "level": 3,
+  "sentence": "[Unless you hurry], you will be late.",
+  "answer": "부사절",
+  "options": [
+   "부사절",
+   "명사구",
+   "명사절",
+   "부사구",
+   "형용사구"
+  ],
+  "explain": "\"~하지 않으면\" 주어 + 동사 → < 부사절 >",
+  "source": "교재 1-3 · 1-4 · 2-4 (확장)"
  }
 ]

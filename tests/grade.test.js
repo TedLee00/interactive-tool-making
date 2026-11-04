@@ -125,11 +125,12 @@ describe('lenient answers', () => {
 
 import { draw, BANK } from '../src/quiz/bank.js';
 describe('difficulty', () => {
-  it('상 draws no level-1 questions, mostly level 3 when available', () => {
+  it('상 draws only level-3 questions, 하 never draws level 3', () => {
     for (const t of Object.keys(BANK)) {
       const qs = draw(+t, 5, new Set(), 'high');
       expect(qs.length).toBe(5);
-      expect(qs.every((q) => q.level >= 2)).toBe(true);
+      expect(qs.every((q) => q.level === 3)).toBe(true);
+      expect(draw(+t, 5, new Set(), 'low').every((q) => q.level <= 2)).toBe(true);
     }
     const q6 = draw(6, 5, new Set(), 'high');
     expect(q6.filter((q) => q.level === 3).length).toBeGreaterThanOrEqual(3);

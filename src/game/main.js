@@ -21,8 +21,9 @@ const LOGO = `${BASE}assets/brand/logo.png`;
 const faceImg = (id, cls = '') => `<img class="face ${cls}" data-face="${id}" alt="">`;
 const SAVE_KEY = 'cq.game.v1';
 const LEVELS = [
-  { id: 'mid', name: '난이도 중', icon: '🙂', desc: '쉬운 문제부터 어려운 문제까지 골고루' },
-  { id: 'high', name: '난이도 상', icon: '🔥', desc: '어려운 문제 위주! 쉬운 문제는 나오지 않아요' },
+  { id: 'low', name: '난이도 하', icon: '🌱', desc: '쉬운 문제부터 차근차근' },
+  { id: 'mid', name: '난이도 중', icon: '🙂', desc: '쉬운·보통·어려운 문제 골고루' },
+  { id: 'high', name: '난이도 상', icon: '🔥', desc: '어려운 문제만! 청크·문장 성분 집중' },
 ];
 const levelName = (id) => (LEVELS.find((l) => l.id === id) || LEVELS[0]).name;
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -247,7 +248,7 @@ function hud() {
   screen(`<div class="hud">
     <div class="hud-top">
       <span class="reg" style="--rc:${reg.color}">${esc(reg.name)}</span>
-      <span class="lvb ${S.level}">${S.level === 'high' ? '상' : '중'}</span>
+      <span class="lvb ${S.level}">${{ low: '하', mid: '중', high: '상' }[S.level] || '중'}</span>
       <span class="pos"><b>${S.pos}</b>/${board.cells.length - 1}칸</span>
       <span class="coin">🪙 <b>${S.coins}</b></span>
       ${(S.snacks || []).length ? `<span class="snk">🍫 <b>${S.snacks.length}</b></span>` : ''}

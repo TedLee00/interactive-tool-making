@@ -126,13 +126,14 @@ img.face { border-radius: 50%; background: radial-gradient(circle at 50% 35%, #F
 .rank li.me { background: #FFF1C2; font-weight: 800; }
 .rank li i { font-style: normal; width: 26px; text-align: center; }
 .rank li span { flex: 1; }
-.levels { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 6px; }
+.levels { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 6px; }
 .gr.lv { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 10px 6px; min-height: 0; }
 .gr.lv span { font-size: 28px; line-height: 1; }
 .gr.lv b { font-weight: 400; font-size: 19px; }
 .gr.lv small { font-family: 'Noto Sans KR', sans-serif; font-size: 12px; color: var(--muted); line-height: 1.35; }
 .lvb { display: inline-block; font-family: var(--cute); font-style: normal; font-size: 13px; padding: 1px 7px; border-radius: 999px; color: #fff; background: #3E9B5B; vertical-align: middle; }
 .lvb.high { background: #E0453A; }
+.lvb.low { background: #2E9BDA; }
 
 /* 선생님 말풍선: 왼쪽 위 (주사위를 가리지 않게) */
 .talk.talk-top { position: absolute; top: calc(env(safe-area-inset-top) + 80px); left: 10px; right: 64px; align-items: flex-start; pointer-events: none; }
