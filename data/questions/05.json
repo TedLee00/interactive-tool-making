@@ -111,7 +111,7 @@
   "id": "05-013",
   "type": 5,
   "level": 1,
-  "sentence": "She [helps] sick people.",
+  "sentence": "Jeongyun [helps] sick people.",
   "answer": "V",
   "explain": "\"돕는다\" → 서술어(동사)(V)",
   "source": "교재 연습⑦-B"
@@ -318,7 +318,7 @@
   "id": "05-036",
   "type": 5,
   "level": 1,
-  "sentence": "He runs [very fast].",
+  "sentence": "Yeeun runs [very fast].",
   "answer": "M",
   "explain": "동사 runs를 꾸민다 → 수식어(M)",
   "source": "교재 연습⑦-A"
@@ -354,7 +354,7 @@
   "id": "05-040",
   "type": 5,
   "level": 2,
-  "sentence": "She [always] comes to class early.",
+  "sentence": "Junyoung [always] comes to class early.",
   "answer": "M",
   "explain": "빈도부사 always → 수식어(M). 작은 리본은 동사 앞!",
   "source": "교재 2-1"
@@ -390,7 +390,7 @@
   "id": "05-044",
   "type": 5,
   "level": 2,
-  "sentence": "Minho studies [hard] for the test.",
+  "sentence": "Yeonseo studies [hard] for the test.",
   "answer": "M",
   "explain": "동사 studies를 꾸미는 < 부사 > → 수식어(M)",
   "source": "교재 2-2 성분 찾기 4단계"
@@ -408,7 +408,7 @@
   "id": "05-046",
   "type": 5,
   "level": 1,
-  "sentence": "Tom [plays] the piano.",
+  "sentence": "Gayun [plays] the piano.",
   "answer": "V",
   "explain": "\"연주한다\" — 문장의 심장 → 서술어(동사)(V)",
   "source": "교재 2-1 · 2-2 · 2-4 (확장)"
@@ -426,9 +426,9 @@
   "id": "05-048",
   "type": 5,
   "level": 1,
-  "sentence": "She is [a nurse].",
+  "sentence": "Doyun is [a nurse].",
   "answer": "C",
-  "explain": "She = a nurse, 주어를 설명 → 보어(C)",
+  "explain": "Doyun = a nurse, 주어를 설명 → 보어(C)",
   "source": "교재 2-1 · 2-2 · 2-4 (확장)"
  },
  {
@@ -516,9 +516,9 @@
   "id": "05-058",
   "type": 5,
   "level": 2,
-  "sentence": "He looks [tired] today.",
+  "sentence": "Hwayoung looks [tired] today.",
   "answer": "C",
-  "explain": "He = tired, look 뒤 보어(C). \"피곤해 보인다\"",
+  "explain": "Hwayoung = tired, look 뒤 보어(C). \"피곤해 보인다\"",
   "source": "교재 2-1 · 2-2 · 2-4 (확장)"
  },
  {
@@ -606,9 +606,9 @@
   "id": "05-068",
   "type": 5,
   "level": 3,
-  "sentence": "She sang [beautifully] on the stage.",
+  "sentence": "Jimin sang [beautifully] on the stage.",
   "answer": "M",
-  "explain": "동사 sang을 꾸미는 부사 → 수식어(M). She ≠ beautifully라서 보어 아님!",
+  "explain": "동사 sang을 꾸미는 부사 → 수식어(M). Jimin ≠ beautifully라서 보어 아님!",
   "source": "교재 2-1 · 2-2 · 2-4 (확장)"
  },
  {
@@ -678,7 +678,7 @@
   "id": "05-076",
   "type": 5,
   "level": 3,
-  "sentence": "She went to the store [to buy milk].",
+  "sentence": "Taeyeon went to the store [to buy milk].",
   "answer": "M",
   "explain": "\"~하려고\" 동사를 꾸미는 to부정사 < 부사구 > → 수식어(M)",
   "source": "교재 2-1 · 2-2 · 2-4 (확장)"
@@ -714,9 +714,9 @@
   "id": "05-080",
   "type": 5,
   "level": 3,
-  "sentence": "He became [a famous singer].",
+  "sentence": "Jaeyeon became [a famous singer].",
   "answer": "C",
-  "explain": "He = a famous singer → 보어(C). become 뒤!",
+  "explain": "Jaeyeon = a famous singer → 보어(C). become 뒤!",
   "source": "교재 2-1 · 2-2 · 2-4 (확장)"
  },
  {
@@ -786,7 +786,7 @@
   "id": "05-088",
   "type": 5,
   "level": 3,
-  "sentence": "She stopped [eating snacks].",
+  "sentence": "Yudam stopped [eating snacks].",
   "answer": "O",
   "explain": "stopped의 목적어 \"~먹는 것을\" → 목적어(O). 동명사구",
   "source": "교재 2-1 · 2-2 · 2-4 (확장)"
@@ -804,9 +804,9 @@
   "id": "05-090",
   "type": 5,
   "level": 3,
-  "sentence": "He seems [very nervous].",
+  "sentence": "Suhoon seems [very nervous].",
   "answer": "C",
-  "explain": "He = very nervous, seem 뒤 보어(C)",
+  "explain": "Suhoon = very nervous, seem 뒤 보어(C)",
   "source": "교재 2-1 · 2-2 · 2-4 (확장)"
  },
  {

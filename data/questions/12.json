@@ -779,7 +779,7 @@
   "id": "12-049",
   "type": 12,
   "level": 2,
-  "ko": "N:그녀는=she | A:피곤해=tired | V:보였다=looked",
+  "ko": "N:하린이는=harin | A:피곤해=tired | V:보였다=looked",
   "order": [
    0,
    2,
@@ -1087,7 +1087,7 @@
   "id": "12-070",
   "type": 12,
   "level": 3,
-  "ko": "N:그녀는=she | D:무대 위에서=on the stage/on stage | D:아름답게=beautifully | V:노래했다=sang",
+  "ko": "N:소희는=sohee | D:무대 위에서=on the stage/on stage | D:아름답게=beautifully | V:노래했다=sang",
   "order": [
    0,
    3,
@@ -1428,7 +1428,7 @@
   "id": "12-093",
   "type": 12,
   "level": 3,
-  "ko": "N:그는=he | N:가장 빠른 학생=the fastest student | V:이다=is",
+  "ko": "N:민우는=minwoo | N:가장 빠른 학생=the fastest student | V:이다=is",
   "order": [
    0,
    2,

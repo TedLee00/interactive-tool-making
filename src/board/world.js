@@ -345,7 +345,7 @@ export function buildWorld(scene, board, guide) {
     const reg = regions[c.region];
     const p = cellPosition(c.i);
     const special = c.kind !== 'quiz';
-    const col = { start: 0xffd36b, goal: 0xffd36b, snack: 0xffb36b, gate: 0x8fc8ff, trap: 0xff8a8a, portal: 0xc9a2ff, bonus: 0x8fe08a }[c.kind] ?? shade(reg.color, 0.22);
+    const col = { arcade: 0xff9ecb, start: 0xffd36b, goal: 0xffd36b, snack: 0xffb36b, gate: 0x8fc8ff, trap: 0xff8a8a, portal: 0xc9a2ff, bonus: 0x8fe08a }[c.kind] ?? shade(reg.color, 0.22);
     const tile = new THREE.Mesh(new THREE.CylinderGeometry(0.95, 1.02, 0.32, 28), m(col));
     tile.position.set(p.x, 0.16, p.z);
     tile.castShadow = true;
@@ -402,8 +402,14 @@ export function buildWorld(scene, board, guide) {
       const a = arch(0x8fc8ff, 2.4);
       a.position.set(p.x, 0.16, p.z);
       scene.add(a);
-      const bn = bannerSprite('미니게임 관문', '#BDE3FF', 2.4);
-      bn.position.set(p.x, 2.7, p.z);
+      // 관문 위: 다음 마을 이름을 크게
+      const next = regions[Math.min(regions.length - 1, c.region + 1)];
+      const nm = bannerSprite(`${next.name} 관문`, shade(next.color, 0.35).getStyle(), 3.4);
+      nm.position.set(p.x, 3.05, p.z);
+      scene.add(nm);
+      signs.push({ s: nm });
+      const bn = bannerSprite('🎮 미니게임', '#BDE3FF', 1.8);
+      bn.position.set(p.x, 2.35, p.z);
       scene.add(bn);
       signs.push({ s: bn });
     }
@@ -434,12 +440,12 @@ export function buildWorld(scene, board, guide) {
     shadowAll(g);
     g.position.set(at.x, 0, at.z);
     scene.add(g);
-    const bn = bannerSprite(`${reg.name}`, shade(reg.color, 0.45).getStyle(), 3.6);
-    bn.position.set(at.x, 3.55, at.z);
+    const bn = bannerSprite(`${reg.name}`, shade(reg.color, 0.45).getStyle(), 5.2);
+    bn.position.set(at.x, 4.1, at.z);
     scene.add(bn);
     signs.push({ s: bn });
-    const sub = bannerSprite(`STAGE ${k + 1} · 난이도 ${reg.level}`, '#FFFFFF', 2.2);
-    sub.position.set(at.x, 2.75, at.z + 0.3);
+    const sub = bannerSprite(`STAGE ${k + 1} · 어서 와요!`, '#FFFFFF', 2.4);
+    sub.position.set(at.x, 3.15, at.z + 0.3);
     scene.add(sub);
     signs.push({ s: sub });
   });

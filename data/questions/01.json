@@ -565,7 +565,7 @@
   "type": 1,
   "level": 3,
   "word": "run",
-  "context": "Minho hit a home **run** on Sports Day.",
+  "context": "Rana hit a home **run** on Sports Day.",
   "answer": "명사",
   "options": [
    "명사",
@@ -582,7 +582,7 @@
   "type": 1,
   "level": 3,
   "word": "hard",
-  "context": "She studies **hard** for the test.",
+  "context": "Jeongyun studies **hard** for the test.",
   "answer": "부사",
   "options": [
    "부사",
@@ -1315,7 +1315,7 @@
   ],
   "explain": "동사 came을 꾸민다 → < 부사 > \"늦게\" (lately는 \"최근에\"!)",
   "source": "교재 1-1 연습① (확장)",
-  "context": "He came home **late** last night."
+  "context": "Yeeun came home **late** last night."
  },
  {
   "id": "01-082",
@@ -1417,7 +1417,7 @@
   ],
   "explain": "\"~처럼\" — 명사 a bird 앞의 전치사 (I like pizza의 like는 동사)",
   "source": "교재 1-1 연습① (확장)",
-  "context": "She sings **like** a bird."
+  "context": "Junyoung sings **like** a bird."
  },
  {
   "id": "01-088",
@@ -1434,7 +1434,7 @@
   ],
   "explain": "명사 student를 꾸민다 → ( 형용사 ) \"유일한\"",
   "source": "교재 1-1 연습① (확장)",
-  "context": "She is the **only** student in the room."
+  "context": "Yeonseo is the **only** student in the room."
  },
  {
   "id": "01-089",
@@ -1553,7 +1553,7 @@
   ],
   "explain": "a beautiful 뒤 → ○ 명사 \"미소\"",
   "source": "교재 1-1 연습① (확장)",
-  "context": "She has a beautiful **smile**."
+  "context": "Gayun has a beautiful **smile**."
  },
  {
   "id": "01-096",
@@ -1621,7 +1621,7 @@
   ],
   "explain": "동사 is sleeping을 꾸민다 → < 부사 > \"아직도\"",
   "source": "교재 1-1 연습① (확장)",
-  "context": "He is **still** sleeping."
+  "context": "Doyun is **still** sleeping."
  },
  {
   "id": "01-100",

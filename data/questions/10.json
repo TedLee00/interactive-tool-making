@@ -17,14 +17,14 @@
   "id": "10-002",
   "type": 10,
   "level": 2,
-  "en": "N:She | V:looks | A:tired | D:after Sports Day",
+  "en": "N:Yeonseo | V:looks | A:tired | D:after Sports Day",
   "end": ".",
   "error": {
    "kind": "label",
    "chunk": 2,
    "shown": "D"
   },
-  "explain": "She = tired, 주어를 설명하는 보어 → ( 형용사 ). \"~하게\"로 해석돼도 형용사!",
+  "explain": "Yeonseo = tired, 주어를 설명하는 보어 → ( 형용사 ). \"~하게\"로 해석돼도 형용사!",
   "source": "교재 1-4 · 2-5 · 5품사 청크 독해 법칙"
  },
  {
@@ -187,7 +187,7 @@
   "id": "10-013",
   "type": 10,
   "level": 2,
-  "en": "N:He | V:runs | D:very fast",
+  "en": "N:Gayun | V:runs | D:very fast",
   "end": ".",
   "error": {
    "kind": "label",
@@ -279,7 +279,7 @@
   "id": "10-019",
   "type": 10,
   "level": 1,
-  "en": "N:Tom | C:and | N:I | V:are | N:best friends",
+  "en": "N:Doyun | C:and | N:I | V:are | N:best friends",
   "end": ".",
   "error": {
    "kind": "label",
@@ -343,7 +343,7 @@
   "id": "10-023",
   "type": 10,
   "level": 1,
-  "en": "N:She | V:sings | D:beautifully",
+  "en": "N:Hwayoung | V:sings | D:beautifully",
   "end": ".",
   "error": {
    "kind": "label",
@@ -577,7 +577,7 @@
   "id": "10-038",
   "type": 10,
   "level": 1,
-  "en": "N:She | V:smiled | D:at me",
+  "en": "N:Jimin | V:smiled | D:at me",
   "end": ".",
   "error": {
    "kind": "label",
@@ -693,7 +693,7 @@
   "id": "10-046",
   "type": 10,
   "level": 2,
-  "en": "N:She | V:is | A:very kind",
+  "en": "N:Taeyeon | V:is | A:very kind",
   "end": ".",
   "error": {
    "kind": "label",
@@ -793,14 +793,14 @@
   "id": "10-052",
   "type": 10,
   "level": 2,
-  "en": "N:He | V:looks | A:happy | D:today",
+  "en": "N:Jaeyeon | V:looks | A:happy | D:today",
   "end": ".",
   "error": {
    "kind": "label",
    "chunk": 2,
    "shown": "D"
   },
-  "explain": "He = happy, look 뒤 보어 → ( 형용사 ). \"행복해 보인다\"",
+  "explain": "Jaeyeon = happy, look 뒤 보어 → ( 형용사 ). \"행복해 보인다\"",
   "source": "교재 1-4 · 2-5 · 5품사 청크 독해 법칙 (확장)"
  },
  {
@@ -941,7 +941,7 @@
   "id": "10-062",
   "type": 10,
   "level": 3,
-  "en": "N:She | V:can play | N:the violin",
+  "en": "N:Yudam | V:can play | N:the violin",
   "end": ".",
   "error": {
    "kind": "split",
@@ -1019,7 +1019,7 @@
   "id": "10-067",
   "type": 10,
   "level": 3,
-  "en": "N:He | V:ran | D:very fast",
+  "en": "N:Suhoon | V:ran | D:very fast",
   "end": ".",
   "error": {
    "kind": "split",

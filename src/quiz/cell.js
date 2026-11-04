@@ -12,6 +12,20 @@ const wait = (el, sel) => new Promise((r) => { el.querySelector(sel).onclick = r
  * @param opts   { type, questions, config, showIntro=true }
  * @returns Promise<{type, correct, total, reward, wrongs[]}>
  */
+/** 해설을 읽기 쉽게: 문장마다 한 줄 · 청크 기호(○□( )< >)와 품사 이름에 교재 색 */
+function explainHTML(text) {
+  const parts = String(text).split(/(?<=[.!?])\s+(?=\S)|\s+·\s+/).filter(Boolean);
+  const color = (h) => h
+    .replace(/→/g, '<i class="ar">→</i>')
+    .replace(/○\s?([^\s.,!?)]+(?:\s[a-z][^\s.,!?)]*)*)/g, '<b class="cN">○$1</b>')
+    .replace(/□\s?([^\s.,!?]+)/g, '<b class="cV">□$1</b>')
+    .replace(/\(\s?(형용사(?:구|절)?)\s?\)/g, '<b class="cA">( $1 )</b>')
+    .replace(/&lt;\s?(부사(?:구|절)?)\s?&gt;/g, '<b class="cD">&lt; $1 &gt;</b>')
+    .replace(/(법칙 [①②])/g, '<b class="rule">$1</b>')
+    .replace(/(주어\(S\)|서술어\(동사\)\(V\)|목적어\(O\)|보어\(C\)|수식어\(M\))/g, '<b class="role">$1</b>');
+  return `<ul>${parts.map((p) => `<li>${color(esc(p))}</li>`).join('')}</ul>`;
+}
+
 /** 문제당 제한시간(초) — 지역(마을)이 어려워질수록 길게. config.timeLimit 로 조정 */
 export function timeLimitFor(type, region, config) {
   const tl = config?.timeLimit;
@@ -94,10 +108,10 @@ export async function runCell(root, { type, questions, config, showIntro = true,
     }
     const fb = wrap.querySelector('#fb');
     fb.innerHTML = `<div class="fb ${r.ok ? 'ok' : 'no'}">
-      <h3>${r.ok ? '정답! 👏' : r.timeout ? '⏰ 시간 초과!' : '아쉬워요!'}</h3>
-      <div class="ans">${r.answerHTML}</div>
-      <div class="why">💡 ${esc(q.explain)}</div>
-      <div class="src">📖 ${esc(q.source)}</div>
+      <div class="fb-head"><span class="ico">${r.ok ? '👏' : r.timeout ? '⏰' : '😅'}</span><h3>${r.ok ? '정답!' : r.timeout ? '시간 초과!' : '아쉬워요!'}</h3>
+        ${!r.ok && r.mine && !r.timeout ? `<span class="mine">내 답 <s>${esc(r.mine)}</s></span>` : ''}</div>
+      <div class="fb-box ans"><div class="lab">✅ 정답</div>${r.answerHTML}</div>
+      <div class="fb-box why"><div class="lab">💡 왜 그럴까?</div>${explainHTML(q.explain)}</div>
       <button class="primary" id="next">${i === questions.length - 1 ? '결과 보기 ▶' : '다음 ▶'}</button></div>`;
     fb.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     const nextClick = wait(fb, '#next');

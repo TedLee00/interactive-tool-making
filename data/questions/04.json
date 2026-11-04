@@ -30,7 +30,7 @@
   "id": "04-004",
   "type": 4,
   "level": 1,
-  "sentence": "She plays ___ piano every day after school.",
+  "sentence": "Sohee plays ___ piano every day after school.",
   "answer": "the",
   "explain": "악기는 \"그 악기\"라는 물건을 연주 → the",
   "source": "교재 1-5"
@@ -138,7 +138,7 @@
   "id": "04-016",
   "type": 4,
   "level": 1,
-  "sentence": "He has ___ big backpack.",
+  "sentence": "Minwoo has ___ big backpack.",
   "answer": "a",
   "explain": "처음 말하는 셀 수 있는 단수 명사, 첫 소리가 자음 → a",
   "source": "교재 1-5"
@@ -237,7 +237,7 @@
   "id": "04-027",
   "type": 4,
   "level": 2,
-  "sentence": "He is ___ best player on our team.",
+  "sentence": "Jiyu is ___ best player on our team.",
   "answer": "the",
   "explain": "best 앞 → the (가장 ~한 것은 하나뿐)",
   "source": "교재 1-5"
@@ -255,7 +255,7 @@
   "id": "04-029",
   "type": 4,
   "level": 3,
-  "sentence": "She is ___ only girl in the dance club.",
+  "sentence": "Minju is ___ only girl in the dance club.",
   "answer": "the",
   "explain": "only 앞 → the (오직 하나)",
   "source": "교재 1-5"
@@ -363,7 +363,7 @@
   "id": "04-041",
   "type": 4,
   "level": 1,
-  "sentence": "She is in ___ kitchen now.",
+  "sentence": "Minseok is in ___ kitchen now.",
   "answer": "the",
   "explain": "특정한 그 장소 → in the kitchen",
   "source": "교재 1-5"
@@ -417,7 +417,7 @@
   "id": "04-047",
   "type": 4,
   "level": 1,
-  "sentence": "She has ___ cat and a dog.",
+  "sentence": "Sarang has ___ cat and a dog.",
   "answer": "a",
   "explain": "처음 말하는 셀 수 있는 단수 명사 → a",
   "source": "교재 1-5 관사 (확장)"
@@ -471,7 +471,7 @@
   "id": "04-053",
   "type": 4,
   "level": 2,
-  "sentence": "He is ___ honest boy.",
+  "sentence": "Hayun is ___ honest boy.",
   "answer": "an",
   "explain": "honest의 h는 소리가 안 나요 → 첫 소리 모음 [ɑ] → an",
   "source": "교재 1-5 관사 (확장)"
@@ -498,7 +498,7 @@
   "id": "04-056",
   "type": 4,
   "level": 2,
-  "sentence": "She bought ___ umbrella.",
+  "sentence": "Chaemin bought ___ umbrella.",
   "answer": "an",
   "explain": "umbrella의 첫 소리 [ʌ] (모음) → an",
   "source": "교재 1-5 관사 (확장)"
@@ -552,7 +552,7 @@
   "id": "04-062",
   "type": 4,
   "level": 2,
-  "sentence": "He was ___ first student to arrive.",
+  "sentence": "Jian was ___ first student to arrive.",
   "answer": "the",
   "explain": "first 앞엔 the → the first",
   "source": "교재 1-5 관사 (확장)"
@@ -570,7 +570,7 @@
   "id": "04-064",
   "type": 4,
   "level": 2,
-  "sentence": "She is ___ English teacher.",
+  "sentence": "Yujeong is ___ English teacher.",
   "answer": "an",
   "explain": "English의 첫 소리 [i] (모음) → an. 단, 과목 English만 쓰면 관사 X",
   "source": "교재 1-5 관사 (확장)"
@@ -606,7 +606,7 @@
   "id": "04-068",
   "type": 4,
   "level": 2,
-  "sentence": "He often reads books at ___ night.",
+  "sentence": "Dongha often reads books at ___ night.",
   "answer": "X",
   "explain": "at night (굳어진 표현, 관사 X)",
   "source": "교재 1-5 관사 (확장)"
@@ -624,7 +624,7 @@
   "id": "04-070",
   "type": 4,
   "level": 3,
-  "sentence": "She has ___ big apple.",
+  "sentence": "Woobin has ___ big apple.",
   "answer": "a",
   "explain": "apple은 an이지만 형용사 big이 앞에 오면 big 소리로 → a big apple",
   "source": "교재 1-5 관사 (확장)"
@@ -633,7 +633,7 @@
   "id": "04-071",
   "type": 4,
   "level": 3,
-  "sentence": "He is ___ university student.",
+  "sentence": "Seohyun is ___ university student.",
   "answer": "a",
   "explain": "university [j] (자음 소리) → a",
   "source": "교재 1-5 관사 (확장)"
@@ -723,7 +723,7 @@
   "id": "04-081",
   "type": 4,
   "level": 3,
-  "sentence": "He wants to be ___ artist.",
+  "sentence": "Yunseon wants to be ___ artist.",
   "answer": "an",
   "explain": "artist 첫 소리 [ɑ] (모음) → an. 직업 앞 a/an",
   "source": "교재 1-5 관사 (확장)"
@@ -804,7 +804,7 @@
   "id": "04-090",
   "type": 4,
   "level": 3,
-  "sentence": "She is ___ unhappy girl today.",
+  "sentence": "Rana is ___ unhappy girl today.",
   "answer": "an",
   "explain": "unhappy의 첫 소리 [ʌ] (모음) → an",
   "source": "교재 1-5 관사 (확장)"

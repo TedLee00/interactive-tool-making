@@ -20,6 +20,7 @@ export function playRun({ charId = 'bboy' } = {}) {
       '화면 위 <b class="red">미션에 맞게 바르게 쓴 음식만</b> 먹어요 — <b>sweet cake</b> ⭕ / <b class="red">sweetly cake ❌ 불량식품!</b>',
       '<b class="red">⬆ 점프</b> 버튼 · 공중에서 한 번 더 누르면 <b class="red">2단 점프!</b>',
       '<b class="red">⬇ 슬라이드</b> 버튼 · 축구 슬라이딩처럼 쭉 누워서 지나가요',
+      '💧 <b>물웅덩이</b>는 점프로 건너요 — 웅덩이가 <b class="red">여러 개 이어지면 연속 점프!</b>',
       '불량식품이 <b>땅</b>에 있으면 <b class="red">점프로 넘고</b>, <b>머리 높이</b>에 있으면 <b class="red">슬라이드로 밑으로!</b>',
       '<b>보강 여신 · 묵언수행 · 보강대장</b>이 길을 막아요 — 점프로 피하기!',
       '🌮 <b>타코</b> = Ted 선생님 변신(잠깐 무적) · 💗 하트 회복 · 하트 5개 · 미션 6개 → 보스 → 🏁 깃발',
@@ -47,6 +48,9 @@ export function playRun({ charId = 'bboy' } = {}) {
         good: 0, bad: 0, mission: 0, phase: 'run', t: 0, taco: 0, ents: [], nextSpawn: 1.2, bossHP: 0, goalX: 0, finished: false, msgT: 0,
       };
       const PX = 86;
+      // Ted 선생님이 가끔 수풀 뒤에서 빼꼼
+      const peek = { t: 12 + Math.random() * 8, on: 0, x: 0, say: '' };
+      const PEEK_SAY = ['열심히!', '오~ 잘하는데?', '단어 잘 봐!', '불량식품 조심!', '야르!', '점프 점프!'];
       const PH = 74; // 캐릭터 키
 
       const banner = document.createElement('div');
@@ -72,7 +76,7 @@ export function playRun({ charId = 'bboy' } = {}) {
         if (S.y === 0 && S.slide <= 0) { S.vy = -560; S.jumps = 1; ctx.sfx('hop'); }
         else if (S.jumps === 1) { S.vy = -500; S.jumps = 2; ctx.sfx('hop'); ctx.burst(PX, GY() + S.y - 20, 8, ['#fff', '#8FD8FF']); }
       };
-      ctx.button('⬇<small>슬라이드</small>', 'slide', { onDown: () => { if (S.y === 0) { S.slide = 0.7; ctx.sfx('whoosh'); } } });
+      ctx.button('⬇<small>슬라이드</small>', 'slide', { onDown: () => { if (S.y === 0) { S.slide = 0.875; ctx.sfx('whoosh'); } } }); // 슬라이딩 25% 더 길게
       ctx.button('⬆<small>점프</small>', 'jump', { onDown: jump });
 
       function spawn() {
@@ -85,9 +89,14 @@ export function playRun({ charId = 'bboy' } = {}) {
           // 좋은 음식: 땅 또는 공중(점프해서 먹기) · 불량식품: 땅(점프로 넘기) 또는 머리 높이(슬라이드로 지나가기)
           const y = good ? (Math.random() < 0.4 ? gy - 120 : gy - 30) : (Math.random() < 0.5 ? gy - 52 : gy - 4);
           { const label = pick(good ? m.good : m.bad); S.ents.push({ kind: 'food', good, label, icon: iconFor(label), x: ctx.W + 40, y, w: 46, h: 38, head: !good && y < gy - 20 }); }
-        } else if (r < 0.74) {
+        } else if (r < 0.68) {
           const k = nextKid();
           S.ents.push({ ...k, kind: 'kid', x: ctx.W + 40, y: gy, w: k.f === 'pigeon' ? 54 : 40, h: k.f === 'pigeon' ? 36 : 62 });
+        } else if (r < 0.8) {
+          // 💧 물웅덩이: 점프로 건너기 (가끔 2~3개가 이어지는 연속 점프 구간)
+          const n = S.t > 25 && Math.random() < 0.4 ? 2 + Math.floor(Math.random() * 2) : 1;
+          for (let k = 0; k < n; k++) S.ents.push({ kind: 'puddle', x: ctx.W + 50 + k * 150, y: gy + 4, w: 62, h: 8 });
+          if (n > 1) S.nextSpawn += 0.9;
         } else if (r < 0.9) {
           S.ents.push({ kind: Math.random() < 0.5 ? 'cone' : 'crate', x: ctx.W + 40, y: gy, w: 30, h: 32 });
         } else if (r < 0.97) {
@@ -118,6 +127,8 @@ export function playRun({ charId = 'bboy' } = {}) {
       }
 
       window.__RUN = () => S.ents.filter((e) => e.kind === 'kid').map((e) => e.name); // 테스트용
+      window.__RUNP = () => S.ents.some((e) => e.kind === 'puddle' && e.x < ctx.W - 20); // 테스트용
+      window.__RUNK = () => S.ents.map((e) => e.kind); // 테스트용
       const hit = (a, px, py, pw, ph) => px < a.x + a.w / 2 && px + pw > a.x - a.w / 2 && py < a.y && py + ph > a.y - a.h;
 
       return {
@@ -126,7 +137,7 @@ export function playRun({ charId = 'bboy' } = {}) {
           S.t += dt;
           if (ctx.input.taps.some((p) => p.y < ctx.H * 0.72)) jump();
           if (ctx.input.keys.ArrowUp || ctx.input.keys[' ']) { if (!S.kh) jump(); S.kh = true; } else S.kh = false;
-          if (ctx.input.keys.ArrowDown && S.y === 0) S.slide = 0.4;
+          if (ctx.input.keys.ArrowDown && S.y === 0) S.slide = 0.5;
 
           // 구간 진행
           const total = missions.length * MISSION_SEC;
@@ -152,8 +163,15 @@ export function playRun({ charId = 'bboy' } = {}) {
             }
           }
 
+          // Ted 빼꼼
+          peek.t -= dt;
+          if (peek.t <= 0 && !peek.on) { peek.on = 2.6; peek.x = rand(ctx.W * 0.45, ctx.W - 50); peek.say = pick(PEEK_SAY); }
+          if (peek.on) { peek.on = Math.max(0, peek.on - dt); if (!peek.on) peek.t = 20 + Math.random() * 12; }
           // 속도·위치
-          S.speed = Math.min(297, 198 + S.t * 1.1) * (S.taco > 0 ? 1.15 : 1); // 원래보다 10% 느리게 (글자를 읽을 시간)
+          // 앞 2/3 구간은 30% 느리게 (단어를 충분히 읽게), 마지막 1/3만 원래 속도로 (3초에 걸쳐 부드럽게)
+          const fastAt = (missions.length * MISSION_SEC + BOSS_SEC) * 2 / 3;
+          const slowK = 0.7 + 0.3 * clamp((S.t - fastAt) / 3, 0, 1);
+          S.speed = Math.min(297, 198 + S.t * 1.1) * slowK * (S.taco > 0 ? 1.15 : 1);
           const move = S.speed * dt;
           S.x += move;
           S.vy += 1500 * dt;
@@ -199,6 +217,8 @@ export function playRun({ charId = 'bboy' } = {}) {
               ctx.callout('yar', 'Ted 선생님 변신!'); S.score += 200;
             } else if (e.kind === 'bar') {
               if (S.slide <= 0) { e.done = true; hurt('쿵! 슬라이드!'); }
+            } else if (e.kind === 'puddle') {
+              if (S.y > -6) { e.done = true; ctx.burst(e.x, gy, 14, ['#8FD8FF', '#fff', '#4FA3E8']); hurt('풍덩! 점프!'); }
             } else {
               e.done = true;
               hurt(e.kind === 'kid' ? `${e.say} 부딪혔다!` : '쿵!');
@@ -313,6 +333,12 @@ export function playRun({ charId = 'bboy' } = {}) {
               else if (e.img) { const ih = 74; const iw = ih * (e.img.width / e.img.height); gc.drawImage(e.img, e.x - iw / 2, e.y - ih, iw, ih); }
               tag(gc, e.name, e.x, e.y - 84, { size: 12, bg: '#FFE3F0', pad: 6 });
               tag(gc, '⬆ 점프!', e.x, e.y - 104, { size: 11, bg: '#FFF4D6', pad: 5 });
+            } else if (e.kind === 'puddle') {
+              const wob = Math.sin(S.t * 6 + e.x * 0.05) * 2;
+              gc.fillStyle = '#4FA3E8'; gc.beginPath(); gc.ellipse(e.x, gy + 3, e.w / 2 + wob, 7, 0, 0, 7); gc.fill();
+              gc.fillStyle = '#8FD8FF'; gc.beginPath(); gc.ellipse(e.x - 6, gy + 2, e.w / 3, 3.5, 0, 0, 7); gc.fill();
+              gc.strokeStyle = 'rgba(255,255,255,.8)'; gc.lineWidth = 1.5; gc.beginPath(); gc.ellipse(e.x + 10, gy + 3, 8 + (S.t * 10 % 8), 2.5, 0, 0, 7); gc.stroke();
+              if (!e.tip) tag(gc, '💧 점프!', e.x, gy - 18, { size: 11, bg: '#E2F4FF', pad: 5 });
             } else if (e.kind === 'cone') {
               gc.fillStyle = '#FF8A3D'; gc.beginPath(); gc.moveTo(e.x, e.y - e.h); gc.lineTo(e.x + 14, e.y); gc.lineTo(e.x - 14, e.y); gc.fill();
               gc.fillStyle = '#fff'; gc.fillRect(e.x - 8, e.y - 16, 16, 5);
@@ -336,6 +362,16 @@ export function playRun({ charId = 'bboy' } = {}) {
             }
           }
 
+          // Ted 선생님 빼꼼 (수풀 위로 고개만)
+          if (peek.on && ted) {
+            const up = Math.min(1, peek.on * 2, (2.6 - peek.on) * 3);
+            const ih = 70; const iw = ih * (ted.width / ted.height);
+            gc.save(); gc.beginPath(); gc.rect(peek.x - 60, gy - 120, 120, 120 - 6); gc.clip();
+            gc.drawImage(ted, peek.x - iw / 2, gy - 6 - ih * 0.55 * up, iw, ih);
+            gc.restore();
+            gc.fillStyle = '#5FB85A'; gc.beginPath(); gc.arc(peek.x - 26, gy - 6, 20, Math.PI, 0); gc.arc(peek.x + 4, gy - 10, 24, Math.PI, 0); gc.arc(peek.x + 32, gy - 6, 18, Math.PI, 0); gc.fill();
+            if (up > 0.8) tag(gc, peek.say, peek.x + 34, gy - 6 - ih * 0.55 - 6, { size: 13, bg: '#FFF4D6', pad: 6 });
+          }
           // 플레이어 (DOM 캐릭터를 캔버스 좌표에 맞춘다)
           {
             const sc = ctx.scale || 1;

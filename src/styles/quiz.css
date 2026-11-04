@@ -79,18 +79,33 @@ mark.target::after { content: ']'; color: var(--gold); }
 .note.no { background: #FDE9E7; color: var(--no); }
 
 /* 피드백 */
-.fb { border-radius: var(--radius); padding: 16px; border: 2px solid; background: #fff; animation: up .25s ease-out; }
+.fb { border-radius: 18px; padding: 0 0 14px; border: 3px solid; background: #fff; animation: up .25s ease-out; overflow: hidden; box-shadow: 0 6px 18px rgba(43, 35, 80, .12); }
 .fb.ok { border-color: var(--ok); }
 .fb.no { border-color: var(--no); }
-.fb h3 { margin: 0 0 8px; }
-.fb.ok h3 { color: var(--ok); }
-.fb.no h3 { color: var(--no); }
-.fb .ans { font-size: 15px; margin-bottom: 8px; }
+.fb-head { display: flex; align-items: center; gap: 8px; padding: 10px 14px; color: #fff; flex-wrap: wrap; }
+.fb.ok .fb-head { background: var(--ok); }
+.fb.no .fb-head { background: var(--no); }
+.fb-head .ico { font-size: 24px; }
+.fb-head h3 { margin: 0; font-size: 22px; color: #fff !important; }
+.fb-head .mine { margin-left: auto; background: rgba(255, 255, 255, .22); border-radius: 999px; padding: 3px 10px; font-size: 13px; font-weight: 700; }
+.fb-head .mine s { text-decoration-thickness: 2px; }
+.fb-box { margin: 12px 14px 0; border-radius: 14px; padding: 10px 12px; font-size: 15.5px; line-height: 1.6; }
+.fb-box .lab { font-weight: 900; font-size: 13px; margin-bottom: 4px; letter-spacing: .02em; }
+.fb-box.ans { background: #EFFAF3; border-left: 6px solid var(--ok); }
+.fb-box.ans .lab { color: #1E7A47; }
+.fb-box.why { background: #FFF8E1; border-left: 6px solid #F2B84B; }
+.fb-box.why .lab { color: #A86F00; }
+.fb-box.why ul { margin: 0; padding-left: 18px; }
+.fb-box.why li { margin: 3px 0; }
+.fb-box.why li::marker { color: #F2B84B; }
+.fb-box .ar { font-style: normal; color: #E0453A; font-weight: 900; margin: 0 2px; }
+.fb-box .cN { color: #C8372D; } .fb-box .cV { color: #1F5FB8; } .fb-box .cA { color: #E4801A; } .fb-box .cD { color: #6A3FA0; }
+.fb-box .rule { background: #2B2350; color: #fff; border-radius: 6px; padding: 0 6px; font-size: 13px; }
+.fb-box .role { color: #1E7A47; }
 .ans-line { margin-top: 4px; font-size: 17px; line-height: 1.9; }
 .ans-line.en { font-weight: 800; color: var(--navy); }
-.fb .why { background: #FBF6E6; border-radius: 10px; padding: 10px 12px; font-size: 15px; }
-.fb .src { font-size: 12px; color: var(--muted); margin: 6px 0 12px; }
-.fb .primary { width: 100%; }
+.fb .primary { width: calc(100% - 28px); margin: 14px 14px 0; }
+
 @keyframes up { from { transform: translateY(12px); opacity: 0; } to { transform: none; opacity: 1; } }
 
 /* 결과 */

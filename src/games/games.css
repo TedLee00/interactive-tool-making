@@ -124,7 +124,7 @@
 
 /* ===== 청크 크레인: 예전 앱 인형뽑기 기계 ===== */
 .mg-crane .mg-stage { border-color: #FFD43B; box-shadow: 0 0 0 3px #fff, 0 0 30px rgba(255, 212, 59, .45); }
-.cm-glass2 { position: absolute; left: 8px; right: 8px; top: 104px; bottom: 8px; border-radius: 12px; overflow: hidden; background: linear-gradient(180deg, #DFF3FF 0%, #C7E8FA 60%, #F7D9EA 100%); box-shadow: inset 0 0 0 4px #fff, inset 0 0 26px rgba(46, 155, 218, .35); pointer-events: none; }
+.cm-glass2 { position: absolute; left: 8px; right: 8px; top: 74px; bottom: 8px; border-radius: 12px; overflow: hidden; background: linear-gradient(180deg, #DFF3FF 0%, #C7E8FA 60%, #F7D9EA 100%); box-shadow: inset 0 0 0 4px #fff, inset 0 0 26px rgba(46, 155, 218, .35); pointer-events: none; }
 .cm-glass2::after { content: ""; position: absolute; inset: 0; background: linear-gradient(115deg, rgba(255,255,255,.5) 0 8%, transparent 8% 18%, rgba(255,255,255,.22) 18% 21%, transparent 21%); pointer-events: none; z-index: 9; }
 .cm-glass2 .cm-rail { position: absolute; left: 0; right: 0; top: 0; height: 10px; background: repeating-linear-gradient(90deg, #9AA6B6 0 8px, #7D8899 8px 16px); z-index: 6; }
 .cm-glass2 .cm-car { position: absolute; top: 2px; left: 0; width: 60px; height: 0; z-index: 7; will-change: transform; }
@@ -166,3 +166,24 @@
 }
 
 .mg-card.result { max-height: calc(100% - 16px); overflow-y: auto; }
+/* 크레인: 꼬리표 높이 번갈아 · 과자 든 인형 */
+.cm-glass2 .cm-tag2.hi { top: -46px; }
+.cm-glass2 .cm-tag2 { font-size: 14px; max-width: 96px; }
+.cm-glass2 .cm-tag2.gold { background: #FFD43B; color: #7A0B48; border-color: #7A0B48; top: -64px; }
+.cm-glass2 .cm-walker .wsn { position: absolute; left: 50%; top: -30px; width: 54px; transform: translateX(-50%) rotate(-6deg); filter: drop-shadow(0 3px 3px rgba(0, 0, 0, .25)); }
+.cm-glass2 .cm-walker svg { animation: cmStep .45s ease-in-out infinite alternate; }
+.cm-glass2 .cm-walker.flip svg { transform: scaleX(-1); }
+@keyframes cmStep { from { translate: 0 0; } to { translate: 0 -4px; } }
+.mg-crane .crane-warn { z-index: 12; }
+.mg-crane .crane-ban { padding: 4px 10px; }
+.mg-crane .crane-ban b { font-size: 18px; }
+.klane.flash { animation: klFlash .25s steps(2) infinite; border-color: #FFD43B; }
+.klane.flash b { color: #E21E8C; }
+@keyframes klFlash { 50% { background: #FFF1C2; transform: scale(1.04); } }
+.kwheel .wsvg { overflow: visible; }
+/* 크레인: Ted 빼꼼 */
+.cm-peek { position: absolute; right: -6px; bottom: 120px; width: 70px; z-index: 11; pointer-events: none !important; transform: translateX(110%) rotate(-12deg); }
+.cm-peek img { width: 100%; display: block; filter: drop-shadow(0 4px 6px rgba(0, 0, 0, .3)); }
+.cm-peek span { position: absolute; right: 64px; top: 4px; white-space: nowrap; background: #FFF4D6; border: 2.5px solid #2B2350; border-radius: 12px; padding: 2px 8px; font-family: 'Jua', sans-serif; font-size: 14px; color: #2B2350; }
+.cm-peek.on { animation: cmPeek 3s ease-in-out forwards; }
+@keyframes cmPeek { 0% { transform: translateX(110%) rotate(-12deg); } 15%, 80% { transform: translateX(38%) rotate(-12deg); } 100% { transform: translateX(110%) rotate(-12deg); } }

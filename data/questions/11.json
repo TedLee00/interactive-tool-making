@@ -697,8 +697,8 @@
   "id": "11-067",
   "type": 11,
   "level": 2,
-  "ko": "그녀는 무대 위에서 아름답게 노래했다.",
-  "en": "N:She | V:sang | D:beautifully | D:on the stage",
+  "ko": "은우는 무대 위에서 아름답게 노래했다.",
+  "en": "N:Eunwoo | V:sang | D:beautifully | D:on the stage",
   "end": ".",
   "explain": "<어떻게> → <어디서> 순서로 맨 뒤",
   "source": "교재 연습④ · 5품사 청크 독해 법칙 (확장)"
@@ -778,7 +778,7 @@
   "type": 11,
   "level": 2,
   "ko": "톰과 나는 가장 친한 친구이다.",
-  "en": "N:Tom | C:and | N:I | V:are | N:best friends",
+  "en": "N:Eunseo | C:and | N:I | V:are | N:best friends",
   "end": ".",
   "explain": "△and로 주어 두 개 연결",
   "source": "교재 연습④ · 5품사 청크 독해 법칙 (확장)"
@@ -837,8 +837,8 @@
   "id": "11-081",
   "type": 11,
   "level": 2,
-  "ko": "그녀는 행복해 보였다.",
-  "en": "N:She | V:looked | A:happy",
+  "ko": "유신이는 행복해 보였다.",
+  "en": "N:Yusin | V:looked | A:happy",
   "end": ".",
   "explain": "look + 보어 형용사 (happy). happily X",
   "source": "교재 연습④ · 5품사 청크 독해 법칙 (확장)"

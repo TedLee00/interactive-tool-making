@@ -116,7 +116,7 @@
    "i": 10,
    "kind": "gate",
    "region": 0,
-   "game": "crane"
+   "game": "shoot"
   },
   {
    "i": 11,
@@ -138,9 +138,8 @@
   },
   {
    "i": 14,
-   "kind": "snack",
-   "region": 1,
-   "game": "crane"
+   "kind": "bonus",
+   "region": 1
   },
   {
    "i": 15,
@@ -175,7 +174,7 @@
    "i": 20,
    "kind": "gate",
    "region": 1,
-   "game": "shoot"
+   "game": "run"
   },
   {
    "i": 21,
@@ -191,9 +190,8 @@
   },
   {
    "i": 23,
-   "kind": "snack",
-   "region": 2,
-   "game": "crane"
+   "kind": "bonus",
+   "region": 2
   },
   {
    "i": 24,
@@ -233,7 +231,7 @@
    "i": 30,
    "kind": "gate",
    "region": 2,
-   "game": "run"
+   "game": "kart"
   },
   {
    "i": 31,
@@ -249,9 +247,9 @@
   },
   {
    "i": 33,
-   "kind": "snack",
+   "kind": "arcade",
    "region": 3,
-   "game": "crane"
+   "game": "shoot"
   },
   {
    "i": 34,
@@ -272,9 +270,9 @@
   },
   {
    "i": 37,
-   "kind": "quiz",
+   "kind": "arcade",
    "region": 3,
-   "type": 11
+   "game": "kart"
   },
   {
    "i": 38,
@@ -286,7 +284,7 @@
    "i": 39,
    "kind": "gate",
    "region": 3,
-   "game": "kart"
+   "game": "crane"
   },
   {
    "i": 40,

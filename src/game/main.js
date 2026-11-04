@@ -11,13 +11,12 @@ import { TYPES } from '../quiz/constants.js';
 import { esc } from '../quiz/notation.js';
 import { sfx, setMuted, isMuted } from '../quiz/sound.js';
 import { loadChar, fillFaces, charURL } from '../board/charart.js';
-import { bgm, callout, maWarning, teacherDance, crewDance, finaleDance, snackCard, snackCode, SNACKS, syncMute, unlockAudio } from '../fx/fx.js';
+import { bgm, callout, maWarning, teacherDance, crewDance, finaleDance, dancerShow, snackCard, snackCode, SNACKS, syncMute, unlockAudio } from '../fx/fx.js';
 import { playRun, playCrane, playKart, playShoot, GAMES } from '../games/index.js';
 import { runStudy, askStudy } from '../study/study.js';
 import { setPlayer, submitScore, getRanking, rankTableHTML } from '../rank/rank.js';
 
 const BASE = import.meta.env.BASE_URL;
-const LOGO = `${BASE}assets/brand/logo.png`;
 const faceImg = (id, cls = '') => `<img class="face ${cls}" data-face="${id}" alt="">`;
 const SAVE_KEY = 'cq.game.v1';
 const LEVELS = [
@@ -176,9 +175,9 @@ function title() {
   const can = sv && !sv.finished;
   screen(`<div class="title-screen">
     <div class="logo-card">
-      <img class="brand" src="${LOGO}" alt="백년지대계">
-      <div class="kicker">CHUNK QUEST</div>
+      <div class="ted-logo"><img class="face" data-face="ted" alt=""><div class="tl-t"><b>TED</b><span>와 함께하는</span></div></div>
       <h1>품사 <b>원정대</b></h1>
+      <div class="kicker">CHUNK QUEST</div>
       <p>주사위를 굴려 「문장의 성」까지!</p>
     </div>
     <div class="title-btns">
@@ -249,7 +248,7 @@ function hud() {
     <div class="hud-top">
       <span class="reg" style="--rc:${reg.color}">${esc(reg.name)}</span>
       <span class="lvb ${S.level}">${{ low: '하', mid: '중', high: '상' }[S.level] || '중'}</span>
-      <span class="pos"><b>${S.pos}</b>/${board.cells.length - 1}칸</span>
+      <span class="pos"><b>${S.pos}</b>/${board.cells.length - 1}칸 · 🎲<b class="trn">${S.turns || 0}</b></span>
       <span class="coin">🪙 <b>${S.coins}</b></span>
       ${(S.snacks || []).length ? `<span class="snk">🍫 <b>${S.snacks.length}</b></span>` : ''}
       <button class="menu" id="menu" aria-label="메뉴">☰</button>
@@ -411,6 +410,7 @@ async function turn(swipe = { power: 0.6, lateral: 0 }) {
   if (busy) return;
   busy = true;
   setRollEnabled(false);
+  S.turns = (S.turns || 0) + 1; save(); // 주사위를 덜 던지고 빨리 도착할수록 총점 UP
   talk(player().lines.roll, 'me');
   sfx('whoosh');
   const base = avatar.root.position.clone().setY(0);
@@ -466,6 +466,14 @@ async function resolveCell(cell) {
     return;
   }
   if (cell.kind === 'gate') return gateFlow(cell);
+  if (cell.kind === 'arcade') {
+    // 🎮 다시 한 판 칸: 정답률 70% 이상인 학생은 사격장·카트를 한 번 더!
+    const acc = S.answered ? S.correct / S.answered : 0;
+    if (acc >= 0.7) { toast(`🎮 보너스 게임 찬스! 정답률 ${Math.round(acc * 100)}%`); return playCellGame(cell); }
+    talk(`정답률 70% 이상이면 여기서 ${GAMES[cell.game].title}을 한 번 더 할 수 있어! 지금 ${Math.round(acc * 100)}% — 다음엔 꼭!`);
+    await sleep(2200);
+    return;
+  }
   if (cell.game) return playCellGame(cell);
   if (cell.kind === 'trap') {
     toast('⚠️ 함정! 2칸 뒤로');
@@ -523,6 +531,16 @@ async function gateFlow(cell) {
   S.gates[S.pos] = true;
   save();
   hud();
+  // 마을 클리어 쇼: 1마을 다 같이 → 2마을 선생님 → 3마을 피라미드 퍼레이드 (마지막은 성 도착 피날레)
+  const reg = board.regions[cell.region];
+  if (!(S.showsDone ||= []).includes(cell.region)) {
+    S.showsDone.push(cell.region); save();
+    avatar.setAnim('joy');
+    if (cell.region === 0) await crewDance(`${reg.name} 클리어! 원정대 다 같이 🎉`);
+    else if (cell.region === 1) await teacherDance(`${reg.name} 클리어! ${S.name}, 선생님도 참을 수 없다 📚`);
+    else if (cell.region === 2) await dancerShow('pyramid', `${reg.name} 클리어! 피라미드 퍼레이드 🔺`);
+    avatar.setAnim('idle');
+  }
 }
 
 /** 한 칸(5문제) 풀고 기록 */
@@ -532,12 +550,7 @@ async function playQuiz(type, region) {
   S.coins += r.reward.coins;
   const before = S.correct;
   S.correct += r.correct;
-  // 선생님 댄스: 누적 정답 20개마다 한 번
-  const every = config.danceEvery || 20;
-  if (Math.floor(S.correct / every) > Math.floor(before / every)) {
-    save();
-    await teacherDance(`누적 정답 ${Math.floor(S.correct / every) * every}개 돌파! ${S.name}, 선생님도 참을 수 없다 📚`);
-  }
+  void before;
   S.answered += r.total;
   S.cellsPlayed++;
   const bt = (S.byType[type] ||= { c: 0, n: 0 });
@@ -551,10 +564,6 @@ async function playQuiz(type, region) {
 
 async function enterRegion(k) {
   const reg = board.regions[k];
-  if (k > 0 && !(S.regionsSeen ||= []).includes(k)) {
-    S.regionsSeen.push(k); save();
-    await crewDance(`${reg.name} 도착! 원정대 입성 🎉`);
-  }
   bgm(reg.id);
   talk(chars.guide.lines[reg.id]);
   await sleep(1400);
@@ -564,7 +573,7 @@ async function enterRegion(k) {
 async function playCellGame(cell) {
   const G = GAMES[cell.game];
   toast(`${G.icon} ${G.title}!`);
-  talk(cell.kind === 'gate' ? `미니게임 게이트! 「${G.title}」에 도전해 보자!` : '간식 뽑기 칸이야! 품사 인형을 뽑아 간식을 노려 봐!');
+  talk(cell.kind === 'gate' ? `미니게임 게이트! 「${G.title}」에 도전해 보자!` : cell.kind === 'arcade' ? `잘하고 있어! 「${G.title}」 한 판 더!` : '간식 뽑기 칸이야! 품사 인형을 뽑아 간식을 노려 봐!');
   await sleep(1300);
   const play = { run: playRun, crane: playCrane, kart: playKart, shoot: playShoot }[cell.game];
   const r = await play({ charId: S.char, name: S.name, short: cell.kind === 'snack' });
@@ -572,10 +581,11 @@ async function playCellGame(cell) {
   S.coins += r.coins || 0;
   const best = S.games[cell.game] || 0;
   S.games[cell.game] = Math.max(best, r.score || 0);
-  if (r.snack) {
-    S.snacks.push({ kind: r.snack, how: G.title, code: snackCode(), at: Date.now() });
+  const won = r.snacks?.length ? r.snacks : r.snack ? [r.snack] : [];
+  for (const k of won) {
+    S.snacks.push({ kind: k, how: G.title, code: snackCode(), at: Date.now() });
     save();
-    await snackCard(r.snack, G.title, S.name);
+    await snackCard(k, G.title, S.name);
   }
   save();
   hud();
@@ -646,6 +656,9 @@ function quizSheet(type, region = board.cells[S.pos].region) {
   });
 }
 
+/** 총점: 게임·퀴즈로 모은 코인 × 10 + 적은 턴으로 도착한 보너스 (25턴 기준, 1턴 줄일 때마다 +30점) */
+const turnBonus = () => Math.max(0, 25 - (S.turns || 0)) * 30;
+const totalScore = () => S.coins * 10 + turnBonus();
 function rankHTML() {
   const { list, place } = recordRank();
   const t = tierOf(S.coins);
@@ -701,14 +714,15 @@ async function goal() {
   screen(`<div class="panel-screen goal"><div class="panel card">
     <div class="kicker">GOAL!</div><h2>문장의 성 도착!</h2>
     <p>${esc(player().lines.win)}</p>
-    <div class="goal-stats"><div><b>${S.correct}</b><small>정답</small></div><div><b>${acc}%</b><small>정답률</small></div><div><b>🪙 ${S.coins}</b><small>코인</small></div></div>
+    <div class="goal-stats"><div><b>${S.correct}</b><small>정답</small></div><div><b>${acc}%</b><small>정답률</small></div><div><b>🪙 ${S.coins}</b><small>코인</small></div><div><b>🎲 ${S.turns || 0}</b><small>턴</small></div></div>
+    <div class="total-score"><small>총점 = 코인 ${S.coins} × 10 + 빠른 도착 보너스 ${turnBonus()}</small><b>${totalScore()}<em>점</em></b></div>
     ${(S.snacks || []).length ? `<div class="goal-snacks">${S.snacks.map((k) => `<img src="${BASE}assets/snacks/${k.kind}.svg" alt="">`).join('')}</div>` : ''}
     ${rankHTML()}
     <button class="primary big" id="home">처음으로</button></div></div>`);
   ui.querySelector('#home').onclick = title;
   // 완주 코인 순위 (반 전체 / 이 기기) — 한 판에 한 번만 기록
-  const fill = (R) => { const el = ui.querySelector('#goalRank'); if (el) el.innerHTML = rankTableHTML('board', R, S.name, '코인'); };
-  if (!S.boardSent) { S.boardSent = true; save(); submitScore('board', S.coins, S.name).then(fill).catch(() => {}); }
+  const fill = (R) => { const el = ui.querySelector('#goalRank'); if (el) el.innerHTML = rankTableHTML('board', R, S.name, '점'); };
+  if (!S.boardSent) { S.boardSent = true; save(); submitScore('board', totalScore(), S.name).then(fill).catch(() => {}); }
   else getRanking('board', S.name).then(fill).catch(() => {});
 }
 
