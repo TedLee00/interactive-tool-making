@@ -1225,5 +1225,779 @@
    "head": "sleep",
    "headPos": "V"
   }
+ },
+ {
+  "id": "03-062",
+  "type": 3,
+  "level": 1,
+  "prompt": "따뜻한 ___",
+  "answer": "이불",
+  "options": [
+   "이불",
+   "덮는다",
+   "따뜻하게",
+   "잘"
+  ],
+  "explain": "\"따뜻한\"은 명사 \"이불\"과 짝 → ( 형용사 ). 형용사는 명사를 꾸민다!",
+  "source": "교재 1-2 짝꿍 (확장)",
+  "pair": {
+   "mod": "따뜻한",
+   "modPos": "A",
+   "head": "이불",
+   "headPos": "N"
+  }
+ },
+ {
+  "id": "03-063",
+  "type": 3,
+  "level": 1,
+  "prompt": "크게 ___",
+  "answer": "외친다",
+  "options": [
+   "외친다",
+   "목소리",
+   "큰",
+   "소리"
+  ],
+  "explain": "\"크게\"는 동사 \"외친다\"와 짝 → < 부사 >. 부사는 동사를 꾸민다!",
+  "source": "교재 1-2 짝꿍 (확장)",
+  "pair": {
+   "mod": "크게",
+   "modPos": "D",
+   "head": "외친다",
+   "headPos": "V"
+  }
+ },
+ {
+  "id": "03-064",
+  "type": 3,
+  "level": 1,
+  "prompt": "똑똑한 ___",
+  "answer": "학생",
+  "options": [
+   "학생",
+   "공부한다",
+   "똑똑하게",
+   "빨리"
+  ],
+  "explain": "\"똑똑한\"은 명사 \"학생\"과 짝 → ( 형용사 )",
+  "source": "교재 1-2 짝꿍 (확장)",
+  "pair": {
+   "mod": "똑똑한",
+   "modPos": "A",
+   "head": "학생",
+   "headPos": "N"
+  }
+ },
+ {
+  "id": "03-065",
+  "type": 3,
+  "level": 2,
+  "prompt": "___ 대답한다",
+  "answer": "정확하게",
+  "options": [
+   "정확하게",
+   "정확한",
+   "대답",
+   "질문"
+  ],
+  "explain": "동사 \"대답한다\"를 꾸미는 말 → < 부사 > \"정확하게\"",
+  "source": "교재 1-2 짝꿍 (확장)",
+  "pair": {
+   "mod": "정확하게",
+   "modPos": "D",
+   "head": "대답한다",
+   "headPos": "V"
+  }
+ },
+ {
+  "id": "03-066",
+  "type": 3,
+  "level": 1,
+  "prompt": "___ 하늘",
+  "answer": "파란",
+  "options": [
+   "파란",
+   "파랗게",
+   "본다",
+   "높이"
+  ],
+  "explain": "명사 \"하늘\"을 꾸미는 말 → ( 형용사 ) \"파란\"",
+  "source": "교재 1-2 짝꿍 (확장)",
+  "pair": {
+   "mod": "파란",
+   "modPos": "A",
+   "head": "하늘",
+   "headPos": "N"
+  }
+ },
+ {
+  "id": "03-067",
+  "type": 3,
+  "level": 1,
+  "prompt": "a ___ boy  (키 큰 소년)",
+  "answer": "tall",
+  "options": [
+   "tall",
+   "tallness",
+   "tally",
+   "taller than"
+  ],
+  "explain": "명사 boy와 짝 → ( 형용사 ) tall",
+  "source": "교재 1-2 짝꿍 (확장)",
+  "pair": {
+   "mod": "tall",
+   "modPos": "A",
+   "head": "boy",
+   "headPos": "N"
+  }
+ },
+ {
+  "id": "03-068",
+  "type": 3,
+  "level": 2,
+  "prompt": "___ pizza  (맛있는 피자)",
+  "answer": "tasty",
+  "options": [
+   "tasty",
+   "tastily",
+   "taste",
+   "tastes"
+  ],
+  "explain": "명사 pizza와 짝 → ( 형용사 ) tasty. -y는 형용사 꼬리!",
+  "source": "교재 1-2 짝꿍 (확장)",
+  "pair": {
+   "mod": "tasty",
+   "modPos": "A",
+   "head": "pizza",
+   "headPos": "N"
+  }
+ },
+ {
+  "id": "03-069",
+  "type": 3,
+  "level": 3,
+  "prompt": "run ___  (빨리 달리다)",
+  "answer": "fast",
+  "options": [
+   "fast",
+   "fastness",
+   "faster than",
+   "fasten"
+  ],
+  "explain": "동사 run과 짝 → < 부사 > fast. fast는 형용사·부사 모양이 같아요 (fastly X)",
+  "source": "교재 1-2 짝꿍 (확장)",
+  "pair": {
+   "mod": "fast",
+   "modPos": "D",
+   "head": "run",
+   "headPos": "V"
+  }
+ },
+ {
+  "id": "03-070",
+  "type": 3,
+  "level": 2,
+  "prompt": "a ___ singer  (유명한 가수)",
+  "answer": "famous",
+  "options": [
+   "famous",
+   "famously",
+   "fame",
+   "fames"
+  ],
+  "explain": "명사 singer와 짝 → ( 형용사 ) famous. -ous는 형용사 꼬리!",
+  "source": "교재 1-2 짝꿍 (확장)",
+  "pair": {
+   "mod": "famous",
+   "modPos": "A",
+   "head": "singer",
+   "headPos": "N"
+  }
+ },
+ {
+  "id": "03-071",
+  "type": 3,
+  "level": 3,
+  "prompt": "work ___  (열심히 일하다)",
+  "answer": "hard",
+  "options": [
+   "hard",
+   "hardly",
+   "hardness",
+   "harden"
+  ],
+  "explain": "동사 work와 짝 → < 부사 > hard. hardly는 \"거의 ~않다\"라는 전혀 다른 뜻!",
+  "source": "교재 1-2 짝꿍 (확장)",
+  "pair": {
+   "mod": "hard",
+   "modPos": "D",
+   "head": "work",
+   "headPos": "V"
+  }
+ },
+ {
+  "id": "03-072",
+  "type": 3,
+  "level": 2,
+  "prompt": "___ clean the room  (조심스럽게 청소하다)",
+  "answer": "carefully",
+  "options": [
+   "carefully",
+   "careful",
+   "care",
+   "careless"
+  ],
+  "explain": "동사 clean과 짝 → < 부사 > carefully",
+  "source": "교재 1-2 짝꿍 (확장)",
+  "pair": {
+   "mod": "carefully",
+   "modPos": "D",
+   "head": "clean",
+   "headPos": "V"
+  }
+ },
+ {
+  "id": "03-073",
+  "type": 3,
+  "level": 2,
+  "prompt": "a ___ mountain  (높은 산)",
+  "answer": "high",
+  "options": [
+   "high",
+   "highly",
+   "height",
+   "heighten"
+  ],
+  "explain": "명사 mountain과 짝 → ( 형용사 ) high",
+  "source": "교재 1-2 짝꿍 (확장)",
+  "pair": {
+   "mod": "high",
+   "modPos": "A",
+   "head": "mountain",
+   "headPos": "N"
+  }
+ },
+ {
+  "id": "03-074",
+  "type": 3,
+  "level": 2,
+  "prompt": "laugh ___  (크게 웃다)",
+  "answer": "loudly",
+  "options": [
+   "loudly",
+   "loud",
+   "loudness",
+   "louder"
+  ],
+  "explain": "동사 laugh와 짝 → < 부사 > loudly",
+  "source": "교재 1-2 짝꿍 (확장)",
+  "pair": {
+   "mod": "loudly",
+   "modPos": "D",
+   "head": "laugh",
+   "headPos": "V"
+  }
+ },
+ {
+  "id": "03-075",
+  "type": 3,
+  "level": 2,
+  "prompt": "an ___ answer  (정직한 대답)",
+  "answer": "honest",
+  "options": [
+   "honest",
+   "honestly",
+   "honesty",
+   "honests"
+  ],
+  "explain": "명사 answer와 짝 → ( 형용사 ) honest. -y로 끝나는 honesty는 명사!",
+  "source": "교재 1-2 짝꿍 (확장)",
+  "pair": {
+   "mod": "honest",
+   "modPos": "A",
+   "head": "answer",
+   "headPos": "N"
+  }
+ },
+ {
+  "id": "03-076",
+  "type": 3,
+  "level": 2,
+  "prompt": "___ open the door  (천천히 문을 열다)",
+  "answer": "slowly",
+  "options": [
+   "slowly",
+   "slow",
+   "slowness",
+   "slower"
+  ],
+  "explain": "동사 open과 짝 → < 부사 > slowly",
+  "source": "교재 1-2 짝꿍 (확장)",
+  "pair": {
+   "mod": "slowly",
+   "modPos": "D",
+   "head": "open",
+   "headPos": "V"
+  }
+ },
+ {
+  "id": "03-077",
+  "type": 3,
+  "level": 1,
+  "prompt": "a ___ dress  (아름다운 드레스)",
+  "answer": "beautiful",
+  "options": [
+   "beautiful",
+   "beautifully",
+   "beauty",
+   "beautify"
+  ],
+  "explain": "명사 dress와 짝 → ( 형용사 ) beautiful",
+  "source": "교재 1-2 짝꿍 (확장)",
+  "pair": {
+   "mod": "beautiful",
+   "modPos": "A",
+   "head": "dress",
+   "headPos": "N"
+  }
+ },
+ {
+  "id": "03-078",
+  "type": 3,
+  "level": 3,
+  "prompt": "The soup smells ___.",
+  "answer": "good",
+  "options": [
+   "good",
+   "well",
+   "goodness",
+   "goods"
+  ],
+  "explain": "soup = good, 감각동사 smell 뒤 보어 → ( 형용사 ) good. \"좋게\"로 해석돼도 well X!",
+  "source": "교재 1-2 짝꿍 (확장)"
+ },
+ {
+  "id": "03-079",
+  "type": 3,
+  "level": 3,
+  "prompt": "He became ___.",
+  "answer": "famous",
+  "options": [
+   "famous",
+   "famously",
+   "fame",
+   "fames"
+  ],
+  "explain": "He = famous, become 뒤 보어 → ( 형용사 )",
+  "source": "교재 1-2 짝꿍 (확장)"
+ },
+ {
+  "id": "03-080",
+  "type": 3,
+  "level": 3,
+  "prompt": "She felt ___ after the test.",
+  "answer": "nervous",
+  "options": [
+   "nervous",
+   "nervously",
+   "nerve",
+   "nerves"
+  ],
+  "explain": "She = nervous, feel 뒤 보어 → ( 형용사 ) \"긴장한\"",
+  "source": "교재 1-2 짝꿍 (확장)"
+ },
+ {
+  "id": "03-081",
+  "type": 3,
+  "level": 3,
+  "prompt": "Keep the room ___.",
+  "answer": "clean",
+  "options": [
+   "clean",
+   "cleanly",
+   "cleaner",
+   "cleaning"
+  ],
+  "explain": "5형식: room = clean, 목적어를 설명하는 보어 → ( 형용사 )",
+  "source": "교재 1-2 짝꿍 (확장)"
+ },
+ {
+  "id": "03-082",
+  "type": 3,
+  "level": 3,
+  "prompt": "The music sounds ___.",
+  "answer": "great",
+  "options": [
+   "great",
+   "greatly",
+   "greatness",
+   "greats"
+  ],
+  "explain": "music = great, sound 뒤 보어 → ( 형용사 )",
+  "source": "교재 1-2 짝꿍 (확장)"
+ },
+ {
+  "id": "03-083",
+  "type": 3,
+  "level": 3,
+  "prompt": "This bed feels ___.",
+  "answer": "soft",
+  "options": [
+   "soft",
+   "softly",
+   "softness",
+   "soften"
+  ],
+  "explain": "bed = soft, 감각동사 feel 뒤 → ( 형용사 ) \"부드러운\"",
+  "source": "교재 1-2 짝꿍 (확장)"
+ },
+ {
+  "id": "03-084",
+  "type": 3,
+  "level": 3,
+  "prompt": "He spoke very ___.",
+  "answer": "quietly",
+  "options": [
+   "quietly",
+   "quiet",
+   "quietness",
+   "quiets"
+  ],
+  "explain": "동사 spoke를 꾸민다 → < 부사 > quietly. very는 그 부사를 꾸미는 부사!",
+  "source": "교재 1-2 짝꿍 (확장)",
+  "pair": {
+   "mod": "quietly",
+   "modPos": "D",
+   "head": "spoke",
+   "headPos": "V"
+  }
+ },
+ {
+  "id": "03-085",
+  "type": 3,
+  "level": 3,
+  "prompt": "a ___ tall tree  (정말 키 큰 나무)",
+  "answer": "really",
+  "options": [
+   "really",
+   "real",
+   "reality",
+   "realize"
+  ],
+  "explain": "형용사 tall을 꾸민다 → < 부사 > really. 부사는 형용사도 꾸민다!",
+  "source": "교재 1-2 짝꿍 (확장)"
+ },
+ {
+  "id": "03-086",
+  "type": 3,
+  "level": 3,
+  "prompt": "She solved it ___ quickly.",
+  "answer": "very",
+  "options": [
+   "very",
+   "much",
+   "many",
+   "more"
+  ],
+  "explain": "부사 quickly를 꾸민다 → < 부사 > very. 부사는 부사도 꾸민다!",
+  "source": "교재 1-2 짝꿍 (확장)"
+ },
+ {
+  "id": "03-087",
+  "type": 3,
+  "level": 3,
+  "prompt": "I am ___ happy today.",
+  "answer": "so",
+  "options": [
+   "so",
+   "such",
+   "many",
+   "much"
+  ],
+  "explain": "보어 형용사 happy를 꾸미는 부사 so → 법칙 ② (so happy) 한 덩어리 형용사구",
+  "source": "교재 1-2 짝꿍 (확장)"
+ },
+ {
+  "id": "03-088",
+  "type": 3,
+  "level": 2,
+  "prompt": "a ___ day  (바람 부는 날)",
+  "answer": "windy",
+  "options": [
+   "windy",
+   "windily",
+   "wind",
+   "winds"
+  ],
+  "explain": "명사 day와 짝 → ( 형용사 ) windy. 명사 + -y = 형용사!",
+  "source": "교재 1-2 짝꿍 (확장)",
+  "pair": {
+   "mod": "windy",
+   "modPos": "A",
+   "head": "day",
+   "headPos": "N"
+  }
+ },
+ {
+  "id": "03-089",
+  "type": 3,
+  "level": 1,
+  "prompt": "a ___ rabbit  (귀여운 토끼)",
+  "answer": "cute",
+  "options": [
+   "cute",
+   "cutely",
+   "cuteness",
+   "cuter than"
+  ],
+  "explain": "명사 rabbit과 짝 → ( 형용사 ) cute",
+  "source": "교재 1-2 짝꿍 (확장)",
+  "pair": {
+   "mod": "cute",
+   "modPos": "A",
+   "head": "rabbit",
+   "headPos": "N"
+  }
+ },
+ {
+  "id": "03-090",
+  "type": 3,
+  "level": 3,
+  "prompt": "swim ___  (잘 헤엄치다)",
+  "answer": "well",
+  "options": [
+   "well",
+   "good",
+   "goodness",
+   "better than"
+  ],
+  "explain": "동사 swim과 짝 → < 부사 > well. good의 부사는 well!",
+  "source": "교재 1-2 짝꿍 (확장)",
+  "pair": {
+   "mod": "well",
+   "modPos": "D",
+   "head": "swim",
+   "headPos": "V"
+  }
+ },
+ {
+  "id": "03-091",
+  "type": 3,
+  "level": 2,
+  "prompt": "a ___ voice  (부드러운 목소리)",
+  "answer": "gentle",
+  "options": [
+   "gentle",
+   "gently",
+   "gentleness",
+   "gentles"
+  ],
+  "explain": "명사 voice와 짝 → ( 형용사 ) gentle",
+  "source": "교재 1-2 짝꿍 (확장)",
+  "pair": {
+   "mod": "gentle",
+   "modPos": "A",
+   "head": "voice",
+   "headPos": "N"
+  }
+ },
+ {
+  "id": "03-092",
+  "type": 3,
+  "level": 3,
+  "prompt": "speak English ___  (유창하게)",
+  "answer": "fluently",
+  "options": [
+   "fluently",
+   "fluent",
+   "fluency",
+   "fluents"
+  ],
+  "explain": "동사 speak를 꾸민다 → < 부사 > fluently. 목적어 English 뒤, 문장 끝으로!",
+  "source": "교재 1-2 짝꿍 (확장)",
+  "pair": {
+   "mod": "fluently",
+   "modPos": "D",
+   "head": "speak",
+   "headPos": "V"
+  }
+ },
+ {
+  "id": "03-093",
+  "type": 3,
+  "level": 2,
+  "prompt": "a ___ joke  (웃긴 농담)",
+  "answer": "funny",
+  "options": [
+   "funny",
+   "funnily",
+   "fun",
+   "funs"
+  ],
+  "explain": "명사 joke와 짝 → ( 형용사 ) funny",
+  "source": "교재 1-2 짝꿍 (확장)",
+  "pair": {
+   "mod": "funny",
+   "modPos": "A",
+   "head": "joke",
+   "headPos": "N"
+  }
+ },
+ {
+  "id": "03-094",
+  "type": 3,
+  "level": 2,
+  "prompt": "arrive ___  (안전하게 도착하다)",
+  "answer": "safely",
+  "options": [
+   "safely",
+   "safe",
+   "safety",
+   "save"
+  ],
+  "explain": "동사 arrive와 짝 → < 부사 > safely. safety는 명사!",
+  "source": "교재 1-2 짝꿍 (확장)",
+  "pair": {
+   "mod": "safely",
+   "modPos": "D",
+   "head": "arrive",
+   "headPos": "V"
+  }
+ },
+ {
+  "id": "03-095",
+  "type": 3,
+  "level": 3,
+  "prompt": "The students looked ___.",
+  "answer": "excited",
+  "options": [
+   "excited",
+   "excitedly",
+   "excitement",
+   "excite"
+  ],
+  "explain": "students = excited, look 뒤 보어 → ( 형용사 ) \"신이 난\"",
+  "source": "교재 1-2 짝꿍 (확장)"
+ },
+ {
+  "id": "03-096",
+  "type": 3,
+  "level": 2,
+  "prompt": "a ___ story  (진짜 이야기)",
+  "answer": "true",
+  "options": [
+   "true",
+   "truly",
+   "truth",
+   "trues"
+  ],
+  "explain": "명사 story와 짝 → ( 형용사 ) true. truth는 명사!",
+  "source": "교재 1-2 짝꿍 (확장)",
+  "pair": {
+   "mod": "true",
+   "modPos": "A",
+   "head": "story",
+   "headPos": "N"
+  }
+ },
+ {
+  "id": "03-097",
+  "type": 3,
+  "level": 3,
+  "prompt": "sleep ___  (푹 자다)",
+  "answer": "deeply",
+  "options": [
+   "deeply",
+   "deep",
+   "depth",
+   "deepen"
+  ],
+  "explain": "동사 sleep과 짝 → < 부사 > deeply. depth는 명사, deepen은 동사!",
+  "source": "교재 1-2 짝꿍 (확장)",
+  "pair": {
+   "mod": "deeply",
+   "modPos": "D",
+   "head": "sleep",
+   "headPos": "V"
+  }
+ },
+ {
+  "id": "03-098",
+  "type": 3,
+  "level": 3,
+  "prompt": "The test was ___ difficult.",
+  "answer": "too",
+  "options": [
+   "too",
+   "two",
+   "to",
+   "much"
+  ],
+  "explain": "보어 형용사 difficult를 꾸미는 부사 too → (too difficult) 형용사구",
+  "source": "교재 1-2 짝꿍 (확장)"
+ },
+ {
+  "id": "03-099",
+  "type": 3,
+  "level": 2,
+  "prompt": "a ___ girl  (조용한 소녀)",
+  "answer": "quiet",
+  "options": [
+   "quiet",
+   "quietly",
+   "quietness",
+   "quite"
+  ],
+  "explain": "명사 girl과 짝 → ( 형용사 ) quiet. quite(꽤)와 헷갈리지 마요!",
+  "source": "교재 1-2 짝꿍 (확장)",
+  "pair": {
+   "mod": "quiet",
+   "modPos": "A",
+   "head": "girl",
+   "headPos": "N"
+  }
+ },
+ {
+  "id": "03-100",
+  "type": 3,
+  "level": 3,
+  "prompt": "He drives ___.",
+  "answer": "dangerously",
+  "options": [
+   "dangerously",
+   "dangerous",
+   "danger",
+   "endanger"
+  ],
+  "explain": "동사 drives를 꾸민다 → < 부사 > dangerously",
+  "source": "교재 1-2 짝꿍 (확장)",
+  "pair": {
+   "mod": "dangerously",
+   "modPos": "D",
+   "head": "drives",
+   "headPos": "V"
+  }
+ },
+ {
+  "id": "03-101",
+  "type": 3,
+  "level": 3,
+  "prompt": "an ___ book  (흥미로운 책)",
+  "answer": "interesting",
+  "options": [
+   "interesting",
+   "interested",
+   "interestingly",
+   "interest"
+  ],
+  "explain": "명사 book과 짝, 책이 흥미를 \"주는\" 것 → interesting. (사람이 흥미를 느끼면 interested)",
+  "source": "교재 1-2 짝꿍 (확장)",
+  "pair": {
+   "mod": "interesting",
+   "modPos": "A",
+   "head": "book",
+   "headPos": "N"
+  }
  }
 ]

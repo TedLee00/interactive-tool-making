@@ -394,5 +394,482 @@
   "answer": "M",
   "explain": "동사 studies를 꾸미는 < 부사 > → 수식어(M)",
   "source": "교재 2-2 성분 찾기 4단계"
+ },
+ {
+  "id": "05-045",
+  "type": 5,
+  "level": 1,
+  "sentence": "[My little sister] likes cats.",
+  "answer": "S",
+  "explain": "동사 likes 앞, 누가? → 주어(S). 명사 앞 꾸밈말까지 한 덩어리",
+  "source": "교재 2-1 · 2-2 · 2-4 (확장)"
+ },
+ {
+  "id": "05-046",
+  "type": 5,
+  "level": 1,
+  "sentence": "Tom [plays] the piano.",
+  "answer": "V",
+  "explain": "\"연주한다\" — 문장의 심장 → 서술어(동사)(V)",
+  "source": "교재 2-1 · 2-2 · 2-4 (확장)"
+ },
+ {
+  "id": "05-047",
+  "type": 5,
+  "level": 1,
+  "sentence": "I love [ice cream].",
+  "answer": "O",
+  "explain": "love 뒤, 무엇을? → 목적어(O)",
+  "source": "교재 2-1 · 2-2 · 2-4 (확장)"
+ },
+ {
+  "id": "05-048",
+  "type": 5,
+  "level": 1,
+  "sentence": "She is [a nurse].",
+  "answer": "C",
+  "explain": "She = a nurse, 주어를 설명 → 보어(C)",
+  "source": "교재 2-1 · 2-2 · 2-4 (확장)"
+ },
+ {
+  "id": "05-049",
+  "type": 5,
+  "level": 1,
+  "sentence": "We play soccer [after school].",
+  "answer": "M",
+  "explain": "언제? 빼도 문장이 된다 → 수식어(M) 리본",
+  "source": "교재 2-1 · 2-2 · 2-4 (확장)"
+ },
+ {
+  "id": "05-050",
+  "type": 5,
+  "level": 1,
+  "sentence": "[The dog] barked loudly.",
+  "answer": "S",
+  "explain": "동사 barked 앞, 무엇이? → 주어(S)",
+  "source": "교재 2-1 · 2-2 · 2-4 (확장)"
+ },
+ {
+  "id": "05-051",
+  "type": 5,
+  "level": 1,
+  "sentence": "My father [cooks] dinner on Sundays.",
+  "answer": "V",
+  "explain": "동작 \"요리한다\" → 서술어(동사)(V)",
+  "source": "교재 2-1 · 2-2 · 2-4 (확장)"
+ },
+ {
+  "id": "05-052",
+  "type": 5,
+  "level": 1,
+  "sentence": "They watched [a movie].",
+  "answer": "O",
+  "explain": "watched 뒤, 무엇을? → 목적어(O)",
+  "source": "교재 2-1 · 2-2 · 2-4 (확장)"
+ },
+ {
+  "id": "05-053",
+  "type": 5,
+  "level": 2,
+  "sentence": "The flowers are [beautiful].",
+  "answer": "C",
+  "explain": "flowers = beautiful, 주어 설명 → 보어(C). 보어 자리엔 형용사 OK!",
+  "source": "교재 2-1 · 2-2 · 2-4 (확장)"
+ },
+ {
+  "id": "05-054",
+  "type": 5,
+  "level": 2,
+  "sentence": "The baby [is sleeping] now.",
+  "answer": "V",
+  "explain": "is sleeping은 동사 덩어리 하나 → 서술어(동사)(V)",
+  "source": "교재 2-1 · 2-2 · 2-4 (확장)"
+ },
+ {
+  "id": "05-055",
+  "type": 5,
+  "level": 2,
+  "sentence": "I [can swim] very well.",
+  "answer": "V",
+  "explain": "조동사 can까지 동사 덩어리 → 서술어(동사)(V)",
+  "source": "교재 2-1 · 2-2 · 2-4 (확장)"
+ },
+ {
+  "id": "05-056",
+  "type": 5,
+  "level": 2,
+  "sentence": "[Swimming] is good exercise.",
+  "answer": "S",
+  "explain": "동사 is 앞, 무엇이? → 주어(S). 동명사 = 명사 무리",
+  "source": "교재 2-1 · 2-2 · 2-4 (확장)"
+ },
+ {
+  "id": "05-057",
+  "type": 5,
+  "level": 2,
+  "sentence": "I bought [a new bag] yesterday.",
+  "answer": "O",
+  "explain": "bought 뒤, 무엇을? → 목적어(O). 명사구 통째로",
+  "source": "교재 2-1 · 2-2 · 2-4 (확장)"
+ },
+ {
+  "id": "05-058",
+  "type": 5,
+  "level": 2,
+  "sentence": "He looks [tired] today.",
+  "answer": "C",
+  "explain": "He = tired, look 뒤 보어(C). \"피곤해 보인다\"",
+  "source": "교재 2-1 · 2-2 · 2-4 (확장)"
+ },
+ {
+  "id": "05-059",
+  "type": 5,
+  "level": 2,
+  "sentence": "[In the morning], I drink milk.",
+  "answer": "M",
+  "explain": "언제? 빼도 문장이 된다 → 수식어(M)",
+  "source": "교재 2-1 · 2-2 · 2-4 (확장)"
+ },
+ {
+  "id": "05-060",
+  "type": 5,
+  "level": 2,
+  "sentence": "The boy [in the blue cap] is my brother.",
+  "answer": "M",
+  "explain": "명사 boy를 뒤에서 꾸미는 ( 형용사구 ) → 수식어(M)",
+  "source": "교재 2-1 · 2-2 · 2-4 (확장)"
+ },
+ {
+  "id": "05-061",
+  "type": 5,
+  "level": 3,
+  "sentence": "My dream is [to be a doctor].",
+  "answer": "C",
+  "explain": "My dream = to be a doctor → 보어(C). to부정사구도 보어 의자에!",
+  "source": "교재 2-1 · 2-2 · 2-4 (확장)"
+ },
+ {
+  "id": "05-062",
+  "type": 5,
+  "level": 3,
+  "sentence": "I want [to visit Jeju Island].",
+  "answer": "O",
+  "explain": "want 뒤, 무엇을? → 목적어(O). to부정사구 \"~하는 것\" = 명사 무리",
+  "source": "교재 2-1 · 2-2 · 2-4 (확장)"
+ },
+ {
+  "id": "05-063",
+  "type": 5,
+  "level": 3,
+  "sentence": "[Reading comic books] is my hobby.",
+  "answer": "S",
+  "explain": "동사 is 앞 → 주어(S). 동명사구 통째로 명사 무리",
+  "source": "교재 2-1 · 2-2 · 2-4 (확장)"
+ },
+ {
+  "id": "05-064",
+  "type": 5,
+  "level": 3,
+  "sentence": "I think [that English is fun].",
+  "answer": "O",
+  "explain": "think 뒤, 무엇을? → 목적어(O). that절 = 명사절",
+  "source": "교재 2-1 · 2-2 · 2-4 (확장)"
+ },
+ {
+  "id": "05-065",
+  "type": 5,
+  "level": 3,
+  "sentence": "Mom gave [me] a present.",
+  "answer": "O",
+  "explain": "4형식 S V O O — \"나에게\" → 간접목적어(O). 목적어 의자 두 개!",
+  "source": "교재 2-1 · 2-2 · 2-4 (확장)"
+ },
+ {
+  "id": "05-066",
+  "type": 5,
+  "level": 3,
+  "sentence": "Mom gave me [a present].",
+  "answer": "O",
+  "explain": "4형식 — \"선물을\" → 직접목적어(O)",
+  "source": "교재 2-1 · 2-2 · 2-4 (확장)"
+ },
+ {
+  "id": "05-067",
+  "type": 5,
+  "level": 3,
+  "sentence": "The movie was [very long].",
+  "answer": "C",
+  "explain": "법칙 ② 보어 형용사 앞 부사도 한 덩어리 (very long) → 보어(C)",
+  "source": "교재 2-1 · 2-2 · 2-4 (확장)"
+ },
+ {
+  "id": "05-068",
+  "type": 5,
+  "level": 3,
+  "sentence": "She sang [beautifully] on the stage.",
+  "answer": "M",
+  "explain": "동사 sang을 꾸미는 부사 → 수식어(M). She ≠ beautifully라서 보어 아님!",
+  "source": "교재 2-1 · 2-2 · 2-4 (확장)"
+ },
+ {
+  "id": "05-069",
+  "type": 5,
+  "level": 3,
+  "sentence": "[When I was young], I lived in Busan.",
+  "answer": "M",
+  "explain": "부사절 — 언제? 통째로 빼도 문장이 된다 → 수식어(M)",
+  "source": "교재 2-1 · 2-2 · 2-4 (확장)"
+ },
+ {
+  "id": "05-070",
+  "type": 5,
+  "level": 3,
+  "sentence": "I stayed home [because it rained].",
+  "answer": "M",
+  "explain": "이유를 말하는 부사절 → 수식어(M)",
+  "source": "교재 2-1 · 2-2 · 2-4 (확장)"
+ },
+ {
+  "id": "05-071",
+  "type": 5,
+  "level": 3,
+  "sentence": "He showed [us] his new bike.",
+  "answer": "O",
+  "explain": "4형식 — \"우리에게\" → 간접목적어(O)",
+  "source": "교재 2-1 · 2-2 · 2-4 (확장)"
+ },
+ {
+  "id": "05-072",
+  "type": 5,
+  "level": 3,
+  "sentence": "[The girl with long hair] is my cousin.",
+  "answer": "S",
+  "explain": "주어 덩어리 = 명사구 + 뒤에서 꾸미는 형용사구까지 → 주어(S)",
+  "source": "교재 2-1 · 2-2 · 2-4 (확장)"
+ },
+ {
+  "id": "05-073",
+  "type": 5,
+  "level": 3,
+  "sentence": "My hobby is [taking pictures].",
+  "answer": "C",
+  "explain": "My hobby = taking pictures → 보어(C). 동명사구도 보어 OK",
+  "source": "교재 2-1 · 2-2 · 2-4 (확장)"
+ },
+ {
+  "id": "05-074",
+  "type": 5,
+  "level": 3,
+  "sentence": "I know [what you mean].",
+  "answer": "O",
+  "explain": "know 뒤, 무엇을? → 목적어(O). what절 = 명사절",
+  "source": "교재 2-1 · 2-2 · 2-4 (확장)"
+ },
+ {
+  "id": "05-075",
+  "type": 5,
+  "level": 3,
+  "sentence": "The water [to drink] is in the fridge.",
+  "answer": "M",
+  "explain": "명사 water를 꾸미는 to부정사 ( 형용사구 ) → 수식어(M)",
+  "source": "교재 2-1 · 2-2 · 2-4 (확장)"
+ },
+ {
+  "id": "05-076",
+  "type": 5,
+  "level": 3,
+  "sentence": "She went to the store [to buy milk].",
+  "answer": "M",
+  "explain": "\"~하려고\" 동사를 꾸미는 to부정사 < 부사구 > → 수식어(M)",
+  "source": "교재 2-1 · 2-2 · 2-4 (확장)"
+ },
+ {
+  "id": "05-077",
+  "type": 5,
+  "level": 2,
+  "sentence": "[It] is cold outside.",
+  "answer": "S",
+  "explain": "동사 is 앞 → 주어(S). 날씨의 it도 주어 의자에!",
+  "source": "교재 2-1 · 2-2 · 2-4 (확장)"
+ },
+ {
+  "id": "05-078",
+  "type": 5,
+  "level": 3,
+  "sentence": "This cake tastes [sweet].",
+  "answer": "C",
+  "explain": "cake = sweet, 감각동사 taste 뒤 보어(C). sweetly X",
+  "source": "교재 2-1 · 2-2 · 2-4 (확장)"
+ },
+ {
+  "id": "05-079",
+  "type": 5,
+  "level": 2,
+  "sentence": "They [became] good friends.",
+  "answer": "V",
+  "explain": "\"되었다\" → 서술어(동사)(V). 뒤의 good friends는 보어",
+  "source": "교재 2-1 · 2-2 · 2-4 (확장)"
+ },
+ {
+  "id": "05-080",
+  "type": 5,
+  "level": 3,
+  "sentence": "He became [a famous singer].",
+  "answer": "C",
+  "explain": "He = a famous singer → 보어(C). become 뒤!",
+  "source": "교재 2-1 · 2-2 · 2-4 (확장)"
+ },
+ {
+  "id": "05-081",
+  "type": 5,
+  "level": 3,
+  "sentence": "I found the test [easy].",
+  "answer": "C",
+  "explain": "5형식 — test = easy, \"시험이 쉽다고 알게 되었다\" → 목적격 보어(C)",
+  "source": "교재 2-1 · 2-2 · 2-4 (확장)"
+ },
+ {
+  "id": "05-082",
+  "type": 5,
+  "level": 3,
+  "sentence": "I found [my lost key] under the bed.",
+  "answer": "O",
+  "explain": "found 뒤, 무엇을? → 목적어(O). 같은 find라도 3형식!",
+  "source": "교재 2-1 · 2-2 · 2-4 (확장)"
+ },
+ {
+  "id": "05-083",
+  "type": 5,
+  "level": 2,
+  "sentence": "Birds sing [in the trees].",
+  "answer": "M",
+  "explain": "어디서? → 수식어(M). 1형식 S V + 리본",
+  "source": "교재 2-1 · 2-2 · 2-4 (확장)"
+ },
+ {
+  "id": "05-084",
+  "type": 5,
+  "level": 2,
+  "sentence": "[Those shoes] are too small for me.",
+  "answer": "S",
+  "explain": "동사 are 앞 → 주어(S). those + 명사 = 명사구",
+  "source": "교재 2-1 · 2-2 · 2-4 (확장)"
+ },
+ {
+  "id": "05-085",
+  "type": 5,
+  "level": 3,
+  "sentence": "Please keep the door [open].",
+  "answer": "C",
+  "explain": "5형식 — door = open → 목적격 보어(C)",
+  "source": "교재 2-1 · 2-2 · 2-4 (확장)"
+ },
+ {
+  "id": "05-086",
+  "type": 5,
+  "level": 2,
+  "sentence": "My teacher [teaches] us English.",
+  "answer": "V",
+  "explain": "\"가르친다\" → 서술어(동사)(V). 4형식 동사",
+  "source": "교재 2-1 · 2-2 · 2-4 (확장)"
+ },
+ {
+  "id": "05-087",
+  "type": 5,
+  "level": 3,
+  "sentence": "[To learn a new language] takes time.",
+  "answer": "S",
+  "explain": "동사 takes 앞 → 주어(S). to부정사구 \"~하는 것\"",
+  "source": "교재 2-1 · 2-2 · 2-4 (확장)"
+ },
+ {
+  "id": "05-088",
+  "type": 5,
+  "level": 3,
+  "sentence": "She stopped [eating snacks].",
+  "answer": "O",
+  "explain": "stopped의 목적어 \"~먹는 것을\" → 목적어(O). 동명사구",
+  "source": "교재 2-1 · 2-2 · 2-4 (확장)"
+ },
+ {
+  "id": "05-089",
+  "type": 5,
+  "level": 3,
+  "sentence": "[What I need] is more time.",
+  "answer": "S",
+  "explain": "동사 is 앞 주어 → what절 = 명사 무리 → 주어(S)",
+  "source": "교재 2-1 · 2-2 · 2-4 (확장)"
+ },
+ {
+  "id": "05-090",
+  "type": 5,
+  "level": 3,
+  "sentence": "He seems [very nervous].",
+  "answer": "C",
+  "explain": "He = very nervous, seem 뒤 보어(C)",
+  "source": "교재 2-1 · 2-2 · 2-4 (확장)"
+ },
+ {
+  "id": "05-091",
+  "type": 5,
+  "level": 3,
+  "sentence": "I asked [him] a question.",
+  "answer": "O",
+  "explain": "4형식 간접목적어 \"그에게\" → 목적어(O)",
+  "source": "교재 2-1 · 2-2 · 2-4 (확장)"
+ },
+ {
+  "id": "05-092",
+  "type": 5,
+  "level": 3,
+  "sentence": "They named the baby [Sora].",
+  "answer": "C",
+  "explain": "5형식 — baby = Sora → 목적격 보어(C)",
+  "source": "교재 2-1 · 2-2 · 2-4 (확장)"
+ },
+ {
+  "id": "05-093",
+  "type": 5,
+  "level": 3,
+  "sentence": "She [has finished] her homework.",
+  "answer": "V",
+  "explain": "현재완료 has finished 통째로 동사 덩어리 → 서술어(동사)(V)",
+  "source": "교재 2-1 · 2-2 · 2-4 (확장)"
+ },
+ {
+  "id": "05-094",
+  "type": 5,
+  "level": 3,
+  "sentence": "The students [in the gym] are practicing.",
+  "answer": "M",
+  "explain": "명사 students를 꾸미는 ( 형용사구 ) → 수식어(M)",
+  "source": "교재 2-1 · 2-2 · 2-4 (확장)"
+ },
+ {
+  "id": "05-095",
+  "type": 5,
+  "level": 3,
+  "sentence": "I will tell you [the truth].",
+  "answer": "O",
+  "explain": "4형식 직접목적어 \"진실을\" → 목적어(O)",
+  "source": "교재 2-1 · 2-2 · 2-4 (확장)"
+ },
+ {
+  "id": "05-096",
+  "type": 5,
+  "level": 3,
+  "sentence": "[Strangely], the door was open.",
+  "answer": "M",
+  "explain": "문장 전체를 꾸미는 부사 → 수식어(M)",
+  "source": "교재 2-1 · 2-2 · 2-4 (확장)"
+ },
+ {
+  "id": "05-097",
+  "type": 5,
+  "level": 3,
+  "sentence": "The answer is [that we need help].",
+  "answer": "C",
+  "explain": "answer = that절 → 보어(C). 명사절도 보어 의자에!",
+  "source": "교재 2-1 · 2-2 · 2-4 (확장)"
  }
 ]

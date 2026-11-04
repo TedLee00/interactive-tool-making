@@ -403,5 +403,410 @@
   "answer": "X",
   "explain": "요일 앞 → 관사 X (on Sunday)",
   "source": "교재 1-5"
+ },
+ {
+  "id": "04-046",
+  "type": 4,
+  "level": 1,
+  "sentence": "I eat ___ apple every morning.",
+  "answer": "an",
+  "explain": "apple의 첫 소리가 모음 [æ] → an",
+  "source": "교재 1-5 관사 (확장)"
+ },
+ {
+  "id": "04-047",
+  "type": 4,
+  "level": 1,
+  "sentence": "She has ___ cat and a dog.",
+  "answer": "a",
+  "explain": "처음 말하는 셀 수 있는 단수 명사 → a",
+  "source": "교재 1-5 관사 (확장)"
+ },
+ {
+  "id": "04-048",
+  "type": 4,
+  "level": 1,
+  "sentence": "Please close ___ window.",
+  "answer": "the",
+  "explain": "서로 아는 바로 그 창문 → the",
+  "source": "교재 1-5 관사 (확장)"
+ },
+ {
+  "id": "04-049",
+  "type": 4,
+  "level": 1,
+  "sentence": "My brother plays ___ guitar.",
+  "answer": "the",
+  "explain": "악기 앞엔 the → play the guitar",
+  "source": "교재 1-5 관사 (확장)"
+ },
+ {
+  "id": "04-050",
+  "type": 4,
+  "level": 1,
+  "sentence": "We go to ___ school by bus.",
+  "answer": "X",
+  "explain": "공부하러(본래 목적) 학교에 간다 → go to school (관사 X)",
+  "source": "교재 1-5 관사 (확장)"
+ },
+ {
+  "id": "04-051",
+  "type": 4,
+  "level": 1,
+  "sentence": "I usually have ___ lunch at noon.",
+  "answer": "X",
+  "explain": "식사 이름 앞엔 관사 X → have lunch",
+  "source": "교재 1-5 관사 (확장)"
+ },
+ {
+  "id": "04-052",
+  "type": 4,
+  "level": 1,
+  "sentence": "Look at ___ moon tonight!",
+  "answer": "the",
+  "explain": "세상에 하나뿐 → the moon",
+  "source": "교재 1-5 관사 (확장)"
+ },
+ {
+  "id": "04-053",
+  "type": 4,
+  "level": 2,
+  "sentence": "He is ___ honest boy.",
+  "answer": "an",
+  "explain": "honest의 h는 소리가 안 나요 → 첫 소리 모음 [ɑ] → an",
+  "source": "교재 1-5 관사 (확장)"
+ },
+ {
+  "id": "04-054",
+  "type": 4,
+  "level": 2,
+  "sentence": "I waited for ___ hour.",
+  "answer": "an",
+  "explain": "hour [아우어] — 첫 소리가 모음 → an",
+  "source": "교재 1-5 관사 (확장)"
+ },
+ {
+  "id": "04-055",
+  "type": 4,
+  "level": 2,
+  "sentence": "It is ___ useful tool.",
+  "answer": "a",
+  "explain": "useful의 첫 소리 [j] (자음) → a. 철자 u가 아니라 소리!",
+  "source": "교재 1-5 관사 (확장)"
+ },
+ {
+  "id": "04-056",
+  "type": 4,
+  "level": 2,
+  "sentence": "She bought ___ umbrella.",
+  "answer": "an",
+  "explain": "umbrella의 첫 소리 [ʌ] (모음) → an",
+  "source": "교재 1-5 관사 (확장)"
+ },
+ {
+  "id": "04-057",
+  "type": 4,
+  "level": 2,
+  "sentence": "I go to ___ bed at ten.",
+  "answer": "X",
+  "explain": "자러(본래 목적) 간다 → go to bed (관사 X)",
+  "source": "교재 1-5 관사 (확장)"
+ },
+ {
+  "id": "04-058",
+  "type": 4,
+  "level": 2,
+  "sentence": "We study ___ math on Mondays.",
+  "answer": "X",
+  "explain": "과목 이름 앞엔 관사 X → study math",
+  "source": "교재 1-5 관사 (확장)"
+ },
+ {
+  "id": "04-059",
+  "type": 4,
+  "level": 2,
+  "sentence": "My mom goes to work by ___ car.",
+  "answer": "X",
+  "explain": "by + 교통수단 → 관사 X (by car)",
+  "source": "교재 1-5 관사 (확장)"
+ },
+ {
+  "id": "04-060",
+  "type": 4,
+  "level": 2,
+  "sentence": "I saw ___ dog. The dog was very big.",
+  "answer": "a",
+  "explain": "처음 말할 때 a → 다시 말할 때 the",
+  "source": "교재 1-5 관사 (확장)"
+ },
+ {
+  "id": "04-061",
+  "type": 4,
+  "level": 2,
+  "sentence": "This is ___ best day of my life!",
+  "answer": "the",
+  "explain": "best · first · only · same 앞엔 the",
+  "source": "교재 1-5 관사 (확장)"
+ },
+ {
+  "id": "04-062",
+  "type": 4,
+  "level": 2,
+  "sentence": "He was ___ first student to arrive.",
+  "answer": "the",
+  "explain": "first 앞엔 the → the first",
+  "source": "교재 1-5 관사 (확장)"
+ },
+ {
+  "id": "04-063",
+  "type": 4,
+  "level": 2,
+  "sentence": "We have the same class twice ___ week.",
+  "answer": "a",
+  "explain": "\"~마다, ~에\" 빈도 → twice a week (일주일에 두 번)",
+  "source": "교재 1-5 관사 (확장)"
+ },
+ {
+  "id": "04-064",
+  "type": 4,
+  "level": 2,
+  "sentence": "She is ___ English teacher.",
+  "answer": "an",
+  "explain": "English의 첫 소리 [i] (모음) → an. 단, 과목 English만 쓰면 관사 X",
+  "source": "교재 1-5 관사 (확장)"
+ },
+ {
+  "id": "04-065",
+  "type": 4,
+  "level": 2,
+  "sentence": "My uncle is ___ engineer.",
+  "answer": "an",
+  "explain": "engineer의 첫 소리 [e] (모음) → an. 직업 앞엔 a/an",
+  "source": "교재 1-5 관사 (확장)"
+ },
+ {
+  "id": "04-066",
+  "type": 4,
+  "level": 2,
+  "sentence": "Let's play ___ badminton after school.",
+  "answer": "X",
+  "explain": "운동 이름 앞엔 관사 X",
+  "source": "교재 1-5 관사 (확장)"
+ },
+ {
+  "id": "04-067",
+  "type": 4,
+  "level": 2,
+  "sentence": "I listen to music in ___ evening.",
+  "answer": "the",
+  "explain": "in the morning / afternoon / evening",
+  "source": "교재 1-5 관사 (확장)"
+ },
+ {
+  "id": "04-068",
+  "type": 4,
+  "level": 2,
+  "sentence": "He often reads books at ___ night.",
+  "answer": "X",
+  "explain": "at night (굳어진 표현, 관사 X)",
+  "source": "교재 1-5 관사 (확장)"
+ },
+ {
+  "id": "04-069",
+  "type": 4,
+  "level": 3,
+  "sentence": "There is ___ old castle on the hill.",
+  "answer": "an",
+  "explain": "형용사가 붙으면 형용사 소리로! old의 첫 소리 [o] → an old castle",
+  "source": "교재 1-5 관사 (확장)"
+ },
+ {
+  "id": "04-070",
+  "type": 4,
+  "level": 3,
+  "sentence": "She has ___ big apple.",
+  "answer": "a",
+  "explain": "apple은 an이지만 형용사 big이 앞에 오면 big 소리로 → a big apple",
+  "source": "교재 1-5 관사 (확장)"
+ },
+ {
+  "id": "04-071",
+  "type": 4,
+  "level": 3,
+  "sentence": "He is ___ university student.",
+  "answer": "a",
+  "explain": "university [j] (자음 소리) → a",
+  "source": "교재 1-5 관사 (확장)"
+ },
+ {
+  "id": "04-072",
+  "type": 4,
+  "level": 3,
+  "sentence": "I need ___ MP3 player.",
+  "answer": "an",
+  "explain": "MP3 [엠] 첫 소리가 모음 → an. 알파벳 이름 소리로!",
+  "source": "교재 1-5 관사 (확장)"
+ },
+ {
+  "id": "04-073",
+  "type": 4,
+  "level": 3,
+  "sentence": "It took ___ one-hour bus ride.",
+  "answer": "a",
+  "explain": "one [w] (자음 소리) → a one-hour",
+  "source": "교재 1-5 관사 (확장)"
+ },
+ {
+  "id": "04-074",
+  "type": 4,
+  "level": 3,
+  "sentence": "I went to ___ school to meet my teacher.",
+  "answer": "the",
+  "explain": "공부가 아니라 건물에 방문 → go to the school",
+  "source": "교재 1-5 관사 (확장)"
+ },
+ {
+  "id": "04-075",
+  "type": 4,
+  "level": 3,
+  "sentence": "My family stays at ___ home on Sundays.",
+  "answer": "X",
+  "explain": "at home (굳어진 표현, 관사 X)",
+  "source": "교재 1-5 관사 (확장)"
+ },
+ {
+  "id": "04-076",
+  "type": 4,
+  "level": 3,
+  "sentence": "___ Earth goes around the sun.",
+  "answer": "the",
+  "explain": "세상에 하나뿐 → The Earth (문장 맨 앞이라 대문자)",
+  "source": "교재 1-5 관사 (확장)"
+ },
+ {
+  "id": "04-077",
+  "type": 4,
+  "level": 3,
+  "sentence": "What ___ beautiful day it is!",
+  "answer": "a",
+  "explain": "What + a + 형용사 + 단수 명사 감탄문 → What a beautiful day!",
+  "source": "교재 1-5 관사 (확장)"
+ },
+ {
+  "id": "04-078",
+  "type": 4,
+  "level": 3,
+  "sentence": "I want some water, not ___ juice.",
+  "answer": "X",
+  "explain": "셀 수 없는 juice, 일반적인 음료 → 관사 X",
+  "source": "교재 1-5 관사 (확장)"
+ },
+ {
+  "id": "04-079",
+  "type": 4,
+  "level": 3,
+  "sentence": "I bought a pen. ___ pen is blue.",
+  "answer": "the",
+  "explain": "앞에서 말한 그 펜 → The",
+  "source": "교재 1-5 관사 (확장)"
+ },
+ {
+  "id": "04-080",
+  "type": 4,
+  "level": 3,
+  "sentence": "She is ___ only child in her family.",
+  "answer": "the",
+  "explain": "only 앞엔 the → the only child",
+  "source": "교재 1-5 관사 (확장)"
+ },
+ {
+  "id": "04-081",
+  "type": 4,
+  "level": 3,
+  "sentence": "He wants to be ___ artist.",
+  "answer": "an",
+  "explain": "artist 첫 소리 [ɑ] (모음) → an. 직업 앞 a/an",
+  "source": "교재 1-5 관사 (확장)"
+ },
+ {
+  "id": "04-082",
+  "type": 4,
+  "level": 2,
+  "sentence": "Turn off ___ TV, please.",
+  "answer": "the",
+  "explain": "서로 아는 그 TV → the",
+  "source": "교재 1-5 관사 (확장)"
+ },
+ {
+  "id": "04-083",
+  "type": 4,
+  "level": 2,
+  "sentence": "We had ___ dinner at a restaurant.",
+  "answer": "X",
+  "explain": "식사 이름 앞엔 관사 X → have dinner",
+  "source": "교재 1-5 관사 (확장)"
+ },
+ {
+  "id": "04-084",
+  "type": 4,
+  "level": 3,
+  "sentence": "My dad takes ___ subway to work.",
+  "answer": "the",
+  "explain": "take the subway / the bus (by subway면 관사 X)",
+  "source": "교재 1-5 관사 (확장)"
+ },
+ {
+  "id": "04-085",
+  "type": 4,
+  "level": 3,
+  "sentence": "There is ___ European student in our class.",
+  "answer": "a",
+  "explain": "European [j] (자음 소리) → a European",
+  "source": "교재 1-5 관사 (확장)"
+ },
+ {
+  "id": "04-086",
+  "type": 4,
+  "level": 2,
+  "sentence": "Can you play ___ violin?",
+  "answer": "the",
+  "explain": "악기 앞엔 the → play the violin",
+  "source": "교재 1-5 관사 (확장)"
+ },
+ {
+  "id": "04-087",
+  "type": 4,
+  "level": 2,
+  "sentence": "___ sky is clear today.",
+  "answer": "the",
+  "explain": "모두가 아는 하나뿐인 하늘 → The sky",
+  "source": "교재 1-5 관사 (확장)"
+ },
+ {
+  "id": "04-088",
+  "type": 4,
+  "level": 3,
+  "sentence": "The doctor took ___ X-ray of my arm.",
+  "answer": "an",
+  "explain": "X [엑스] 첫 소리가 모음 → an X-ray. 알파벳은 이름 소리로!",
+  "source": "교재 1-5 관사 (확장)"
+ },
+ {
+  "id": "04-089",
+  "type": 4,
+  "level": 2,
+  "sentence": "I speak ___ Korean at home.",
+  "answer": "X",
+  "explain": "언어 이름 앞엔 관사 X → speak Korean",
+  "source": "교재 1-5 관사 (확장)"
+ },
+ {
+  "id": "04-090",
+  "type": 4,
+  "level": 3,
+  "sentence": "She is ___ unhappy girl today.",
+  "answer": "an",
+  "explain": "unhappy의 첫 소리 [ʌ] (모음) → an",
+  "source": "교재 1-5 관사 (확장)"
  }
 ]

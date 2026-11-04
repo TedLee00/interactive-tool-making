@@ -462,5 +462,445 @@
   "end": ".",
   "explain": "주어 → 동사 → 목적어 → <어디서> → <언제>",
   "source": "교재 연습④ · 5품사 청크 독해 법칙"
+ },
+ {
+  "id": "11-044",
+  "type": 11,
+  "level": 1,
+  "ko": "우리 언니는 매일 아침 공원에서 달린다.",
+  "en": "N:My sister | V:runs | D:in the park | D:every morning",
+  "end": ".",
+  "explain": "주어 → 동사 → <어디서> → <언제>",
+  "source": "교재 연습④ · 5품사 청크 독해 법칙 (확장)"
+ },
+ {
+  "id": "11-045",
+  "type": 11,
+  "level": 1,
+  "ko": "나는 방과 후에 친구들과 농구를 한다.",
+  "en": "N:I | V:play | N:basketball | D:with my friends | D:after school",
+  "end": ".",
+  "explain": "운동 이름 basketball엔 관사 X. <누구와> <언제>는 맨 뒤",
+  "source": "교재 연습④ · 5품사 청크 독해 법칙 (확장)"
+ },
+ {
+  "id": "11-046",
+  "type": 11,
+  "level": 1,
+  "ko": "그 귀여운 고양이는 창가에서 자고 있다.",
+  "en": "N:The cute cat | V:is sleeping | D:by the window",
+  "end": ".",
+  "explain": "짧은 꾸밈말은 명사 앞 → ○The cute cat",
+  "source": "교재 연습④ · 5품사 청크 독해 법칙 (확장)"
+ },
+ {
+  "id": "11-047",
+  "type": 11,
+  "level": 1,
+  "ko": "우리 아빠는 주말마다 맛있는 요리를 하신다.",
+  "en": "N:My dad | V:cooks | N:delicious food | D:on weekends",
+  "end": ".",
+  "explain": "○delicious food 명사구. 언제? → 맨 뒤",
+  "source": "교재 연습④ · 5품사 청크 독해 법칙 (확장)"
+ },
+ {
+  "id": "11-048",
+  "type": 11,
+  "level": 2,
+  "ko": "그 시험은 정말 어려웠다.",
+  "en": "N:The test | V:was | A:really difficult",
+  "end": ".",
+  "explain": "법칙 ② 보어 자리 (really difficult) 한 덩어리",
+  "source": "교재 연습④ · 5품사 청크 독해 법칙 (확장)"
+ },
+ {
+  "id": "11-049",
+  "type": 11,
+  "level": 2,
+  "ko": "이 꽃들은 아주 좋은 냄새가 난다.",
+  "en": "N:These flowers | V:smell | A:very nice",
+  "end": ".",
+  "explain": "\"좋은 냄새가 난다\" = smell (nice). 보어 형용사!",
+  "source": "교재 연습④ · 5품사 청크 독해 법칙 (확장)"
+ },
+ {
+  "id": "11-050",
+  "type": 11,
+  "level": 2,
+  "ko": "파란 가방을 든 소녀는 내 친구이다.",
+  "en": "N:The girl | A:with the blue bag | V:is | N:my friend",
+  "end": ".",
+  "explain": "긴 꾸밈말 ( )는 명사 뒤!",
+  "source": "교재 연습④ · 5품사 청크 독해 법칙 (확장)"
+ },
+ {
+  "id": "11-051",
+  "type": 11,
+  "level": 2,
+  "ko": "나는 내 휴대폰을 책상 위에 놓았다.",
+  "en": "N:I | V:put | N:my phone | D:on the desk",
+  "end": ".",
+  "explain": "동사 put을 꾸미는 < 어디에 >는 목적어 뒤",
+  "source": "교재 연습④ · 5품사 청크 독해 법칙 (확장)"
+ },
+ {
+  "id": "11-052",
+  "type": 11,
+  "level": 2,
+  "ko": "책상 위의 휴대폰은 내 것이다.",
+  "en": "N:The phone | A:on the desk | V:is | N:mine",
+  "end": ".",
+  "explain": "명사 phone을 꾸미는 ( 형용사구 )는 명사 바로 뒤",
+  "source": "교재 연습④ · 5품사 청크 독해 법칙 (확장)"
+ },
+ {
+  "id": "11-053",
+  "type": 11,
+  "level": 3,
+  "ko": "나는 우유를 사려고 가게에 갔다.",
+  "en": "N:I | V:went | D:to the store | D:to buy milk",
+  "end": ".",
+  "explain": "<어디로> → <무엇하려고> 순서. \"~하려고\" = to부정사 < 부사구 >",
+  "source": "교재 연습④ · 5품사 청크 독해 법칙 (확장)"
+ },
+ {
+  "id": "11-054",
+  "type": 11,
+  "level": 3,
+  "ko": "내 꿈은 유명한 가수가 되는 것이다.",
+  "en": "N:My dream | V:is | N:to become a famous singer",
+  "end": ".",
+  "explain": "보어 자리 to부정사구 → ○ 명사구 통째로",
+  "source": "교재 연습④ · 5품사 청크 독해 법칙 (확장)"
+ },
+ {
+  "id": "11-055",
+  "type": 11,
+  "level": 3,
+  "ko": "만화책을 읽는 것은 나의 취미이다.",
+  "en": "N:Reading comic books | V:is | N:my hobby",
+  "end": ".",
+  "explain": "주어 자리 동명사구 → ○ 통째로",
+  "source": "교재 연습④ · 5품사 청크 독해 법칙 (확장)"
+ },
+ {
+  "id": "11-056",
+  "type": 11,
+  "level": 3,
+  "ko": "나는 그녀가 친절하다는 것을 안다.",
+  "en": "N:I | V:know | N:that she is kind",
+  "end": ".",
+  "explain": "목적어 자리 that절 → ○ 명사절",
+  "source": "교재 연습④ · 5품사 청크 독해 법칙 (확장)"
+ },
+ {
+  "id": "11-057",
+  "type": 11,
+  "level": 3,
+  "ko": "엄마가 나에게 새 자전거를 사 주셨다.",
+  "en": "N:Mom | V:bought | N:me | N:a new bike",
+  "end": ".",
+  "explain": "4형식 S V O O — \"~에게\" → \"~을\" 순서",
+  "source": "교재 연습④ · 5품사 청크 독해 법칙 (확장)"
+ },
+ {
+  "id": "11-058",
+  "type": 11,
+  "level": 3,
+  "ko": "그 소식은 우리를 매우 슬프게 만들었다.",
+  "en": "N:The news | V:made | N:us | A:very sad",
+  "end": ".",
+  "explain": "5형식 — \"슬프게\"지만 보어 → (very sad)",
+  "source": "교재 연습④ · 5품사 청크 독해 법칙 (확장)"
+ },
+ {
+  "id": "11-059",
+  "type": 11,
+  "level": 3,
+  "ko": "우리는 우리 강아지를 초코라고 부른다.",
+  "en": "N:We | V:call | N:our puppy | N:Choco",
+  "end": ".",
+  "explain": "5형식 S V O C — 목적어 → 보어 순서",
+  "source": "교재 연습④ · 5품사 청크 독해 법칙 (확장)"
+ },
+ {
+  "id": "11-060",
+  "type": 11,
+  "level": 3,
+  "ko": "비가 와서 우리는 집에 머물렀다.",
+  "en": "N:We | V:stayed | D:at home | D:because it rained",
+  "end": ".",
+  "explain": "이유 부사절은 보통 맨 뒤 (맨 앞도 가능)",
+  "source": "교재 연습④ · 5품사 청크 독해 법칙 (확장)"
+ },
+ {
+  "id": "11-061",
+  "type": 11,
+  "level": 3,
+  "ko": "내가 어렸을 때 나는 제주도에 살았다.",
+  "en": "D:When I was young, | N:I | V:lived | D:on Jeju Island",
+  "end": ".",
+  "explain": "시간 부사절을 맨 앞에 쓸 땐 쉼표!",
+  "source": "교재 연습④ · 5품사 청크 독해 법칙 (확장)"
+ },
+ {
+  "id": "11-062",
+  "type": 11,
+  "level": 3,
+  "ko": "캐나다에서 온 그 학생은 한국어를 잘한다.",
+  "en": "N:The student | A:from Canada | V:speaks | N:Korean | D:well",
+  "end": ".",
+  "explain": "( from Canada )는 명사 뒤. well은 맨 뒤",
+  "source": "교재 연습④ · 5품사 청크 독해 법칙 (확장)"
+ },
+ {
+  "id": "11-063",
+  "type": 11,
+  "level": 3,
+  "ko": "안경을 쓴 그 남자는 우리 수학 선생님이다.",
+  "en": "N:The man | A:with glasses | V:is | N:our math teacher",
+  "end": ".",
+  "explain": "( with glasses )는 명사 바로 뒤",
+  "source": "교재 연습④ · 5품사 청크 독해 법칙 (확장)"
+ },
+ {
+  "id": "11-064",
+  "type": 11,
+  "level": 3,
+  "ko": "나는 숙제를 끝내기 위해 일찍 일어났다.",
+  "en": "N:I | V:got up | D:early | D:to finish my homework",
+  "end": ".",
+  "explain": "<어떻게/언제> early → <목적> to부정사",
+  "source": "교재 연습④ · 5품사 청크 독해 법칙 (확장)"
+ },
+ {
+  "id": "11-065",
+  "type": 11,
+  "level": 3,
+  "ko": "그 영화는 생각보다 재미있었다.",
+  "en": "N:The movie | V:was | A:more interesting | D:than I thought",
+  "end": ".",
+  "explain": "비교 보어 (more interesting) + <than I thought>",
+  "source": "교재 연습④ · 5품사 청크 독해 법칙 (확장)"
+ },
+ {
+  "id": "11-066",
+  "type": 11,
+  "level": 3,
+  "ko": "나는 네가 어디에 사는지 모른다.",
+  "en": "N:I | V:don't know | N:where you live",
+  "end": ".",
+  "explain": "목적어 자리 의문사절 → ○ 명사절 (어순: 의문사 + 주어 + 동사)",
+  "source": "교재 연습④ · 5품사 청크 독해 법칙 (확장)"
+ },
+ {
+  "id": "11-067",
+  "type": 11,
+  "level": 2,
+  "ko": "그녀는 무대 위에서 아름답게 노래했다.",
+  "en": "N:She | V:sang | D:beautifully | D:on the stage",
+  "end": ".",
+  "explain": "<어떻게> → <어디서> 순서로 맨 뒤",
+  "source": "교재 연습④ · 5품사 청크 독해 법칙 (확장)"
+ },
+ {
+  "id": "11-068",
+  "type": 11,
+  "level": 3,
+  "ko": "우리 반 모든 학생들이 시험에 통과했다.",
+  "en": "N:All the students | A:in my class | V:passed | N:the test",
+  "end": ".",
+  "explain": "( in my class )는 명사 students 뒤",
+  "source": "교재 연습④ · 5품사 청크 독해 법칙 (확장)"
+ },
+ {
+  "id": "11-069",
+  "type": 11,
+  "level": 2,
+  "ko": "그 아기는 밤새 크게 울었다.",
+  "en": "N:The baby | V:cried | D:loudly | D:all night",
+  "end": ".",
+  "explain": "<어떻게> → <언제>",
+  "source": "교재 연습④ · 5품사 청크 독해 법칙 (확장)"
+ },
+ {
+  "id": "11-070",
+  "type": 11,
+  "level": 3,
+  "ko": "나는 그 책이 정말 흥미롭다는 것을 알게 되었다.",
+  "en": "N:I | V:found | N:the book | A:really interesting",
+  "end": ".",
+  "explain": "5형식 find + 목적어 + 보어 (really interesting)",
+  "source": "교재 연습④ · 5품사 청크 독해 법칙 (확장)"
+ },
+ {
+  "id": "11-071",
+  "type": 11,
+  "level": 3,
+  "ko": "아침을 먹는 것은 건강에 중요하다.",
+  "en": "N:Eating breakfast | V:is | A:important | D:for your health",
+  "end": ".",
+  "explain": "주어 동명사구 → ○. 보어 (important)",
+  "source": "교재 연습④ · 5품사 청크 독해 법칙 (확장)"
+ },
+ {
+  "id": "11-072",
+  "type": 11,
+  "level": 2,
+  "ko": "그 나뭇잎들은 빨갛게 변했다.",
+  "en": "N:The leaves | V:turned | A:red",
+  "end": ".",
+  "explain": "2형식 turn + 보어 형용사 (red). redly X",
+  "source": "교재 연습④ · 5품사 청크 독해 법칙 (확장)"
+ },
+ {
+  "id": "11-073",
+  "type": 11,
+  "level": 3,
+  "ko": "만약 네가 바쁘지 않다면 우리와 함께해도 된다.",
+  "en": "D:If you are not busy, | N:you | V:can join | N:us",
+  "end": ".",
+  "explain": "조건 부사절 → < >. □can join",
+  "source": "교재 연습④ · 5품사 청크 독해 법칙 (확장)"
+ },
+ {
+  "id": "11-074",
+  "type": 11,
+  "level": 2,
+  "ko": "언니는 노래를 불렀고 나는 춤을 췄다.",
+  "en": "N:My sister | V:sang | C:and | N:I | V:danced",
+  "end": ".",
+  "explain": "△and로 두 문장 연결: ○My sister □sang △and ○I □danced",
+  "source": "교재 연습④ · 5품사 청크 독해 법칙 (확장)"
+ },
+ {
+  "id": "11-075",
+  "type": 11,
+  "level": 2,
+  "ko": "톰과 나는 가장 친한 친구이다.",
+  "en": "N:Tom | C:and | N:I | V:are | N:best friends",
+  "end": ".",
+  "explain": "△and로 주어 두 개 연결",
+  "source": "교재 연습④ · 5품사 청크 독해 법칙 (확장)"
+ },
+ {
+  "id": "11-076",
+  "type": 11,
+  "level": 3,
+  "ko": "할머니께서 우리에게 재미있는 이야기를 들려주셨다.",
+  "en": "N:Grandma | V:told | N:us | N:a funny story",
+  "end": ".",
+  "explain": "4형식 tell + 사람 + 이야기",
+  "source": "교재 연습④ · 5품사 청크 독해 법칙 (확장)"
+ },
+ {
+  "id": "11-077",
+  "type": 11,
+  "level": 3,
+  "ko": "그 상자 안의 쿠키들은 맛있어 보인다.",
+  "en": "N:The cookies | A:in the box | V:look | A:delicious",
+  "end": ".",
+  "explain": "( in the box ) 명사 뒤 / look + 보어 (delicious)",
+  "source": "교재 연습④ · 5품사 청크 독해 법칙 (확장)"
+ },
+ {
+  "id": "11-078",
+  "type": 11,
+  "level": 1,
+  "ko": "나는 저녁을 먹은 후에 TV를 본다.",
+  "en": "N:I | V:watch | N:TV | D:after dinner",
+  "end": ".",
+  "explain": "<언제>는 맨 뒤",
+  "source": "교재 연습④ · 5품사 청크 독해 법칙 (확장)"
+ },
+ {
+  "id": "11-079",
+  "type": 11,
+  "level": 1,
+  "ko": "우리 할아버지는 매일 신문을 읽으신다.",
+  "en": "N:My grandpa | V:reads | N:the newspaper | D:every day",
+  "end": ".",
+  "explain": "○the newspaper. <언제> 맨 뒤",
+  "source": "교재 연습④ · 5품사 청크 독해 법칙 (확장)"
+ },
+ {
+  "id": "11-080",
+  "type": 11,
+  "level": 2,
+  "ko": "그 키 큰 소년은 아주 빨리 달릴 수 있다.",
+  "en": "N:The tall boy | V:can run | D:very fast",
+  "end": ".",
+  "explain": "□can run 조동사까지 한 덩어리. <very fast>",
+  "source": "교재 연습④ · 5품사 청크 독해 법칙 (확장)"
+ },
+ {
+  "id": "11-081",
+  "type": 11,
+  "level": 2,
+  "ko": "그녀는 행복해 보였다.",
+  "en": "N:She | V:looked | A:happy",
+  "end": ".",
+  "explain": "look + 보어 형용사 (happy). happily X",
+  "source": "교재 연습④ · 5품사 청크 독해 법칙 (확장)"
+ },
+ {
+  "id": "11-082",
+  "type": 11,
+  "level": 3,
+  "ko": "내 남동생은 컴퓨터 게임을 하는 것을 좋아한다.",
+  "en": "N:My little brother | V:likes | N:playing computer games",
+  "end": ".",
+  "explain": "목적어 자리 동명사구 → ○",
+  "source": "교재 연습④ · 5품사 청크 독해 법칙 (확장)"
+ },
+ {
+  "id": "11-083",
+  "type": 11,
+  "level": 2,
+  "ko": "그 박물관은 월요일마다 문을 닫는다.",
+  "en": "N:The museum | V:closes | D:on Mondays",
+  "end": ".",
+  "explain": "<요일마다> on Mondays",
+  "source": "교재 연습④ · 5품사 청크 독해 법칙 (확장)"
+ },
+ {
+  "id": "11-084",
+  "type": 11,
+  "level": 3,
+  "ko": "나는 앉을 의자가 필요하다.",
+  "en": "N:I | V:need | N:a chair | A:to sit on",
+  "end": ".",
+  "explain": "\"앉을\" → 명사 chair 뒤 ( 형용사구 )",
+  "source": "교재 연습④ · 5품사 청크 독해 법칙 (확장)"
+ },
+ {
+  "id": "11-085",
+  "type": 11,
+  "level": 3,
+  "ko": "우리는 버스를 타려고 30분 동안 기다렸다.",
+  "en": "N:We | V:waited | D:for 30 minutes | D:to take the bus",
+  "end": ".",
+  "explain": "<얼마 동안> → <목적>",
+  "source": "교재 연습④ · 5품사 청크 독해 법칙 (확장)"
+ },
+ {
+  "id": "11-086",
+  "type": 11,
+  "level": 3,
+  "ko": "그가 말한 것은 사실이었다.",
+  "en": "N:What he said | V:was | A:true",
+  "end": ".",
+  "explain": "주어 자리 what절 → ○ 명사절",
+  "source": "교재 연습④ · 5품사 청크 독해 법칙 (확장)"
+ },
+ {
+  "id": "11-087",
+  "type": 11,
+  "level": 3,
+  "ko": "나는 그녀가 올지 궁금하다.",
+  "en": "N:I | V:wonder | N:if she will come",
+  "end": ".",
+  "explain": "목적어 자리 if절 \"~인지\" → ○ 명사절",
+  "source": "교재 연습④ · 5품사 청크 독해 법칙 (확장)"
  }
 ]

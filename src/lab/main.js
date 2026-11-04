@@ -36,7 +36,7 @@ muteBtn.onclick = () => { setMuted(!isMuted()); syncMute(); muteBtn.textContent 
 function home() {
   app.innerHTML = `
     <div class="stats card"><div><b>${S.played}</b><small>칸</small></div><div><b>${S.moves}</b><small>전진</small></div><div><b>🪙 ${S.coins}</b><small>코인</small></div><div><b>${S.notes.length}</b><small>오답</small></div></div>
-    <div class="lvsw card"><button class="${getLevel() === 'mid' ? 'on' : ''}" data-lv="mid">🙂 난이도 중 · 골고루</button><button class="${getLevel() === 'high' ? 'on' : ''}" data-lv="high">🔥 난이도 상 · 어려운 문제만</button></div>
+    <div class="lvsw card"><button class="${getLevel() === 'low' ? 'on' : ''}" data-lv="low">🌱 난이도 하</button><button class="${getLevel() === 'mid' ? 'on' : ''}" data-lv="mid">🙂 난이도 중</button><button class="${getLevel() === 'high' ? 'on' : ''}" data-lv="high">🔥 난이도 상</button></div>
     ${REGIONS.map((r) => `<section class="region" style="--rc:${r.color}"><h2>${esc(r.name)} <small>${esc(r.level)}</small></h2>
       <div class="types">${r.types.map((t) => `<button class="tcard" data-t="${t}"><span class="no">${t}</span><b>${esc(TYPES[t].name)}</b><small>${esc(TYPES[t].level)} · ${(BANK[t] || []).length}문제</small></button>`).join('')}</div></section>`).join('')}
     <section class="region" style="--rc:#E21E8C"><h2>미니게임 연습 <small>상품 없음</small></h2>
