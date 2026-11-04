@@ -6,6 +6,8 @@ import { esc } from '../quiz/notation.js';
 import { setMuted, isMuted } from '../quiz/sound.js';
 import { playRun, playCrane, playKart, playShoot, GAMES } from '../games/index.js';
 import { syncMute, unlockAudio } from '../fx/fx.js';
+import { runStudy } from '../study/study.js';
+import { sfx } from '../quiz/sound.js';
 
 const KEY = 'cq.lab';
 const load = () => {
@@ -33,12 +35,12 @@ muteBtn.onclick = () => { setMuted(!isMuted()); syncMute(); muteBtn.textContent 
 function home() {
   app.innerHTML = `
     <div class="stats card"><div><b>${S.played}</b><small>칸</small></div><div><b>${S.moves}</b><small>전진</small></div><div><b>🪙 ${S.coins}</b><small>코인</small></div><div><b>${S.notes.length}</b><small>오답</small></div></div>
-    <div class="lvsw card">난이도 <button class="${getLevel() === 'mid' ? 'on' : ''}" data-lv="mid">🙂 중 · 골고루</button><button class="${getLevel() === 'high' ? 'on' : ''}" data-lv="high">🔥 상 · 어려운 문제만</button></div>
+    <div class="lvsw card"><button class="${getLevel() === 'mid' ? 'on' : ''}" data-lv="mid">🙂 난이도 중 · 골고루</button><button class="${getLevel() === 'high' ? 'on' : ''}" data-lv="high">🔥 난이도 상 · 어려운 문제만</button></div>
     ${REGIONS.map((r) => `<section class="region" style="--rc:${r.color}"><h2>${esc(r.name)} <small>${esc(r.level)}</small></h2>
       <div class="types">${r.types.map((t) => `<button class="tcard" data-t="${t}"><span class="no">${t}</span><b>${esc(TYPES[t].name)}</b><small>${esc(TYPES[t].level)} · ${(BANK[t] || []).length}문제</small></button>`).join('')}</div></section>`).join('')}
     <section class="region" style="--rc:#E21E8C"><h2>미니게임 연습 <small>상품 없음</small></h2>
       <div class="types">${Object.entries(GAMES).map(([k, gm]) => `<button class="tcard mg" data-g="${k}"><span class="no">${gm.icon}</span><b>${esc(gm.title)}</b><small>${esc(gm.desc)}</small></button>`).join('')}</div></section>
-    <div class="row"><button class="ghost" id="notes">📒 오답노트</button><button class="ghost" id="reset">새 판 시작</button></div>
+    <div class="row"><button class="ghost" id="study">📚 개념 학습</button><button class="ghost" id="notes">📒 오답노트</button><button class="ghost" id="reset">새 판 시작</button></div>
     <p class="muted">같은 판에서는 같은 문제가 다시 나오지 않아요. 「새 판 시작」을 누르면 기록이 지워집니다.</p>`;
   app.querySelectorAll('[data-lv]').forEach((b) => { b.onclick = () => { S.level = b.dataset.lv; setLevel(S.level); save(); home(); }; });
   app.querySelectorAll('.tcard:not(.mg)').forEach((b) => { b.onclick = () => play(+b.dataset.t); });
@@ -58,6 +60,7 @@ function home() {
     home();
   };
   app.querySelector('#notes').onclick = notes;
+  app.querySelector('#study').onclick = () => runStudy({ sfx });
 }
 
 async function play(type) {

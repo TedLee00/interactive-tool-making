@@ -151,3 +151,5 @@ img.face { border-radius: 50%; background: radial-gradient(circle at 50% 35%, #F
 @keyframes dhRing { 0% { transform: scale(.7); opacity: 1; } 100% { transform: scale(1.5); opacity: 0; } }
 @keyframes dhBob { 50% { transform: translateY(-6px); } }
 .sheet, .sheet *, .menu-ov, .panel-screen, .title-screen { touch-action: pan-y; }
+
+.title-screen .study-btn { width: 100%; margin-top: 8px; background: #fff; border: 3px solid #FFD43B; color: #2B2350; }

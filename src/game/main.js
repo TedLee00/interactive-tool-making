@@ -13,14 +13,15 @@ import { sfx, setMuted, isMuted } from '../quiz/sound.js';
 import { loadChar, fillFaces, charURL } from '../board/charart.js';
 import { bgm, callout, maWarning, teacherDance, crewDance, finaleDance, snackCard, snackCode, SNACKS, syncMute, unlockAudio } from '../fx/fx.js';
 import { playRun, playCrane, playKart, playShoot, GAMES } from '../games/index.js';
+import { runStudy, askStudy } from '../study/study.js';
 
 const BASE = import.meta.env.BASE_URL;
 const LOGO = `${BASE}assets/brand/logo.png`;
 const faceImg = (id, cls = '') => `<img class="face ${cls}" data-face="${id}" alt="">`;
 const SAVE_KEY = 'cq.game.v1';
 const LEVELS = [
-  { id: 'mid', name: '중 난이도', icon: '🙂', desc: '쉬운 문제부터 어려운 문제까지 골고루' },
-  { id: 'high', name: '상 난이도', icon: '🔥', desc: '어려운 문제 위주! 쉬운 문제는 나오지 않아요' },
+  { id: 'mid', name: '난이도 중', icon: '🙂', desc: '쉬운 문제부터 어려운 문제까지 골고루' },
+  { id: 'high', name: '난이도 상', icon: '🔥', desc: '어려운 문제 위주! 쉬운 문제는 나오지 않아요' },
 ];
 const levelName = (id) => (LEVELS.find((l) => l.id === id) || LEVELS[0]).name;
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -181,8 +182,10 @@ function title() {
     <div class="title-btns">
       ${can ? `<button class="primary big" id="cont">이어하기 · ${esc(sv.name)} (${sv.pos}/${board.cells.length - 1}칸)</button>` : ''}
       <button class="${can ? 'ghost big' : 'primary big'}" id="new">${can ? '처음부터 새로 하기' : '시작하기 ▶'}</button>
+      <button class="ghost big study-btn" id="study">📚 개념 학습 (품사·문장 성분)</button>
       <div class="title-links"><a href="./quiz-lab.html">🧪 연습장 · 미니게임</a><a href="./review.html">📋 문제 검수</a></div>
     </div></div>`);
+  ui.querySelector('#study').onclick = async () => { unlockAudio(); await runStudy({ sfx }); };
   ui.querySelector('#new').onclick = () => {
     if (can && !confirm('저장된 진행 상황이 지워져요. 새로 시작할까요?')) return;
     profile();
@@ -220,7 +223,17 @@ function choose(name, grade) {
       <div class="row"><button class="ghost" id="back">◀ 이전</button><button class="primary" id="go">${esc(c.name)}(와)과 출발! ▶</button></div></div></div>`);
     ui.querySelectorAll('.ch').forEach((b) => { b.onclick = () => { pick = b.dataset.id; sfx('tap'); draw(); }; });
     ui.querySelector('#back').onclick = () => profile(name, grade);
-    ui.querySelector('#go').onclick = () => { newGame(name, grade, pick); startBoard(true); };
+    ui.querySelector('#go').onclick = async () => {
+      newGame(name, grade, pick);
+      ui.innerHTML = '';
+      // 게임 전에 먼저 학습할까요? → 네: 4챕터 학습 + OX (맞힌 개수만큼 코인)
+      if (await askStudy()) {
+        const r = await runStudy({ sfx });
+        S.coins += r.correct; S.studied = r; save();
+        if (r.correct) toastLater(`📚 개념 학습 OX ${r.correct}/${r.total} · 코인 +${r.correct}`);
+      }
+      startBoard(true);
+    };
   };
   draw();
 }
@@ -332,12 +345,14 @@ function menu() {
   ov.className = 'menu-ov';
   ov.innerHTML = `<div class="card menu-box"><h3>메뉴</h3>
     <button class="ghost" id="snd">${isMuted() ? '🔇 소리 켜기' : '🔊 소리 끄기'}</button>
+    <button class="ghost" id="study">📚 개념 학습 다시 보기</button>
     <button class="ghost" id="note">📒 오답노트 (${S.notes.length})</button>
     <button class="ghost" id="snk">🍫 내 간식 쿠폰 (${(S.snacks || []).length})</button>
     <button class="ghost" id="home">🏠 처음 화면 (자동 저장됨)</button>
     <button class="primary" id="close">닫기</button></div>`;
   document.body.appendChild(ov);
   ov.querySelector('#snd').onclick = () => { setMuted(!isMuted()); syncMute(); ov.remove(); };
+  ov.querySelector('#study').onclick = async () => { ov.remove(); setRollEnabled(false); await runStudy({ sfx }); hud(); if (!busy) setRollEnabled(true); };
   ov.querySelector('#snk').onclick = () => {
     const list = S.snacks || [];
     ov.querySelector('.menu-box').innerHTML = `<h3>🍫 내 간식 쿠폰</h3><div class="notes">${list.length ? list.map((k) => `<div class="cp"><img src="${BASE}assets/snacks/${k.kind}.svg" alt=""><div><b>${esc(SNACKS[k.kind].name)}</b><small>${esc(k.how)} · 코드 ${k.code}</small></div></div>`).join('') : '<p class="muted">간식 뽑기 칸과 미니게임에서 받을 수 있어요.</p>'}</div><button class="primary" id="close2">닫기</button>`;
@@ -356,6 +371,7 @@ function bigNumber(n) {
   el.textContent = n;
   el.classList.remove('show'); void el.offsetWidth; el.classList.add('show');
 }
+const toastLater = (t) => setTimeout(() => toast(t), 1800);
 function toast(text) {
   const el = ui.querySelector('#toast');
   el.textContent = text;
