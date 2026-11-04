@@ -1,5 +1,5 @@
 /* 동화책 분위기: 밝은 파스텔 + 둥근 글꼴(Jua) + 유리처럼 맑은 패널 */
-body.game { overflow: hidden; background: #BFE6FF; overscroll-behavior: none; touch-action: manipulation; --cute: 'Jua', 'Noto Sans KR', sans-serif; --plum: #2B2350; }
+body.game { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; overflow: hidden; background: #BFE6FF; overscroll-behavior: none; touch-action: none; --cute: 'Jua', 'Noto Sans KR', sans-serif; --plum: #2B2350; }
 #scene { position: fixed; inset: 0; width: 100vw; height: 100vh; height: 100dvh; display: block; }
 #ui { position: fixed; inset: 0; pointer-events: none; z-index: 5; }
 #ui > * { pointer-events: auto; }
@@ -133,3 +133,21 @@ img.face { border-radius: 50%; background: radial-gradient(circle at 50% 35%, #F
 .gr.lv small { font-family: 'Noto Sans KR', sans-serif; font-size: 12px; color: var(--muted); line-height: 1.35; }
 .lvb { display: inline-block; font-family: var(--cute); font-style: normal; font-size: 13px; padding: 1px 7px; border-radius: 999px; color: #fff; background: #3E9B5B; vertical-align: middle; }
 .lvb.high { background: #E0453A; }
+
+/* 선생님 말풍선: 왼쪽 위 (주사위를 가리지 않게) */
+.talk.talk-top { position: absolute; top: calc(env(safe-area-inset-top) + 80px); left: 10px; right: 64px; align-items: flex-start; pointer-events: none; }
+.talk.talk-top img.face { width: 50px; height: 50px; }
+.talk.talk-top p { border-radius: 6px 20px 20px 20px; font-size: 13.5px; padding: 8px 12px; }
+.hud-bottom { grid-template-areas: 'me me'; }
+/* 화면 속 주사위 안내: 반짝이는 고리 + 손가락 */
+.dice-hint { position: absolute; left: 0; top: 0; width: 0; height: 0; pointer-events: none !important; opacity: 0; transition: opacity .25s; z-index: 3; }
+.dice-hint.on { opacity: 1; }
+.dice-hint .ring { position: absolute; left: -46px; top: -46px; width: 92px; height: 92px; border-radius: 50%; border: 4px solid #FFD43B; box-shadow: 0 0 18px rgba(255, 212, 59, .9), inset 0 0 12px rgba(255, 212, 59, .6); animation: dhRing 1.4s ease-out infinite; }
+.dice-hint .ring.r2 { animation-delay: .7s; }
+.dice-hint span { position: absolute; left: -90px; width: 180px; top: 54px; text-align: center; font-family: var(--cute); font-size: 18px; color: #fff; -webkit-text-stroke: 4px #2B2350; paint-order: stroke fill; animation: dhBob 1s ease-in-out infinite; white-space: nowrap; }
+.dice-hint span b { font-weight: 400; color: #FFD43B; }
+.dice-hint span small { display: block; font-family: 'Noto Sans KR', sans-serif; font-weight: 900; font-size: 12px; -webkit-text-stroke: 3px #2B2350; }
+.dice-hint.hold .ring { animation: none; transform: scale(.85); border-color: #fff; }
+@keyframes dhRing { 0% { transform: scale(.7); opacity: 1; } 100% { transform: scale(1.5); opacity: 0; } }
+@keyframes dhBob { 50% { transform: translateY(-6px); } }
+.sheet, .sheet *, .menu-ov, .panel-screen, .title-screen { touch-action: pan-y; }
