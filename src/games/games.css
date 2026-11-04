@@ -82,9 +82,9 @@
 @keyframes fadein { from { opacity: 0; } }
 
 /* 카트 조작부: 왼쪽 자동차 핸들(◀▶ 붙임) · 오른쪽 큰 게이지 + 악셀 */
-.mg-kart .mg-ctrl { align-items: flex-end; gap: 12px; }
+.mg-kart .mg-ctrl { align-items: center; gap: 12px; padding-bottom: calc(env(safe-area-inset-bottom) + 30px); } /* 조작부를 조금 위로 */
 .kwheel { position: relative; flex: 0 0 168px; height: 168px; display: flex; align-items: center; justify-content: center; margin-bottom: -6px; }
-.kwheel .wsvg { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; filter: drop-shadow(0 6px 10px rgba(27, 23, 48, .4)); }
+.kwheel .wsvg { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; filter: drop-shadow(0 6px 10px rgba(27, 23, 48, .4)); transform-origin: 50% 50%; will-change: transform; }
 .kwheel .mg-btn { position: relative; z-index: 1; flex: 0 0 62px; min-height: 66px; height: 66px; font-size: 30px; padding: 0; margin-top: -8px; background: linear-gradient(180deg, #fff, #E7E1F5); }
 .kwheel .mg-btn.left { border-radius: 34px 8px 8px 34px; margin-right: 2px; }
 .kwheel .mg-btn.right { border-radius: 8px 34px 34px 8px; }
@@ -94,24 +94,29 @@
 .kgauge .kgh { display: flex; align-items: baseline; justify-content: space-between; gap: 6px; white-space: nowrap; }
 .kgauge .kgh span { font-family: 'Jua', sans-serif; font-size: 15px; color: #FFD43B; }
 .kgauge .kgh b { font-family: 'Jua', sans-serif; font-weight: 400; font-size: 20px; line-height: 1; }
-.kgauge .bar { position: relative; height: 24px; border-radius: 12px; background: rgba(255, 255, 255, .2); overflow: hidden; border: 2px solid #fff; margin-top: 4px; }
+.kgauge { padding: 6px; }
+.kgauge .bar { position: relative; height: 30px; border-radius: 15px; background: rgba(255, 255, 255, .2); overflow: hidden; border: 2px solid #fff; }
+.kgauge .bar b { position: absolute; inset: 0; display: grid; place-items: center; font-family: 'Jua', sans-serif; font-weight: 400; font-size: 18px; color: #fff; -webkit-text-stroke: 3px #2B2350; paint-order: stroke fill; }
 .kgauge .bar i { position: absolute; left: 0; top: 0; bottom: 0; background: linear-gradient(90deg, #5BE0FF, #8FE08A, #FFD43B); transition: width .1s linear; }
 .kpcol.low .kgauge .bar i { background: #E0453A; animation: blink .5s steps(2) infinite; }
 .kpcol.low .kgauge .kgh span, .kpcol.low .kgauge .kgh b { color: #FF8F8F; }
-.mg-kart .mg-btn.pedal { flex: none; width: 100%; min-height: 70px; font-size: 26px; }
+.mg-kart .mg-btn.pedal { flex: none; width: 100%; min-height: 92px; font-size: 32px; }
 /* 품사 레인: 화면 위에 단어를 크게 빨갛게 */
 .klane { position: absolute; left: 10px; right: 26px; top: 8px; text-align: center; background: #FFFBF0; border: 4px solid #E0453A; border-radius: 18px; padding: 6px 8px 8px; box-shadow: 0 6px 16px rgba(224, 69, 58, .35); transform: translateY(-140%); transition: transform .3s; pointer-events: none !important; z-index: 4; }
 .klane.on { transform: none; animation: klPulse 1s ease-in-out infinite; }
 .klane small { display: block; font-weight: 900; font-size: 13px; color: #7A1F1F; }
 .klane b { display: block; font-family: 'Jua', sans-serif; font-weight: 400; font-size: 44px; line-height: 1.05; color: #E0453A; -webkit-text-stroke: 1.5px #7A1F1F; }
+.klane u { display: block; text-decoration: none; font-weight: 900; font-size: 13px; color: #2B2350; margin-top: 3px; }
 .klane em { display: flex; justify-content: center; gap: 6px; font-style: normal; margin-top: 2px; }
 .klane em i { font-style: normal; font-family: 'Jua', sans-serif; font-size: 15px; color: #fff; padding: 1px 10px; border-radius: 10px; }
 .klane em i:nth-child(1) { background: #E0453A; } .klane em i:nth-child(2) { background: #2E7BC4; } .klane em i:nth-child(3) { background: #28A064; }
 @keyframes klPulse { 50% { box-shadow: 0 0 0 6px rgba(224, 69, 58, .25), 0 6px 16px rgba(224, 69, 58, .35); } }
 @keyframes blink { 50% { opacity: .35; } }
 .mg-shoot .mg-ctrl { display: none; }
-.mg-shoot .shoot-ban { top: 48px; }
-.mg-shoot .shoot-ban b { font-size: 22px; }
+.mg-shoot .shoot-ban { top: 4px; left: 50%; right: auto; transform: translateX(-50%); display: flex; align-items: center; gap: 8px; padding: 3px 14px; border-width: 2px; border-radius: 999px; white-space: nowrap; }
+.mg-shoot .shoot-ban small { display: inline; font-size: 12px; }
+.mg-shoot .shoot-ban b { display: inline; font-size: 18px; }
+.mg-shoot .shoot-ban.pop { animation: none; }
 .mg-shoot .shoot-ban .tg { color: #E0453A; font-size: 1.2em; }
 
 .mg-btn.stop { background: linear-gradient(180deg, #FF8F8F, #E0453A); color: #fff; box-shadow: 0 5px 0 #A8261C, 0 8px 16px rgba(224, 69, 58, .3); }
@@ -159,3 +164,5 @@
   85% { opacity: 1; transform: scale(1); }
   100% { opacity: 0; transform: scale(.8); }
 }
+
+.mg-card.result { max-height: calc(100% - 16px); overflow-y: auto; }

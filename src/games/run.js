@@ -1,6 +1,7 @@
 // 청크런 — 횡스크롤 러너. 미션에 맞는 "바르게 꾸민" 음식만 먹고, 장애물은 점프·슬라이드로 피한다.
 import { openGame, loadImage, asset, charSprite, rand, pick, clamp, roundRect, tag } from './engine.js';
 import data from '../../data/minigames.json';
+import chars from '../../data/characters.json';
 import { sideSVG, tedSVG } from './runner-art.js';
 import '../fx/legacy-run.css';
 
@@ -25,11 +26,16 @@ export function playRun({ charId = 'bboy' } = {}) {
     ],
     async setup(ctx) {
       const { g } = ctx;
-      const [me, ted, mukeon, yeosin, daejang, choco] = await Promise.all([
-        charSprite(charId), charSprite('ted'), charSprite('mukeon'), charSprite('yeosin'), charSprite('daejang'),
-        loadImage(asset('snacks/choco.svg')),
-      ]);
-      const KIDS = [[mukeon, '…', '묵언수행'], [yeosin, '반짝!', '보강 여신'], [daejang, '보강 와라!', '보강대장']];
+      const [me, ted, choco] = await Promise.all([charSprite(charId), charSprite('ted'), loadImage(asset('snacks/choco.svg'))]);
+      // 방해 캐릭터: 게임 속 친구들 전부 + 익살 캐릭터들. 「주머니 뽑기」로 골고루 (모두 한 번씩 나온 뒤에 다시 섞기)
+      const SAYS = { daejang: '보강 와라!', mukeon: '…(묵묵)', yeosin: '반짝!', bboy: '윈드밀!', perm: '머리 망가져!', disco: '디스코 타임~', popper: '삐걱삐걱', latina: '올레!', braids: '비켜 줘~', blond: '스케이트 간다!', bun: '숙제 다 했어?' };
+      const friends = chars.players.filter((p) => p.id !== charId);
+      const imgs = await Promise.all(friends.map((p) => charSprite(p.id).catch(() => null)));
+      const KIDS = friends.map((p, k) => ({ kind: 'kid', img: imgs[k], say: SAYS[p.id] || '앗!', name: p.name })).filter((k) => k.img);
+      // 익살 캐릭터 (그림으로 그림): 늙크크 아저씨 · 영크크 · 숙제 괴물 · 졸린 판다 · 비둘기 떼
+      ['oldman', 'teen', 'hwmon', 'panda', 'pigeon'].forEach((f) => KIDS.push({ kind: 'funny', f, name: { oldman: '늙크크 아저씨', teen: '영크크', hwmon: '숙제 괴물', panda: '졸린 판다', pigeon: '비둘기 떼' }[f], say: { oldman: '어이쿠!', teen: '앗 죄송!', hwmon: '숙제 내놔~', panda: 'zzz…', pigeon: '구구구!' }[f] }));
+      let bag = [];
+      const nextKid = () => { if (!bag.length) bag = [...KIDS].sort(() => Math.random() - 0.5); return bag.pop(); };
       const POSC = { 명사: '#E0453A', 동사: '#2E7BC4', 형용사: '#28A064', 부사: '#D9822B' };
       const POSAB = { 명사: 'n.', 동사: 'v.', 형용사: 'adj.', 부사: 'adv.' };
       // 배경 집 간판: 영어 단어 + 품사
@@ -80,8 +86,8 @@ export function playRun({ charId = 'bboy' } = {}) {
           const y = good ? (Math.random() < 0.4 ? gy - 120 : gy - 30) : (Math.random() < 0.5 ? gy - 52 : gy - 4);
           { const label = pick(good ? m.good : m.bad); S.ents.push({ kind: 'food', good, label, icon: iconFor(label), x: ctx.W + 40, y, w: 46, h: 38, head: !good && y < gy - 20 }); }
         } else if (r < 0.74) {
-          const k = pick(KIDS);
-          S.ents.push({ kind: 'kid', img: k[0], say: k[1], name: k[2], x: ctx.W + 40, y: gy, w: 40, h: 62 });
+          const k = nextKid();
+          S.ents.push({ ...k, kind: 'kid', x: ctx.W + 40, y: gy, w: k.f === 'pigeon' ? 54 : 40, h: k.f === 'pigeon' ? 36 : 62 });
         } else if (r < 0.9) {
           S.ents.push({ kind: Math.random() < 0.5 ? 'cone' : 'crate', x: ctx.W + 40, y: gy, w: 30, h: 32 });
         } else if (r < 0.97) {
@@ -111,6 +117,7 @@ export function playRun({ charId = 'bboy' } = {}) {
         };
       }
 
+      window.__RUN = () => S.ents.filter((e) => e.kind === 'kid').map((e) => e.name); // 테스트용
       const hit = (a, px, py, pw, ph) => px < a.x + a.w / 2 && px + pw > a.x - a.w / 2 && py < a.y && py + ph > a.y - a.h;
 
       return {
@@ -302,7 +309,8 @@ export function playRun({ charId = 'bboy' } = {}) {
               gc.fillText(e.icon, e.x, e.y - e.h / 2 + 2);
               tag(gc, e.label, e.x, e.y - e.h - 16, { size: 16, bg: e.kind === 'shot' ? '#FFE3E3' : '#FFFBF0', pad: 7 });
             } else if (e.kind === 'kid') {
-              if (e.img) { const ih = 74; const iw = ih * (e.img.width / e.img.height); gc.drawImage(e.img, e.x - iw / 2, e.y - ih, iw, ih); }
+              if (e.f) drawFunny(gc, e.f, e.x, e.y, S.t);
+              else if (e.img) { const ih = 74; const iw = ih * (e.img.width / e.img.height); gc.drawImage(e.img, e.x - iw / 2, e.y - ih, iw, ih); }
               tag(gc, e.name, e.x, e.y - 84, { size: 12, bg: '#FFE3F0', pad: 6 });
               tag(gc, '⬆ 점프!', e.x, e.y - 104, { size: 11, bg: '#FFF4D6', pad: 5 });
             } else if (e.kind === 'cone') {
@@ -350,4 +358,59 @@ export function playRun({ charId = 'bboy' } = {}) {
       };
     },
   });
+}
+
+/** 익살 방해 캐릭터 (간단한 그림) — 발 위치 (x, y) */
+function drawFunny(g, f, x, y, t) {
+  const ink = '#2B2350';
+  g.lineWidth = 2.5; g.strokeStyle = ink; g.lineJoin = 'round'; g.lineCap = 'round';
+  const bob = Math.sin(t * 8) * 2;
+  if (f === 'oldman') {
+    // 늙크크: 빗어 넘긴 머리 · 콧수염 · 비닐봉지
+    g.fillStyle = '#5A5F6B'; g.fillRect(x - 9, y - 22, 7, 22); g.fillRect(x + 2, y - 22, 7, 22);
+    g.fillStyle = '#fff'; g.beginPath(); g.roundRect(x - 15, y - 50, 30, 30, 6); g.fill(); g.stroke();
+    g.fillStyle = 'rgba(255,255,255,.9)'; g.beginPath(); g.ellipse(x + 20, y - 28 + bob, 7, 9, 0, 0, 7); g.fill(); g.stroke();
+    g.fillStyle = '#F2C9A0'; g.beginPath(); g.arc(x, y - 62 + bob, 13, 0, 7); g.fill(); g.stroke();
+    g.strokeStyle = '#3A332E'; g.beginPath(); g.moveTo(x - 9, y - 70 + bob); g.quadraticCurveTo(x, y - 78 + bob, x + 10, y - 70 + bob); g.stroke();
+    g.lineWidth = 3.5; g.beginPath(); g.moveTo(x - 6, y - 56 + bob); g.lineTo(x + 6, y - 56 + bob); g.stroke();
+    g.fillStyle = ink; g.beginPath(); g.arc(x - 4, y - 63 + bob, 1.6, 0, 7); g.arc(x + 4, y - 63 + bob, 1.6, 0, 7); g.fill();
+  } else if (f === 'teen') {
+    // 영크크: 거꾸로 쓴 모자 · 후드 · 가방 메고 전력 질주
+    g.fillStyle = '#2E4A78'; g.fillRect(x - 9, y - 24, 7, 24 + bob); g.fillRect(x + 2, y - 24, 7, 24 - bob);
+    g.fillStyle = '#28A064'; g.beginPath(); g.roundRect(x - 14, y - 52, 28, 30, 7); g.fill(); g.stroke();
+    g.fillStyle = '#F2A01E'; g.fillRect(x + 12, y - 50, 8, 18); g.strokeRect(x + 12, y - 50, 8, 18);
+    g.fillStyle = '#FFE0C2'; g.beginPath(); g.arc(x, y - 63, 12, 0, 7); g.fill(); g.stroke();
+    g.fillStyle = '#E0453A'; g.beginPath(); g.arc(x, y - 66, 12, Math.PI, 0); g.closePath(); g.fill(); g.stroke();
+    g.beginPath(); g.moveTo(x + 8, y - 68); g.lineTo(x + 20, y - 66); g.lineTo(x + 8, y - 63); g.closePath(); g.fill(); g.stroke();
+    g.fillStyle = ink; g.beginPath(); g.arc(x - 4, y - 61, 1.6, 0, 7); g.arc(x + 4, y - 61, 1.6, 0, 7); g.fill();
+  } else if (f === 'hwmon') {
+    // 숙제 괴물: 공책 더미에 눈과 이빨
+    ['#FFFBF0', '#E2F4FF', '#FFE3F0', '#FFF4D6'].forEach((c, k) => { g.fillStyle = c; g.beginPath(); g.roundRect(x - 22 + (k % 2) * 3, y - 16 - k * 15 + (k === 3 ? bob : 0), 44, 15, 3); g.fill(); g.stroke(); });
+    g.fillStyle = '#fff'; g.beginPath(); g.arc(x - 9, y - 58 + bob, 7, 0, 7); g.arc(x + 9, y - 58 + bob, 7, 0, 7); g.fill(); g.stroke();
+    g.fillStyle = ink; g.beginPath(); g.arc(x - 8, y - 57 + bob, 3, 0, 7); g.arc(x + 10, y - 57 + bob, 3, 0, 7); g.fill();
+    g.fillStyle = '#E0453A'; g.font = "900 10px 'Noto Sans KR', sans-serif"; g.textAlign = 'center'; g.fillText('HOMEWORK', x, y - 22);
+    g.strokeStyle = ink; g.beginPath(); for (let k = 0; k < 5; k++) { g.lineTo(x - 12 + k * 6, y - 42 + (k % 2) * 5); } g.stroke();
+  } else if (f === 'panda') {
+    // 졸린 판다: 서서 꾸벅꾸벅
+    g.fillStyle = '#fff'; g.beginPath(); g.ellipse(x, y - 26, 20, 24, 0, 0, 7); g.fill(); g.stroke();
+    g.fillStyle = ink; g.beginPath(); g.ellipse(x - 12, y - 4, 7, 5, 0, 0, 7); g.ellipse(x + 12, y - 4, 7, 5, 0, 0, 7); g.fill();
+    const nod = Math.sin(t * 2) * 0.2;
+    g.save(); g.translate(x, y - 58); g.rotate(nod);
+    g.fillStyle = ink; g.beginPath(); g.arc(-12, -12, 6, 0, 7); g.arc(12, -12, 6, 0, 7); g.fill();
+    g.fillStyle = '#fff'; g.beginPath(); g.arc(0, 0, 16, 0, 7); g.fill(); g.stroke();
+    g.fillStyle = ink; g.beginPath(); g.ellipse(-6, 0, 5, 4, -0.4, 0, 7); g.ellipse(6, 0, 5, 4, 0.4, 0, 7); g.fill();
+    g.strokeStyle = '#fff'; g.lineWidth = 1.5; g.beginPath(); g.moveTo(-8, 0); g.lineTo(-4, 1); g.moveTo(4, 1); g.lineTo(8, 0); g.stroke();
+    g.restore();
+    g.fillStyle = '#6B5F8A'; g.font = "400 14px Jua, sans-serif"; g.textAlign = 'center'; g.fillText('z z z', x + 20, y - 82 - Math.sin(t * 3) * 4);
+  } else if (f === 'pigeon') {
+    // 비둘기 떼: 땅바닥을 콕콕
+    [-16, 2, 18].forEach((dx, k) => {
+      const pk = Math.sin(t * 10 + k * 2) > 0.3 ? 4 : 0;
+      g.fillStyle = '#9AA6B6'; g.beginPath(); g.ellipse(x + dx, y - 10, 11, 8, 0, 0, 7); g.fill(); g.stroke();
+      g.fillStyle = '#7D8899'; g.beginPath(); g.arc(x + dx + 8, y - 18 + pk, 6, 0, 7); g.fill(); g.stroke();
+      g.fillStyle = '#F2A01E'; g.beginPath(); g.moveTo(x + dx + 13, y - 18 + pk); g.lineTo(x + dx + 18, y - 16 + pk); g.lineTo(x + dx + 13, y - 15 + pk); g.fill();
+      g.fillStyle = ink; g.beginPath(); g.arc(x + dx + 9, y - 19 + pk, 1.3, 0, 7); g.fill();
+    });
+  }
+  g.lineCap = 'butt';
 }
