@@ -1,3 +1,4 @@
+import { submitScore, rankTableHTML } from '../rank/rank.js';
 // 미니게임 공통 엔진 — 전체 화면 오버레이 · 캔버스(세로 화면) · 입력 · 파티클 · 결과/보상
 import { bgm, callout, snackURL, SNACKS } from '../fx/fx.js';
 import { sfx } from '../quiz/sound.js';
@@ -199,8 +200,11 @@ export function openGame(opt) {
         <div class="mg-score">${r.score}<small>점</small></div>
         ${r.lines.map((l) => `<p class="ln">${l}</p>`).join('')}
         <div class="mg-reward"><span class="co">🪙 코인 <b>+${r.coins}</b></span>${r.snack ? `<span class="sn"><img src="${snackURL(r.snack)}" alt="">${SNACKS[r.snack].short} 쿠폰!</span>` : ''}</div>
+        <div id="mgRank"><p class="rk-wait">🏆 순위 기록 중…</p></div>
         <button class="primary big" id="mgOk">계속 ▶</button></div>`;
       ov.appendChild(card);
+      // 점수 기록 + 순위표 (1·2·3등 메달)
+      submitScore(opt.id, r.score).then((R) => { const el = card.querySelector('#mgRank'); if (el) el.innerHTML = rankTableHTML(opt.id, R); }).catch(() => { const el = card.querySelector('#mgRank'); if (el) el.innerHTML = ''; });
       sfx(r.cleared ? 'perfect' : 'end');
       if (r.cleared) callout(r.score >= (r.legendAt || Infinity) ? 'legend' : 'yar', r.headline);
       card.querySelector('#mgOk').onclick = () => { cleanup(); resolve(r); };

@@ -1,0 +1,20 @@
+/* 순위표 (미니게임 결과 · 완주 화면) */
+.rk { margin: 8px 0 12px; text-align: left; }
+.rk-h { text-align: center; margin-bottom: 6px; }
+.rk-h b { display: block; font-family: 'Jua', sans-serif; font-weight: 400; font-size: 18px; color: #2B2350; }
+.rk-h small { font-size: 12px; color: #6B5F8A; }
+.rk-h em { font-style: normal; color: #E0453A; font-weight: 900; }
+.rk ol { list-style: none; padding: 0; margin: 0; max-height: 34vh; overflow-y: auto; }
+.rk li { display: grid; grid-template-columns: 30px 1fr auto; grid-template-rows: auto auto; align-items: center; column-gap: 6px; padding: 5px 10px; border-radius: 12px; font-size: 15px; }
+.rk li:nth-child(odd) { background: rgba(43, 35, 80, .05); }
+.rk li i { grid-row: 1 / 3; font-style: normal; text-align: center; font-family: 'Jua', sans-serif; font-size: 17px; color: #6B5F8A; }
+.rk li.top i { font-size: 24px; }
+.rk li span { font-weight: 800; color: #2B2350; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rk li b { font-family: 'Jua', sans-serif; font-weight: 400; color: #D9822B; font-size: 17px; }
+.rk li small { grid-column: 2 / 4; font-size: 11px; color: #9A90B5; }
+.rk li.t1 { background: linear-gradient(90deg, #FFF1C2, #FFFBF0); }
+.rk li.t2 { background: linear-gradient(90deg, #EEF1F6, #FFFBF0); }
+.rk li.t3 { background: linear-gradient(90deg, #F8E3D2, #FFFBF0); }
+.rk li.me { box-shadow: inset 0 0 0 3px #E0453A; }
+.rk li.me span::after { content: ' (나)'; color: #E0453A; }
+.rk-wait { text-align: center; font-size: 13px; color: #6B5F8A; margin: 8px 0; }

@@ -45,7 +45,7 @@ export function playShoot() {
       banner.className = 'mg-mission shoot-ban';
       ctx.layer.appendChild(banner);
 
-      const rows = () => [ctx.H * 0.26, ctx.H * 0.44, ctx.H * 0.62];
+      const rows = () => [ctx.H * 0.29, ctx.H * 0.45, ctx.H * 0.61];
       const words = (R) => {
         if (R.pool === 'pos') return { good: data.pos[R.target], bad: Object.entries(data.pos).filter(([k]) => k !== R.target).flatMap(([, v]) => v) };
         return { good: data.chunks[R.target], bad: Object.entries(data.chunks).filter(([k]) => k !== R.target).flatMap(([, v]) => v) };
@@ -55,7 +55,7 @@ export function playShoot() {
         if (S.round >= ROUNDS.length) return finish();
         const R = ROUNDS[S.round];
         S.left = R.sec; S.targets = []; S.spawnT = 0; S.roundHits = 0; S.pause = PAUSE;
-        banner.innerHTML = `<small>ROUND ${S.round + 1}/${ROUNDS.length}</small><b>「<span class="tg">${R.target}</span>」만 쏴라!</b>${R.pool === 'chunks' ? '<em>💡 단어 하나가 아니라 <span class="tg">덩어리(구·절)</span>의 품사!</em>' : ''}`;
+        banner.innerHTML = `<small>R${S.round + 1}/${ROUNDS.length}</small><b>「<span class="tg">${R.target}</span>」만!</b>`; // 맨 위 작은 띠 (크게는 가운데 경고판이 한 번 보여 줌)
         banner.classList.remove('pop'); void banner.offsetWidth; banner.classList.add('pop');
         // 화면 가운데: 주의 표지판처럼 크게 깜빡! (그동안 게임은 잠깐 멈춤)
         warn.innerHTML = `<div class="sw-in"><small>⚠ 과녁이 바뀌었어요 ⚠</small><b>「<span>${R.target}</span>」만</b><b>쏴라!</b>${R.pool === 'chunks' ? '<em>단어 하나가 아니라 덩어리(구·절)!</em>' : ''}</div>`;
@@ -228,54 +228,64 @@ export function playShoot() {
           const a = S.aim;
           g.strokeStyle = 'rgba(255,212,59,.9)'; g.lineWidth = 2.5;
           g.beginPath(); g.arc(a.x, a.y, 14, 0, 7); g.moveTo(a.x - 22, a.y); g.lineTo(a.x - 8, a.y); g.moveTo(a.x + 8, a.y); g.lineTo(a.x + 22, a.y); g.moveTo(a.x, a.y - 22); g.lineTo(a.x, a.y - 8); g.moveTo(a.x, a.y + 8); g.lineTo(a.x, a.y + 22); g.stroke();
-          // 뒷모습 사수: 뒤통수 + 어깨 + 위로 총을 겨눈 두 팔 (조준점을 향해 몸을 살짝 돌리고, 쏠 때 반동)
+          // 뒷모습 사수: 긴 장난감 소총을 오른쪽 어깨에 대고 — 왼손은 총 앞부분(총열 덮개), 오른손은 방아쇠
           {
-            const rec = S.gun * 34;
-            const cx = W / 2 + clamp((a.x - W / 2) * 0.12, -26, 26);
-            const by = H + 6 + rec; // 몸통 아래쪽(화면 밖까지)
-            const hy = H - 112 + rec; // 머리 중심
-            const pivX = cx; const pivY = hy - 46; // 총 손잡이 위치 (머리 위)
-            const ang = clamp(Math.atan2(a.y - pivY, a.x - pivX) + Math.PI / 2, -1.0, 1.0);
+            const rec = S.gun * 22;
             const ink = '#2B2350';
-            // 몸통 (후드티)
+            const cx = W / 2 + clamp((a.x - W / 2) * 0.1, -22, 22);
+            const hy = H - 84 + rec; // 머리 중심
+            const by = H + 10 + rec;
+            const shX = cx + 30; const shY = hy + 30; // 개머리판이 닿는 오른쪽 어깨
+            const ang = clamp(Math.atan2(a.y - shY, a.x - shX), -Math.PI + 0.35, -0.35); // 총이 향하는 방향
+            const ux = Math.cos(ang); const uy = Math.sin(ang); // 총 방향 단위벡터
+            const nx = -uy; const ny = ux; // 총에 수직
+            const at = (d, o = 0) => [shX + ux * d + nx * o, shY + uy * d + ny * o];
+            g.lineCap = 'round'; g.lineJoin = 'round';
+            // 몸통 (후드티) + 등 번호
             g.fillStyle = '#E0453A'; g.strokeStyle = ink; g.lineWidth = 3;
-            g.beginPath(); g.moveTo(cx - 70, by); g.quadraticCurveTo(cx - 66, hy + 30, cx - 30, hy + 26); g.lineTo(cx + 30, hy + 26); g.quadraticCurveTo(cx + 66, hy + 30, cx + 70, by); g.closePath(); g.fill(); g.stroke();
-            // 후드 (등 뒤에 접힌 모자)
-            g.fillStyle = '#C2362C'; g.beginPath(); g.ellipse(cx, hy + 36, 34, 16, 0, 0, Math.PI); g.fill(); g.stroke();
-            // 등 번호
-            g.font = "400 22px Jua, 'Noto Sans KR', sans-serif"; g.fillStyle = '#FFD43B'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('7', cx, hy + 66);
-            // 팔: 어깨에서 총 손잡이까지
-            const grip = (side) => { const ox = side * 9; return [pivX + Math.cos(ang) * ox - Math.sin(ang) * 6, pivY + Math.sin(ang) * ox + Math.cos(ang) * 6]; };
-            [-1, 1].forEach((side) => {
-              const [gx2, gy2] = grip(side);
-              const sx = cx + side * 44; const sy = hy + 36;
-              g.lineCap = 'round'; g.lineJoin = 'round';
-              // 팔꿈치를 바깥으로 벌려 뒤에서도 두 팔이 보이게
-              const ex = cx + side * 66; const ey = hy - 18;
-              g.strokeStyle = ink; g.lineWidth = 20; g.beginPath(); g.moveTo(sx, sy); g.lineTo(ex, ey); g.lineTo(gx2, gy2); g.stroke();
-              g.strokeStyle = '#E0453A'; g.lineWidth = 14; g.beginPath(); g.moveTo(sx, sy); g.lineTo(ex, ey); g.lineTo(gx2, gy2); g.stroke();
-            });
-            // 장난감 총 (머리 위로 겨눔)
-            g.save(); g.translate(pivX, pivY); g.rotate(ang);
-            roundRect(g, -12, -58, 24, 58, 9); g.fillStyle = '#FF9ECB'; g.fill(); g.lineWidth = 3; g.strokeStyle = ink; g.stroke();
-            roundRect(g, -7, -74, 14, 20, 5); g.fillStyle = '#8FD8FF'; g.fill(); g.stroke();
-            g.fillStyle = '#FFD43B'; g.beginPath(); g.arc(0, -30, 5, 0, 7); g.fill();
-            if (S.flash > 0) { g.fillStyle = '#FFD43B'; g.beginPath(); g.arc(0, -86, 13, 0, 7); g.fill(); g.fillStyle = '#fff'; g.beginPath(); g.arc(0, -86, 6, 0, 7); g.fill(); }
-            g.restore();
-            // 손 (총 손잡이를 꼭 쥔 두 주먹)
-            [-1, 1].forEach((side) => { const [gx2, gy2] = grip(side); g.fillStyle = '#F2C9A0'; g.strokeStyle = ink; g.lineWidth = 2.5; g.beginPath(); g.arc(gx2, gy2, 8, 0, 7); g.fill(); g.stroke(); });
-            // 뒤통수: 귀 + 동그란 머리 + 삐침 머리 + 거꾸로 쓴 모자
+            g.beginPath(); g.moveTo(cx - 74, by); g.quadraticCurveTo(cx - 70, hy + 34, cx - 30, hy + 26); g.lineTo(cx + 30, hy + 26); g.quadraticCurveTo(cx + 72, hy + 34, cx + 76, by); g.closePath(); g.fill(); g.stroke();
+            g.fillStyle = '#C2362C'; g.beginPath(); g.ellipse(cx - 4, hy + 38, 32, 14, 0, 0, Math.PI); g.fill(); g.stroke();
+            g.font = "400 22px Jua, 'Noto Sans KR', sans-serif"; g.fillStyle = '#FFD43B'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('7', cx - 4, hy + 68);
+            const arm = (from, elbow, to) => {
+              g.strokeStyle = ink; g.lineWidth = 19; g.beginPath(); g.moveTo(...from); g.lineTo(...elbow); g.lineTo(...to); g.stroke();
+              g.strokeStyle = '#E0453A'; g.lineWidth = 13; g.beginPath(); g.moveTo(...from); g.lineTo(...elbow); g.lineTo(...to); g.stroke();
+            };
+            const fore = at(96, -2); // 왼손: 총열 덮개
+            const trig = at(30, 5); // 오른손: 방아쇠
+            // 왼팔 (몸 왼쪽 어깨 → 팔꿈치를 바깥으로 → 총 앞부분)
+            arm([cx - 42, hy + 34], [cx - 72, hy - 20], fore);
+            // 긴 소총
+            const quad = (d0, d1, w0, w1, fill) => {
+              const p = [at(d0, -w0), at(d1, -w1), at(d1, w1), at(d0, w0)];
+              g.fillStyle = fill; g.beginPath(); g.moveTo(...p[0]); p.slice(1).forEach((q) => g.lineTo(...q)); g.closePath(); g.fill(); g.lineWidth = 2.5; g.strokeStyle = ink; g.stroke();
+            };
+            quad(-16, 20, 11, 8, '#B07A4F'); // 개머리판 (나무)
+            quad(20, 62, 8, 8, '#FF9ECB'); // 몸통
+            quad(62, 118, 7, 6, '#FF6FA8'); // 총열 덮개
+            quad(118, 168, 3.5, 3.5, '#8FD8FF'); // 총열
+            quad(40, 58, 6, 6, '#2B2350'); // 조준경
+            { const [mx, my] = at(48, -11); g.fillStyle = '#8FD8FF'; g.beginPath(); g.arc(mx, my, 4.5, 0, 7); g.fill(); g.stroke(); }
+            { const [tx, ty] = at(166, 0); g.fillStyle = '#FFD43B'; g.beginPath(); g.arc(tx, ty, 4, 0, 7); g.fill(); g.stroke(); }
+            // 방아쇠 울
+            { const [qx, qy] = at(30, 10); g.strokeStyle = ink; g.lineWidth = 2.5; g.beginPath(); g.arc(qx, qy, 6, 0, 7); g.stroke(); }
+            if (S.flash > 0) { const [fx, fy] = at(182, 0); g.fillStyle = '#FFD43B'; g.beginPath(); g.arc(fx, fy, 14, 0, 7); g.fill(); g.fillStyle = '#fff'; g.beginPath(); g.arc(fx, fy, 6, 0, 7); g.fill(); }
+            // 오른팔 (오른쪽 어깨 → 팔꿈치는 옆으로 → 방아쇠)
+            arm([cx + 44, hy + 34], [cx + 74, hy + 12], trig);
+            // 뒤통수 (볼을 개머리판에 살짝 기댐)
+            const hx = cx - 2;
             g.fillStyle = '#F2C9A0'; g.strokeStyle = ink; g.lineWidth = 3;
-            [-1, 1].forEach((side) => { g.beginPath(); g.ellipse(cx + side * 33, hy + 4, 8, 11, 0, 0, 7); g.fill(); g.stroke(); });
-            g.fillStyle = '#3A2A20'; g.beginPath(); g.arc(cx, hy, 34, 0, 7); g.fill(); g.stroke();
-            g.fillStyle = '#5A4232'; g.beginPath(); g.ellipse(cx - 10, hy - 12, 12, 7, -0.5, 0, 7); g.fill();
-            // 거꾸로 쓴 야구모자 (챙이 뒤로 = 우리 쪽)
-            g.fillStyle = '#2E7BC4'; g.beginPath(); g.arc(cx, hy - 6, 33, Math.PI * 1.02, Math.PI * 1.98); g.closePath(); g.fill(); g.stroke();
-            g.fillStyle = '#1F5E9C'; g.beginPath(); g.ellipse(cx, hy - 4, 22, 7, 0, 0, 7); g.fill(); g.stroke();
-            g.fillStyle = '#FFD43B'; g.beginPath(); g.arc(cx, hy - 38, 4, 0, 7); g.fill();
-            // 머리 위 삐침
-            g.strokeStyle = '#3A2A20'; g.lineWidth = 4; g.lineCap = 'round'; g.beginPath(); g.moveTo(cx + 6, hy + 30); g.quadraticCurveTo(cx + 2, hy + 40, cx - 6, hy + 36); g.stroke();
-            g.lineCap = 'butt';
+            [-1, 1].forEach((side) => { g.beginPath(); g.ellipse(hx + side * 31, hy + 4, 7, 10, 0, 0, 7); g.fill(); g.stroke(); });
+            g.fillStyle = '#3A2A20'; g.beginPath(); g.arc(hx, hy, 31, 0, 7); g.fill(); g.stroke();
+            g.fillStyle = '#5A4232'; g.beginPath(); g.ellipse(hx - 10, hy - 12, 11, 6, -0.5, 0, 7); g.fill();
+            // 거꾸로 쓴 야구모자
+            g.fillStyle = '#2E7BC4'; g.beginPath(); g.arc(hx, hy - 5, 30, Math.PI * 1.02, Math.PI * 1.98); g.closePath(); g.fill(); g.stroke();
+            g.fillStyle = '#1F5E9C'; g.beginPath(); g.ellipse(hx, hy - 3, 20, 6, 0, 0, 7); g.fill(); g.stroke();
+            g.fillStyle = '#FFD43B'; g.beginPath(); g.arc(hx, hy - 35, 4, 0, 7); g.fill();
+            // 손 (왼손 총 앞부분을 받치고, 오른손 검지는 방아쇠에)
+            const hand = ([x, y]) => { g.fillStyle = '#F2C9A0'; g.strokeStyle = ink; g.lineWidth = 2.5; g.beginPath(); g.arc(x, y, 8, 0, 7); g.fill(); g.stroke(); };
+            hand(fore); hand(trig);
+            { const [kx, ky] = at(33, 12); g.strokeStyle = '#F2C9A0'; g.lineWidth = 4; g.beginPath(); g.moveTo(trig[0], trig[1]); g.lineTo(kx, ky); g.stroke(); }
+            g.lineCap = 'butt'; g.lineJoin = 'miter';
           }
           if (S.flash > 0) { g.fillStyle = 'rgba(255,255,255,.12)'; g.fillRect(0, 0, W, H); }
         },

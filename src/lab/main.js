@@ -7,6 +7,7 @@ import { setMuted, isMuted } from '../quiz/sound.js';
 import { playRun, playCrane, playKart, playShoot, GAMES } from '../games/index.js';
 import { syncMute, unlockAudio } from '../fx/fx.js';
 import { runStudy } from '../study/study.js';
+import { setPlayer } from '../rank/rank.js';
 import { sfx } from '../quiz/sound.js';
 
 const KEY = 'cq.lab';
@@ -40,15 +41,18 @@ function home() {
       <div class="types">${r.types.map((t) => `<button class="tcard" data-t="${t}"><span class="no">${t}</span><b>${esc(TYPES[t].name)}</b><small>${esc(TYPES[t].level)} · ${(BANK[t] || []).length}문제</small></button>`).join('')}</div></section>`).join('')}
     <section class="region" style="--rc:#E21E8C"><h2>미니게임 연습 <small>상품 없음</small></h2>
       <div class="types">${Object.entries(GAMES).map(([k, gm]) => `<button class="tcard mg" data-g="${k}"><span class="no">${gm.icon}</span><b>${esc(gm.title)}</b><small>${esc(gm.desc)}</small></button>`).join('')}</div></section>
-    <div class="row"><button class="ghost" id="study">📚 개념 학습</button><button class="ghost" id="notes">📒 오답노트</button><button class="ghost" id="reset">새 판 시작</button></div>
+    <div class="row"><button class="ghost" id="study">📚 출발 전 개념 학습</button><button class="ghost" id="notes">📒 오답노트</button><button class="ghost" id="reset">새 판 시작</button></div>
     <p class="muted">같은 판에서는 같은 문제가 다시 나오지 않아요. 「새 판 시작」을 누르면 기록이 지워집니다.</p>`;
   app.querySelectorAll('[data-lv]').forEach((b) => { b.onclick = () => { S.level = b.dataset.lv; setLevel(S.level); save(); home(); }; });
   app.querySelectorAll('.tcard:not(.mg)').forEach((b) => { b.onclick = () => play(+b.dataset.t); });
   app.querySelectorAll('.tcard.mg').forEach((b) => {
     b.onclick = async () => {
       unlockAudio(); syncMute();
+      // 순위표에 올릴 이름 (처음 한 번만 묻기)
+      if (!S.name) { S.name = (prompt('순위표에 올릴 이름(닉네임)을 써 주세요', '') || '').trim().slice(0, 12) || '연습생'; save(); }
+      setPlayer(S.name);
       const fn = { run: playRun, crane: playCrane, kart: playKart, shoot: playShoot }[b.dataset.g];
-      const r = await fn({ charId: 'bboy' });
+      const r = await fn({ charId: 'bboy', name: S.name });
       S.coins += r.coins || 0; save(); home();
     };
   });

@@ -194,7 +194,7 @@ export function runStudy({ sfx = () => {} } = {}) {
       const dots = CHAPTERS.map((c) => `<span class="${ch && c.no === ch.no ? 'on' : ''}" style="--cc:${c.color}">${c.no}</span>`).join('');
       let inner = '';
       if (P.kind === 'cover') {
-        inner = `<div class="cover"><div class="kick">CHUNK QUEST 개념 학습</div><h1>품사 원정대<br><small>출발 전 준비 운동!</small></h1>
+        inner = `<div class="cover"><div class="kick">CHUNK QUEST · 품사 원정대</div><h1>출발 전<br>개념 학습</h1>
           <ol class="toc">${CHAPTERS.map((c) => `<li style="--cc:${c.color}"><b>CHAPTER ${c.no}</b> ${c.title}<small>${c.sub}</small></li>`).join('')}</ol>
           <p class="note">한 장씩 넘기며 읽고, 챕터 끝 <b>OX 퀴즈</b>로 확인해요!</p></div>`;
       } else if (P.kind === 'chapter') {
@@ -255,7 +255,7 @@ export function askStudy() {
   return new Promise((resolve) => {
     const ov = document.createElement('div');
     ov.className = 'study-ask';
-    ov.innerHTML = `<div class="sa-card"><div class="sa-ico">📚</div><h2>게임 하기 전에<br><em>먼저 학습할까요?</em></h2>
+    ov.innerHTML = `<div class="sa-card"><div class="sa-ico">📚</div><h2>출발 전 개념 학습<br><em>먼저 학습할까요?</em></h2>
       <p>품사 · 5품사 청크 · 문장 성분 · 관사<br>4챕터를 넘기며 보고 <b>OX 퀴즈</b>로 확인해요 (약 5분)</p>
       <div class="sa-btns"><button class="primary big" id="saYes">네, 학습할래요!</button><button class="ghost big" id="saNo">아니오, 바로 게임!</button></div></div>`;
     document.body.appendChild(ov);

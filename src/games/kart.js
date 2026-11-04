@@ -11,7 +11,7 @@ import mg from '../../data/minigames.json';
 const QUIZ_TYPES = [1, 2, 3, 4, 5, 6, 7];
 
 async function kartImages(name) {
-  const keys = ['ted', 'goddess', 'scooter', 'cart', 'skate'];
+  const keys = ['ted', 'goddess', 'scooter', 'cart', 'skate', 'kick'];
   const IM = {};
   await Promise.all(keys.map(async (k) => {
     if (k === 'ted') {
@@ -29,14 +29,14 @@ export function playKart({ charId = 'bboy', name = '나', used } = {}) {
   return openGame({
     id: 'kart',
     title: '🏎️ 청크 카트',
-    subtitle: '5명이 겨루는 레이스! 퀴즈 존에서 게이지를 채워라',
+    subtitle: '6명이 겨루는 레이스! 퀴즈 존에서 게이지를 채워라',
     music: 'mgKart',
     howto: [
       '왼손 <b>◀ ▶ 핸들</b> · 오른손 <b>⚡ 악셀</b> (꾹 2초 ↑ 2단 가속, 게이지가 줄어요)',
       '<b>❓ 퀴즈 존</b>을 지나면 <b>순간정지!</b> 맞히면 ⚡ 게이지 가득 + 부스터',
       '<b class="red">🛣️ 품사 레인</b>: 화면 위 단어의 품사가 적힌 <b>레인으로 달리면 부스터!</b> 틀린 레인은 감속',
       '🌮 타코 = 게이지 가득 · 🍌 바나나 · 🚧 공사중 벽 · 🚶 영크크·늙크크 조심!',
-      '라이벌: <b>보강 여신 · 묵언수행 · 보강대장 · B-BOY</b> — 1등이면 쿠키앤크림!',
+      '라이벌 5명: <b>보강 여신 · 묵언수행 · 보강대장 · B-BOY · 퀵보드 태오</b> — 1등이면 쿠키앤크림!',
     ],
     async setup(E) {
       const ctx = E.g;
@@ -96,13 +96,15 @@ export function playKart({ charId = 'bboy', name = '나', used } = {}) {
         mk({ id: 'g', name: '보강 여신', col: '#9B6BE0', img: 'goddess', base: 250, x: W / 2 - RW * 0.2, d: START, lane0: -0.2, hits: 1 }),
         mk({ id: 'm', name: '묵언수행', col: '#1B2F4E', img: 'scooter', base: 246, x: W / 2 + RW * 0.2, d: START, lane0: 0.2, hits: 1 }),
         mk({ id: 'b', name: '보강대장', col: '#E0453A', img: 'cart', base: 242, x: W / 2 - RW * 0.2, d: START - 70, lane0: -0.15, hits: 1 }),
-        mk({ id: 's', name: 'B-BOY', col: '#28A064', img: 'skate', base: 245, x: W / 2 + RW * 0.2, d: START - 70, lane0: 0.15, hits: 1 })];
+        mk({ id: 's', name: 'B-BOY', col: '#28A064', img: 'skate', base: 245, x: W / 2 + RW * 0.2, d: START - 70, lane0: 0.15, hits: 1 }),
+        // 6번째 라이벌: 퀵보드 타는 디스코 태오 (작고 날쌔서 출발이 빠름)
+        mk({ id: 'k', name: '퀵보드 태오', col: '#7B5CD6', img: 'kick', base: 243, x: W / 2, d: START - 200, lane0: 0, hits: 1 })];
       const ME = R[0];
       let gauge = 1, accel = false;
-      const FUEL_SEC = 7, REGEN_SEC = 9, // 게이지가 천천히 줄고 조금 더 빨리 참 (원래 3.36초 / 12초)
+      const FUEL_SEC = 10, REGEN_SEC = 9, // 악셀 게이지: 10초 동안 쓸 수 있음 (지난번 7초보다 30% 더 천천히) // 게이지가 천천히 줄고 조금 더 빨리 참 (원래 3.36초 / 12초)
         _unused = 0, ACC1 = 1.3, ACC2 = 1.5, ACC_T2 = 2;
       let holdT = 0;
-      let mode = 'count', t = 0, steer = 0, order = [], place = 5, quizzes = { ok: 0, n: 0 }, lanes = { ok: 0, n: 0 }, streak = 0, finished = false;
+      let mode = 'count', t = 0, steer = 0, order = [], place = 6, quizzes = { ok: 0, n: 0 }, lanes = { ok: 0, n: 0 }, streak = 0, finished = false;
       const FX = [];
       const say = (txt, x, y, col) => FX.push({ txt, x, y, life: 1.1, col });
 
@@ -126,11 +128,13 @@ export function playKart({ charId = 'bboy', name = '나', used } = {}) {
       wheel.appendChild(E.button('◀', 'left', hold(-1)));
       wheel.appendChild(E.button('▶', 'right', hold(1)));
       // 오른쪽: 큰 악셀 게이지(버튼 위) + 악셀
+      const wsvg = wheel.querySelector('.wsvg');
+      let wheelRot = 0;
       const pcol = document.createElement('div');
       pcol.className = 'kpcol';
-      pcol.innerHTML = '<div class="kgauge"><div class="kgh"><span>⚡ 악셀 게이지</span><b id="pgTxt">100%</b></div><div class="bar"><i id="pgFill"></i></div></div>';
+      pcol.innerHTML = '<div class="kgauge"><div class="bar"><i id="pgFill"></i><b id="pgTxt">100%</b></div></div>';
       E.ctrl.appendChild(pcol);
-      const pedal = E.button('⚡ 악셀<small>꾹 누르기</small>', 'drop pedal', { onDown: () => { accel = true; }, onUp: () => { accel = false; } });
+      const pedal = E.button('⚡ 악셀', 'drop pedal', { onDown: () => { accel = true; }, onUp: () => { accel = false; } });
       pcol.appendChild(pedal);
       const laneEl = document.createElement('div');
       laneEl.className = 'klane';
@@ -168,7 +172,7 @@ export function playKart({ charId = 'bboy', name = '나', used } = {}) {
         let lane = r.lane;
         if (r.aim && r.aim.gone) r.aim = null;
         BAN.forEach((b, i) => { if (b.gone || b.d < r.d + 10 || b.d > r.d + 240) return;
-          if (r.hits && b.d > L * (r.id === 'g' ? .55 : r.id === 'm' ? .38 : r.id === 's' ? .46 : .7) && !r.aim) r.aim = b;
+          if (r.hits && b.d > L * (r.id === 'g' ? .55 : r.id === 'm' ? .38 : r.id === 's' ? .46 : r.id === 'k' ? .62 : .7) && !r.aim) r.aim = b;
           if (r.aim === b) { lane = b.k; return; }
           if (Math.abs(b.k - lane) < .22) lane = b.k + (b.k > 0 ? -.28 : .28); });
         const tc = TAC.find(o => !o.gone && o.d > r.d + 20 && o.d < r.d + 320); if (tc && r.d < ME.d + 150 && Math.abs(tc.k - lane) < .26 && (tc.d / 97 + r.base) % 2 < 1) lane = tc.k;   // sometimes go for the taco (not when far ahead)
@@ -411,7 +415,7 @@ export function playKart({ charId = 'bboy', name = '나', used } = {}) {
         const rows = R.slice().sort((a, b) => placeOf(a) - placeOf(b)).map((r) => `${placeOf(r)}. ${r.me ? `<b>${r.name}</b>` : r.name}`).join(' · ');
         setTimeout(() => E.end({
           score: Math.max(0, 1500 - (place - 1) * 300) + quizzes.ok * 200 + lanes.ok * 150, cleared: place <= 3,
-          coins: [0, 20, 14, 10, 6, 4][place], snack: place === 1 ? 'cookie' : null,
+          coins: [0, 20, 14, 10, 6, 4, 2][place], snack: place === 1 ? 'cookie' : null,
           headline: place === 1 ? '🏆 1등 골인!' : `${place}등 골인!`, legendAt: 2400,
           lines: [`❓ 퀴즈 존 <b>${quizzes.ok}</b>/${quizzes.n} 정답 · 🛣️ 품사 레인 <b>${lanes.ok}</b>/${lanes.n}`, rows],
         }), 1600);
@@ -438,14 +442,15 @@ export function playKart({ charId = 'bboy', name = '나', used } = {}) {
           });
           for (let i = FX.length - 1; i >= 0; i--) { FX[i].life -= dt; FX[i].y -= 34 * dt; if (FX[i].life <= 0) FX.splice(i, 1); }
           if (!finished) {
-            const cur = LZ.find((z) => !z.done && ME.d > z.d - LANE_LEN - 500);
+            const cur = LZ.find((z) => !z.done && ME.d > z.d - LANE_LEN - 1700); // 레인이 나오기 한참 전부터 단어를 미리 보여 줌
             if (cur !== laneShown) {
               laneShown = cur || null;
               laneEl.classList.toggle('on', !!cur);
-              if (cur) laneEl.innerHTML = `<small>🛣️ 품사 레인 — 이 단어의 품사 레인으로!</small><b>${cur.word}</b><em>${cur.labels.map((l) => `<i>${l}</i>`).join('')}</em>`;
+              if (cur) laneEl.innerHTML = `<small>🛣️ 곧 품사 레인! 이 단어의 품사는?</small><b>${cur.word}</b><em>${cur.labels.map((l) => `<i>${l}</i>`).join('')}</em><u id="lzDist"></u>`;
             }
+            if (laneShown) { const dEl = laneEl.querySelector('#lzDist'); const left = laneShown.d - LANE_LEN - ME.d; if (dEl) dEl.textContent = left > 0 ? `레인까지 ${Math.ceil(left / 10)}m — 미리 정해 두세요!` : '지금! 맞는 레인으로 ◀ ▶'; }
             LZ.forEach((z) => {
-              if (!z.shown && ME.d > z.d - LANE_LEN - 500) { z.shown = true; MSG.textContent = `🛣️ 품사 레인! 「<span class="tg">${z.word}</span>」의 품사 레인으로 달려라!`; lsfx([660, 880], 'square', 0.06, 0.05); }
+              if (!z.shown && ME.d > z.d - LANE_LEN - 1700) { z.shown = true; MSG.textContent = `🛣️ 품사 레인! 「<span class="tg">${z.word}</span>」의 품사 레인으로 달려라!`; lsfx([660, 880], 'square', 0.06, 0.05); }
               if (!z.done && ME.d >= z.d) {
                 z.done = true;
                 const c = cx(z.d);
@@ -469,7 +474,9 @@ export function playKart({ charId = 'bboy', name = '나', used } = {}) {
             place = placeOf(ME);
           }
           const kmh = Math.round(ME.v * 0.4);
-          E.hud(`<b>${place}</b>/5등 · ${kmh}km/h`);
+          E.hud(`<b>${place}</b>/6등 · ${kmh}km/h`);
+          wheelRot += ((steer * 32) - wheelRot) * Math.min(1, (1 / 60) * 10);
+          wsvg.style.transform = `rotate(${wheelRot.toFixed(1)}deg)`;
           pgFill.style.width = `${Math.round(gauge * 100)}%`;
           pgTxt.textContent = `${Math.round(gauge * 100)}%`;
           pcol.classList.toggle('low', gauge < 0.2);

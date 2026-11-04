@@ -14,6 +14,7 @@ import { loadChar, fillFaces, charURL } from '../board/charart.js';
 import { bgm, callout, maWarning, teacherDance, crewDance, finaleDance, snackCard, snackCode, SNACKS, syncMute, unlockAudio } from '../fx/fx.js';
 import { playRun, playCrane, playKart, playShoot, GAMES } from '../games/index.js';
 import { runStudy, askStudy } from '../study/study.js';
+import { setPlayer, submitScore, getRanking, rankTableHTML } from '../rank/rank.js';
 
 const BASE = import.meta.env.BASE_URL;
 const LOGO = `${BASE}assets/brand/logo.png`;
@@ -182,7 +183,7 @@ function title() {
     <div class="title-btns">
       ${can ? `<button class="primary big" id="cont">이어하기 · ${esc(sv.name)} (${sv.pos}/${board.cells.length - 1}칸)</button>` : ''}
       <button class="${can ? 'ghost big' : 'primary big'}" id="new">${can ? '처음부터 새로 하기' : '시작하기 ▶'}</button>
-      <button class="ghost big study-btn" id="study">📚 개념 학습 (품사·문장 성분)</button>
+      <button class="ghost big study-btn" id="study">📚 출발 전 개념 학습</button>
       <div class="title-links"><a href="./quiz-lab.html">🧪 연습장 · 미니게임</a><a href="./review.html">📋 문제 검수</a></div>
     </div></div>`);
   ui.querySelector('#study').onclick = async () => { unlockAudio(); await runStudy({ sfx }); };
@@ -230,7 +231,7 @@ function choose(name, grade) {
       if (await askStudy()) {
         const r = await runStudy({ sfx });
         S.coins += r.correct; S.studied = r; save();
-        if (r.correct) toastLater(`📚 개념 학습 OX ${r.correct}/${r.total} · 코인 +${r.correct}`);
+        if (r.correct) toastLater(`📚 출발 전 개념 학습 OX ${r.correct}/${r.total} · 코인 +${r.correct}`);
       }
       startBoard(true);
     };
@@ -345,7 +346,7 @@ function menu() {
   ov.className = 'menu-ov';
   ov.innerHTML = `<div class="card menu-box"><h3>메뉴</h3>
     <button class="ghost" id="snd">${isMuted() ? '🔇 소리 켜기' : '🔊 소리 끄기'}</button>
-    <button class="ghost" id="study">📚 개념 학습 다시 보기</button>
+    <button class="ghost" id="study">📚 출발 전 개념 학습 다시 보기</button>
     <button class="ghost" id="note">📒 오답노트 (${S.notes.length})</button>
     <button class="ghost" id="snk">🍫 내 간식 쿠폰 (${(S.snacks || []).length})</button>
     <button class="ghost" id="home">🏠 처음 화면 (자동 저장됨)</button>
@@ -389,7 +390,7 @@ function snapCamera() {
 
 async function startBoard(fresh) {
   cam.mode = 'board';
-  S.level ||= 'mid'; setLevel(S.level);
+  S.level ||= 'mid'; setLevel(S.level); setPlayer(S.name);
   S.snacks ||= []; S.games ||= {}; S.gates ||= {}; S.regTypes ||= {}; S.streak ||= 0; S.wrongStreak ||= 0; S.perfects ||= 0;
   bgm(regionOf(S.pos).id);
   placeAvatar(S.char);
@@ -648,8 +649,9 @@ function rankHTML() {
   const { list, place } = recordRank();
   const t = tierOf(S.coins);
   const medal = (i) => ['🥇', '🥈', '🥉'][i] || `${i + 1}`;
-  return `<div class="tier"><span>${t.icon}</span><b>${esc(t.name)}</b><small>코인이 많을수록 높은 등급 · 이 기기 ${place}위 / ${list.length}명</small></div>
-    <ol class="rank">${list.slice(0, 5).map((x, i) => `<li class="${x.id === S.rankId ? 'me' : ''}"><i>${medal(i)}</i><span>${esc(x.name)}${x.level ? ` <em class="lvb ${x.level}">${x.level === 'high' ? '상' : '중'}</em>` : ''}</span><b>🪙 ${x.coins}</b></li>`).join('')}</ol>`;
+  void list; void place; void medal;
+  return `<div class="tier"><span>${t.icon}</span><b>${esc(t.name)}</b><small>코인이 많을수록 높은 등급</small></div>
+    <div id="goalRank"><p class="rk-wait">🏆 순위 불러오는 중…</p></div>`;
 }
 
 /** 목적지 도착 — 시상식은 4단계에서 */
@@ -703,6 +705,10 @@ async function goal() {
     ${rankHTML()}
     <button class="primary big" id="home">처음으로</button></div></div>`);
   ui.querySelector('#home').onclick = title;
+  // 완주 코인 순위 (반 전체 / 이 기기) — 한 판에 한 번만 기록
+  const fill = (R) => { const el = ui.querySelector('#goalRank'); if (el) el.innerHTML = rankTableHTML('board', R, S.name, '코인'); };
+  if (!S.boardSent) { S.boardSent = true; save(); submitScore('board', S.coins, S.name).then(fill).catch(() => {}); }
+  else getRanking('board', S.name).then(fill).catch(() => {});
 }
 
 // iOS: 첫 터치에서 소리 시작

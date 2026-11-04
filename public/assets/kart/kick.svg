@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 84"><g stroke="#1B2F4E" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round">
+    <!-- 퀵보드(킥보드) 위에서 본 모습: 앞바퀴 · 손잡이 · 발판 · 뒷바퀴 -->
+    <rect x="26" y="3" width="8" height="10" rx="3" fill="#2B2350"/>
+    <rect x="26" y="71" width="8" height="10" rx="3" fill="#2B2350"/>
+    <rect x="23" y="14" width="14" height="60" rx="6" fill="#8FD8FF"/>
+    <path d="M27 22 L33 22 M27 64 L33 64" stroke="#fff" stroke-width="1.6"/>
+    <path d="M30 10 L30 18" stroke-width="4"/>
+    <path d="M12 16 L48 16" stroke-width="5"/><path d="M12 16 L48 16" stroke="#C9D3E0" stroke-width="2.6"/>
+    <circle cx="11" cy="16" r="3.6" fill="#E0453A"/><circle cx="49" cy="16" r="3.6" fill="#E0453A"/>
+    <!-- 발 -->
+    <ellipse cx="26" cy="56" rx="4" ry="6.5" fill="#fff"/><ellipse cx="34" cy="62" rx="4" ry="6.5" fill="#fff"/>
+    <!-- 팔: 손잡이를 꽉 -->
+    <path d="M22 36 Q14 28 12 18 M38 36 Q46 28 48 18" fill="none" stroke-width="5.5"/>
+    <path d="M22 36 Q14 28 12 18 M38 36 Q46 28 48 18" fill="none" stroke="#7B5CD6" stroke-width="3"/>
+    <circle cx="12" cy="18" r="3.2" fill="#F2C9A0"/><circle cx="48" cy="18" r="3.2" fill="#F2C9A0"/>
+    <!-- 몸 (디스코 셔츠) -->
+    <ellipse cx="30" cy="42" rx="12" ry="14" fill="#7B5CD6"/>
+    <path d="M22 38 L38 38 M23 45 L37 45" stroke="#FFD43B" stroke-width="2"/>
+    <!-- 아프로 머리 (위에서) + 헤드폰 -->
+    <circle cx="30" cy="33" r="10.5" fill="#2B1C14"/>
+    <circle cx="24" cy="29" r="3" fill="#3E2A1E" stroke="none"/><circle cx="35" cy="28" r="2.6" fill="#3E2A1E" stroke="none"/>
+    <path d="M19.5 33 Q30 23 40.5 33" fill="none" stroke="#FFD43B" stroke-width="2.6"/>
+    <rect x="17" y="31" width="4.5" height="7" rx="2" fill="#E21E8C"/><rect x="38.5" y="31" width="4.5" height="7" rx="2" fill="#E21E8C"/>
+  </g></svg>
