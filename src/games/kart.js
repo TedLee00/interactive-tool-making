@@ -122,31 +122,38 @@ export function playKart({ charId = 'bboy', name = '나', used } = {}) {
         <defs><radialGradient id="kwG" cx="50%" cy="40%" r="60%"><stop offset="0" stop-color="#4A4466"/><stop offset="1" stop-color="#1B1730"/></radialGradient></defs>
         <circle cx="100" cy="100" r="92" fill="none" stroke="url(#kwG)" stroke-width="18"/>
         <circle cx="100" cy="100" r="92" fill="none" stroke="#6B6488" stroke-width="2" stroke-dasharray="6 7"/>
-        <path d="M30 70 A76 76 0 0 1 60 33" stroke="#E0453A" stroke-width="14" fill="none" stroke-linecap="round"/>
-        <path d="M170 70 A76 76 0 0 0 140 33" stroke="#E0453A" stroke-width="14" fill="none" stroke-linecap="round"/>
         <rect x="94" y="4" width="12" height="20" rx="3" fill="#FFD43B"/>
         <path d="M14 112 L72 104 M186 112 L128 104 M100 132 L100 190" stroke="url(#kwG)" stroke-width="20" stroke-linecap="round"/>
         <circle cx="100" cy="106" r="30" fill="url(#kwG)" stroke="#FFD43B" stroke-width="4"/>
         <text x="100" y="113" text-anchor="middle" font-family="Jua, sans-serif" font-size="20" fill="#FFD43B">TED</text>
-        <!-- 운전자 시점: 손등이 보이게 검은 림을 꽉 감싸 쥔 두 손 (손가락이 림 안쪽으로 말려 들어감, 핸들과 함께 돌아감) -->
-        <defs><linearGradient id="kwSkin" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFE2C4"/><stop offset="1" stop-color="#E8B486"/></linearGradient></defs>
-        <g transform="translate(10 80) rotate(14)"><g stroke="#2B2350" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round">
-            <path d="M-12 -14 L-46 -6 L-46 26 L-12 18 Z" fill="#2E7BC4"/>
-            <path d="M-46 -6 L-40 -7 L-40 25 L-46 26 Z" fill="#1F5C99"/>
-            <path d="M-14 -18 Q-6 -24 6 -22 L14 -18 L14 20 Q4 24 -8 22 Q-16 18 -16 0 Z" fill="url(#kwSkin)"/>
-            <path d="M8 -20 Q20 -22 22 -14 Q22 -9 12 -9 Z" fill="url(#kwSkin)"/>
-            <path d="M10 -9 Q21 -10 21 -3 Q21 3 10 2 Z M10 2 Q21 1 21 8 Q21 14 10 13 Z M10 13 Q20 13 19 19 Q18 24 9 21 Z" fill="url(#kwSkin)"/>
-            <path d="M-4 -12 Q2 -13 6 -10 M-5 -1 Q1 -2 6 0 M-5 10 Q1 9 6 11" fill="none" stroke-width="1.4" opacity=".55"/>
-            <path d="M-12 -12 Q-14 0 -11 14" fill="none" stroke="#fff" stroke-width="2" opacity=".35"/>
+        <!-- 운전자 시점(위에서 내려다봄): 팔은 아래쪽으로 뻗고, 손등이 보이며 네 손가락은 림 안쪽으로 감싸고 엄지는 아래쪽에서 림을 잡음 -->
+        <defs><linearGradient id="kwSkin" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFE6CC"/><stop offset="1" stop-color="#EDB98C"/></linearGradient>
+        <linearGradient id="kwSkin2" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#F6CDA6"/><stop offset="1" stop-color="#FFE6CC"/></linearGradient></defs>
+        <g transform="translate(9 100) rotate(-6)"><g stroke="#5A3A2A" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round">
+            <path d="M-16 4 L-44 80 L-12 90 L8 14 Z" fill="#2E7BC4" stroke="#1B2F4E" stroke-width="2.2"/>
+            <path d="M-16 4 L-12 0 L10 8 L8 14 Z" fill="#1F5C99" stroke="none"/>
+            <path d="M-13 -16 Q-4 -24 6 -20 Q12 -16 11 -4 L10 12 Q4 22 -6 20 Q-16 16 -17 2 Z" fill="url(#kwSkin)"/>
+            <path d="M3 -19 Q14 -21 17 -15 Q18 -10 9 -10 Z" fill="url(#kwSkin2)"/>
+            <path d="M5 -10 Q17 -11 18 -5 Q18 0 7 -1 Z" fill="url(#kwSkin2)"/>
+            <path d="M6 -1 Q18 -1 18 5 Q18 10 7 9 Z" fill="url(#kwSkin2)"/>
+            <path d="M6 9 Q16 9 16 14 Q15 18 6 17 Z" fill="url(#kwSkin2)"/>
+            <path d="M-4 16 Q4 24 14 22 Q20 21 19 27 Q16 31 6 30 Q-6 28 -10 20 Z" fill="url(#kwSkin)"/>
+            <path d="M14 22 Q19 23 18 27" fill="#FFF3E6" stroke-width="1.2"/>
+            <path d="M-8 -12 Q-2 -14 3 -12 M-9 -3 Q-3 -5 3 -3 M-9 6 Q-3 4 3 6" fill="none" stroke="#C98E62" stroke-width="1.3"/>
+            <path d="M-12 -10 Q-13 2 -10 12" fill="none" stroke="#fff" stroke-width="2" opacity=".4"/>
           </g></g>
-        <g transform="translate(190 80) scale(-1 1) rotate(14)"><g stroke="#2B2350" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round">
-            <path d="M-12 -14 L-46 -6 L-46 26 L-12 18 Z" fill="#2E7BC4"/>
-            <path d="M-46 -6 L-40 -7 L-40 25 L-46 26 Z" fill="#1F5C99"/>
-            <path d="M-14 -18 Q-6 -24 6 -22 L14 -18 L14 20 Q4 24 -8 22 Q-16 18 -16 0 Z" fill="url(#kwSkin)"/>
-            <path d="M8 -20 Q20 -22 22 -14 Q22 -9 12 -9 Z" fill="url(#kwSkin)"/>
-            <path d="M10 -9 Q21 -10 21 -3 Q21 3 10 2 Z M10 2 Q21 1 21 8 Q21 14 10 13 Z M10 13 Q20 13 19 19 Q18 24 9 21 Z" fill="url(#kwSkin)"/>
-            <path d="M-4 -12 Q2 -13 6 -10 M-5 -1 Q1 -2 6 0 M-5 10 Q1 9 6 11" fill="none" stroke-width="1.4" opacity=".55"/>
-            <path d="M-12 -12 Q-14 0 -11 14" fill="none" stroke="#fff" stroke-width="2" opacity=".35"/>
+        <g transform="translate(191 100) scale(-1 1) rotate(-6)"><g stroke="#5A3A2A" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round">
+            <path d="M-16 4 L-44 80 L-12 90 L8 14 Z" fill="#2E7BC4" stroke="#1B2F4E" stroke-width="2.2"/>
+            <path d="M-16 4 L-12 0 L10 8 L8 14 Z" fill="#1F5C99" stroke="none"/>
+            <path d="M-13 -16 Q-4 -24 6 -20 Q12 -16 11 -4 L10 12 Q4 22 -6 20 Q-16 16 -17 2 Z" fill="url(#kwSkin)"/>
+            <path d="M3 -19 Q14 -21 17 -15 Q18 -10 9 -10 Z" fill="url(#kwSkin2)"/>
+            <path d="M5 -10 Q17 -11 18 -5 Q18 0 7 -1 Z" fill="url(#kwSkin2)"/>
+            <path d="M6 -1 Q18 -1 18 5 Q18 10 7 9 Z" fill="url(#kwSkin2)"/>
+            <path d="M6 9 Q16 9 16 14 Q15 18 6 17 Z" fill="url(#kwSkin2)"/>
+            <path d="M-4 16 Q4 24 14 22 Q20 21 19 27 Q16 31 6 30 Q-6 28 -10 20 Z" fill="url(#kwSkin)"/>
+            <path d="M14 22 Q19 23 18 27" fill="#FFF3E6" stroke-width="1.2"/>
+            <path d="M-8 -12 Q-2 -14 3 -12 M-9 -3 Q-3 -5 3 -3 M-9 6 Q-3 4 3 6" fill="none" stroke="#C98E62" stroke-width="1.3"/>
+            <path d="M-12 -10 Q-13 2 -10 12" fill="none" stroke="#fff" stroke-width="2" opacity=".4"/>
           </g></g>
       </svg>`;
       E.ctrl.appendChild(wheel);
@@ -163,11 +170,15 @@ export function playKart({ charId = 'bboy', name = '나', used } = {}) {
         <rect x="27" y="86" width="16" height="12" rx="3" fill="#55507A" stroke-width="2.5"/>
         <g class="pdp"><path d="M12 6 Q35 0 58 6 L54 88 Q35 92 16 88 Z" fill="#3A3550" stroke-width="3"/><path d="M16 9 Q35 4 54 9 L51 85 Q35 88 19 85 Z" fill="#6B6590" stroke="none"/>
         ${[16, 27, 38, 49, 60, 71].map((y) => `<rect x="20" y="${y}" width="30" height="5" rx="2.5" fill="#2B2350" stroke="none" opacity=".7"/>`).join('')}</g>
-        <g class="pdf"><path d="M20 100 L19 70 Q19 54 35 52 Q51 54 51 70 L50 100 Z" fill="#fff" stroke-width="3"/>
-        <path d="M20 66 Q35 61 50 66" fill="none" stroke="#E0453A" stroke-width="3.5"/>
-        <path d="M27 76 L43 76 M27 83 L43 83" stroke="#4F7CC4" stroke-width="3" stroke-linecap="round"/>
-        <path d="M35 54 Q26 56 24 64" fill="none" stroke="#fff" stroke-width="2.5" opacity=".8"/>
-        <path d="M21 92 L49 92 L50 100 L20 100 Z" fill="#4F7CC4" stroke-width="2.5"/></g>
+        <g class="pdf">
+        <path d="M22 100 L23 88 L47 88 L48 100 Z" fill="#3A5FA8" stroke-width="2.5"/>
+        <path d="M35 30 Q52 32 53 54 Q54 74 49 90 Q35 96 21 90 Q16 74 17 54 Q18 32 35 30 Z" fill="#E0453A" stroke-width="3"/>
+        <path d="M35 33 Q49 35 50 54 Q51 72 47 87 Q35 92 23 87 Q19 72 20 54 Q21 35 35 33 Z" fill="#fff" stroke="none"/>
+        <path d="M35 33 Q47 34 49 46 Q35 42 21 46 Q23 34 35 33 Z" fill="#D9D4E6" stroke="#2B2350" stroke-width="1.6"/>
+        <path d="M27 50 L43 58 M43 50 L27 58 M27 60 L43 68 M43 60 L27 68" stroke="#4F7CC4" stroke-width="2.6" stroke-linecap="round"/>
+        <path d="M28 72 Q35 70 42 72 L41 84 Q35 87 29 84 Z" fill="#2B2350" stroke-width="1.6"/>
+        <path d="M20 60 Q30 66 22 78" fill="none" stroke="#FFD43B" stroke-width="3" stroke-linecap="round"/>
+        <path d="M30 36 Q24 40 23 48" fill="none" stroke="#fff" stroke-width="2" opacity=".9"/></g>
       </g></svg><span class="pdt">악셀<small>꾹 밟기</small></span>`, 'drop pedal', { onDown: () => { accel = true; }, onUp: () => { accel = false; } });
       pcol.appendChild(pedal);
       const laneEl = document.createElement('div');

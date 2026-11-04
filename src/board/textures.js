@@ -70,9 +70,9 @@ export function logoSprite(w = 1.1) {
       x.lineWidth = 5; x.strokeStyle = '#fff'; x.beginPath(); x.arc(128, 104, 64, 0, Math.PI * 2); x.stroke();
     }
     x.textAlign = 'center';
-    x.font = `400 60px ${FONT_CUTE}`;
-    x.lineWidth = 8; x.strokeStyle = '#2B2350'; x.strokeText('TED', 128, 214);
-    x.fillStyle = '#FFD43B'; x.fillText('TED', 128, 214);
+    x.font = "italic 800 64px 'Playfair Display', Georgia, serif";
+    x.lineWidth = 8; x.strokeStyle = '#2B2350'; x.strokeText('Ted', 128, 216);
+    x.fillStyle = '#FFD43B'; x.fillText('Ted', 128, 216);
     x.font = `400 26px ${FONT_CUTE}`; x.fillStyle = '#fff'; x.fillText('와 함께하는', 128, 244);
     // 아래 리본: 품사 원정대
     x.fillStyle = '#E21E8C'; x.beginPath(); x.roundRect(30, 254, 196, 40, 14); x.fill();

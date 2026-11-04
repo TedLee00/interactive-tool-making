@@ -172,12 +172,13 @@ function placeAvatar(charId) {
 }
 
 /** 한 칸씩 콩콩 뛰어 이동 */
-async function hopTo(i) {
+let hopN = 0;
+async function hopTo(i, last = false) {
   const from = avatar.root.position.clone();
   const to = world.cellPosition(i);
   to.y = 0.3;
   avatar.root.rotation.y = Math.atan2(to.x - from.x, to.z - from.z);
-  avatar.setAnim('hop');
+  avatar.setAnim('hop', { foot: hopN++ % 2 ? 'R' : 'L', last }); // 왼발 · 오른발 번갈아, 마지막 칸은 두 발로
   const D = 420;
   const t0 = performance.now();
   await new Promise((res) => {
@@ -205,7 +206,8 @@ async function moveBy(n) {
   const want = Math.min(world.N - 1, S.pos + n);
   const target = stopLimit(S.pos, want);
   if (target < want) toast('🚧 게이트 앞에서 멈춤! 관문을 통과해야 지나갈 수 있어요');
-  while (S.pos < target) { await hopTo(S.pos + 1); await sleep(40); }
+  hopN = 0;
+  while (S.pos < target) { await hopTo(S.pos + 1, S.pos + 1 === target); await sleep(S.pos === target ? 40 : 10); }
   avatar.root.rotation.y = 0; // 카메라 쪽을 보게
   avatar.setAnim('idle');
   world.sparkle(S.pos);
@@ -233,7 +235,7 @@ function title() {
   const can = sv && !sv.finished;
   screen(`<div class="title-screen">
     <div class="logo-card">
-      <div class="ted-logo"><img class="face" data-face="ted" alt=""><div class="tl-t"><b>TED</b><span>와 함께하는</span></div></div>
+      <div class="ted-logo"><img class="face" data-face="ted" alt=""><div class="tl-t"><b>Ted</b><span>와 함께하는</span></div></div>
       <h1><span>품사 <b>원정대</b></span><svg class="castle" viewBox="0 0 64 64" aria-hidden="true"><g stroke="#2B2350" stroke-width="2.4" stroke-linejoin="round">
         <path d="M31 6 L31 0" stroke-linecap="round"/><path d="M31 1 L41 4 L31 7 Z" fill="#E21E8C"/>
         <path d="M10 26 L10 18 L14 18 L14 21 L18 21 L18 18 L22 18 L22 26 Z" fill="#B9A9E8"/><path d="M42 26 L42 18 L46 18 L46 21 L50 21 L50 18 L54 18 L54 26 Z" fill="#B9A9E8"/>
@@ -668,7 +670,8 @@ async function playCellGame(cell) {
 
 async function moveBack(n) {
   const target = Math.max(0, S.pos - n);
-  while (S.pos > target) { await hopTo(S.pos - 1); await sleep(40); }
+  hopN = 0;
+  while (S.pos > target) { await hopTo(S.pos - 1, S.pos - 1 === target); await sleep(10); }
   avatar.root.rotation.y = 0;
   avatar.setAnim('idle');
   world.sparkle(S.pos);

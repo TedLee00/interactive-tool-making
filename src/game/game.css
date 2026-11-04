@@ -15,7 +15,7 @@ img.face { border-radius: 50%; background: radial-gradient(circle at 50% 35%, #F
 .ted-logo { display: flex; align-items: center; justify-content: center; gap: 8px; margin: 0 auto 2px; }
 .ted-logo img.face { width: 64px; height: 64px; border: 3px solid #E8B84A; background: radial-gradient(circle at 50% 40%, #4A3F7A, #2B2350); box-shadow: 0 0 0 2px #fff, 0 4px 10px rgba(43, 35, 80, .3); }
 .ted-logo .tl-t { display: flex; flex-direction: column; align-items: flex-start; line-height: 1; }
-.ted-logo .tl-t b { font-family: 'Cinzel', 'Times New Roman', serif; font-weight: 900; font-size: 42px; letter-spacing: 5px; line-height: 1; background: linear-gradient(180deg, #FFE9A8 0%, #F2C14E 45%, #B8862E 55%, #E8B84A 100%); -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-stroke: 1.2px #5A3E10; filter: drop-shadow(0 2px 0 #2B2350) drop-shadow(0 3px 6px rgba(184, 134, 46, .35)); }
+.ted-logo .tl-t b { font-family: 'Playfair Display', Georgia, 'Times New Roman', serif; font-style: italic; font-weight: 800; font-size: 50px; letter-spacing: 1px; padding: 0 6px 4px 2px; line-height: 1; background: linear-gradient(180deg, #FFE9A8 0%, #F2C14E 45%, #B8862E 55%, #E8B84A 100%); -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-stroke: 1.2px #5A3E10; filter: drop-shadow(0 2px 0 #2B2350) drop-shadow(0 3px 6px rgba(184, 134, 46, .35)); }
 .ted-logo .tl-t span { font-family: var(--cute); font-size: 17px; color: #8A6A2E; margin-top: 4px; letter-spacing: 1px; }
 .logo-card .kicker { color: #C9A84C; }
 .logo-card h1 { margin: 2px 0 4px; font-size: 48px; line-height: 1.05; color: var(--plum); text-shadow: 0 3px 0 #FFE3F0; }

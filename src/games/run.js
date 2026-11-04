@@ -18,12 +18,13 @@ export function playRun({ charId = 'bboy' } = {}) {
     music: 'mgRun',
     howto: [
       '화면 위 <b class="red">미션에 맞게 바르게 쓴 음식만</b> 먹어요 — <b>sweet cake</b> ⭕ / <b class="red">sweetly cake ❌ 불량식품!</b>',
-      '<b class="red">⬆ 점프</b> 버튼 · 공중에서 한 번 더 누르면 <b class="red">2단 점프!</b>',
+      '<b class="red">⬆ 점프</b> 버튼 · 🧁 <b class="red">부스터 컵케이크</b>를 먹으면 <b class="red">2단 점프 부스터</b>가 한 칸 차요 (최대 3칸)',
+      '부스터가 있을 때 <b>공중에서 한 번 더</b> 누르면 <b class="red">2단 점프!</b> — 위험할 때 아껴 쓰기 (콤보 5마다 한 칸 보너스)',
       '<b class="red">⬇ 슬라이드</b> 버튼 · 축구 슬라이딩처럼 쭉 누워서 지나가요',
       '💧 <b>물웅덩이</b>는 점프로 건너요 — 웅덩이가 <b class="red">여러 개 이어지면 연속 점프!</b>',
       '불량식품이 <b>땅</b>에 있으면 <b class="red">점프로 넘고</b>, <b>머리 높이</b>에 있으면 <b class="red">슬라이드로 밑으로!</b>',
       '<b>보강 여신 · 묵언수행 · 보강대장</b>이 길을 막아요 — 점프로 피하기!',
-      '🌮 <b>타코</b> = Ted 선생님 변신(잠깐 무적) · 💗 하트 회복 · 하트 5개 · 미션 6개 → 보스 → 🏁 깃발',
+      '🌮 <b>타코</b> = Ted 선생님 변신 (잠깐 무적 · 점프 더 높게 · 2단 점프 무제한) · 💗 하트 회복 · 하트 5개 · 미션 6개 → 보스 → 🏁 깃발',
     ],
     async setup(ctx) {
       const { g } = ctx;
@@ -44,7 +45,7 @@ export function playRun({ charId = 'bboy' } = {}) {
       const missions = data.run.missions;
       const GY = () => ctx.H * 0.74; // 땅 높이
       const S = {
-        x: 0, speed: 198, y: 0, vy: 0, jumps: 0, slide: 0, hearts: 5, inv: 0, score: 0, combo: 0, best: 0,
+        x: 0, speed: 198, y: 0, vy: 0, jumps: 0, boost: 1, boostT: 9, slide: 0, hearts: 5, inv: 0, score: 0, combo: 0, best: 0,
         good: 0, bad: 0, mission: 0, phase: 'run', t: 0, taco: 0, ents: [], nextSpawn: 1.2, bossHP: 0, goalX: 0, finished: false, msgT: 0,
       };
       const PX = 86;
@@ -73,11 +74,24 @@ export function playRun({ charId = 'bboy' } = {}) {
 
       const jump = () => {
         if (S.finished) return;
-        if (S.y === 0 && S.slide <= 0) { S.vy = -690; S.jumps = 1; ctx.sfx('hop'); } // 점프력 UP (원래 560)
-        else if (S.jumps === 1) { S.vy = -620; S.jumps = 2; ctx.sfx('hop'); ctx.burst(PX, GY() + S.y - 20, 8, ['#fff', '#8FD8FF']); }
+        const isTed = S.taco > 0; // Ted 선생님 변신 중: 더 높이, 2단 점프 공짜
+        if (S.y === 0 && S.slide <= 0) { S.vy = isTed ? -720 : -615; S.jumps = 1; ctx.sfx('hop'); }
+        else if (S.jumps === 1 && (isTed || S.boost > 0)) {
+          S.vy = isTed ? -640 : -580; S.jumps = 2; ctx.sfx('hop');
+          if (!isTed) { S.boost--; syncBoost(); ctx.floatText('⚡ 2단 점프!', PX, GY() + S.y - 70, '#5BE0FF', 16); }
+          ctx.burst(PX, GY() + S.y - 20, 12, ['#fff', '#8FD8FF', '#5BE0FF']);
+        } else if (S.jumps === 1 && !isTed) ctx.floatText('부스터 없음!', PX, GY() + S.y - 70, '#9A90B5', 14);
+      };
+      const addBoost = (why) => {
+        if (S.boost >= 3) return;
+        S.boost++; syncBoost(); ctx.sfx('reveal');
+        ctx.floatText(`⚡ 2단 점프 부스터 +1 (${S.boost}/3)${why ? ' ' + why : ''}`, ctx.W / 2, GY() - 150, '#5BE0FF', 18);
+        jb.classList.remove('charge'); void jb.offsetWidth; jb.classList.add('charge');
       };
       ctx.button('⬇<small>슬라이드</small>', 'slide', { onDown: () => { if (S.y === 0) { S.slide = 0.875; ctx.sfx('whoosh'); } } }); // 슬라이딩 25% 더 길게
-      ctx.button('⬆<small>점프 · 공중에서 한 번 더 = 2단!</small>', 'jump', { onDown: jump });
+      const jb = ctx.button('⬆<small>점프</small><span class="bst"><em>2단 부스터</em><i></i><i></i><i></i></span>', 'jump', { onDown: jump });
+      function syncBoost() { jb.querySelectorAll('.bst i').forEach((el, k) => el.classList.toggle('on', k < S.boost)); }
+      syncBoost();
 
       function spawn() {
         const gy = GY();
@@ -165,18 +179,22 @@ export function playRun({ charId = 'bboy' } = {}) {
             }
           }
 
-          // 시작할 때 크게: 2단 점프 · 슬라이드 안내
-          if (S.t < 5.5) S.tipTxt = S.t < 2.8 ? '⬆⬆ 2단 점프! 공중에서 한 번 더 누르기' : '⬇ 슬라이드! 머리 높이 장애물은 쭉 누워서';
+          // 🧁 부스터 컵케이크: 가끔 공중에 둥실 (먹으면 2단 점프 부스터 +1)
+          S.boostT -= dt;
+          if (S.boostT <= 0) { S.boostT = rand(9, 14); if (S.boost < 3) S.ents.push({ kind: 'boost', x: ctx.W + 40, y: GY() - rand(70, 120), w: 34, h: 32 }); }
+          // 시작할 때 크게: 2단 점프 부스터 · 슬라이드 안내
+          if (S.t < 6) S.tipTxt = S.t < 3.2 ? '🧁 컵케이크 먹으면 ⚡2단 점프!' : '⬇ 슬라이드! 머리 높이 장애물은 쭉 누워서';
           else S.tipTxt = '';
           // Ted 빼꼼
           peek.t -= dt;
           if (peek.t <= 0 && !peek.on) { peek.on = 2.6; peek.x = rand(ctx.W * 0.45, ctx.W - 50); peek.say = pick(PEEK_SAY); }
           if (peek.on) { peek.on = Math.max(0, peek.on - dt); if (!peek.on) peek.t = 20 + Math.random() * 12; }
           // 속도·위치
-          // 앞 2/3 구간은 30% 느리게 (단어를 충분히 읽게), 마지막 1/3만 원래 속도로 (3초에 걸쳐 부드럽게)
-          const fastAt = (missions.length * MISSION_SEC + BOSS_SEC) * 2 / 3;
-          const slowK = 0.7 + 0.3 * clamp((S.t - fastAt) / 3, 0, 1);
-          S.speed = Math.min(297, 198 + S.t * 1.1) * slowK * (S.taco > 0 ? 1.15 : 1);
+          // 속도 3단계: 처음 1/3 느리게 → 중반 살짝 빠르게 → 마지막 1/3 조금 더 빠르게 (경계는 3초에 걸쳐 부드럽게)
+          const TT = missions.length * MISSION_SEC + BOSS_SEC;
+          const sk = (a) => clamp((S.t - a) / 3, 0, 1);
+          const slowK = 0.66 + 0.16 * sk(TT / 3) + 0.18 * sk((TT * 2) / 3);
+          S.speed = 235 * slowK * (S.taco > 0 ? 1.12 : 1);
           const move = S.speed * dt;
           S.x += move;
           S.vy += 1500 * dt;
@@ -208,7 +226,7 @@ export function playRun({ charId = 'bboy' } = {}) {
                 ctx.burst(e.x, e.y - 15, 14);
                 ctx.floatText(`+${pts} ${e.label}`, e.x, e.y - 40, '#1E9B5B', 16);
                 ctx.sfx('ok');
-                if (S.combo % 5 === 0) ctx.callout('yar', `${S.combo} 콤보!`);
+                if (S.combo % 5 === 0) { ctx.callout('yar', `${S.combo} 콤보!`); addBoost('콤보 보너스'); }
               } else {
                 S.bad++;
                 ctx.floatText(`✘ ${e.label}`, e.x, e.y - 40, '#E0453A', 16);
@@ -217,6 +235,8 @@ export function playRun({ charId = 'bboy' } = {}) {
               S.ents.splice(k, 1);
             } else if (e.kind === 'heart') {
               S.hearts = Math.min(5, S.hearts + 1); S.ents.splice(k, 1); ctx.sfx('reveal'); ctx.floatText('💗 +1', PX, gy - 110, '#E21E8C', 20);
+            } else if (e.kind === 'boost') {
+              S.ents.splice(k, 1); ctx.burst(e.x, e.y - 15, 18, ['#5BE0FF', '#fff', '#FFD43B']); addBoost();
             } else if (e.kind === 'taco') {
               S.taco = 6; S.ents.splice(k, 1); setForm('ted'); ctx.burst(PX, gy - 60, 30, ['#FFD43B', '#E21E8C', '#fff']);
               ctx.callout('yar', 'Ted 선생님 변신!'); S.score += 200;
@@ -365,6 +385,17 @@ export function playRun({ charId = 'bboy' } = {}) {
               gc.fillStyle = '#FF6FA8'; gc.beginPath(); gc.moveTo(e.x, hy + 10);
               gc.bezierCurveTo(e.x - 18, hy - 2, e.x - 10, hy - 16, e.x, hy - 6); gc.bezierCurveTo(e.x + 10, hy - 16, e.x + 18, hy - 2, e.x, hy + 10); gc.fill();
               gc.strokeStyle = '#fff'; gc.lineWidth = 2; gc.stroke();
+            } else if (e.kind === 'boost') {
+              // 🧁 날개 달린 부스터 컵케이크 + 번쩍이는 테두리
+              const by = e.y - 16 + Math.sin(S.t * 5) * 5;
+              gc.strokeStyle = `rgba(91,224,255,${0.5 + 0.5 * Math.sin(S.t * 12)})`; gc.lineWidth = 4; gc.beginPath(); gc.arc(e.x, by, 24, 0, 7); gc.stroke();
+              gc.fillStyle = '#fff'; [-1, 1].forEach((sd) => { gc.beginPath(); gc.ellipse(e.x + sd * 20, by - 4, 10, 6, sd * -0.5 + Math.sin(S.t * 20) * 0.3 * sd, 0, 7); gc.fill(); });
+              gc.fillStyle = '#E8A0C8'; gc.beginPath(); gc.moveTo(e.x - 13, by); gc.lineTo(e.x + 13, by); gc.lineTo(e.x + 9, by + 14); gc.lineTo(e.x - 9, by + 14); gc.closePath(); gc.fill();
+              gc.strokeStyle = '#B85A8E'; gc.lineWidth = 1.5; for (let q = -6; q <= 6; q += 4) { gc.beginPath(); gc.moveTo(e.x + q, by + 1); gc.lineTo(e.x + q * 0.7, by + 13); gc.stroke(); }
+              gc.fillStyle = '#FFF4F8'; gc.beginPath(); gc.arc(e.x - 6, by - 2, 8, 0, 7); gc.arc(e.x + 6, by - 2, 8, 0, 7); gc.arc(e.x, by - 9, 8, 0, 7); gc.fill();
+              gc.fillStyle = '#E0453A'; gc.beginPath(); gc.arc(e.x, by - 17, 4, 0, 7); gc.fill();
+              gc.font = "400 14px Jua, sans-serif"; gc.fillStyle = '#2E9BDA'; gc.textAlign = 'center'; gc.fillText('⚡', e.x + 15, by + 14);
+              tag(gc, '⚡ 2단 부스터', e.x, by - 34, { size: 12, bg: '#E0F8FF' });
             } else if (e.kind === 'taco') {
               gc.fillStyle = '#F2C14E'; gc.beginPath(); gc.arc(e.x, e.y - 6, 17, Math.PI, 0); gc.fill();
               gc.fillStyle = '#7ED07A'; gc.fillRect(e.x - 14, e.y - 9, 28, 4);

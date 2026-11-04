@@ -79,14 +79,15 @@ Object.assign(TRACKS, {
       const R = [c[0] * 2, c[1] * 2, c[2] * 2, c[1] * 2];
       if ([0, 3, 6, 10].includes(s)) ocarina(D, t, R[[0, 3, 6, 10].indexOf(s)], spb * 2.6, 0.04); } },
 
-  // 타이틀: 반짝이는 동화 오프닝
-  title: { bpm: 116, vol: 0.5, chords: CH([[60, 64, 67], [65, 69, 72], [67, 71, 74], [64, 67, 72]]), roots: [36, 41, 43, 40],
-    play(s, b, t, D, p) { const c = p.chords[b], r = p.roots[b];
-      if (s === 0 || s === 8) I.kick(D, t, 0.5); if (s === 4 || s === 12) I.clap(D, t, 0.14);
-      if (s % 2 === 0) I.hat(D, t, 0.03);
-      if (s % 4 === 0) I.bass(D, t, mtof(r), 0.3, 0.22);
-      I.marimba(D, t, c[(s >> 1) % 3] * (s % 4 === 2 ? 4 : 2), 0.045);
-      if (s === 0) I.pad(D, t, c, 2.1, 0.022); } },
+  // 타이틀: 잔잔한 동화 — 오르골 아르페지오 + 부드러운 현악 패드 + 가끔 오카리나 (드럼 없음)
+  title: { bpm: 70, vol: 0.55, chords: CH([[60, 64, 67, 72], [57, 60, 64, 69], [53, 57, 60, 65], [55, 59, 62, 67]]), roots: [36, 33, 29, 31],
+    play(s, b, t, D, p) { const c = p.chords[b]; const spb = 60 / p.bpm / 4;
+      const box = (f, v) => { osc(D, t, 'sine', f, 0.002, 1.1, v); osc(D, t, 'sine', f * 4, 0.001, 0.12, v * 0.18); osc(D, t, 'triangle', f * 2, 0.002, 0.4, v * 0.12); }; // 오르골
+      const arp = [c[0] * 2, c[2] * 2, c[1] * 2, c[3] * 2, c[2] * 2, c[1] * 2, c[3] * 2, c[2] * 4];
+      if (s % 2 === 0) box(arp[(s >> 1) % 8], 0.04);
+      if (s === 0) { I.pad(D, t, c, spb * 16, 0.016); I.bass(D, t, mtof(p.roots[b]), spb * 14, 0.08, 'sine'); }
+      if (s === 8 && b % 2 === 1) ocarina(D, t, c[3] * 2, spb * 7, 0.025);
+      if (s === 14 && b === 3) box(c[0] * 8, 0.02); } }, // 반짝!
   // 품사 마을: 우쿨렐레 같은 산뜻한 전원풍
   village: { bpm: 104, vol: 0.5, swing: 0.1, chords: CH([[65, 69, 72], [60, 64, 67], [62, 65, 69], [58, 62, 65]]), roots: [41, 36, 38, 34],
     play(s, b, t, D, p) { const c = p.chords[b], r = p.roots[b];
@@ -153,7 +154,7 @@ let wanted = null;
 const ALT = {
   // 장면별로 원래 곡과 자연 악기 곡을 번갈아 (골고루)
   village: ['village', 'natOcarina', 'natUke'], city: ['city', 'natUke', 'natKalimba'], canyon: ['canyon', 'natOcarina'],
-  castle: ['castle', 'natKalimba'], quiz: ['quiz', 'quizNature', 'natKalimba'], title: ['title', 'natOcarina'],
+  castle: ['castle', 'natKalimba'], quiz: ['quiz', 'quizNature', 'natKalimba'],
   mgRun: ['mgRun', 'mgFolk'], mgCrane: ['mgCrane', 'natUke'], mgKart: ['mgKart', 'mgFolk'], mgArena: ['mgArena', 'mgFolk'],
 };
 const altIdx = {};
