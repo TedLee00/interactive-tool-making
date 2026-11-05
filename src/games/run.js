@@ -76,7 +76,7 @@ export function playRun({ charId = 'bboy' } = {}) {
           S.vy = isTed ? -512 : -464; S.jumps = 2; ctx.sfx('hop');
           if (!isTed) { S.boost--; syncBoost(); ctx.floatText('⚡ 2단 점프!', PX, GY() + S.y - 70, '#5BE0FF', 16); }
           ctx.burst(PX, GY() + S.y - 20, 12, ['#fff', '#8FD8FF', '#5BE0FF']);
-        } else if (S.jumps === 1 && !isTed) ctx.floatText('부스터 없음!', PX, GY() + S.y - 70, '#9A90B5', 14);
+        } else if (S.jumps === 1 && !isTed) { S.jumpBuf = 0.22; if (S.vy < 0) ctx.floatText('부스터 없음!', PX, GY() + S.y - 70, '#9A90B5', 14); } // 내려오는 중에 누르면 착지하자마자 점프
       };
       const addBoost = (why) => {
         if (S.boost >= 3) return;
@@ -122,7 +122,7 @@ export function playRun({ charId = 'bboy' } = {}) {
 
       function hurt(msg) {
         if (S.inv > 0 || S.taco > 0) return;
-        S.hearts--; S.inv = 1.3; S.combo = 0;
+        S.hearts--; S.inv = 1.9; S.combo = 0;
         ctx.shake(8); ctx.sfx('no'); ctx.floatText(msg, PX + 30, GY() - 100, '#E0453A', 18);
         if (S.hearts <= 0) { S.finished = true; ctx.end(result(false)); }
       }
@@ -141,7 +141,8 @@ export function playRun({ charId = 'bboy' } = {}) {
       window.__RUN = () => S.ents.filter((e) => e.kind === 'kid').map((e) => e.name); // 테스트용
       window.__RUNP = () => S.ents.some((e) => e.kind === 'puddle' && e.x < ctx.W - 20); // 테스트용
       window.__RUNK = () => S.ents.map((e) => e.kind); // 테스트용
-      const hit = (a, px, py, pw, ph) => px < a.x + a.w / 2 && px + pw > a.x - a.w / 2 && py < a.y && py + ph > a.y - a.h;
+      const hit = (a, px, py, pw, ph, k = 1) => px < a.x + (a.w * k) / 2 && px + pw > a.x - (a.w * k) / 2 && py < a.y && py + ph > a.y - a.h * (k < 1 ? 0.75 : 1);
+      const SAFE = { food: 1, shot: 1, heart: 1.2, taco: 1.2, boost: 1.2 }; // 먹는 것은 넉넉하게, 부딪히는 것은 작게 (너그럽게)
 
       return {
         update(dt) {
@@ -190,18 +191,19 @@ export function playRun({ charId = 'bboy' } = {}) {
           const TT = missions.length * MISSION_SEC + BOSS_SEC;
           const sk = (a) => clamp((S.t - a) / 3, 0, 1);
           const slowK = 0.66 + 0.16 * sk(TT / 3) + 0.18 * sk((TT * 2) / 3);
-          S.speed = 235 * slowK * (S.taco > 0 ? 1.12 : 1);
+          S.speed = 212 * slowK * (S.taco > 0 ? 1.12 : 1); // 전체 속도 10% 더 느리게
           const move = S.speed * dt;
           S.x += move;
           S.vy += 960 * dt; // 중력을 약하게 → 같은 높이로 더 멀리 날아감
           S.y = Math.min(0, S.y + S.vy * dt);
-          if (S.y === 0) { S.vy = 0; S.jumps = 0; }
+          if (S.y === 0) { S.vy = 0; S.jumps = 0; if (S.jumpBuf > 0) { S.jumpBuf = 0; jump(); } }
+          S.jumpBuf = Math.max(0, (S.jumpBuf || 0) - dt);
           S.slide = Math.max(0, S.slide - dt);
           S.inv = Math.max(0, S.inv - dt);
           if (S.taco > 0) { S.taco -= dt; if (S.taco <= 0) { setForm('bboy'); ctx.floatText('변신 끝!', PX, GY() - 120, '#6B5F8A'); } }
 
           S.nextSpawn -= dt;
-          if (S.nextSpawn <= 0 && S.phase === 'run') { spawn(); const ease = S.t < MISSION_SEC ? 1.35 : 1; S.nextSpawn = rand(0.75, 1.25) * ease * (220 / S.speed); }
+          if (S.nextSpawn <= 0 && S.phase === 'run') { spawn(); const ease = S.t < MISSION_SEC ? 1.35 : 1; S.nextSpawn = rand(0.95, 1.45) * ease * (220 / S.speed); } // 장애물 간격 넉넉하게
 
           const gy = GY();
           const ph = S.slide > 0 ? PH * 0.5 : PH;
@@ -212,7 +214,7 @@ export function playRun({ charId = 'bboy' } = {}) {
             if (e.kind === 'shot') { e.x += e.vx * dt - move; e.vy += 200 * dt; e.y = Math.min(gy - 20, e.y + e.vy * dt); } else e.x -= move;
             if (S.taco > 0 && (e.kind === 'food' && e.good)) { e.x += (PX - e.x) * dt * 4; e.y += (gy + S.y - 40 - e.y) * dt * 4; }
             if (e.x < -80) { S.ents.splice(k, 1); continue; }
-            if (e.done || !hit(e, px, py, 36, ph)) continue;
+            if (e.done || !hit(e, px, py, 36, ph, SAFE[e.kind] || 0.62)) continue;
             if (e.kind === 'food' || e.kind === 'shot') {
               e.done = true;
               if (e.good) {
@@ -344,6 +346,11 @@ export function playRun({ charId = 'bboy' } = {}) {
 
           // 물체
           for (const e of S.ents) {
+            // 💡 처음(첫 미션 + 위험할 때) 다가오는 장애물에 어떻게 피할지 작은 힌트
+            if ((S.t < MISSION_SEC * 1.2 || S.hearts <= 2) && !e.done && e.x > PX + 60 && e.x < PX + 300 && !['food', 'shot', 'heart', 'taco', 'boost'].includes(e.kind)) {
+              const isBar = e.kind === 'bar';
+              tag(gc, isBar ? '⬇ 슬라이드!' : '⬆ 점프!', e.x, (isBar ? e.y - 40 : e.y - (e.h || 30) - 30), { size: 13, bg: isBar ? '#CFE6FF' : '#FFE59A', pad: 5 });
+            }
             if (e.kind === 'food' || e.kind === 'shot') {
               gc.fillStyle = 'rgba(255,255,255,.85)'; gc.beginPath(); gc.arc(e.x, e.y - e.h / 2, 22, 0, 7); gc.fill();
               gc.font = "30px 'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji',sans-serif"; gc.textAlign = 'center'; gc.textBaseline = 'middle';
