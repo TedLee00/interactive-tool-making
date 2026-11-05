@@ -10,7 +10,7 @@
  *  - 명예의전당    : 게임별 1~10위 (점수가 기록될 때마다 새로 정리)
  */
 const SHEET = '품사원정대_점수';
-const GAME_NAME = { shoot: '🎯 품사 사격장', run: '🏃 청크런', kart: '🏎️ 청크 카트', crane: '🧸 청크 크레인', drum: '🥁 품사 드럼', board: '🏰 원정대 총점' };
+const GAME_NAME = { shoot: '품사 사격장', run: '청크런', kart: '청크 카트', crane: '청크 크레인', drum: '품사 드럼', board: '원정대 총점' };
 const SNACK_NAME = { choco: '초코파이', cake: '오예스', cookie: '오예스 쿠키앤크림' };
 
 function doPost(e) {
@@ -76,14 +76,14 @@ function rankList_(game) {
     .sort(function (a, b) { return b.best - a.best || b.total - a.total || a.at - b.at; });
 }
 
-/** 🏆 명예의전당 탭: 게임별 1~10위를 옆으로 나란히 */
+/**  명예의전당 탭: 게임별 1~10위를 옆으로 나란히 */
 function updateHall_() {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
   let sh = ss.getSheetByName('명예의전당');
   if (!sh) sh = ss.insertSheet('명예의전당');
   sh.clear();
   const games = Object.keys(GAME_NAME);
-  const medal = ['🥇', '🥈', '🥉'];
+  const medal = ['1위 (금)', '2위 (은)', '3위 (동)'];
   games.forEach(function (g, k) {
     const col = 1 + k * 4;
     const list = rankList_(g).slice(0, 10);
@@ -98,7 +98,7 @@ function updateHall_() {
   sh.getRange(14, 1).setValue('※ 점수가 기록될 때마다 자동으로 새로 정리돼요 · 학생마다 그 게임의 최고 점수 기준').setFontColor('#6B5F8A');
 }
 
-/** 📝 퀴즈기록: 퀴즈 칸 하나 */
+/**  퀴즈기록: 퀴즈 칸 하나 */
 function reportQuiz(r) {
   const sh = tab_('퀴즈기록', ['기록 시각', '이름', '난이도', '회차', '지역', '칸', '유형', '유형 이름', '맞힌 수', '문항 수', '정답률(%)', '틀린 문제 (질문 → 내 답 / 정답)'], '#2E7BC4');
   const acc = r.total ? Math.round((r.correct / r.total) * 100) : 0;
@@ -107,7 +107,7 @@ function reportQuiz(r) {
   return true;
 }
 
-/** 📊 성적표: 원정 완주 */
+/**  성적표: 원정 완주 */
 function reportRun(r) {
   const T = []; for (let t = 1; t <= 12; t++) T.push('유형' + t + '(%)');
   const header = ['기록 시각', '이름', '난이도', '회차', '정답', '문항', '정답률(%)'].concat(T)
@@ -124,7 +124,7 @@ function reportRun(r) {
   return true;
 }
 
-/** 🍫 과자획득 */
+/**  과자획득 */
 function reportSnack(r) {
   const sh = tab_('과자획득', ['기록 시각', '이름', '난이도', '회차', '과자', '받은 곳', '쿠폰 번호', '지급 확인'], '#D9822B');
   append_(sh, [new Date(), clean_(r.name, 20), clean_(r.level, 10), Number(r.run) || 1, SNACK_NAME[r.kind] || clean_(r.kind, 20), clean_(r.how, 30), clean_(r.code, 20), '']);
