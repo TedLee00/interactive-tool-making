@@ -29,15 +29,14 @@ export function playKart({ charId = 'bboy', name = '나', used } = {}) {
   return openGame({
     id: 'kart',
     title: '🏎️ 청크 카트',
-    subtitle: '6명이 겨루는 레이스! 퀴즈 존에서 게이지를 채워라',
+    subtitle: '6명 레이스! 1등을 노려라',
     music: 'mgKart',
     howto: [
-      '왼손 <b>◀ ▶ 핸들</b> · 오른발 <b>악셀 페달</b> (꾹 2초 ↑ 2단 가속, 게이지가 줄어요)',
-      '<b>❓ 퀴즈 존</b>을 지나면 <b>순간정지!</b> 맞히면 ⚡ 게이지 가득 + 부스터',
-      '<b class="red">🛣️ 품사 레인</b>: 화면 위 단어의 품사가 적힌 <b>레인으로 달리면 부스터!</b> 틀린 레인은 감속',
-      '<b class="red">🌧️ 빗길</b>에서는 길이 미끄러워요 — 악셀을 밟으면 차가 흔들려요. <b>악셀을 떼고</b> 지나가기!',
-      '🌮 타코 = 게이지 가득 · 🍌 바나나 · 🚧 공사중 벽 · 🚶 길 건너는 꼬마 크크·허허 아저씨 조심!',
-      '라이벌 5명: <b>보강 여신 · 묵언수행 · 보강대장 · B-BOY · 퀵보드 태오</b> — 1등이면 쿠키앤크림!',
+      '<span class="hk b">🕹 ◀ ▶ 핸들</span> + <b>악셀 꾹</b> (2초면 2단 가속)',
+      '<span class="hk y">❓ 퀴즈 존</span> 정답이면 <b>⚡ 게이지 가득</b>',
+      '<span class="hk r">🛣 품사 레인</span> 위 단어의 품사 레인 → <b>부스터!</b>',
+      '<span class="hk c">🌧 빗길</span> 악셀 떼기 · <b>🍌 🚧 피하기</b>',
+      '<span class="hk g">🏆 1등</span> <b>쿠키앤크림!</b>',
     ],
     async setup(E) {
       const ctx = E.g;
@@ -119,6 +118,7 @@ export function playKart({ charId = 'bboy', name = '나', used } = {}) {
       const FUEL_SEC = 10, REGEN_SEC = 9, // 악셀 게이지: 10초 동안 쓸 수 있음 (지난번 7초보다 30% 더 천천히) // 게이지가 천천히 줄고 조금 더 빨리 참 (원래 3.36초 / 12초)
         _unused = 0, ACC1 = 1.3, ACC2 = 1.5, ACC_T2 = 2;
       let holdT = 0;
+      let laneBigUntil = 0;
       let mode = 'count', t = 0, steer = 0, order = [], place = 6, quizzes = { ok: 0, n: 0 }, lanes = { ok: 0, n: 0 }, streak = 0, finished = false;
       const FX = [];
       const say = (txt, x, y, col) => FX.push({ txt, x, y, life: 1.1, col });
@@ -507,11 +507,11 @@ export function playKart({ charId = 'bboy', name = '나', used } = {}) {
               if (z && ME.d >= start) z.bannerDone = true;
               const show = z && ME.d < start;
               if (show && laneShown !== z) {
-                laneShown = z;
+                laneShown = z; laneBigUntil = performance.now() + 1800; // 처음엔 화면 가운데 크게 → 위로 올라가서 계속 반짝
                 laneEl.innerHTML = `<span class="kl-t">🛣️ 품사 레인</span><b>${z.word}</b><em>${z.labels.map((l) => `<i>${l}</i>`).join('')}</em><u id="lzDist"></u>`; // 맨 위 한 줄로 작게 (도로를 가리지 않게)
               }
               if (!show) laneShown = null;
-              laneEl.className = `klane${show ? ' on' : ''}${show && start - ME.d < 300 ? ' flash' : ''}`;
+              laneEl.className = `klane${show ? ' on' : ''}${show && performance.now() < laneBigUntil ? ' big' : ''}${show && start - ME.d < 300 ? ' flash' : ''}`;
               if (show) { const dEl = laneEl.querySelector('#lzDist'); if (dEl) dEl.textContent = `${Math.ceil((start - ME.d) / 10)}m`; }
             }
             LZ.forEach((z) => {

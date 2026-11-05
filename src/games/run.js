@@ -14,13 +14,13 @@ export function playRun({ charId = 'bboy' } = {}) {
   return openGame({
     id: 'run',
     title: '🏃 청크런',
-    subtitle: '바르게 꾸민 음식만 먹으며 끝까지 달려라!',
+    subtitle: '바른 음식만 먹고 끝까지!',
     music: 'mgRun',
     howto: [
-      '<span class="hk g">⭕ 바르게 꾸민 음식</span> 먹기 · <span class="hk r">❌ 오답 음식</span> 피하기',
-      '<span class="hk b">⬆ 점프</span> 장애물 · 웅덩이 넘기 &nbsp;<span class="hk p">⬇ 슬라이드</span> 머리 위 장애물',
-      '<span class="hk c">🧁 컵케이크</span> = <b>2단 점프</b> 부스터 (최대 3칸)',
-      '<span class="hk y">🌮 타코</span> Ted 변신 &nbsp;<span class="hk r">❤️ 하트 5개</span> 다 잃으면 끝',
+      '<span class="hk g">⭕ 바르게 꾸민 음식</span> 먹기 · <b>❌ 틀린 음식 피하기</b>',
+      '<span class="hk b">⬆ 점프</span> 장애물 · 웅덩이 &nbsp;<span class="hk p">⬇ 슬라이드</span> 머리 위',
+      '<span class="hk c">🧁 2단 점프</span> &nbsp;<span class="hk y">🌮 Ted 변신</span>',
+      '<span class="hk r">❤️ 하트 5개</span> 다 잃으면 <b>끝</b>',
     ],
     async setup(ctx) {
       const { g } = ctx;
