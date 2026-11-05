@@ -110,8 +110,8 @@ export async function runCell(root, { type, questions, config, showIntro = true,
     fb.innerHTML = `<div class="fb ${r.ok ? 'ok' : 'no'}">
       <div class="fb-head"><span class="ico">${r.ok ? '👏' : r.timeout ? '⏰' : '😅'}</span><h3>${r.ok ? '정답!' : r.timeout ? '시간 초과!' : '아쉬워요!'}</h3>
         ${!r.ok && r.mine && !r.timeout ? `<span class="mine">내 답 <s>${esc(r.mine)}</s></span>` : ''}</div>
-      <div class="fb-box ans"><div class="lab">✅ 정답</div>${r.answerHTML}</div>
-      <div class="fb-box why"><div class="lab">💡 왜 그럴까?</div>${explainHTML(q.explain)}</div>
+      ${r.ok ? '' : `<div class="fb-box ans"><div class="lab">✅ 정답</div>${r.answerHTML}</div>
+      <div class="fb-box why"><div class="lab">💡 왜 그럴까?</div>${explainHTML(q.explain)}</div>`}
       <button class="primary" id="next">${i === questions.length - 1 ? '결과 보기 ▶' : '다음 ▶'}</button></div>`;
     fb.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     const nextClick = wait(fb, '#next');

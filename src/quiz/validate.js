@@ -75,7 +75,7 @@ export function validateQuestion(q) {
           if (!(e.after > 0 && e.after < ch[e.chunk].words.length)) errs.push('split 위치 오류');
           if (!Array.isArray(e.shown) || e.shown.length !== 2) errs.push('split shown은 2개');
         } else errs.push('error.kind는 label/split');
-        buildRepair(q);
+        { const r = buildRepair(q); if (!r.fixes.some((f) => f.pos === r.answerPos)) errs.push(`고치기 보기에 정답(${r.answerPos})이 없음`); }
         break;
       }
       case 11: {

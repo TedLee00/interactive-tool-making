@@ -115,7 +115,7 @@ function pairStep(box, q, first, res) {
     box.innerHTML = `<div class="qhelp">② 두 짝꿍의 <em>품사</em>를 각각 고르세요 <small>${first.ok ? '짝꿍 정답! 이제 품사까지!' : `짝꿍 정답은 「${esc(q.answer)}」 — 이제 품사를 골라 봐요`}</small></div>
       <div class="stem sent pairline">${esc(q.prompt.replace(/\s*\(.*\)\s*$/, '')).replace('___', `<b class="hl">${esc(q.answer)}</b>`)}</div>
       ${['mod', 'head'].map((k) => `<div class="pairrow"><span class="pw">${esc(P[k])}</span><div class="opts pos4">${PAIR_POS.map((p) => `<button class="opt ${picks[k] === p ? 'on' : ''}" data-k="${k}" data-p="${p}">${PNAME[p]}</button>`).join('')}</div></div>`).join('')}
-      <div class="row"><button class="primary" id="pairGo" ${picks.mod && picks.head ? '' : 'disabled'}>확인</button></div>`;
+      <div class="row center"><button class="primary" id="pairGo" ${picks.mod && picks.head ? '' : 'disabled'}>확인</button></div>`;
     box.querySelectorAll('[data-k]').forEach((b) => { b.onclick = () => { picks[b.dataset.k] = b.dataset.p; draw(); }; });
     box.querySelector('#pairGo').onclick = () => {
       const ok2 = picks.mod === P.modPos && picks.head === P.headPos;
@@ -138,7 +138,7 @@ function pairStep(box, q, first, res) {
   draw();
 }
 
-/* ---------------- 청크 절단소 (8·9) ---------------- */
+/* ---------------- 청크 나눔터 (8·9) ---------------- */
 export function renderSplit(box, q, cfg) {
   const answer = parseChunks(q.ko ?? q.en);
   const { tokens } = chunksToTokens(answer);
@@ -151,8 +151,8 @@ export function renderSplit(box, q, cfg) {
 
   const draw = () => {
     if (phase === 1) {
-      box.innerHTML = `<div class="qhelp">① 단어 사이 틈을 눌러 <em>덩어리로 자르세요</em></div>
-        <div class="split-line">${tokens.map((t, i) => `<span class="tk">${esc(t)}</span>${i < tokens.length - 1 ? `<button class="gap ${cuts.has(i) ? 'cut' : ''}" data-g="${i}" aria-label="자르기"><i></i></button>` : ''}`).join('')}<span class="end">${esc(q.end || '')}</span></div>
+      box.innerHTML = `<div class="qhelp">① 단어 사이 틈을 눌러 <em>덩어리로 나누세요</em></div>
+        <div class="split-line">${tokens.map((t, i) => `<span class="tk">${esc(t)}</span>${i < tokens.length - 1 ? `<button class="gap ${cuts.has(i) ? 'cut' : ''}" data-g="${i}" aria-label="나누기"><i></i></button>` : ''}`).join('')}<span class="end">${esc(q.end || '')}</span></div>
         <div class="row"><span class="muted">덩어리 ${cuts.size + 1}개</span><button class="primary" id="toPaint">② 품사 칠하기 ▶</button></div>`;
       box.querySelectorAll('.gap').forEach((g) => {
         g.onclick = () => {
@@ -173,7 +173,7 @@ export function renderSplit(box, q, cfg) {
     box.innerHTML = `<div class="qhelp">② 붓을 고르고 덩어리마다 <em>품사를 칠하세요</em></div>
       <div class="split-line painted">${chunks.map((c, i) => `<button class="pchunk" data-i="${i}">${chunkHTML(c)}</button>`).join('')}<span class="end">${esc(q.end || '')}</span></div>
       <div class="palette">${palette.map((p) => `<button class="brush ${POS[p].cls} ${p === brush ? 'on' : ''}" data-p="${p}"><b>${esc(POS[p].sym)}</b><small>${POS[p].name}</small></button>`).join('')}</div>
-      <div class="row"><button class="ghost" id="back">◀ 다시 자르기</button><button class="primary" id="submit" ${labels.every(Boolean) ? '' : 'disabled'}>제출</button></div>`;
+      <div class="row"><button class="ghost" id="back">◀ 다시 나누기</button><button class="primary" id="submit" ${labels.every(Boolean) ? '' : 'disabled'}>제출</button></div>`;
     box.querySelectorAll('.brush').forEach((b) => { b.onclick = () => { brush = b.dataset.p; draw(); }; });
     box.querySelectorAll('.pchunk').forEach((b) => { b.onclick = () => { labels[+b.dataset.i] = brush; draw(); }; });
     box.querySelector('#back').onclick = () => { phase = 1; draw(); };
@@ -214,7 +214,7 @@ export function renderRepair(box, q) {
       // 찾은 경우: 정답 덩어리 기준 보기 / 못 찾은 경우: 누른 덩어리의 다른 라벨 보기
       const opts = found
         ? shuffle(r.fixes)
-        : shuffle(['N', 'V', 'A', 'D'].filter((p) => p !== tapped.pos).map((p) => ({ pos: p, text: tapped.text, words: tapped.words })));
+        : shuffle(['N', 'V', 'A', 'D', 'C'].filter((p) => p !== tapped.pos).map((p) => ({ pos: p, text: tapped.text, words: tapped.words })));
       box.innerHTML = `<div class="qhelp">② <em>바르게 고친 것</em>을 고르세요</div>
         <div class="split-line painted">${r.shown.map((c, i) => chunkHTML(c, i === ti || (found && r.wrongIdx.includes(i)) ? 'sel' : 'dim')).join(' ')}<span class="end">${esc(q.end || '')}</span></div>
         <div class="opts fixes">${opts.map((o, k) => `<button class="opt" data-k="${k}">${chunkHTML(o)}</button>`).join('')}</div>
@@ -295,7 +295,7 @@ export function renderTower(box, q, cfg) {
         <div class="ko-prompt">${esc(ko.map((c) => c.text).join(' '))}.</div>
         <div class="ansbox">${placed.length ? placed.map((c, k) => `<button class="pchunk" data-k="${k}">${chunkHTML(c)}</button>`).join('') : '<span class="ph">영어 어순으로 놓아 보세요</span>'}</div>
         <div class="pool">${ko.filter((c) => !placed.includes(c)).map((c) => `<button class="pchunk" data-i="${c.i}">${chunkHTML(c)}</button>`).join('')}</div>
-        <div class="row"><button class="primary" id="next" ${placed.length === ko.length ? '' : 'disabled'}>STEP 2 영작하기 ▶</button></div>`;
+        <div class="row center"><button class="primary" id="next" ${placed.length === ko.length ? '' : 'disabled'}>STEP 2 영작하기 ▶</button></div>`;
       box.querySelectorAll('[data-i]').forEach((b) => { b.onclick = () => { placed.push(ko[+b.dataset.i]); step1(); }; });
       box.querySelectorAll('[data-k]').forEach((b) => { b.onclick = () => { placed.splice(+b.dataset.k, 1); step1(); }; });
       box.querySelector('#next').onclick = () => {
@@ -311,7 +311,7 @@ export function renderTower(box, q, cfg) {
         <div class="tower">${rows.map((c) => `<label class="trow"><span class="tko">${chunkHTML(c)}</span>
           <input data-i="${c.i}" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="영어로">
           ${mode === 'tiles' ? `<span class="tiles">${shuffle(c.answers[0].split(' ')).map((w) => `<button type="button" class="tile" data-for="${c.i}">${esc(w)}</button>`).join('')}</span>` : ''}</label>`).join('')}</div>
-        <div class="row"><button class="primary" id="submit">제출</button></div>`;
+        <div class="row center"><button class="primary" id="submit">제출</button></div>`;
       box.querySelectorAll('.tile').forEach((t) => {
         t.onclick = () => {
           const inp = box.querySelector(`input[data-i="${t.dataset.for}"]`);

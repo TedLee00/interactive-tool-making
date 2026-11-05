@@ -17,14 +17,10 @@ export function playRun({ charId = 'bboy' } = {}) {
     subtitle: '바르게 꾸민 음식만 먹으며 끝까지 달려라!',
     music: 'mgRun',
     howto: [
-      '화면 위 <b class="red">미션에 맞게 바르게 쓴 음식만</b> 먹어요 — <b>sweet cake</b> ⭕ / <b class="red">sweetly cake ❌ 불량식품!</b>',
-      '<b class="red">⬆ 점프</b> 버튼 · 🧁 <b class="red">부스터 컵케이크</b>를 먹으면 <b class="red">2단 점프 부스터</b>가 한 칸 차요 (최대 3칸)',
-      '부스터가 있을 때 <b>공중에서 한 번 더</b> 누르면 <b class="red">2단 점프!</b> — 위험할 때 아껴 쓰기 (콤보 5마다 한 칸 보너스)',
-      '<b class="red">⬇ 슬라이드</b> 버튼 · 축구 슬라이딩처럼 쭉 누워서 지나가요',
-      '💧 <b>물웅덩이</b>는 점프로 건너요 — 웅덩이가 <b class="red">여러 개 이어지면 연속 점프!</b>',
-      '불량식품이 <b>땅</b>에 있으면 <b class="red">점프로 넘고</b>, <b>머리 높이</b>에 있으면 <b class="red">슬라이드로 밑으로!</b>',
-      '<b>보강 여신 · 묵언수행 · 보강대장</b>이 길을 막아요 — 점프로 피하기!',
-      '🌮 <b>타코</b> = Ted 선생님 변신 (잠깐 무적 · 점프 더 높게 · 2단 점프 무제한) · 💗 하트 회복 · 하트 5개 · 미션 6개 → 보스 → 🏁 깃발',
+      '<span class="hk g">⭕ 바르게 꾸민 음식</span> 먹기 · <span class="hk r">❌ 오답 음식</span> 피하기',
+      '<span class="hk b">⬆ 점프</span> 장애물 · 웅덩이 넘기 &nbsp;<span class="hk p">⬇ 슬라이드</span> 머리 위 장애물',
+      '<span class="hk c">🧁 컵케이크</span> = <b>2단 점프</b> 부스터 (최대 3칸)',
+      '<span class="hk y">🌮 타코</span> Ted 변신 &nbsp;<span class="hk r">❤️ 하트 5개</span> 다 잃으면 끝',
     ],
     async setup(ctx) {
       const { g } = ctx;
@@ -34,8 +30,8 @@ export function playRun({ charId = 'bboy' } = {}) {
       const friends = chars.players.filter((p) => p.id !== charId);
       const imgs = await Promise.all(friends.map((p) => charSprite(p.id).catch(() => null)));
       const KIDS = friends.map((p, k) => ({ kind: 'kid', img: imgs[k], say: SAYS[p.id] || '앗!', name: p.name })).filter((k) => k.img);
-      // 익살 캐릭터 (그림으로 그림): 늙크크 아저씨 · 영크크 · 숙제 괴물 · 졸린 판다 · 비둘기 떼
-      ['oldman', 'teen', 'hwmon', 'panda', 'pigeon'].forEach((f) => KIDS.push({ kind: 'funny', f, name: { oldman: '늙크크 아저씨', teen: '영크크', hwmon: '숙제 괴물', panda: '졸린 판다', pigeon: '비둘기 떼' }[f], say: { oldman: '어이쿠!', teen: '앗 죄송!', hwmon: '숙제 내놔~', panda: 'zzz…', pigeon: '구구구!' }[f] }));
+      // 익살 캐릭터 (그림으로 그림): 허허 아저씨 · 꼬마 크크 · 숙제 더미 · 졸린 판다 · 비둘기 떼
+      ['oldman', 'teen', 'hwmon', 'panda', 'pigeon'].forEach((f) => KIDS.push({ kind: 'funny', f, name: { oldman: '허허 아저씨', teen: '꼬마 크크', hwmon: '숙제 더미', panda: '졸린 판다', pigeon: '비둘기 떼' }[f], say: { oldman: '어이쿠!', teen: '앗 죄송!', hwmon: '숙제 같이 하자~', panda: 'zzz…', pigeon: '구구구!' }[f] }));
       let bag = [];
       const nextKid = () => { if (!bag.length) bag = [...KIDS].sort(() => Math.random() - 0.5); return bag.pop(); };
       const POSC = { 명사: '#E0453A', 동사: '#2E7BC4', 형용사: '#28A064', 부사: '#D9822B' };
@@ -51,7 +47,7 @@ export function playRun({ charId = 'bboy' } = {}) {
       const PX = 86;
       // Ted 선생님이 가끔 수풀 뒤에서 빼꼼
       const peek = { t: 12 + Math.random() * 8, on: 0, x: 0, say: '' };
-      const PEEK_SAY = ['열심히!', '오~ 잘하는데?', '단어 잘 봐!', '불량식품 조심!', '야르!', '점프 점프!'];
+      const PEEK_SAY = ['열심히!', '오~ 잘하는데?', '단어 잘 봐!', '오답 음식 조심!', '야르!', '점프 점프!'];
       const PH = 74; // 캐릭터 키
 
       const banner = document.createElement('div');
@@ -75,9 +71,9 @@ export function playRun({ charId = 'bboy' } = {}) {
       const jump = () => {
         if (S.finished) return;
         const isTed = S.taco > 0; // Ted 선생님 변신 중: 더 높이, 2단 점프 공짜
-        if (S.y === 0 && S.slide <= 0) { S.vy = isTed ? -720 : -615; S.jumps = 1; ctx.sfx('hop'); }
+        if (S.y === 0 && S.slide <= 0) { S.vy = isTed ? -576 : -492; /* 높이는 그대로, 더 멀리 (체공시간 +25%) */ S.jumps = 1; ctx.sfx('hop'); }
         else if (S.jumps === 1 && (isTed || S.boost > 0)) {
-          S.vy = isTed ? -640 : -580; S.jumps = 2; ctx.sfx('hop');
+          S.vy = isTed ? -512 : -464; S.jumps = 2; ctx.sfx('hop');
           if (!isTed) { S.boost--; syncBoost(); ctx.floatText('⚡ 2단 점프!', PX, GY() + S.y - 70, '#5BE0FF', 16); }
           ctx.burst(PX, GY() + S.y - 20, 12, ['#fff', '#8FD8FF', '#5BE0FF']);
         } else if (S.jumps === 1 && !isTed) ctx.floatText('부스터 없음!', PX, GY() + S.y - 70, '#9A90B5', 14);
@@ -100,7 +96,7 @@ export function playRun({ charId = 'bboy' } = {}) {
         if (S.phase === 'boss') return; // 보스 구간은 보스가 던진다
         if (r < 0.52) {
           const good = Math.random() < 0.55;
-          // 좋은 음식: 땅 또는 공중(점프해서 먹기) · 불량식품: 땅(점프로 넘기) 또는 머리 높이(슬라이드로 지나가기)
+          // 좋은 음식: 땅 또는 공중(점프해서 먹기) · 오답 음식: 땅(점프로 넘기) 또는 머리 높이(슬라이드로 지나가기)
           const y = good ? (Math.random() < 0.4 ? gy - 120 : gy - 30) : (Math.random() < 0.5 ? gy - 52 : gy - 4);
           { const label = pick(good ? m.good : m.bad); S.ents.push({ kind: 'food', good, label, icon: iconFor(label), x: ctx.W + 40, y, w: 46, h: 38, head: !good && y < gy - 20 }); }
         } else if (r < 0.68) {
@@ -162,7 +158,7 @@ export function playRun({ charId = 'bboy' } = {}) {
             if (mi !== S.mission) { setMission(mi); ctx.callout('nice', `미션 ${mi + 1}`); }
             if (S.t > total) {
               S.phase = 'boss'; S.bossHP = BOSS_SEC; S.bossT = 0;
-              banner.innerHTML = '<small>BOSS</small><b>오답 몬스터 등장! <span class="tg">잘못 꾸민 음식을 피해라!</span></b><em>💡 날아오는 음식은 모두 오답이에요</em>';
+              banner.innerHTML = '<small>BOSS</small><b>장난꾸러기 오답 구름 등장! <span class="tg">잘못 꾸민 음식을 피해요!</span></b><em>💡 날아오는 음식은 모두 오답이에요</em>';
               banner.classList.remove('pop'); void banner.offsetWidth; banner.classList.add('pop');
               ctx.shake(10, 0.5);
             }
@@ -197,7 +193,7 @@ export function playRun({ charId = 'bboy' } = {}) {
           S.speed = 235 * slowK * (S.taco > 0 ? 1.12 : 1);
           const move = S.speed * dt;
           S.x += move;
-          S.vy += 1500 * dt;
+          S.vy += 960 * dt; // 중력을 약하게 → 같은 높이로 더 멀리 날아감
           S.y = Math.min(0, S.y + S.vy * dt);
           if (S.y === 0) { S.vy = 0; S.jumps = 0; }
           S.slide = Math.max(0, S.slide - dt);
@@ -257,7 +253,7 @@ export function playRun({ charId = 'bboy' } = {}) {
               ctx.burst(PX, gy - 60, 40); ctx.end(result(true));
             }
           }
-          ctx.hud(`❤️×${Math.max(0, S.hearts)} <b>${S.score}</b>${S.combo > 1 ? ` <i>🔥${S.combo}</i>` : ''}`);
+          ctx.hud(`<span class="hearts">${'❤️'.repeat(Math.max(0, S.hearts))}${'🤍'.repeat(Math.max(0, 5 - S.hearts))}</span> <b>${S.score}</b>${S.combo > 1 ? ` <i>🔥${S.combo}</i>` : ''}`);
         },
         draw(gc) {
           const { W, H } = ctx;
@@ -340,7 +336,7 @@ export function playRun({ charId = 'bboy' } = {}) {
             gc.fillStyle = '#fff'; [-16, 14].forEach((dx) => { gc.beginPath(); gc.arc(bx + dx, by - 6, 11, 0, 7); gc.fill(); });
             gc.fillStyle = '#2B2350'; [-14, 16].forEach((dx) => { gc.beginPath(); gc.arc(bx + dx - 4, by - 4, 5, 0, 7); gc.fill(); });
             gc.strokeStyle = '#2B2350'; gc.lineWidth = 4; gc.beginPath(); gc.arc(bx, by + 18, 14, 3.4, 6); gc.stroke();
-            tag(gc, '오답 몬스터', bx, by - 62, { bg: '#FF8A8A', fg: '#fff', border: '#7A1F1F', size: 13 });
+            tag(gc, '오답 구름', bx, by - 62, { bg: '#FF8A8A', fg: '#fff', border: '#7A1F1F', size: 13 });
             const left = Math.max(0, 1 - S.bossT / BOSS_SEC);
             roundRect(gc, 20, 70, W - 40, 10, 5); gc.fillStyle = 'rgba(255,255,255,.6)'; gc.fill();
             roundRect(gc, 20, 70, (W - 40) * left, 10, 5); gc.fillStyle = '#E0453A'; gc.fill();
@@ -450,7 +446,7 @@ function drawFunny(g, f, x, y, t) {
   g.lineWidth = 2.5; g.strokeStyle = ink; g.lineJoin = 'round'; g.lineCap = 'round';
   const bob = Math.sin(t * 8) * 2;
   if (f === 'oldman') {
-    // 늙크크: 빗어 넘긴 머리 · 콧수염 · 비닐봉지
+    // 허허 아저씨: 빗어 넘긴 머리 · 콧수염 · 비닐봉지
     g.fillStyle = '#5A5F6B'; g.fillRect(x - 9, y - 22, 7, 22); g.fillRect(x + 2, y - 22, 7, 22);
     g.fillStyle = '#fff'; g.beginPath(); g.roundRect(x - 15, y - 50, 30, 30, 6); g.fill(); g.stroke();
     g.fillStyle = 'rgba(255,255,255,.9)'; g.beginPath(); g.ellipse(x + 20, y - 28 + bob, 7, 9, 0, 0, 7); g.fill(); g.stroke();
@@ -459,7 +455,7 @@ function drawFunny(g, f, x, y, t) {
     g.lineWidth = 3.5; g.beginPath(); g.moveTo(x - 6, y - 56 + bob); g.lineTo(x + 6, y - 56 + bob); g.stroke();
     g.fillStyle = ink; g.beginPath(); g.arc(x - 4, y - 63 + bob, 1.6, 0, 7); g.arc(x + 4, y - 63 + bob, 1.6, 0, 7); g.fill();
   } else if (f === 'teen') {
-    // 영크크: 거꾸로 쓴 모자 · 후드 · 가방 메고 전력 질주
+    // 꼬마 크크: 거꾸로 쓴 모자 · 후드 · 가방 메고 전력 질주
     g.fillStyle = '#2E4A78'; g.fillRect(x - 9, y - 24, 7, 24 + bob); g.fillRect(x + 2, y - 24, 7, 24 - bob);
     g.fillStyle = '#28A064'; g.beginPath(); g.roundRect(x - 14, y - 52, 28, 30, 7); g.fill(); g.stroke();
     g.fillStyle = '#F2A01E'; g.fillRect(x + 12, y - 50, 8, 18); g.strokeRect(x + 12, y - 50, 8, 18);
@@ -468,7 +464,7 @@ function drawFunny(g, f, x, y, t) {
     g.beginPath(); g.moveTo(x + 8, y - 68); g.lineTo(x + 20, y - 66); g.lineTo(x + 8, y - 63); g.closePath(); g.fill(); g.stroke();
     g.fillStyle = ink; g.beginPath(); g.arc(x - 4, y - 61, 1.6, 0, 7); g.arc(x + 4, y - 61, 1.6, 0, 7); g.fill();
   } else if (f === 'hwmon') {
-    // 숙제 괴물: 공책 더미에 눈과 이빨
+    // 숙제 더미: 공책 더미에 눈과 입
     ['#FFFBF0', '#E2F4FF', '#FFE3F0', '#FFF4D6'].forEach((c, k) => { g.fillStyle = c; g.beginPath(); g.roundRect(x - 22 + (k % 2) * 3, y - 16 - k * 15 + (k === 3 ? bob : 0), 44, 15, 3); g.fill(); g.stroke(); });
     g.fillStyle = '#fff'; g.beginPath(); g.arc(x - 9, y - 58 + bob, 7, 0, 7); g.arc(x + 9, y - 58 + bob, 7, 0, 7); g.fill(); g.stroke();
     g.fillStyle = ink; g.beginPath(); g.arc(x - 8, y - 57 + bob, 3, 0, 7); g.arc(x + 10, y - 57 + bob, 3, 0, 7); g.fill();

@@ -5,13 +5,13 @@ import { makeChibi } from './chibi.js';
 
 const HEIGHT = 1.55;
 
-export function createAvatar(c, { height = HEIGHT } = {}) {
+export function createAvatar(c, { height = HEIGHT, tier = 1 } = {}) {
   const root = new THREE.Group(); // 위치 · 진행 방향 (게임이 조작)
   const rig = new THREE.Group(); // 점프·찌그러짐
   root.add(rig);
   const turn = new THREE.Group(); // 서 있을 때는 카메라 쪽으로 몸을 돌림
   rig.add(turn);
-  const M = makeChibi(c.id, c.color);
+  const M = makeChibi(c.id, c.color, tier);
   const k = height / 1.45;
   M.group.scale.setScalar(k);
   turn.add(M.group);
@@ -38,6 +38,7 @@ export function createAvatar(c, { height = HEIGHT } = {}) {
   /** @param camera 있으면 서 있을 때 그쪽을 본다 */
   function update(dt, camera) {
     t += dt;
+    if (M.aura) { M.aura.rotation.y += dt * 1.2; M.aura.position.y = Math.sin(t * 2) * 0.04; }
     rig.position.y = 0;
     rig.rotation.set(0, 0, 0);
     M.group.rotation.y = 0;

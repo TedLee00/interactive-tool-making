@@ -64,7 +64,8 @@ describe('repair / puzzle / tower', () => {
     expect(gradeTowerOrder(q, [0, 2, 1])).toBe(true);
     expect(gradeTowerOrder(q, [0, 1, 2])).toBe(false);
     expect(gradeTowerTyping(q, { 0: 'i', 1: 'Every day.', 2: 'have' }).ok).toBe(true);
-    expect(gradeTowerTyping(q, { 0: 'I', 1: 'everyday', 2: 'eat' }).each).toEqual([true, false, true]);
+    expect(gradeTowerTyping(q, { 0: 'I', 1: 'everyday', 2: 'eat' }).each).toEqual([true, true, true]); // 띄어쓰기 차이는 봐줌 (원장님 결정)
+    expect(gradeTowerTyping(q, { 0: 'I', 1: 'yesterday', 2: 'eat' }).each).toEqual([true, false, true]);
   });
 });
 
@@ -111,6 +112,17 @@ describe('question bank', () => {
 
 import { nearMatch } from '../src/quiz/normalize.js';
 describe('lenient answers', () => {
+  it('nearMatch is generous: typos · articles · -s/-ed · spacing · word order', () => {
+    expect(nearMatch('teachs english', ['teaches English'])).toBeTruthy();
+    expect(nearMatch('a funy story', ['a funny story'])).toBeTruthy();
+    expect(nearMatch('funny story', ['a funny story'])).toBeTruthy();
+    expect(nearMatch('in hallway', ['in the hallway'])).toBeTruthy();
+    expect(nearMatch('after school together', ['together after school'])).toBeTruthy();
+    expect(nearMatch('beautifull', ['beautiful'])).toBeTruthy();
+    expect(nearMatch('sad', ['happy'])).toBeFalsy();
+    expect(nearMatch('is', ['are'])).toBeFalsy();
+    expect(nearMatch('happy', ['not happy'])).toBeFalsy();
+  });
   it('nearMatch accepts a dropped modifier word', () => {
     expect(nearMatch('my brother', ['my little brother'])).toBeTruthy();
     expect(nearMatch('your sister', ['my little brother'])).toBeFalsy();

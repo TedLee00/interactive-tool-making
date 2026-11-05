@@ -6,7 +6,7 @@ import config from '../../data/config.json';
 import './rank.css';
 
 const KEY = 'cq.board.v1';
-const GAME_NAME = { crane: '🧸 청크 크레인', shoot: '🎯 청크 사격장', run: '🏃 청크런', kart: '🏎️ 청크 카트', board: '🏰 품사 원정대 총점' };
+const GAME_NAME = { crane: '🧸 청크 크레인', shoot: '🎯 품사 사격장', run: '🏃 청크런', kart: '🏎️ 청크 카트', drum: '🥁 품사 드럼', board: '🏰 품사 원정대 총점' };
 let current = '';
 
 export function setPlayer(name) { current = (name || '').trim(); }
@@ -62,11 +62,21 @@ export async function getRanking(game, name = getPlayer() || '연습생') {
   try { return { ...(await callApi('getRanking', [game, name])), shared: true }; } catch { return local; }
 }
 
-const MEDAL = ['🥇', '🥈', '🥉'];
-/** 순위표 HTML */
+/** 🏆 명예의 전당 HTML — 1~3위는 시상대(왕관 · 금은동), 4~10위는 목록, 10위 밖이면 내 순위를 따로 */
 export function rankTableHTML(game, R, me = getPlayer() || '연습생', unit = '점') {
   const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-  return `<div class="rk">
-    <div class="rk-h"><b>${GAME_NAME[game] || game} 순위</b><small>${R.shared ? '🌐 우리 반 전체' : '📱 이 기기'} · ${R.count}명 · 나는 <em>${R.myRank}위</em></small></div>
-    <ol>${R.list.map((r, i) => `<li class="${r.name === me ? 'me' : ''} ${i < 3 ? `top t${i + 1}` : ''}"><i>${MEDAL[i] || i + 1}</i><span>${esc(r.name)}</span><b>${r.best}${unit}</b><small>누적 ${r.total} · ${r.plays}판</small></li>`).join('')}</ol></div>`;
+  const top = R.list.slice(0, 10);
+  const P = [top[1], top[0], top[2]]; // 시상대: 2위 · 1위 · 3위
+  const RK = [2, 1, 3];
+  const podium = P.map((r, k) => {
+    const n = RK[k];
+    if (!r) return `<div class="pd p${n} empty"><div class="pd-who"><i>${['', '👑', '🥈', '🥉'][n]}</i><span>비어 있어요</span></div><div class="pd-block"><em>${n}</em></div></div>`;
+    return `<div class="pd p${n} ${r.name === me ? 'me' : ''}"><div class="pd-who"><i>${['', '👑', '🥈', '🥉'][n]}</i><span>${esc(r.name)}</span><b>${r.best}<small>${unit}</small></b></div><div class="pd-block"><em>${n}</em></div></div>`;
+  }).join('');
+  const rest = top.slice(3).map((r, i) => `<li class="${r.name === me ? 'me' : ''}"><i>${i + 4}</i><span>${esc(r.name)}</span><b>${r.best}${unit}</b><small>누적 ${r.total} · ${r.plays}판</small></li>`).join('');
+  const meRow = R.myRank > 10 ? (() => { const r = R.list.find((x) => x.name === me); return r ? `<div class="hof-me"><i>${R.myRank}</i><span>${esc(r.name)} (나)</span><b>${r.best}${unit}</b></div>` : ''; })() : '';
+  return `<div class="hof">
+    <div class="hof-h"><div class="hof-t">🏆 명예의 전당 🏆</div><b>${GAME_NAME[game] || game}</b><small>${R.shared ? '🌐 우리 반 전체' : '📱 이 기기'} · ${R.count}명 도전${R.myRank ? ` · 나는 <em>${R.myRank}위</em>` : ''}</small></div>
+    <div class="podium">${podium}</div>
+    ${rest ? `<ol class="hof-list">${rest}</ol>` : ''}${meRow}</div>`;
 }

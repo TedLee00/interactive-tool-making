@@ -42,7 +42,7 @@ mark.target::after { content: ']'; color: var(--gold); }
 .opt.wrong { border-color: var(--no); background: #FDE9E7; }
 .opt:disabled { cursor: default; }
 
-/* 절단 / 칠하기 */
+/* 나누기 / 칠하기 */
 .split-line { display: flex; flex-wrap: wrap; align-items: center; row-gap: 10px; font-size: 19px; font-weight: 700; padding: 8px 0; color: var(--navy); }
 .split-line .tk { padding: 6px 2px; }
 .split-line .end { font-weight: 800; padding-left: 2px; }
