@@ -534,13 +534,14 @@ function drawKit(g, xs, ys, S, pulse) {
     const kx = xs[2]; const ky = ys[2]; const kb = S.drumHit[2] ? 1.05 : 1;
     g.save(); g.translate(kx, ky); g.scale(kb, kb);
     const sh = g.createLinearGradient(-34, 0, 34, 0); sh.addColorStop(0, '#9E1463'); sh.addColorStop(0.5, '#FF4FAE'); sh.addColorStop(1, '#9E1463');
-    roundRect(g, -34, -22, 68, 70, 10); g.fillStyle = sh; g.fill(); g.lineWidth = 3; g.strokeStyle = ink; g.stroke();
-    g.fillStyle = 'rgba(255,255,255,.18)'; g.fillRect(-34, 8, 68, 6);
-    g.fillStyle = '#FFF4F8'; g.beginPath(); g.ellipse(0, -22, 34, 12, 0, 0, 7); g.fill(); g.stroke();
-    g.font = "400 12px Jua, sans-serif"; g.fillStyle = '#E21E8C'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('POS', 0, -21);
+    roundRect(g, -25, -14, 50, 44, 8); g.fillStyle = sh; g.fill(); g.lineWidth = 3; g.strokeStyle = ink; g.stroke(); // 크기 줄임
+    g.fillStyle = 'rgba(255,255,255,.18)'; g.fillRect(-25, 6, 50, 5);
+    g.fillStyle = '#FFF4F8'; g.beginPath(); g.ellipse(0, -14, 25, 9, 0, 0, 7); g.fill(); g.stroke();
+    g.font = "400 10px Jua, sans-serif"; g.fillStyle = '#E21E8C'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('POS', 0, -13);
     // 페달 (아래쪽, 발 닿는 곳)
-    g.fillStyle = '#7D8899'; roundRect(g, -9, 50, 18, 26, 5); g.fill(); g.lineWidth = 2; g.stroke();
-    if (S.foot > 0) { g.fillStyle = 'rgba(255,79,174,.6)'; g.beginPath(); g.ellipse(0, -22, 40, 16, 0, 0, 7); g.fill(); }
+    g.fillStyle = '#7D8899'; roundRect(g, -8, 34, 16, 26, 5); g.fill(); g.lineWidth = 2; g.stroke();
+    g.strokeStyle = '#5A6070'; g.lineWidth = 3; g.beginPath(); g.moveTo(0, 30); g.lineTo(0, 36); g.stroke(); // 비터 연결
+    if (S.foot > 0) { g.fillStyle = 'rgba(255,79,174,.6)'; g.beginPath(); g.ellipse(0, -14, 31, 13, 0, 0, 7); g.fill(); }
     g.restore();
   }
   // 북 (위에서 본 모습: 아래로 살짝 보이는 몸통 + 크롬 테 + 북면 + 조임 나사)
@@ -588,20 +589,28 @@ function drawDrummer(g, cx, H, xs, ys, S, pulse = 0) {
   g.lineCap = 'round'; g.lineJoin = 'round';
   // 의자 · 어깨 (위에서 본 넓적한 타원 몸)
   g.fillStyle = 'rgba(0,0,0,.35)'; g.beginPath(); g.ellipse(cx, H - 6, 62, 22, 0, 0, 7); g.fill();
-  // 🦶 오른발: 몸 앞으로 쭉 나와 킥 페달을 까딱까딱 (밟으면 꾹, 평소엔 박자에 맞춰 살짝)
+  // 🦶 오른발: 허벅지 → 무릎 → 정강이 → 운동화가 킥 페달 위에 (밟으면 발끝이 꾹, 평소엔 박자에 맞춰 까딱)
   {
-    const press = S.foot > 0 ? 1 : 0; const tap = pulse * pulse * 0.25;
-    const pedY = ys[2] + 64; // 페달 가운데
-    const fx = cx + 6; const fy = pedY - 4 - press * 7 - tap * 3;
-    const hx = cx + 38; const hy = headY + 6; // 머리 오른쪽 옆으로 다리가 나옴
-    g.strokeStyle = ink; g.lineWidth = 17; g.beginPath(); g.moveTo(hx, hy); g.quadraticCurveTo(cx + 44, fy + 30, fx + 4, fy + 12); g.stroke();
-    g.strokeStyle = '#3C4A7A'; g.lineWidth = 12; g.beginPath(); g.moveTo(hx, hy); g.quadraticCurveTo(cx + 44, fy + 30, fx + 4, fy + 12); g.stroke();
-    g.save(); g.translate(fx, fy); g.scale(1, 1 - press * 0.12);
-    g.fillStyle = '#fff'; g.strokeStyle = ink; g.lineWidth = 2.5; g.beginPath(); g.ellipse(0, 0, 11, 17, 0, 0, 7); g.fill(); g.stroke(); // 운동화 (위에서 본 모양)
-    g.fillStyle = '#E0453A'; g.beginPath(); g.ellipse(0, -9, 9, 6, 0, 0, 7); g.fill();
-    g.strokeStyle = '#9AA3B5'; g.lineWidth = 1.5; [-2, 3, 8].forEach((dy) => { g.beginPath(); g.moveTo(-5, dy); g.lineTo(5, dy); g.stroke(); });
+    const press = S.foot > 0 ? 1 : 0; const tap = pulse * pulse * 0.3;
+    const pedY = ys[2] + 47; // 페달 가운데
+    const ax = cx + 3; const ay = pedY + 14 - press * 2; // 발목
+    const hipX = cx + 34; const hipY = headY + 14;
+    const kx = cx + 46; const ky = (hipY + ay) / 2 + 6; // 무릎은 바깥쪽으로 살짝
+    const limb = (x1, y1, x2, y2, w, col) => { g.lineCap = 'round'; g.strokeStyle = ink; g.lineWidth = w + 5; g.beginPath(); g.moveTo(x1, y1); g.lineTo(x2, y2); g.stroke(); g.strokeStyle = col; g.lineWidth = w; g.beginPath(); g.moveTo(x1, y1); g.lineTo(x2, y2); g.stroke(); };
+    limb(hipX, hipY, kx, ky, 15, '#3C4A7A'); // 허벅지
+    limb(kx, ky, ax + 4, ay + 2, 12, '#46578C'); // 정강이
+    g.fillStyle = '#46578C'; g.strokeStyle = ink; g.lineWidth = 2; g.beginPath(); g.arc(kx, ky, 8, 0, 7); g.fill(); g.stroke(); // 무릎
+    g.fillStyle = '#2B3A66'; g.beginPath(); g.ellipse(ax + 3, ay + 2, 8, 4, -0.3, 0, 7); g.fill(); // 바짓단
+    // 운동화 (위에서 본 모양: 뒤꿈치는 아래, 발끝은 페달 쪽 위로)
+    g.save(); g.translate(ax, ay); g.rotate(-0.12); g.scale(1, 1 - press * 0.16 - tap * 0.08);
+    g.fillStyle = '#F4F6FA'; g.strokeStyle = ink; g.lineWidth = 2.2;
+    g.beginPath(); g.moveTo(-7, 2); g.quadraticCurveTo(-9, -12, -6, -20); g.quadraticCurveTo(0, -28, 6, -20); g.quadraticCurveTo(9, -12, 7, 2); g.quadraticCurveTo(0, 7, -7, 2); g.closePath(); g.fill(); g.stroke();
+    g.fillStyle = '#E0453A'; g.beginPath(); g.moveTo(-6, -18); g.quadraticCurveTo(0, -27, 6, -18); g.quadraticCurveTo(0, -15, -6, -18); g.fill(); // 앞코
+    g.strokeStyle = '#2E7BC4'; g.lineWidth = 1.6; [-12, -8, -4].forEach((dy) => { g.beginPath(); g.moveTo(-3.5, dy); g.lineTo(3.5, dy - 1); g.stroke(); }); // 끈
+    g.fillStyle = '#E0453A'; g.beginPath(); g.arc(0, 1, 2.2, 0, 7); g.fill(); // 뒤꿈치 탭
     g.restore();
-    if (press) { g.strokeStyle = 'rgba(255,79,174,.8)'; g.lineWidth = 3; g.beginPath(); g.arc(fx, fy, 22, 0, 7); g.stroke(); }
+    if (press) { g.strokeStyle = 'rgba(255,79,174,.75)'; g.lineWidth = 2.5; g.beginPath(); g.arc(ax, ay - 12, 16, 0, 7); g.stroke(); }
+    g.lineCap = 'butt';
   }
   const bd = g.createRadialGradient(cx - 14, headY + 4, 4, cx, headY + 14, 60); bd.addColorStop(0, '#A48BF0'); bd.addColorStop(1, '#5B3FB8');
   g.fillStyle = bd; g.strokeStyle = ink; g.lineWidth = 2.5; g.beginPath(); g.ellipse(cx, headY + 16, 50, 30, 0, 0, 7); g.fill(); g.stroke();
