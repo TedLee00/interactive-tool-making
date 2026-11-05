@@ -108,46 +108,124 @@ function loop(now) {
   renderer.render(scene, camera);
   requestAnimationFrame(loop);
 }
-window.__CQ = { pets: () => pets, award: (t) => awardPet(t), get S() { return S; }, get world() { return world; }, cam, get avatar() { return avatar; }, fx: { maWarning, teacherDance, callout }, cell: (i) => resolveCell(board.cells[i]), dice, turn: (sw) => turn(sw), move: (n) => moveBy(n) }; // 테스트용
+window.__CQ = { pets: () => pets, award: (t) => awardPet(t), milestone: () => checkPetMilestone(), get S() { return S; }, get world() { return world; }, cam, get avatar() { return avatar; }, fx: { maWarning, teacherDance, callout }, cell: (i) => resolveCell(board.cells[i]), dice, turn: (sw) => turn(sw), move: (n) => moveBy(n) }; // 테스트용
 
-/* ---------------- 🐾 펫: 미니게임에 성공하면 동물 친구가 생겨 끝까지 따라온다 ---------------- */
+/* ---------------- 🐾 펫: 미니게임 성공 · 코인 돌파 때 동물 친구가 생겨, 내가 가는 칸 옆을 줄지어 따라 걷는다 ---------------- */
 let pets = [];
+const petFx = [];
+const PET_MAX = 8;
+const PET_AT = [40, 90, 150, 220, 300, 400]; // 코인 돌파 기준 (이때마다 새 친구!)
 function clearPets() { pets.forEach((p) => scene.remove(p.mesh)); pets = []; }
+/** 길 위의 소수 칸 위치 (칸과 칸 사이도 부드럽게) */
+function pathPoint(f) {
+  const i = Math.max(0, Math.min(world.N - 2, Math.floor(f)));
+  const u = Math.max(0, Math.min(1, f - i));
+  return world.cellPosition(i).lerp(world.cellPosition(i + 1), u);
+}
+function petSlot(k) {
+  const avIdx = avatar ? Math.max(0, -avatar.root.position.z / 2.6) : S.pos;
+  const side = k % 2 ? 1 : -1; const row = Math.floor(k / 2);
+  const f = Math.max(0, avIdx - 0.12 - row * 0.42);
+  const p = pathPoint(f);
+  const fwd = pathPoint(f + 0.3).sub(pathPoint(Math.max(0, f - 0.3))).setY(0).normalize();
+  const right = new THREE.Vector3(-fwd.z, 0, fwd.x);
+  return { pos: p.addScaledVector(right, side * (1.45 + (row % 2) * 0.12)).setY(0), fwd };
+}
 function buildPets() {
   clearPets();
   (S?.pets || []).forEach((kind, k) => {
     const mesh = makeAnimal(kind, 0.85);
-    if (avatar) mesh.position.copy(avatar.root.position).setY(0.3).add(new THREE.Vector3((k % 2 ? 0.5 : -0.5), 0, 0.6 + k * 0.5));
+    if (avatar) mesh.position.copy(petSlot(k).pos);
     scene.add(mesh);
-    pets.push({ mesh, kind });
+    pets.push({ mesh, kind, join: 0 });
   });
 }
+/** 새 친구 등장 이펙트: 하늘에서 빙글빙글 떨어지며 별가루 · 빛 고리 */
+function petJoinFx(p) {
+  p.join = 1.3;
+  const at = petSlot(pets.indexOf(p)).pos;
+  const ring = new THREE.Mesh(new THREE.TorusGeometry(0.4, 0.06, 8, 32), new THREE.MeshBasicMaterial({ color: 0xffd43b, transparent: true }));
+  ring.rotation.x = -Math.PI / 2; ring.position.copy(at).setY(0.05);
+  scene.add(ring); petFx.push({ o: ring, life: 1.4, kind: 'ring' });
+  const beam = new THREE.Mesh(new THREE.CylinderGeometry(0.35, 0.55, 6, 20, 1, true), new THREE.MeshBasicMaterial({ color: 0xfff3b0, transparent: true, opacity: 0.5, side: THREE.DoubleSide, depthWrite: false }));
+  beam.position.copy(at).setY(3); scene.add(beam); petFx.push({ o: beam, life: 1.4, kind: 'beam' });
+  const cols = [0xffd43b, 0xff8fb1, 0x8fd8ff, 0x8fe08a, 0xffffff];
+  for (let k = 0; k < 16; k++) {
+    const st = new THREE.Mesh(new THREE.OctahedronGeometry(0.08), new THREE.MeshBasicMaterial({ color: cols[k % cols.length], transparent: true }));
+    const a = (k / 16) * Math.PI * 2;
+    st.position.copy(at).setY(0.5);
+    st.userData.v = new THREE.Vector3(Math.cos(a) * 2.2, 3 + Math.random() * 2, Math.sin(a) * 2.2);
+    scene.add(st); petFx.push({ o: st, life: 1.2, kind: 'star' });
+  }
+}
 function updatePets(dt, t) {
+  for (let k = petFx.length - 1; k >= 0; k--) {
+    const f = petFx[k]; f.life -= dt;
+    if (f.kind === 'ring') { f.o.scale.setScalar(1 + (1.4 - f.life) * 3); f.o.material.opacity = Math.max(0, f.life / 1.4); }
+    else if (f.kind === 'beam') f.o.material.opacity = Math.max(0, f.life / 1.4) * 0.5;
+    else { f.o.userData.v.y -= 9 * dt; f.o.position.addScaledVector(f.o.userData.v, dt); f.o.rotation.y += dt * 8; f.o.material.opacity = Math.max(0, f.life / 1.2); }
+    if (f.life <= 0) { scene.remove(f.o); f.o.geometry.dispose(); f.o.material.dispose(); petFx.splice(k, 1); }
+  }
   if (!avatar || !pets.length) return;
-  const back = world.direction(Math.round(S.pos)).setY(0).normalize().negate();
-  const right = new THREE.Vector3(-back.z, 0, back.x);
   pets.forEach((p, k) => {
-    const row = Math.floor(k / 2) + 1;
-    const want = avatar.root.position.clone().addScaledVector(back, 0.55 * row).addScaledVector(right, k % 2 ? 0.45 : -0.45);
-    want.y = 0.3;
-    const d = want.clone().sub(p.mesh.position);
+    const { pos: want, fwd } = petSlot(k);
+    const d = want.clone().sub(p.mesh.position).setY(0);
     const moving = d.length() > 0.08;
-    p.mesh.position.lerp(want, 1 - Math.exp(-dt * (3.5 - k * 0.25)));
-    if (moving) p.mesh.rotation.y = Math.atan2(d.x, d.z); else p.mesh.rotation.y += ((Math.atan2(-back.x, -back.z)) - p.mesh.rotation.y) * Math.min(1, dt * 3);
-    animateAnimal(p.mesh, t, moving);
+    p.mesh.position.x += d.x * (1 - Math.exp(-dt * (7 - k * 0.3)));
+    p.mesh.position.z += d.z * (1 - Math.exp(-dt * (7 - k * 0.3)));
+    if (p.join > 0) {
+      p.join = Math.max(0, p.join - dt);
+      const u = p.join / 1.3;
+      p.mesh.position.y = u * u * 5; // 하늘에서 쏙
+      p.mesh.rotation.y += dt * 14 * u;
+      if (p.join === 0) { p.mesh.position.y = 0; sfx('reveal'); }
+    } else {
+      p.mesh.position.y = 0;
+      const face = moving ? Math.atan2(d.x, d.z) : Math.atan2(camera.position.x - p.mesh.position.x, camera.position.z - p.mesh.position.z); /* 멈추면 화면 쪽을 봄 */ void fwd;
+      let r = face - p.mesh.rotation.y; r = Math.atan2(Math.sin(r), Math.cos(r));
+      p.mesh.rotation.y += r * Math.min(1, dt * 8);
+    }
+    animateAnimal(p.mesh, t, moving || p.join > 0);
   });
+}
+/** 새 펫 한 마리 (겹치지 않게) — 이펙트와 함께 옆 칸에 합류 */
+function addPet() {
+  S.pets ||= [];
+  if (S.pets.length >= PET_MAX) return null;
+  const left = ANIMAL_KINDS.filter((k) => !S.pets.includes(k));
+  if (!left.length) return null;
+  const kind = left[Math.floor(Math.random() * left.length)];
+  S.pets.push(kind); save();
+  const mesh = makeAnimal(kind, 0.85);
+  const p = { mesh, kind, join: 0 };
+  pets.push(p);
+  mesh.position.copy(petSlot(pets.length - 1).pos);
+  scene.add(mesh);
+  petJoinFx(p);
+  return kind;
+}
+/** 코인(점수)이 기준을 넘을 때마다 새 친구가 반짝 등장 */
+async function checkPetMilestone() {
+  S.petMiles ||= 0;
+  while (S.petMiles < PET_AT.length && S.coins >= PET_AT[S.petMiles]) {
+    const at = PET_AT[S.petMiles];
+    S.petMiles++; save();
+    const kind = addPet();
+    if (!kind) continue;
+    const A = ANIMALS[kind];
+    callout('yar', `🪙 ${at} 돌파!`);
+    toast(`🎉 코인 ${at} 돌파! ${A.emoji} ${josa(A.name, '이', '가')} 친구가 되어 옆에서 따라와요`);
+    world.sparkle(S.pos);
+    await sleep(1400);
+  }
 }
 /** 받침에 따라 조사 고르기: 이/가 · 을/를 */
 const hasBatchim = (w) => { const c = String(w).charCodeAt(String(w).length - 1); return c >= 0xAC00 && c <= 0xD7A3 && (c - 0xAC00) % 28 !== 0; };
 const josa = (w, a, b) => `${w}${hasBatchim(w) ? a : b}`;
 /** 새 펫 친구 받기 (최대 6마리, 겹치지 않게) */
 async function awardPet(gameTitle) {
-  S.pets ||= [];
-  const left = ANIMAL_KINDS.filter((k) => !S.pets.includes(k));
-  if (!left.length) return;
-  const kind = left[Math.floor(Math.random() * left.length)];
-  S.pets.push(kind); save();
-  buildPets();
+  const kind = addPet();
+  if (!kind) return;
   const A = ANIMALS[kind];
   await new Promise((res) => {
     const ov = document.createElement('div');
@@ -498,6 +576,7 @@ async function turn(swipe = { power: 0.6, lateral: 0 }) {
   const cell = board.cells[S.pos];
   if (cell.region !== prevRegion) await enterRegion(cell.region);
   await resolveCell(cell);
+  await checkPetMilestone();
   cam.zoom = 1;
   busy = false;
   if (!S.finished) {

@@ -643,7 +643,7 @@ export function buildWorld(scene, board, guide) {
     const i = Math.floor(((k + 0.5) / 18) * (N - 2)) + 1;
     const side = k % 2 ? 1 : -1;
     const home = new THREE.Vector3(pathX(i) + side * (2.4 + r() * 2.2), 0, -i * SP + (r() - 0.5) * 2);
-    const a = makeAnimal(ANIMAL_KINDS[k % ANIMAL_KINDS.length], 1.15);
+    const a = makeAnimal(ANIMAL_KINDS[k % ANIMAL_KINDS.length], 0.95);
     a.position.copy(home);
     scene.add(a);
     critters.push({ a, home, target: home.clone(), wait: r() * 3 });
