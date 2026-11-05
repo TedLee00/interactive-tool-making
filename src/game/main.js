@@ -864,6 +864,25 @@ async function finalChecks() {
 }
 
 /** 🏆 아너스 미션 — 정답률 80% 이상인 학생만: 오류 수리 · 청크 퍼즐 · 번역의 탑을 「상」 난이도로 한 번 더 */
+/** 🎮 보너스 게임: 정답률 70% 이상이면 미니게임 하나를 골라 한 판 더 (최고 점수만 기록) */
+async function bonusGamePick() {
+  const acc = S.answered ? S.correct / S.answered : 0;
+  if (acc < 0.7 || S.bonusGame) return;
+  const pickId = await new Promise((res) => {
+    const ov = document.createElement('div');
+    ov.className = 'study-ask';
+    ov.innerHTML = `<div class="sa-card"><div class="sa-ico">🎮</div><h2>보너스 게임<br><em>하나 골라요!</em></h2>
+      <p>정답률 <b>${Math.round(acc * 100)}%</b>! 좋아하는 게임 <b>한 판 더</b></p>
+      <div class="bg-pick">${['shoot', 'kart', 'drum', 'crane', 'run'].map((k) => `<button class="ghost" data-g="${k}">${GAMES[k].icon} ${GAMES[k].title.replace(/^\S+\s/, '')}</button>`).join('')}</div>
+      <div class="sa-btns"><button class="ghost big" id="bgN">다음에 할래요</button></div></div>`;
+    document.body.appendChild(ov);
+    ov.querySelectorAll('[data-g]').forEach((b) => { b.onclick = () => { ov.remove(); res(b.dataset.g); }; });
+    ov.querySelector('#bgN').onclick = () => { ov.remove(); res(null); };
+  });
+  S.bonusGame = pickId || 'skip'; save();
+  if (pickId) await playCellGame({ kind: 'arcade', region: 3, game: pickId });
+}
+
 async function honorsMission() {
   const acc = S.answered ? S.correct / S.answered : 0;
   if (acc < 0.8 || S.honors) return;
@@ -903,6 +922,7 @@ async function goal() {
   avatar.setAnim('win');
   if (first) { bgm('castle'); await finaleDance(`🎉 ALL CLEAR! ${S.name} 문장의 성 도착`); }
   if (first) await honorsMission();
+  if (first) await bonusGamePick();
   avatar.root.rotation.y = 0;
   cam.zoom = 0.7;
   const acc = S.answered ? Math.round((S.correct / S.answered) * 100) : 0;
