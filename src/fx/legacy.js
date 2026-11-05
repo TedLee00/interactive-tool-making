@@ -704,7 +704,7 @@ function dance(kind, extra) {
           {cfg: C.perm, cls: 'crew', pct: 65, dw: f, delay: .5}, {cfg: C.latina, cls: 'rabbit', pct: 77, dw: f, delay: .6},
           {cfg: C.teacher, cls: 'teacher', pct: 88, dw: Math.min(140, W * .30), delay: .7, front: true, bottom: 'calc(22vh - 24px - 6vh)'}]});
     }
-    case 'ma': loadMa(); return runShow({music: 'ma', theme: 'ma', hooks: [[1253 - MA_LEAD, playMa]], banner: ['힘내라, 마!', '', k || '괜찮아! 힘내라, 마! ⚾'],
+    case 'ma': loadMa(); return runShow({music: 'ma', theme: 'ma', hooks: [[1253 - MA_LEAD, playMa]], banner: ['정신 차리라, 마!', '', k || '정신 차리라, 마! ⚾'],
       actors: [{cfg: C.fan2, cls: 'ma', pct: 40, dw: solo * .8}, {cfg: C.fan, cls: 'ma', pct: 57, dw: solo * .8, delay: .2, pop: '마!', popL: true}]});
     case 'boo': {
       const b = Math.min(170, W * .38);

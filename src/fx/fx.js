@@ -265,7 +265,7 @@ export const crewDance = (msg) => withMusicBack(dance('crew', msg));
 export const finaleDance = (msg) => withMusicBack(dance('finale', msg));
 export const dancerShow = (kind, msg) => withMusicBack(dance(kind, msg));
 export function maWarning() {
-  return withMusicBack(dance('ma', '연속 오답 3개! 힘내라, 마! 다시 집중!'));
+  return withMusicBack(dance('ma', '연속 오답 3개! 정신 차리라, 마!'));
 }
 
 /* ------------------------------------------------------------------

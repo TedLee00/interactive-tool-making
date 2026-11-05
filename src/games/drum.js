@@ -28,6 +28,8 @@ const isQuizBar = (b) => b % CYCLE >= CYCLE - QUIZ_BARS;
 
 // 그루브 패턴: 마디(8분음표 8칸) 안에서 어느 북을 칠지 — 명=쿵(플로어) 동=짝(스네어) 형=탐 부=심벌 접=킥
 const GROOVES = [
+  ['명', '', '동', '', '명', '명', '동', ''], // 쿵 짝 쿵쿵 짝 (기본 리듬 — 자주 나오게 두 번)
+  ['명', '', '동', '', '명', '명', '동', ''],
   ['명', '', '동', '', '명', '', '동', ''], // 쿵 짝 쿵 짝
   ['명', '', '동', '', '명', '명', '동', ''], // 쿵 짝 쿵쿵 짝
   ['명', '', '동', '형', '', '명', '동', ''],
@@ -71,6 +73,7 @@ export function playDrum() {
       '단어가 <b class="red">자기 품사 북 위</b>로 떨어져요 — 북에 닿는 순간 아래 버튼을 쿵!',
       '🎓 <b class="red">퀴즈 타임</b> — 맞히면 <span class="hk y">🔥 피버 ×2 (20초)</span> <span class="hk c">🛡 콤보 쉴드 3개</span> <span class="hk p">🎶 음악 LEVEL UP</span> · 빨리 맞힐수록 보너스 최대 +1000',
       '<span class="hk g">🏅 퀴즈 전부 맞히면</span> +2000점 + 간식 쿠폰 🍫',
+      '<span class="hk p">🥁 콤보 20 → 점수 ×1.5 · 50 → ×2</span> 드럼 솔로 조명! · <span class="hk g">성공하면 🎲 보너스 주사위</span>',
       '왼쪽 <b>명사(쿵) · 동사(짝)</b> · 가운데 <b>접속사(킥 페달)</b> · 오른쪽 <b>형용사(탐) · 부사(심벌)</b>',
       '박자에 맞게 치면 <b class="red">진짜 드럼 비트</b>가 돼요 — PERFECT를 노려 봐!',
       '틀린 북·놓치면 콤보가 끊겨요 · 정확도 85% 이상이면 간식 쿠폰 🍫',
@@ -168,13 +171,16 @@ export function playDrum() {
         S.drumHit[i] = 0.14; S.boom = 0.22;
         const b = btns[i]; b.classList.remove('boom'); void b.offsetWidth; b.classList.add('boom');
         const cand = notes.filter((n) => !n.done && n.pos === p.pos && Math.abs(arrive(n) - now) < 0.3).sort((a, c) => Math.abs(arrive(a) - now) - Math.abs(arrive(c) - now))[0];
-        drumSound(p.pos);
+        // 🥁 박자 스냅: 맞는 단어를 조금 일찍 쳤으면 소리는 그 단어의 박자에 정확히 울림 → 늘 음악과 딱 맞게
+        if (cand && AC && AC.state === 'running' && arrive(cand) > now) drumSound(p.pos, arrive(cand)); else drumSound(p.pos);
         if (!cand) { breakCombo(i); S.wrong++; S.fx.push({ txt: '빈 박!', col: '#9A90B5', life: 0.6, i }); thud(); return; }
         cand.done = true;
         const dt = Math.abs(arrive(cand) - now);
         const grade = dt <= 0.09 ? 'PERFECT' : dt <= 0.18 ? 'GREAT' : 'GOOD';
         S[grade.toLowerCase()]++; S.combo++; S.best = Math.max(S.best, S.combo);
-        const pts = ({ PERFECT: 300, GREAT: 200, GOOD: 100 }[grade] + Math.min(20, S.combo) * 10) * (S.fever > 0 ? 2 : 1); // 🔥 피버 중엔 2배
+        const mult = (S.fever > 0 ? 2 : 1) * (S.combo >= 50 ? 2 : S.combo >= 20 ? 1.5 : 1); // 🔥 피버 ×2 · 콤보 20 ×1.5 · 50 ×2
+        const pts = Math.round(({ PERFECT: 300, GREAT: 200, GOOD: 100 }[grade] + Math.min(20, S.combo) * 10) * mult);
+        if (S.combo === 20 || S.combo === 50) { S.solo = 2.5; ctx.burst(ctx.W / 2, ctx.H * 0.35, 50, ['#FFD43B', '#E21E8C', '#5BE0FF', '#fff']); ctx.floatText(S.combo === 20 ? '🥁 드럼 솔로! 점수 ×1.5' : '🌟 슈퍼 솔로! 점수 ×2', ctx.W / 2, ctx.H * 0.3, '#FFD43B', 26); }
         S.score += pts;
         S.fx.push({ txt: grade, col: grade === 'PERFECT' ? '#FFD43B' : grade === 'GREAT' ? '#8FE08A' : '#8FD8FF', life: 0.7, i });
         ctx.burst(colX[i](), hitY(i), grade === 'PERFECT' ? 22 : 12, [p.col, '#fff', '#FFD43B']);
@@ -185,15 +191,23 @@ export function playDrum() {
       const qLayer = document.createElement('div'); qLayer.className = 'dq'; ctx.layer.appendChild(qLayer);
       const QPOS = ['N', 'V', 'A', 'D', 'C'];
       const qPool = shuffle((BANK[9] || []).slice());
+      const esc2 = (x) => String(x).replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+      const q7Pool = shuffle((BANK[7] || []).filter((q) => (q.level || 1) >= 2));
       function makeQuiz() {
+        // ① 덩어리의 「품사 + 단위」 (명사구 · 형용사구 · 부사구 · 부사절 …) — 보기 5개, 조금 어렵게
+        if (q7Pool.length && Math.random() < 0.6) {
+          const q = q7Pool.pop();
+          return { sentHTML: esc2(q.sentence).replace(/\[(.*?)\]/, '<b>[ $1 ]</b>'), ask: '[ ] 덩어리의 품사 + 단위는?', opts: shuffle(q.options.slice()).map((o) => ({ v: o, label: o })), ans: q.answer, ansLabel: q.answer };
+        }
+        // ② 문장 속 덩어리의 품사 — 보기는 늘 5개(접속사까지)
         for (let k = 0; k < 20; k++) {
           const q = qPool.pop() || pick(BANK[9]); if (!q) return null;
           const sent = parseChunks(q.en);
           const ch = sent.filter((c) => QPOS.includes(c.pos));
           if (ch.length < 2) continue;
           const tgt = pick(ch); // 같은 분석 결과에서 고르기 (그래야 문장 속 [ ] 표시가 맞음)
-          const opts = tgt.pos === 'C' ? ['N', 'V', 'A', 'D', 'C'] : ['N', 'V', 'A', 'D'];
-          return { sent, tgt, opts, end: q.end || '.' };
+          return { sentHTML: sent.map((c) => (c === tgt ? `<b>[ ${esc2(c.text)} ]</b>` : esc2(c.text))).join(' ') + esc2(q.end || '.'), ask: '[ ] 덩어리의 품사는?',
+            opts: QPOS.map((p) => ({ v: p, label: `<b>${POS[p].sym}</b>${POS[p].name}`, cls: POS[p].cls })), ans: tgt.pos, ansLabel: POS[tgt.pos].name };
         }
         return null;
       }
@@ -201,11 +215,10 @@ export function playDrum() {
         const Q = makeQuiz(); if (!Q) return;
         const tEnd = t0 + (8 + (qb + QUIZ_BARS) * 8) * STEP - 0.4;
         S.quiz = { ...Q, tEnd, done: false }; S.qN++;
-        const esc2 = (x) => String(x).replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
         qLayer.innerHTML = `<div class="dq-card"><div class="dq-t">🎓 QUIZ TIME! <small>맞히면 🔥 피버 ×2 · 🛡 쉴드 · 🎶 음악 UP · 빨리 맞힐수록 보너스!</small></div>
-          <div class="dq-s">${Q.sent.map((c) => (c === Q.tgt ? `<b>[ ${esc2(c.text)} ]</b>` : esc2(c.text))).join(' ')}${esc2(Q.end)}</div>
-          <div class="dq-q">[ ] 덩어리의 품사는?</div>
-          <div class="dq-o">${Q.opts.map((p) => `<button data-p="${p}" class="${POS[p].cls}"><b>${POS[p].sym}</b>${POS[p].name}</button>`).join('')}</div>
+          <div class="dq-s">${Q.sentHTML}</div>
+          <div class="dq-q">${Q.ask}</div>
+          <div class="dq-o">${Q.opts.map((o) => `<button data-p="${o.v}" class="${o.cls || ''}">${o.label}</button>`).join('')}</div>
           <div class="dq-bar"><i></i></div></div>`;
         qLayer.classList.add('on');
         qLayer.querySelectorAll('button').forEach((bt) => { bt.onclick = () => answerQuiz(bt.dataset.p); });
@@ -213,8 +226,8 @@ export function playDrum() {
       function answerQuiz(p) {
         const Q = S.quiz; if (!Q || Q.done) return;
         Q.done = true;
-        const ok = p === Q.tgt.pos;
-        qLayer.querySelectorAll('button').forEach((bt) => { bt.disabled = true; if (bt.dataset.p === Q.tgt.pos) bt.classList.add('right'); else if (bt.dataset.p === p) bt.classList.add('wrong'); });
+        const ok = p === Q.ans;
+        qLayer.querySelectorAll('button').forEach((bt) => { bt.disabled = true; if (bt.dataset.p === Q.ans) bt.classList.add('right'); else if (bt.dataset.p === p) bt.classList.add('wrong'); });
         let bonus = 0;
         if (ok) {
           // 🎁 정답 혜택: 빨리 맞힐수록 보너스(최대 +1000) · 🔥 피버 타임(약 20초 동안 점수 2배 + 무대 조명) · 🛡 콤보 쉴드 3개 · 🎶 음악 LEVEL UP
@@ -224,9 +237,9 @@ export function playDrum() {
           ctx.callout(S.lvl >= 4 ? 'legend' : 'wow', `🔥 FEVER! 🎶 LEVEL ${S.lvl}`); ctx.burst(ctx.W / 2, ctx.H * 0.4, 40, ['#FFD43B', '#fff', '#E21E8C']);
         } else {
           S.lvl = Math.max(0, S.lvl - 1); ctx.sfx('no');
-          ctx.floatText(p ? `정답은 ${POS[Q.tgt.pos].name}! 음악 DOWN` : `⏰ 정답은 ${POS[Q.tgt.pos].name}!`, ctx.W / 2, ctx.H * 0.62, '#FF8F8F', 18);
+          ctx.floatText(p ? `정답은 ${Q.ansLabel}! 음악 DOWN` : `⏰ 정답은 ${Q.ansLabel}!`, ctx.W / 2, ctx.H * 0.62, '#FF8F8F', 18);
         }
-        qLayer.querySelector('.dq-t small').innerHTML = ok ? `정답! <b>+${bonus}</b> · 🔥 FEVER ×2 · 🛡×3 · 🎶 LEVEL ${S.lvl}` : `${POS[Q.tgt.pos].name}였어요 · 🎶 LEVEL ${S.lvl}`;
+        qLayer.querySelector('.dq-t small').innerHTML = ok ? `정답! <b>+${bonus}</b> · 🔥 FEVER ×2 · 🛡×3 · 🎶 LEVEL ${S.lvl}` : `정답: ${Q.ansLabel} · 🎶 LEVEL ${S.lvl}`;
         setTimeout(() => { qLayer.classList.remove('on'); }, 1400);
       }
 
@@ -240,7 +253,7 @@ export function playDrum() {
         ctx.end({
           score: S.score, cleared: acc >= 60, coins: Math.min(30, Math.round(acc / 4)), snack: acc >= 85 || (S.qN && S.qOk === S.qN) ? pick(['choco', 'cake', 'cookie']) : null,
           headline: acc >= 90 ? '🥁 드럼 마스터!' : acc >= 60 ? '연주 성공!' : '조금만 더 박자에 맞춰!', legendAt: 40000,
-          lines: [`🎓 퀴즈 <b>${S.qOk}/${S.qN}</b> · 최고 음악 레벨 🎶${S.lvl}`, `정확도 <b>${acc}%</b> · PERFECT ${S.perfect} · GREAT ${S.great} · GOOD ${S.good}`, `빈 박·틀림 ${S.wrong} · 놓침 ${S.miss} · 최고 콤보 <b>${S.best}</b>`],
+          lines: [acc >= 60 ? '🎁 성공 혜택: 원정 보드에서 <b>🎲 보너스 주사위 한 번 더!</b> · 펫 친구 합류' : '정확도 60% 넘으면 🎲 보너스 주사위 + 펫 친구!', `🎓 퀴즈 <b>${S.qOk}/${S.qN}</b> · 최고 음악 레벨 🎶${S.lvl}`, `정확도 <b>${acc}%</b> · PERFECT ${S.perfect} · GREAT ${S.great} · GOOD ${S.good}`, `빈 박·틀림 ${S.wrong} · 놓침 ${S.miss} · 최고 콤보 <b>${S.best}</b>`],
         });
       }
 
@@ -254,13 +267,13 @@ export function playDrum() {
           notes.forEach((n) => { if (!n.done && now - arrive(n) > 0.3) { n.done = true; n.miss = true; S.miss++; breakCombo(PADS.findIndex((p) => p.pos === n.pos)); } });
           S.fx.forEach((f) => { f.life -= dt; }); S.fx = S.fx.filter((f) => f.life > 0);
           ['L', 'R'].forEach((h) => { S.armT[h] = Math.max(0, S.armT[h] - dt); });
-          S.foot = Math.max(0, S.foot - dt); S.boom = Math.max(0, S.boom - dt); S.fever = Math.max(0, S.fever - dt);
+          S.foot = Math.max(0, S.foot - dt); S.boom = Math.max(0, S.boom - dt); S.fever = Math.max(0, S.fever - dt); S.solo = Math.max(0, (S.solo || 0) - dt);
           Object.keys(S.drumHit).forEach((k) => { S.drumHit[k] = Math.max(0, S.drumHit[k] - dt); });
           // 🎓 퀴즈 마디가 시작되면 퀴즈 카드
           { const bar = Math.floor(((now - t0) / STEP - 8) / 8);
             if (bar >= 0 && isQuizBar(bar) && bar % CYCLE === CYCLE - QUIZ_BARS && S.lastQ !== bar) { S.lastQ = bar; openQuiz(bar); }
             if (S.quiz && !S.quiz.done) { const left = S.quiz.tEnd - now; const el = qLayer.querySelector('.dq-bar i'); if (el) el.style.width = `${Math.max(0, left / ((QUIZ_BARS * 8 * STEP) - 0.4)) * 100}%`; if (left <= 0) answerQuiz(null); } }
-          ctx.hud(`${S.fever > 0 ? '🔥×2 · ' : ''}${S.shield ? `🛡${S.shield} · ` : ''}🎶Lv${S.lvl} · 🎵 <b>${notes.filter((n) => n.done).length}</b>/${total} · <b>${S.score}</b>${S.combo > 1 ? ` <i>🔥${S.combo}</i>` : ''}`);
+          ctx.hud(`${S.combo >= 50 ? '🌟콤보×2 · ' : S.combo >= 20 ? '🥁콤보×1.5 · ' : ''}${S.fever > 0 ? '🔥×2 · ' : ''}${S.shield ? `🛡${S.shield} · ` : ''}🎶Lv${S.lvl} · 🎵 <b>${notes.filter((n) => n.done).length}</b>/${total} · <b>${S.score}</b>${S.combo > 1 ? ` <i>🔥${S.combo}</i>` : ''}`);
           if (now > t0 + Math.max(lastStep + 6, 8 + BARS * 8 + 2) * STEP) finish(); // 마지막 퀴즈 타임까지 다 하고 끝
         },
         draw(g) {
@@ -271,6 +284,10 @@ export function playDrum() {
           // 공연장
           const bg = g.createLinearGradient(0, 0, 0, H); bg.addColorStop(0, '#120C2E'); bg.addColorStop(1, '#3A1E5C');
           g.fillStyle = bg; g.fillRect(0, 0, W, H);
+          if (S.solo > 0) { // 🥁 드럼 솔로: 빙글 도는 무지개 조명
+            for (let k = 0; k < 6; k++) { const a = now * 3 + k; g.globalAlpha = 0.18 * Math.min(1, S.solo); g.fillStyle = ['#FF4FAE', '#FFD43B', '#5BE0FF', '#8FE08A', '#B79CFF', '#FF8A3D'][k]; g.beginPath(); g.moveTo(W / 2, 0); g.lineTo(W / 2 + Math.cos(a) * W, H * 0.8); g.lineTo(W / 2 + Math.cos(a + 0.25) * W, H * 0.8); g.closePath(); g.fill(); }
+            g.globalAlpha = 1;
+          }
           if (S.fever > 0) { // 🔥 피버: 금빛 무대 + 깜빡이는 조명
             g.globalAlpha = 0.18 + 0.14 * Math.abs(Math.sin(now * 8)); g.fillStyle = '#FFB000'; g.fillRect(0, 0, W, H); g.globalAlpha = 1;
             g.font = "400 22px Jua, sans-serif"; g.textAlign = 'center'; g.lineWidth = 5; g.strokeStyle = '#7A1F1F'; g.strokeText(`🔥 FEVER ×2 · ${Math.ceil(S.fever)}`, W / 2, 34); g.fillStyle = '#FFD43B'; g.fillText(`🔥 FEVER ×2 · ${Math.ceil(S.fever)}`, W / 2, 34);

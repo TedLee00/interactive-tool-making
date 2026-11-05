@@ -85,8 +85,10 @@ export function draw(type, n, used = new Set(), mode = LEVEL) {
 /** 미니게임용: 여러 유형에서 1문제씩 돌아가며 (같은 판에서 반복 없음) */
 const sessionUsed = new Set();
 let typeTurn = [];
-export function drawMixed(types, used = sessionUsed) {
+export function drawMixed(types, used = sessionUsed, mode = LEVEL) {
   if (!typeTurn.length) typeTurn = shuffle(types);
   const t = typeTurn.pop();
-  return draw(t, 1, used)[0];
+  return draw(t, 1, used, mode)[0];
 }
+/** 한 단계 어렵게 (하 → 중, 중 · 상 → 상) — 미니게임 속 퀴즈용 */
+export const harderLevel = () => (LEVEL === 'low' ? 'mid' : 'high');

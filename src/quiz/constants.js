@@ -45,10 +45,9 @@ export const TYPES = {
 
 /** 청크 유형 시작 화면 안내 (원장님 결정 2026-11-02) */
 export const CHUNK_RULE_HTML = `
-<h3>📌 5품사 청크 독해 법칙</h3>
-<p>묶을 수 있는 건 <b>최대한 크게</b> 묶어요!</p>
+<h3>📌 품사 청크 독해 = <em>최대한 큰 덩어리</em>로!</h3>
 <ol>
-  <li>명사 앞에 있는 형용사(a, the, my 포함)는 <b>명사의 일부</b> → 통째로 <b class="pos-n-t">명사구 ○</b><br><span class="ex">○The pretty girl</span></li>
-  <li>보어 자리 형용사 앞에 있는 부사는 <b>형용사의 일부</b> → 통째로 <b class="pos-a-t">형용사구 ( )</b><br><span class="ex">□was (very long)</span></li>
+  <li><b>명사 앞 꾸밈말</b>(a · the · my · 형용사)은 명사의 일부 → 통째로 <b class="pos-n-t">○ 명사</b> <span class="ex">○The pretty girl</span></li>
+  <li><b>형용사 앞 부사</b>(very · really …)는 형용사의 일부 → 통째로 <b class="pos-a-t">( ) 형용사</b> <span class="ex">is (very happy)</span></li>
 </ol>
-<p class="goal">큰 덩어리 4~5개로 문장 뼈대를 빨리 보고, 덩어리 순서대로 머릿속에서 번역해요.</p>`;
+<p class="goal">○명사 · □동사 · ( )형용사 · &lt; &gt;부사 · △접속사 — 큰 덩어리 4~5개로 문장 뼈대를 빠르게!</p>`;

@@ -3,12 +3,12 @@
 //   ❓ 퀴즈 존 — 지나가는 순간 경기가 「순간정지」되고 문제 1개. 맞히면 ⚡ 게이지 가득 + 부스터, 틀리면 게이지 감소.
 // 아래 "legacy" 표시 부분은 legacy/index.html(2266~2540행)에서 자동으로 옮긴 코드다.
 import { openGame, loadImage, asset, charSprite, pick, roundRect } from './engine.js';
-import { drawMixed } from '../quiz/bank.js';
+import { drawMixed, harderLevel } from '../quiz/bank.js';
 import { renderChoice } from '../quiz/renderers.js';
 import { legacySfx as lsfx, sfxNo as lsfxNo } from '../fx/legacy.js';
 import mg from '../../data/minigames.json';
 
-const QUIZ_TYPES = [1, 2, 3, 4, 5, 6, 7];
+const QUIZ_TYPES = [3, 4, 5, 6, 7]; // 단어 하나 품사(1·2)는 빼고 짝꿍 · 관사 · 문장 성분 · 청크 감정 위주 (난이도 한 단계 UP)
 
 async function kartImages(name) {
   const keys = ['ted', 'goddess', 'scooter', 'cart', 'skate', 'kick'];
@@ -91,6 +91,16 @@ export function playKart({ charId = 'bboy', name = '나', used } = {}) {
         const labels = [target, ...others.sort(() => Math.random() - 0.5).slice(0, 2)].sort(() => Math.random() - 0.5);
         return { d: Math.round(L * f), target, word, labels, done: false, shown: false };
       });
+      // 퀴즈 존이 품사 레인 안내 · 레인 구간과 겹치지 않게 (겹치면 레인 바로 뒤로 옮김)
+      QZ.forEach((q) => {
+        for (let k = 0; k < 3; k++) {
+          const z = LZ.find((l) => q.d > l.d - LANE_LEN - 2100 && q.d < l.d + 500);
+          if (!z) break;
+          q.d = z.d + 700;
+        }
+        q.d = Math.min(q.d, L - 600);
+      });
+      QZ.sort((a, b) => a.d - b.d);
       BAN.forEach((b) => { if (LZ.some((z) => b.d > z.d - LANE_LEN - 120 && b.d < z.d + 80)) b.gone = true; });
       TAC.forEach((o) => { if (LZ.some((z) => o.d > z.d - LANE_LEN - 120 && o.d < z.d + 80)) o.d += LANE_LEN + 300; });
 
@@ -426,7 +436,7 @@ export function playKart({ charId = 'bboy', name = '나', used } = {}) {
         mode = 'quiz';
         accel = false;
         lsfx([880, 660, 880], 'square', 0.08, 0.06);
-        const q = drawMixed(QUIZ_TYPES, used);
+        const q = drawMixed(QUIZ_TYPES, used, harderLevel());
         const box = document.createElement('div');
         box.className = 'mg-freeze';
         box.innerHTML = `<div class="fz-head"><b>❓ 퀴즈 존 · 순간정지!</b><span>맞히면 ⚡ 게이지 가득</span></div><div class="card q" id="fzq"></div><i class="fz-bar"></i>`;
@@ -498,11 +508,11 @@ export function playKart({ charId = 'bboy', name = '나', used } = {}) {
               const show = z && ME.d < start;
               if (show && laneShown !== z) {
                 laneShown = z;
-                laneEl.innerHTML = `<small>🛣️ 곧 품사 레인! 이 단어의 품사는?</small><b>${z.word}</b><em>${z.labels.map((l) => `<i>${l}</i>`).join('')}</em><u id="lzDist"></u>`;
+                laneEl.innerHTML = `<span class="kl-t">🛣️ 품사 레인</span><b>${z.word}</b><em>${z.labels.map((l) => `<i>${l}</i>`).join('')}</em><u id="lzDist"></u>`; // 맨 위 한 줄로 작게 (도로를 가리지 않게)
               }
               if (!show) laneShown = null;
               laneEl.className = `klane${show ? ' on' : ''}${show && start - ME.d < 300 ? ' flash' : ''}`;
-              if (show) { const dEl = laneEl.querySelector('#lzDist'); if (dEl) dEl.textContent = `레인까지 ${Math.ceil((start - ME.d) / 10)}m — 미리 정해 두세요!`; }
+              if (show) { const dEl = laneEl.querySelector('#lzDist'); if (dEl) dEl.textContent = `${Math.ceil((start - ME.d) / 10)}m`; }
             }
             LZ.forEach((z) => {
               if (!z.shown && ME.d > z.d - LANE_LEN - 1700) { z.shown = true; MSG.textContent = `🛣️ 품사 레인! 「<span class="tg">${z.word}</span>」의 품사 레인으로 달려라!`; lsfx([660, 880], 'square', 0.06, 0.05); }
