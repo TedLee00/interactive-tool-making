@@ -145,3 +145,14 @@ mark.target::after { content: ']'; color: var(--gold); }
 .opts.pos4 .opt.on { border-color: #2E7BC4; background: #EAF4FF; }
 .pairrule { margin-top: 8px; padding: 8px 10px; border-radius: 12px; background: #FFF0EE; color: #2B2350; font-size: 15px; }
 .pairrule b { color: #C0322A; }
+
+/* 기호 범례 */
+.sym-legend { display: flex; flex-wrap: wrap; gap: 4px 8px; justify-content: center; background: #F7F4FF; border: 2px dashed #D8CCF5; border-radius: 12px; padding: 6px 8px; margin-bottom: 10px; font-size: 12px; }
+.sym-legend .lg { display: inline-flex; align-items: baseline; gap: 2px; font-weight: 800; }
+.sym-legend .lg b { font-size: 14px; }
+.sym-legend .lg i { font-style: normal; font-weight: 500; color: #6B5F8A; margin-left: 3px; }
+/* 번역의 탑 STEP 2: 가로로 쭉 (한글 덩어리 → 바로 옆 영어 칸), 길면 다음 줄 */
+.tower.row-flow { flex-direction: row; flex-wrap: wrap; align-items: flex-start; gap: 8px 10px; }
+.tower.row-flow .trow { flex-direction: row; flex-wrap: wrap; align-items: center; gap: 4px; background: #FFFBF0; border: 2px solid #F3E6C4; border-radius: 12px; padding: 4px 6px; }
+.tower.row-flow .trow input { padding: 7px 8px; font-size: 16px; }
+.tower.row-flow .trow .near, .tower.row-flow .trow .tiles { flex-basis: 100%; }

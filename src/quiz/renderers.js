@@ -138,6 +138,18 @@ function pairStep(box, q, first, res) {
   draw();
 }
 
+/* 기호 범례 (청크 유형 맨 위): ○명사 · □동사 · ( )형용사 · < >부사 · △접속사 — 예시와 함께 */
+function legendHTML(withC = true) {
+  const it = (p, ex) => `<span class="lg ${POS[p].cls}"><b>${esc(POS[p].sym)}</b>${POS[p].name}<i>${ex}</i></span>`;
+  return `<div class="sym-legend">${it('N', '○the tall boy')}${it('V', '□runs')}${it('A', '(very happy)')}${it('D', '&lt;after school&gt;')}${withC ? it('C', '△and') : ''}</div>`;
+}
+/** 순서 문제 보기 섞기: 원래 순서 · 정답 순서와 같지 않게 */
+function shuffleNot(list, ...bad) {
+  let out = shuffle(list);
+  for (let k = 0; k < 12 && list.length > 1 && bad.some((b) => b.every((v, i) => out[i] === v)); k++) out = shuffle(list);
+  return out;
+}
+
 /* ---------------- 청크 나눔터 (8·9) ---------------- */
 export function renderSplit(box, q, cfg) {
   const answer = parseChunks(q.ko ?? q.en);
@@ -151,7 +163,7 @@ export function renderSplit(box, q, cfg) {
 
   const draw = () => {
     if (phase === 1) {
-      box.innerHTML = `<div class="qhelp">① 단어 사이 틈을 눌러 <em>덩어리로 나누세요</em></div>
+      box.innerHTML = `${legendHTML(q.type === 9)}<div class="qhelp">① 단어 사이 틈을 눌러 <em>덩어리로 나누세요</em></div>
         <div class="split-line">${tokens.map((t, i) => `<span class="tk">${esc(t)}</span>${i < tokens.length - 1 ? `<button class="gap ${cuts.has(i) ? 'cut' : ''}" data-g="${i}" aria-label="나누기"><i></i></button>` : ''}`).join('')}<span class="end">${esc(q.end || '')}</span></div>
         <div class="row"><span class="muted">덩어리 ${cuts.size + 1}개</span><button class="primary" id="toPaint">② 품사 칠하기 ▶</button></div>`;
       box.querySelectorAll('.gap').forEach((g) => {
@@ -170,7 +182,7 @@ export function renderSplit(box, q, cfg) {
       return;
     }
     const chunks = tokensToChunks(tokens, [...cuts], labels);
-    box.innerHTML = `<div class="qhelp">② 붓을 고르고 덩어리마다 <em>품사를 칠하세요</em></div>
+    box.innerHTML = `${legendHTML(q.type === 9)}<div class="qhelp">② 붓을 고르고 덩어리마다 <em>품사를 칠하세요</em></div>
       <div class="split-line painted">${chunks.map((c, i) => `<button class="pchunk" data-i="${i}">${chunkHTML(c)}</button>`).join('')}<span class="end">${esc(q.end || '')}</span></div>
       <div class="palette">${palette.map((p) => `<button class="brush ${POS[p].cls} ${p === brush ? 'on' : ''}" data-p="${p}"><b>${esc(POS[p].sym)}</b><small>${POS[p].name}</small></button>`).join('')}</div>
       <div class="row"><button class="ghost" id="back">◀ 다시 나누기</button><button class="primary" id="submit" ${labels.every(Boolean) ? '' : 'disabled'}>제출</button></div>`;
@@ -204,7 +216,7 @@ export function renderRepair(box, q) {
   box._answerInfo = { answerHTML: `바르게 고친 분석<div class="ans-line">${chunksHTML(r.correct, q.end)}</div>`, questionPlain: chunksPlain(r.shown) + (q.end || ''), answerPlain: chunksPlain(r.correct) + (q.end || '') };
   return new Promise((res) => {
     const step1 = () => {
-      box.innerHTML = `<div class="qhelp">① <em>잘못 분석된 덩어리</em>를 찾아 누르세요</div>
+      box.innerHTML = `${legendHTML()}<div class="qhelp">① <em>잘못 분석된 덩어리</em>를 찾아 누르세요</div>
         <div class="split-line painted">${r.shown.map((c, i) => `<button class="pchunk" data-i="${i}">${chunkHTML(c)}</button>`).join('')}<span class="end">${esc(q.end || '')}</span></div>`;
       box.querySelectorAll('.pchunk').forEach((b) => { b.onclick = () => step2(+b.dataset.i); });
     };
@@ -215,7 +227,7 @@ export function renderRepair(box, q) {
       const opts = found
         ? shuffle(r.fixes)
         : shuffle(['N', 'V', 'A', 'D', 'C'].filter((p) => p !== tapped.pos).map((p) => ({ pos: p, text: tapped.text, words: tapped.words })));
-      box.innerHTML = `<div class="qhelp">② <em>바르게 고친 것</em>을 고르세요</div>
+      box.innerHTML = `${legendHTML()}<div class="qhelp">② <em>바르게 고친 것</em>을 고르세요</div>
         <div class="split-line painted">${r.shown.map((c, i) => chunkHTML(c, i === ti || (found && r.wrongIdx.includes(i)) ? 'sel' : 'dim')).join(' ')}<span class="end">${esc(q.end || '')}</span></div>
         <div class="opts fixes">${opts.map((o, k) => `<button class="opt" data-k="${k}">${chunkHTML(o)}</button>`).join('')}</div>
         <div class="row"><button class="ghost" id="re">◀ 다시 찾기</button></div>`;
@@ -250,13 +262,13 @@ function puzzleText(t) {
 
 export function renderPuzzle(box, q) {
   const chunks = parseChunks(q.en).map((c, i) => ({ ...c, i, text: puzzleText(c.text) }));
-  let pool = shuffle(chunks);
+  let pool = shuffleNot(chunks, chunks); // 정답 순서 그대로 나오지 않게
   const placed = [];
   { const answer = parseChunks(q.en); box._answerInfo = { answerHTML: `정답<div class="ans-line">${chunksHTML(answer, q.end)}</div>`, questionPlain: q.ko, answerPlain: answer.map((c) => c.text).join(' / ') + (q.end || '') }; }
   return new Promise((res) => {
     const draw = () => {
       const shownPlaced = placed.map((c, k) => ({ ...c, text: k === 0 ? cap(c.text) : c.text }));
-      box.innerHTML = `<div class="qhelp">우리말에 맞게 <em>영어 덩어리를 순서대로</em> 누르세요</div>
+      box.innerHTML = `${legendHTML()}<div class="qhelp">우리말에 맞게 <em>영어 덩어리를 순서대로</em> 누르세요</div>
         <div class="ko-prompt">${esc(q.ko)}</div>
         <div class="ansbox">${placed.length ? shownPlaced.map((c, k) => `<button class="pchunk" data-k="${k}">${chunkHTML(c)}</button>`).join('') + `<span class="end">${esc(q.end || '')}</span>` : '<span class="ph">여기에 문장이 만들어져요</span>'}</div>
         <div class="pool">${pool.map((c, k) => `<button class="pchunk" data-p="${k}">${chunkHTML(c)}</button>`).join('')}</div>
@@ -288,13 +300,14 @@ export function renderTower(box, q, cfg) {
   const mode = cfg?.grading?.type12Mode || 'typing';
   const placed = [];
   let orderOk = false;
+  const poolOrder = shuffleNot(ko, ko, q.order.map((i) => ko[i])); // 한글 순서 그대로 · 정답 순서 그대로 나오지 않게 섞기
   { const sentence = cap(q.order.map((i) => ko[i].answers[0]).join(' ')) + (q.end || ''); box._answerInfo = { answerHTML: `정답<div class="ans-line en">${esc(sentence)}</div><div class="ans-line">${q.order.map((i) => `${chunkHTML(ko[i])} = <b>${esc(ko[i].answers.join(' / '))}</b>`).join('<br>')}</div>`, questionPlain: ko.map((c) => c.text).join(' ') + '.', answerPlain: sentence }; }
   return new Promise((res) => {
     const step1 = () => {
-      box.innerHTML = `<div class="qhelp"><b>STEP 1</b> 한글 덩어리를 <em>영어 어순</em>으로 놓으세요 <small>주어 → 동사 → 목적어/보어 → &lt;어디서&gt; → &lt;언제&gt;</small></div>
+      box.innerHTML = `${legendHTML()}<div class="qhelp"><b>STEP 1</b> 한글 덩어리를 <em>영어 어순</em>으로 놓으세요 <small>주어 → 동사 → 목적어/보어 → &lt;어디서&gt; → &lt;언제&gt;</small></div>
         <div class="ko-prompt">${esc(ko.map((c) => c.text).join(' '))}.</div>
         <div class="ansbox">${placed.length ? placed.map((c, k) => `<button class="pchunk" data-k="${k}">${chunkHTML(c)}</button>`).join('') : '<span class="ph">영어 어순으로 놓아 보세요</span>'}</div>
-        <div class="pool">${ko.filter((c) => !placed.includes(c)).map((c) => `<button class="pchunk" data-i="${c.i}">${chunkHTML(c)}</button>`).join('')}</div>
+        <div class="pool">${poolOrder.filter((c) => !placed.includes(c)).map((c) => `<button class="pchunk" data-i="${c.i}">${chunkHTML(c)}</button>`).join('')}</div>
         <div class="row center"><button class="primary" id="next" ${placed.length === ko.length ? '' : 'disabled'}>STEP 2 영작하기 ▶</button></div>`;
       box.querySelectorAll('[data-i]').forEach((b) => { b.onclick = () => { placed.push(ko[+b.dataset.i]); step1(); }; });
       box.querySelectorAll('[data-k]').forEach((b) => { b.onclick = () => { placed.splice(+b.dataset.k, 1); step1(); }; });
@@ -308,8 +321,8 @@ export function renderTower(box, q, cfg) {
       const rows = order.map((i) => ko[i]);
       box.innerHTML = `<div class="qhelp"><b>STEP 2</b> 덩어리마다 <em>영어로 쓰세요</em> <small>비슷하게 맞으면 정답으로 인정해요</small></div>
         ${orderOk ? '<div class="note ok">✔ 어순 정답!</div>' : `<div class="note no">✘ 어순은 이렇게! <div class="ans-line">${rows.map((c) => chunkHTML(c)).join(' → ')}</div></div>`}
-        <div class="tower">${rows.map((c) => `<label class="trow"><span class="tko">${chunkHTML(c)}</span>
-          <input data-i="${c.i}" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="영어로">
+        <div class="tower row-flow">${rows.map((c) => `<label class="trow"><span class="tko">${chunkHTML(c)}</span>
+          <input data-i="${c.i}" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="영어로" style="width:${Math.min(240, Math.max(96, (c.answers[0] || '').length * 11 + 34))}px">
           ${mode === 'tiles' ? `<span class="tiles">${shuffle(c.answers[0].split(' ')).map((w) => `<button type="button" class="tile" data-for="${c.i}">${esc(w)}</button>`).join('')}</span>` : ''}</label>`).join('')}</div>
         <div class="row center"><button class="primary" id="submit">제출</button></div>`;
       box.querySelectorAll('.tile').forEach((t) => {

@@ -511,6 +511,54 @@ export function buildWorld(scene, board, guide) {
     }
   });
 
+  // 🌬️ 돌아가는 풍차 (마을 · 시티 · 성 근처 들판, 길에서 떨어진 곳)
+  const windmill = (col) => {
+    const g = new THREE.Group();
+    const tower = new THREE.Mesh(new THREE.CylinderGeometry(0.55, 0.95, 3.4, 10), m(0xfff4e0)); tower.position.y = 1.7; g.add(tower);
+    const roof = new THREE.Mesh(new THREE.ConeGeometry(0.8, 1.0, 10), m(col)); roof.position.y = 3.9; g.add(roof);
+    const door = new THREE.Mesh(new THREE.BoxGeometry(0.45, 0.7, 0.1), m(0x8a5a35)); door.position.set(0, 0.35, 0.9); g.add(door);
+    const win = new THREE.Mesh(new THREE.CircleGeometry(0.2, 12), m(0x8fd8ff)); win.position.set(0, 2.4, 0.74); g.add(win);
+    const hub = new THREE.Group(); hub.position.set(0, 3.2, 0.82); g.add(hub);
+    hub.add(new THREE.Mesh(new THREE.SphereGeometry(0.18, 10, 8), m(0xffd43b)));
+    for (let k = 0; k < 4; k++) {
+      const arm = new THREE.Group(); arm.rotation.z = (k * Math.PI) / 2;
+      const pole = new THREE.Mesh(new THREE.BoxGeometry(0.08, 1.9, 0.06), m(0x8a5a35)); pole.position.y = 1.0; arm.add(pole);
+      const sail = new THREE.Mesh(new THREE.BoxGeometry(0.5, 1.4, 0.03), m(k % 2 ? 0xffffff : 0xffe3ef)); sail.position.set(0.26, 1.15, 0.02); arm.add(sail);
+      hub.add(arm);
+    }
+    animated.push({ obj: hub, kind: 'windmill' });
+    return g;
+  };
+  let placedWM = 0;
+  [[0, 3, 0x4fa65b], [1, 9, 0xe0453a], [0, 13, 0x2e7bc4], [1, 19, 0xf29a2e], [0, 26, 0xe21e8c], [1, 31, 0x2e7bc4], [0, 38, 0x7a3fa8], [1, 44, 0xf2c14e]].forEach(([side, i, col], k) => {
+    if (i >= N) return;
+    const p = cellPosition(i);
+    for (const dx of [4.6, 5.2, 6, 7]) {
+      const x = p.x + (side ? dx : -dx); const z = p.z - 1.5;
+      if (!free(x, z, 3.6)) continue;
+      const w = windmill(col); w.position.set(x, 0, z); w.rotation.y = side ? -0.5 : 0.5; w.scale.setScalar(0.75 + (k % 2) * 0.1);
+      shadowAll(w); scene.add(w); occupied.push([x, z, 2.2]); placedWM++; break;
+    }
+  });
+
+  if (typeof window !== 'undefined') window.__WM = placedWM; // 테스트용
+  // 🐦 날아다니는 귀여운 새 (동그란 몸 · 파닥이는 날개 · 부리) — 하늘을 빙글빙글
+  const birdCols = [0x8fd8ff, 0xffd43b, 0xff9ec4, 0xffffff, 0xb79cff];
+  for (let n = 0; n < 26; n++) {
+    const b = new THREE.Group();
+    const col = birdCols[n % birdCols.length];
+    const body = new THREE.Mesh(new THREE.SphereGeometry(0.28, 12, 10), m(col)); body.scale.set(1, 0.9, 1.2); b.add(body);
+    const head = new THREE.Mesh(new THREE.SphereGeometry(0.18, 12, 10), m(col)); head.position.set(0, 0.16, 0.28); b.add(head);
+    const beak = new THREE.Mesh(new THREE.ConeGeometry(0.05, 0.14, 8), m(0xffa94d)); beak.rotation.x = Math.PI / 2; beak.position.set(0, 0.14, 0.46); b.add(beak);
+    [-1, 1].forEach((sd) => { const e = new THREE.Mesh(new THREE.SphereGeometry(0.03, 6, 5), new THREE.MeshBasicMaterial({ color: 0x1b1430 })); e.position.set(sd * 0.08, 0.2, 0.42); b.add(e); });
+    const wings = [-1, 1].map((sd) => { const w = new THREE.Group(); w.position.set(sd * 0.2, 0.05, 0); const wm = new THREE.Mesh(new THREE.SphereGeometry(0.2, 10, 6), m(col)); wm.scale.set(1.6, 0.2, 0.9); wm.position.x = sd * 0.25; w.add(wm); b.add(w); return w; });
+    const tail = new THREE.Mesh(new THREE.ConeGeometry(0.1, 0.25, 6), m(col)); tail.rotation.x = -Math.PI / 2 - 0.3; tail.position.set(0, 0.05, -0.36); b.add(tail);
+    const bz = -r() * (N - 1) * SP; b.userData = { wings, cx: pathX(-bz / SP) + (n % 2 ? 1 : -1) * (3.6 + r() * 1.6), cz: bz, rad: 1.0 + r() * 1.0, h: 2.6 + r() * 1.2, sp: (0.25 + r() * 0.25) * (n % 2 ? 1 : -1), ph: r() * 6.28 };
+    b.scale.setScalar(0.9);
+    scene.add(b);
+    animated.push({ obj: b, kind: 'bird' });
+  }
+
   // 뭉게구름
   for (let n = 0; n < 18; n++) {
     const c = new THREE.Group();
@@ -586,6 +634,13 @@ export function buildWorld(scene, board, guide) {
       else if (kind === 'clock') obj.rotation.z -= dt * 0.8;
       else if (kind === 'flag') obj.rotation.y = Math.sin(t * 3 + obj.position.x) * 0.4;
       else if (kind === 'cloud') { obj.position.x += dt * 0.3; if (obj.position.x > 32) obj.position.x = -32; }
+      else if (kind === 'windmill') obj.rotation.z -= dt * 1.4;
+      else if (kind === 'bird') { // 하늘을 빙글빙글 + 날개 파닥 + 살짝 오르내림
+        const u = obj.userData; const a = t * u.sp + u.ph;
+        obj.position.set(u.cx + Math.cos(a) * u.rad, u.h + Math.sin(t * 1.6 + u.ph) * 0.6, u.cz + Math.sin(a) * u.rad);
+        obj.rotation.y = -a + (u.sp > 0 ? 0 : Math.PI);
+        const f = Math.sin(t * 14 + u.ph) * 0.8; u.wings[0].rotation.z = f; u.wings[1].rotation.z = -f;
+      }
     });
     const gp = glitter.geometry.attributes.position;
     for (let k = 0; k < G; k++) gp.array[k * 3 + 1] += Math.sin(t * 1.5 + k) * dt * 0.15;
