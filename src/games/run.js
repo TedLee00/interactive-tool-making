@@ -17,14 +17,10 @@ export function playRun({ charId = 'bboy' } = {}) {
     subtitle: '바르게 꾸민 음식만 먹으며 끝까지 달려라!',
     music: 'mgRun',
     howto: [
-      '화면 위 <b class="red">미션에 맞게 바르게 쓴 음식만</b> 먹어요 — <b>sweet cake</b> ⭕ / <b class="red">sweetly cake ❌ 오답 음식!</b>',
-      '<b class="red">⬆ 점프</b> 버튼 · 🧁 <b class="red">부스터 컵케이크</b>를 먹으면 <b class="red">2단 점프 부스터</b>가 한 칸 차요 (최대 3칸)',
-      '부스터가 있을 때 <b>공중에서 한 번 더</b> 누르면 <b class="red">2단 점프!</b> — 위험할 때 아껴 쓰기 (콤보 5마다 한 칸 보너스)',
-      '<b class="red">⬇ 슬라이드</b> 버튼 · 축구 슬라이딩처럼 쭉 누워서 지나가요',
-      '💧 <b>물웅덩이</b>는 점프로 건너요 — 웅덩이가 <b class="red">여러 개 이어지면 연속 점프!</b>',
-      '오답 음식이 <b>땅</b>에 있으면 <b class="red">점프로 넘고</b>, <b>머리 높이</b>에 있으면 <b class="red">슬라이드로 밑으로!</b>',
-      '<b>보강 여신 · 묵언수행 · 보강대장</b>이 길을 막아요 — 점프로 피하기!',
-      '🌮 <b>타코</b> = Ted 선생님 변신 (잠깐 무적 · 점프 더 높게 · 2단 점프 무제한) · 💗 하트 회복 · 하트 5개 · 미션 6개 → 보스 → 🏁 깃발',
+      '<span class="hk g">⭕ 바르게 꾸민 음식</span> 먹기 · <span class="hk r">❌ 오답 음식</span> 피하기',
+      '<span class="hk b">⬆ 점프</span> 장애물 · 웅덩이 넘기 &nbsp;<span class="hk p">⬇ 슬라이드</span> 머리 위 장애물',
+      '<span class="hk c">🧁 컵케이크</span> = <b>2단 점프</b> 부스터 (최대 3칸)',
+      '<span class="hk y">🌮 타코</span> Ted 변신 &nbsp;<span class="hk r">❤️ 하트 5개</span> 다 잃으면 끝',
     ],
     async setup(ctx) {
       const { g } = ctx;
@@ -75,9 +71,9 @@ export function playRun({ charId = 'bboy' } = {}) {
       const jump = () => {
         if (S.finished) return;
         const isTed = S.taco > 0; // Ted 선생님 변신 중: 더 높이, 2단 점프 공짜
-        if (S.y === 0 && S.slide <= 0) { S.vy = isTed ? -720 : -615; S.jumps = 1; ctx.sfx('hop'); }
+        if (S.y === 0 && S.slide <= 0) { S.vy = isTed ? -576 : -492; /* 높이는 그대로, 더 멀리 (체공시간 +25%) */ S.jumps = 1; ctx.sfx('hop'); }
         else if (S.jumps === 1 && (isTed || S.boost > 0)) {
-          S.vy = isTed ? -640 : -580; S.jumps = 2; ctx.sfx('hop');
+          S.vy = isTed ? -512 : -464; S.jumps = 2; ctx.sfx('hop');
           if (!isTed) { S.boost--; syncBoost(); ctx.floatText('⚡ 2단 점프!', PX, GY() + S.y - 70, '#5BE0FF', 16); }
           ctx.burst(PX, GY() + S.y - 20, 12, ['#fff', '#8FD8FF', '#5BE0FF']);
         } else if (S.jumps === 1 && !isTed) ctx.floatText('부스터 없음!', PX, GY() + S.y - 70, '#9A90B5', 14);
@@ -197,7 +193,7 @@ export function playRun({ charId = 'bboy' } = {}) {
           S.speed = 235 * slowK * (S.taco > 0 ? 1.12 : 1);
           const move = S.speed * dt;
           S.x += move;
-          S.vy += 1500 * dt;
+          S.vy += 960 * dt; // 중력을 약하게 → 같은 높이로 더 멀리 날아감
           S.y = Math.min(0, S.y + S.vy * dt);
           if (S.y === 0) { S.vy = 0; S.jumps = 0; }
           S.slide = Math.max(0, S.slide - dt);
@@ -257,7 +253,7 @@ export function playRun({ charId = 'bboy' } = {}) {
               ctx.burst(PX, gy - 60, 40); ctx.end(result(true));
             }
           }
-          ctx.hud(`❤️×${Math.max(0, S.hearts)} <b>${S.score}</b>${S.combo > 1 ? ` <i>🔥${S.combo}</i>` : ''}`);
+          ctx.hud(`<span class="hearts">${'❤️'.repeat(Math.max(0, S.hearts))}${'🤍'.repeat(Math.max(0, 5 - S.hearts))}</span> <b>${S.score}</b>${S.combo > 1 ? ` <i>🔥${S.combo}</i>` : ''}`);
         },
         draw(gc) {
           const { W, H } = ctx;

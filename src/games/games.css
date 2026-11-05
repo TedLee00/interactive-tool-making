@@ -230,3 +230,21 @@
 .mg-btn.jump.charge .bst { animation: bstPop .5s ease-out; }
 @keyframes bstPop { 30% { transform: scale(1.25); } }
 
+
+/* 게임 설명: 중요한 말은 색 상자로 */
+.mg-card ol .hk { display: inline-block; padding: 1px 8px; margin: 1px 0; border-radius: 9px; font-family: 'Jua', sans-serif; font-size: 15px; border: 2px solid; }
+.mg-card ol .hk.g { background: #E3F8EA; color: #1E7B49; border-color: #7ED09A; }
+.mg-card ol .hk.r { background: #FFE8E8; color: #C2332A; border-color: #FF9B94; }
+.mg-card ol .hk.b { background: #E5F1FF; color: #1F5C99; border-color: #8FBFF0; }
+.mg-card ol .hk.p { background: #F0EAFF; color: #5B3FB8; border-color: #B9A6F0; }
+.mg-card ol .hk.c { background: #E0F8FF; color: #12709A; border-color: #6FD0F0; }
+.mg-card ol .hk.y { background: #FFF4D0; color: #8A5A10; border-color: #F2C14E; }
+.mg-card ol li:has(.hk) { line-height: 1.9; }
+/* 청크런: 2단 부스터 칸을 점프 버튼 위로 띄워서 잘 보이게 */
+.mg-btn.jump { position: relative; overflow: visible; }
+.mg-btn.jump .bst { position: absolute; left: 50%; top: -40px; transform: translateX(-50%); margin: 0; padding: 4px 10px; border-radius: 14px; background: #2B2350; box-shadow: 0 3px 10px rgba(43, 35, 80, .35); white-space: nowrap; }
+.mg-btn.jump .bst em { color: #A8F0FF; font-size: 12px; }
+.mg-btn.jump .bst i { border-color: #6FD0F0; background: rgba(255, 255, 255, .15); }
+.mg-btn.jump.charge .bst { animation: bstPop2 .5s ease-out; }
+@keyframes bstPop2 { 30% { transform: translateX(-50%) scale(1.25); } }
+.mg-hud .hearts { letter-spacing: -2px; font-size: 13px; }
