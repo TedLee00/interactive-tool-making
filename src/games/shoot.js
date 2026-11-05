@@ -1,6 +1,8 @@
 // 품사 사격장 — 지시된 품사가 적힌 과녁만 정확히 탭해서 맞힌다. 라운드마다 12초!
 import { openGame, rand, pick, shuffle, clamp, roundRect, loadImage, asset, charSprite } from './engine.js';
 import data from '../../data/minigames.json';
+import { tedSVG } from './runner-art.js';
+import '../fx/legacy-run.css'; // 달리는 Ted 동작
 
 // 5라운드 × 25초 — 라운드마다 품사가 바뀐다
 const ROUNDS = [
@@ -102,7 +104,7 @@ export function playShoot() {
         // 👨‍🏫 Ted 선생님을 쏘면: 아야! 깜짝 · 감점 (선생님이 과녁보다 앞에 있으니 먼저 판정)
         const td = S.ted;
         if (td.mode && !td.ouch && td.box && p.x > td.box.x0 && p.x < td.box.x1 && p.y > td.box.y0 && p.y < td.box.y1) {
-          td.ouch = 1.1; S.combo = 0; if (td.mode === 'peek') td.dur = td.t + 1.3; // 놀란 얼굴을 잠깐 보여 주고 쏙 들어감 S.wrong++; S.score = Math.max(0, S.score - 250); S.left = Math.max(0, S.left - 1);
+          td.ouch = 1.1; S.combo = 0; if (td.mode === 'peek') td.dur = td.t + 1.3; /* 놀란 얼굴을 잠깐 보여 주고 쏙 들어감 */ S.wrong++; S.score -= 250; S.left = Math.max(0, S.left - 1);
           ctx.sfx('no'); ctx.shake(8, 0.3);
           S.pops.push({ x: clamp(p.x, 90, ctx.W - 90), y: p.y - 40, ok: false, big: '아야!! 😵', sub: '선생님은 쏘면 안 돼요! -250 · -1초', life: 1.3 });
           return;
@@ -119,12 +121,12 @@ export function playShoot() {
           if (hit.good) {
             S.hits++; S.combo++; S.best = Math.max(S.best, S.combo); S.score += 400; S.snacks.push(hit.snack);
             ctx.burst(hit.x, hit.ty, 30, ['#FFD43B', '#fff', '#E21E8C']);
-            pop(hit, true, `🍫 ${SNACK_NAME[hit.snack]} GET! +400`);
-            ctx.callout('yar', `${SNACK_NAME[hit.snack]} 획득!`); ctx.sfx('perfect');
+            pop(hit, true, `🍫 +400`);
+            ctx.callout('wow', `${SNACK_NAME[hit.snack]} 획득!`); ctx.sfx('perfect');
           } else {
-            S.wrong++; S.combo = 0; S.left = Math.max(0, S.left - 3); S.score = Math.max(0, S.score - 300);
+            S.wrong++; S.combo = 0; S.left = Math.max(0, S.left - 3); S.score -= 300;
             ctx.shake(12, 0.4); ctx.sfx('no');
-            pop(hit, false, `✘ ${ROUNDS[S.round].target} 아님 -300 · -3초`);
+            pop(hit, false, '-300 · -3초');
           }
           return;
         }
@@ -133,21 +135,21 @@ export function playShoot() {
           const pts = 100 + Math.min(10, S.combo) * 25;
           S.score += pts;
           ctx.burst(hit.x, hit.ty, 18, ['#FFD43B', '#fff', '#E0453A']);
-          pop(hit, true, `✔ 정답 +${pts}`);
+          pop(hit, true, `+${pts}`);
           ctx.sfx('ok');
-          if (S.combo % 5 === 0) ctx.callout('yar', `${S.combo} 콤보!`);
+          ctx.comboCallout(S.combo, `${S.combo} 콤보!`);
         } else {
           S.wrong++; S.combo = 0; S.left = Math.max(0, S.left - 1);
-          S.score = Math.max(0, S.score - 200); // 오답은 확실하게 감점 (정확하게 쏜 학생이 이득)
+          S.score -= 200; // 오답은 확실하게 감점 — 0점 아래로도 내려감 (정확하게 쏜 학생이 이득)
           ctx.shake(8); ctx.sfx('no');
-          pop(hit, false, `✘ ${ROUNDS[S.round].target} 아님 -200 · -1초`);
+          pop(hit, false, '-200 · -1초');
         }
       }
 
       // 맞힌 과녁 위에: 맞았는지 · 점수 · 한글 뜻 카드가 떠올랐다 사라짐
       function pop(t, ok, big) {
         const ko = (data.ko || {})[t.label];
-        S.pops.push({ x: clamp(t.x, 80, ctx.W - 80), y: t.ty - 34, ok, big, sub: ko ? `${t.label.replace(/^\(.*?\)\s*/, '')} = ${ko}` : t.label, life: 1.2 });
+        S.pops.push({ x: clamp(t.x, 80, ctx.W - 80), y: t.ty - 34, ok, big, sub: ko || '', life: 1.2, burst: 0 }); // 점수 + 한글 뜻만 (영어는 이미 팻말에 있으니까)
       }
 
       function finish() {
@@ -157,7 +159,7 @@ export function playShoot() {
         // 맞힌 과자 과녁은 모두 상품 (초코파이 · 오예스 · 쿠키앤크림)
         const snacks = S.snacks.slice();
         ctx.end({
-          score: S.score, cleared: S.hits >= 20, coins: Math.max(0, Math.min(30, Math.round((S.hits - S.wrong) * 0.8))), // 코인(전체 점수)도 오답만큼 깎임 snack: snacks[0] || null, snacks,
+          score: Math.max(0, S.score), cleared: S.hits >= 20, coins: Math.max(0, Math.min(30, Math.round((S.hits - S.wrong) * 0.8))), /* 코인(전체 점수)도 오답만큼 깎임 */ snack: snacks[0] || null, snacks,
           headline: S.hits >= 35 ? '명사수 등장!' : S.hits >= 20 ? '사격 성공!' : '조금만 더 정확하게!', legendAt: 5500,
           lines: [`명중 <b>${S.hits}</b> · 잘못 쏜 과녁 ${S.wrong} · 🍫 과자 과녁 <b>${S.snacks.length}</b>개`, `최고 콤보 <b>${S.best}</b> · 20발 명중하면 성공 · 과자 과녁을 맞히면 그 과자가 상품!`],
         });
@@ -169,8 +171,15 @@ export function playShoot() {
         TL: (W, H) => ({ ax: W * 0.16, ay: 40, dx: 0.3, dy: 1, tilt: 0 }), TR: (W, H) => ({ ax: W * 0.84, ay: 40, dx: -0.3, dy: 1, tilt: 0 }),
         BL: (W, H) => ({ ax: 30, ay: H * 0.8 + 26, dx: 0.35, dy: -1, tilt: 0 }), BR: (W, H) => ({ ax: W - 30, ay: H * 0.8 + 26, dx: -0.35, dy: -1, tilt: 0 }),
       };
+      const runner = document.createElement('div');
+      runner.className = 'rg-p ted tr';
+      runner.innerHTML = tedSVG(); // 임시 → 아래에서 새 Ted 그림으로 바꿈 (다리 · 팔 부품 이름이 같아서 같은 달리기 동작이 그대로 적용)
+      fetch(asset('characters/ted.svg')).then((r) => r.text()).then((t) => { runner.innerHTML = t.replace(/<ellipse[^>]*fill="rgba\([^)]*\)"\s*\/>/, ''); }).catch(() => {});
+      runner.style.display = 'none';
+      ctx.layer.appendChild(runner);
       function drawTed(g, W, H) {
         const td = S.ted; td.box = null;
+        if (td.mode !== 'run') runner.style.display = 'none';
         if (!td.mode || !tedImg) return;
         const ink = '#2B2350';
         const face = (fx, fy, sc) => { // 맞았을 때: 핑글핑글 눈 · 반창고 · 별
@@ -186,11 +195,15 @@ export function playShoot() {
           g.fillStyle = ink; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(td.say, sx, y);
         };
         if (td.mode === 'run') {
-          const ih = 118; const iw = ih * (tedImg.width / tedImg.height);
-          const bob = Math.abs(Math.sin(td.t * 14)) * 8; const y = td.y - bob;
-          g.save(); g.translate(td.x, y); g.scale(td.dir, 1); g.rotate(0.18 + (td.ouch ? Math.sin(td.ouch * 40) * 0.2 : Math.sin(td.t * 14) * 0.06));
-          g.drawImage(tedImg, -iw / 2, -ih, iw, ih);
-          g.restore();
+          // 진짜로 다리를 휘저으며 뛰는 Ted (DOM 그림 · 청크런과 같은 달리기 동작)
+          const PW = 84; const ih = PW * 146 / 105; const iw = PW;
+          const y = td.y;
+          const scl = ctx.scale || 1;
+          runner.style.display = '';
+          runner.style.width = `${PW * scl}px`;
+          runner.style.transformOrigin = '50% 100%';
+          runner.style.zIndex = 4;
+          runner.style.transform = `translate(${(td.x - PW / 2) * scl}px,${(y - ih * 0.95) * scl}px) scaleX(${td.dir})${td.ouch ? ` rotate(${Math.sin(td.ouch * 40) * 14}deg)` : ''}`;
           // 발밑 먼지
           g.fillStyle = 'rgba(255,255,255,.5)'; for (let k = 0; k < 3; k++) { g.beginPath(); g.arc(td.x - td.dir * (24 + k * 14), td.y - 2 - k * 2, 6 - k * 1.5, 0, 7); g.fill(); }
           face(td.x + td.dir * 10, y - ih * 0.78, 1);
@@ -313,16 +326,16 @@ export function playShoot() {
           drawTed(g, W, H);
           // 맞힌 과녁의 뜻 카드
           S.pops.forEach((q) => {
-            const u = 1 - q.life / (q.big.startsWith('아야') ? 1.3 : 1.2); const y = Math.max(78, q.y - u * 34);
-            g.globalAlpha = Math.min(1, q.life * 2.5);
-            g.font = "400 15px Jua, 'Noto Sans KR', sans-serif"; const w1 = g.measureText(q.big).width;
-            g.font = "400 14px Jua, 'Noto Sans KR', sans-serif"; const w2 = g.measureText(q.sub).width;
-            const w = Math.max(w1, w2) + 22; const x = clamp(q.x, w / 2 + 4, W - w / 2 - 4);
-            roundRect(g, x - w / 2, y - 24, w, 46, 12); g.fillStyle = q.ok ? '#E8FFF0' : '#FFECEC'; g.fill(); g.lineWidth = 3; g.strokeStyle = q.ok ? '#1E9B5B' : '#E0453A'; g.stroke();
-            g.textAlign = 'center'; g.textBaseline = 'middle';
-            g.font = "400 15px Jua, 'Noto Sans KR', sans-serif"; g.fillStyle = q.ok ? '#1E9B5B' : '#E0453A'; g.fillText(q.big, x, y - 11);
-            g.font = "400 14px Jua, 'Noto Sans KR', sans-serif"; g.fillStyle = '#2B2350'; g.fillText(q.sub, x, y + 9);
-            g.globalAlpha = 1;
+            const L0 = q.big.startsWith('아야') ? 1.3 : 1.2;
+            const u = 1 - q.life / L0; const y = Math.max(78, q.y - u * 34);
+            const sc = u < 0.12 ? 0.4 + (u / 0.12) * 0.8 : u < 0.22 ? 1.2 - ((u - 0.12) / 0.1) * 0.2 : 1; // 펑! 터지듯
+            g.save(); g.globalAlpha = Math.min(1, q.life * 2.5); g.translate(clamp(q.x, 70, W - 70), y); g.scale(sc, sc);
+            if (u < 0.25) { g.strokeStyle = q.ok ? 'rgba(255,212,59,.9)' : 'rgba(255,107,107,.8)'; g.lineWidth = 3; for (let k = 0; k < 10; k++) { const a = (k / 10) * Math.PI * 2; const r1 = 26 + u * 120; g.beginPath(); g.moveTo(Math.cos(a) * r1, Math.sin(a) * r1 * 0.7); g.lineTo(Math.cos(a) * (r1 + 10), Math.sin(a) * (r1 + 10) * 0.7); g.stroke(); } }
+            g.textAlign = 'center'; g.textBaseline = 'middle'; g.lineJoin = 'round';
+            const two = !!q.sub;
+            g.font = "400 22px Jua, 'Noto Sans KR', sans-serif"; g.lineWidth = 6; g.strokeStyle = '#2B2350'; g.strokeText(q.big, 0, two ? -14 : 0); g.fillStyle = q.ok ? '#8FE08A' : '#FF8F8F'; g.fillText(q.big, 0, two ? -14 : 0);
+            if (two) { g.font = "400 20px Jua, 'Noto Sans KR', sans-serif"; g.lineWidth = 6; g.strokeStyle = '#2B2350'; g.strokeText(q.sub, 0, 12); g.fillStyle = '#FFF4D6'; g.fillText(q.sub, 0, 12); }
+            g.restore();
           });
 
           // 총알 자국

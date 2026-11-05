@@ -443,7 +443,7 @@ export function playKart({ charId = 'bboy', name = '나', used } = {}) {
           if (ok) {
             quizzes.ok++; streak++;
             gauge = 1; ME.boost = 1.3;
-            { const st = ((streak - 1) % 10) + 1; if (st === 3) E.callout('easy', `퀴즈 ${streak}연속!`); else if (st === 6) E.callout('yar', `퀴즈 ${streak}연속!`); else if (st === 10) E.callout('legend', `퀴즈 ${streak}연속!`); else E.sfx('ok'); } // 이지 3 · 야르 6 · 레전드 10연속
+            if (!E.comboCallout(streak, `퀴즈 ${streak}연속!`)) E.sfx('ok'); // 5연속 이지 · 10연속 야르
           } else {
             streak = 0;
             gauge = Math.max(0, gauge - 0.35);
@@ -513,7 +513,7 @@ export function playKart({ charId = 'bboy', name = '나', used } = {}) {
                 if (z.labels[k] === z.target) {
                   ME.boost = 2.2; gauge = Math.min(1, gauge + 0.35); lanes.ok++;
                   say(`⚡ ${z.word} = ${z.target}! 부스터!`, ME.x, PY - KH, '#1E9B5B');
-                  E.callout('easy', `${z.target} 레인 정답!`); MSG.textContent = `⚡ 정답! ${z.word} = <span class="tg">${z.target}</span> · 부스터!`;
+                  E.callout('wow', `${z.target} 레인 정답!`); MSG.textContent = `⚡ 정답! ${z.word} = <span class="tg">${z.target}</span> · 부스터!`;
                   lsfx([523, 659, 784, 1047], 'square', 0.08, 0.04);
                 } else {
                   ME.v *= 0.55; ME.boost = 0;

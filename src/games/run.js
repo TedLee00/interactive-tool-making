@@ -222,7 +222,7 @@ export function playRun({ charId = 'bboy' } = {}) {
                 ctx.burst(e.x, e.y - 15, 14);
                 ctx.floatText(`+${pts} ${e.label}`, e.x, e.y - 40, '#1E9B5B', 16);
                 ctx.sfx('ok');
-                if (S.combo % 5 === 0) { ctx.callout('yar', `${S.combo} 콤보!`); addBoost('콤보 보너스'); }
+                if (S.combo % 5 === 0) addBoost('콤보 보너스'); ctx.comboCallout(S.combo, `${S.combo} 콤보!`);
               } else {
                 S.bad++;
                 ctx.floatText(`✘ ${e.label}`, e.x, e.y - 40, '#E0453A', 16);
@@ -235,7 +235,7 @@ export function playRun({ charId = 'bboy' } = {}) {
               S.ents.splice(k, 1); ctx.burst(e.x, e.y - 15, 18, ['#5BE0FF', '#fff', '#FFD43B']); addBoost();
             } else if (e.kind === 'taco') {
               S.taco = 6; S.ents.splice(k, 1); setForm('ted'); ctx.burst(PX, gy - 60, 30, ['#FFD43B', '#E21E8C', '#fff']);
-              ctx.callout('yar', 'Ted 선생님 변신!'); S.score += 200;
+              ctx.callout('wow', 'Ted 선생님 변신!'); S.score += 200;
             } else if (e.kind === 'bar') {
               if (S.slide <= 0) { e.done = true; hurt('쿵! 슬라이드!'); }
             } else if (e.kind === 'puddle') {

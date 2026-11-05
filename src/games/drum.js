@@ -69,7 +69,8 @@ export function playDrum() {
     subtitle: '자기 품사 북 위로 떨어지는 단어를 박자에 맞춰 쿵! 짝!',
     howto: [
       '단어가 <b class="red">자기 품사 북 위</b>로 떨어져요 — 북에 닿는 순간 아래 버튼을 쿵!',
-      '🎓 <b class="red">퀴즈 타임</b>이 중간중간 와요 — 문장 속 덩어리의 품사를 맞히면 <b class="red">음악 LEVEL UP!</b> 악기가 늘어나며 화려해져요 (틀리면 한 단계 DOWN)',
+      '🎓 <b class="red">퀴즈 타임</b> — 맞히면 <span class="hk y">🔥 피버 ×2 (20초)</span> <span class="hk c">🛡 콤보 쉴드 3개</span> <span class="hk p">🎶 음악 LEVEL UP</span> · 빨리 맞힐수록 보너스 최대 +1000',
+      '<span class="hk g">🏅 퀴즈 전부 맞히면</span> +2000점 + 간식 쿠폰 🍫',
       '왼쪽 <b>명사(쿵) · 동사(짝)</b> · 가운데 <b>접속사(킥 페달)</b> · 오른쪽 <b>형용사(탐) · 부사(심벌)</b>',
       '박자에 맞게 치면 <b class="red">진짜 드럼 비트</b>가 돼요 — PERFECT를 노려 봐!',
       '틀린 북·놓치면 콤보가 끊겨요 · 정확도 85% 이상이면 간식 쿠폰 🍫',
@@ -77,7 +78,7 @@ export function playDrum() {
     async setup(ctx) {
       bgmStop();
       const notes = makeChart();
-      const S = { score: 0, combo: 0, best: 0, perfect: 0, great: 0, good: 0, miss: 0, wrong: 0, finished: false, fx: [], arm: { L: null, R: null }, armT: { L: 0, R: 0 }, foot: 0, drumHit: {}, boom: 0, lvl: 0, quiz: null, qOk: 0, qN: 0 };
+      const S = { score: 0, combo: 0, best: 0, perfect: 0, great: 0, good: 0, miss: 0, wrong: 0, finished: false, fx: [], arm: { L: null, R: null }, armT: { L: 0, R: 0 }, foot: 0, drumHit: {}, boom: 0, lvl: 0, quiz: null, qOk: 0, qN: 0, fever: 0, shield: 0 };
       const AC = getAC();
       const master = getMaster();
       const clock = () => (AC && AC.state === 'running' ? AC.currentTime : performance.now() / 1000);
@@ -89,13 +90,16 @@ export function playDrum() {
 
       // ---- 소리 ----
       const out = () => (AC && master && !isMuted() ? master : null);
-      function drumSound(pos) {
-        const D = out(); if (!D) return; const t = AC.currentTime;
-        if (pos === '명사') { I.tom(D, t, 95, 0.85); I.kick(D, t, 0.35); }
-        else if (pos === '동사') { I.snare(D, t, 0.5); I.clap(D, t, 0.14); }
-        else if (pos === '형용사') { I.tom(D, t, 220, 0.7); }
-        else if (pos === '부사') { I.hat(D, t, 0.32, true); I.hat(D, t + 0.01, 0.12, true); }
-        else { I.kick(D, t, 1); I.hat(D, t, 0.22, true); } // 킥 + 크래시
+      // 🔊 반주 전용 볼륨 (예전엔 너무 작았음 → 크게)
+      let musBus = null;
+      const mus = () => { const D = out(); if (!D) return null; if (!musBus) { musBus = AC.createGain(); musBus.gain.value = 2.6; musBus.connect(master); } return musBus; };
+      function drumSound(pos, t = AC.currentTime, v = 1, D = out()) {
+        if (!D) return;
+        if (pos === '명사') { I.tom(D, t, 95, 0.85 * v); I.kick(D, t, 0.35 * v); }
+        else if (pos === '동사') { I.snare(D, t, 0.5 * v); I.clap(D, t, 0.14 * v); }
+        else if (pos === '형용사') { I.tom(D, t, 220, 0.7 * v); }
+        else if (pos === '부사') { I.hat(D, t, 0.32 * v, true); I.hat(D, t + 0.01, 0.12 * v, true); }
+        else { I.kick(D, t, 1 * v); I.hat(D, t, 0.22 * v, true); } // 킥 + 크래시
       }
       const thud = () => { const D = out(); if (D) I.tom(D, AC.currentTime, 52, 0.3); };
       const m2f = (m) => 440 * 2 ** ((m - 69) / 12);
@@ -103,7 +107,7 @@ export function playDrum() {
       const BASS = [[45, 45, 52, 45, 47, 45, 52, 47], [41, 41, 48, 41, 43, 41, 48, 43], [36, 36, 43, 36, 38, 36, 43, 38], [43, 43, 50, 43, 45, 43, 50, 45]];
       let nextStep = 0;
       function schedule() { // 반주: 8분음표 베이스 라인 + 코드 + 아주 작은 하이햇 (드럼은 학생이 친다!)
-        const D = out(); if (!D || t0 === null) return;
+        const D = mus(); if (!D || t0 === null) return;
         while (t0 + nextStep * STEP < AC.currentTime + 0.25) {
           const st = nextStep; const t = t0 + st * STEP; const bar = Math.floor((st - 8) / 8);
           if (st < 8) { if (st % 2 === 0) I.hat(D, t, 0.14, st === 6); } // 카운트인 칙 칙 칙 칙
@@ -115,8 +119,10 @@ export function playDrum() {
             if (k === 2 || k === 6) I.stab(D, t, PROG[b].map((m) => m2f(m + 12)), 0.016); // 2·4박 코드 찍기
             if (k === 5 && b % 2) I.marimba(D, t, m2f(PROG[b][2] + 24), 0.025);
             // 박자 가이드: 1·3박 작은 킥, 2·4박 작은 클랩, 8분음표 셰이커 → 박자가 귀에 들림 (학생 드럼이 위에 얹힘)
-            if (k === 0 || k === 4) I.kick(D, t, 0.22);
-            if (k === 2 || k === 6) I.clap(D, t, 0.05);
+            if (k === 0 || k === 4) I.kick(D, t, 0.32);
+            if (k === 2 || k === 6) I.clap(D, t, 0.09);
+            // 🥁 떨어지는 단어의 드럼을 반주에 은은하게 → 음악이 드럼 박자(단어)와 딱 맞게 흘러감 (학생이 치면 그 위에 크게)
+            notes.forEach((n) => { if (n.step === st) drumSound(n.pos, t, 0.16, D); });
             I.hat(D, t, k % 2 ? 0.012 : 0.022);
             // 🎶 음악 레벨 (퀴즈를 맞힐수록 악기가 하나씩 늘어남)
             const Lv = S.lvl; const c = PROG[b];
@@ -149,6 +155,11 @@ export function playDrum() {
       const DY = [118, 132, 152, 132, 118]; // 악기를 더 아래로 (드러머 가까이)
       const hitY = (i = 2) => ctx.H - DY[i];
 
+      // 🛡 콤보 쉴드: 있으면 실수해도 콤보가 안 끊김
+      function breakCombo(i) {
+        if (S.shield > 0 && S.combo > 0) { S.shield--; S.fx.push({ txt: `🛡 쉴드! (${S.shield})`, col: '#8FD8FF', life: 0.7, i }); return; }
+        S.combo = 0;
+      }
       function hit(p) {
         if (S.finished || t0 === null) return;
         const now = clock();
@@ -158,16 +169,16 @@ export function playDrum() {
         const b = btns[i]; b.classList.remove('boom'); void b.offsetWidth; b.classList.add('boom');
         const cand = notes.filter((n) => !n.done && n.pos === p.pos && Math.abs(arrive(n) - now) < 0.3).sort((a, c) => Math.abs(arrive(a) - now) - Math.abs(arrive(c) - now))[0];
         drumSound(p.pos);
-        if (!cand) { S.combo = 0; S.wrong++; S.fx.push({ txt: '빈 박!', col: '#9A90B5', life: 0.6, i }); thud(); return; }
+        if (!cand) { breakCombo(i); S.wrong++; S.fx.push({ txt: '빈 박!', col: '#9A90B5', life: 0.6, i }); thud(); return; }
         cand.done = true;
         const dt = Math.abs(arrive(cand) - now);
         const grade = dt <= 0.09 ? 'PERFECT' : dt <= 0.18 ? 'GREAT' : 'GOOD';
         S[grade.toLowerCase()]++; S.combo++; S.best = Math.max(S.best, S.combo);
-        const pts = { PERFECT: 300, GREAT: 200, GOOD: 100 }[grade] + Math.min(20, S.combo) * 10;
+        const pts = ({ PERFECT: 300, GREAT: 200, GOOD: 100 }[grade] + Math.min(20, S.combo) * 10) * (S.fever > 0 ? 2 : 1); // 🔥 피버 중엔 2배
         S.score += pts;
         S.fx.push({ txt: grade, col: grade === 'PERFECT' ? '#FFD43B' : grade === 'GREAT' ? '#8FE08A' : '#8FD8FF', life: 0.7, i });
         ctx.burst(colX[i](), hitY(i), grade === 'PERFECT' ? 22 : 12, [p.col, '#fff', '#FFD43B']);
-        if (S.combo > 0 && S.combo % 16 === 0) ctx.callout('yar', `${S.combo} 콤보!`);
+        ctx.comboCallout(S.combo, `${S.combo} 콤보!`, { first: 20, second: 50, every: 50 }); // 드럼은 음표가 많아서 20 · 50 · 100 …
       }
 
       // ---- 🎓 퀴즈 타임 ----
@@ -191,7 +202,7 @@ export function playDrum() {
         const tEnd = t0 + (8 + (qb + QUIZ_BARS) * 8) * STEP - 0.4;
         S.quiz = { ...Q, tEnd, done: false }; S.qN++;
         const esc2 = (x) => String(x).replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
-        qLayer.innerHTML = `<div class="dq-card"><div class="dq-t">🎓 QUIZ TIME! <small>맞히면 음악 LEVEL UP</small></div>
+        qLayer.innerHTML = `<div class="dq-card"><div class="dq-t">🎓 QUIZ TIME! <small>맞히면 🔥 피버 ×2 · 🛡 쉴드 · 🎶 음악 UP · 빨리 맞힐수록 보너스!</small></div>
           <div class="dq-s">${Q.sent.map((c) => (c === Q.tgt ? `<b>[ ${esc2(c.text)} ]</b>` : esc2(c.text))).join(' ')}${esc2(Q.end)}</div>
           <div class="dq-q">[ ] 덩어리의 품사는?</div>
           <div class="dq-o">${Q.opts.map((p) => `<button data-p="${p}" class="${POS[p].cls}"><b>${POS[p].sym}</b>${POS[p].name}</button>`).join('')}</div>
@@ -204,14 +215,18 @@ export function playDrum() {
         Q.done = true;
         const ok = p === Q.tgt.pos;
         qLayer.querySelectorAll('button').forEach((bt) => { bt.disabled = true; if (bt.dataset.p === Q.tgt.pos) bt.classList.add('right'); else if (bt.dataset.p === p) bt.classList.add('wrong'); });
+        let bonus = 0;
         if (ok) {
-          S.qOk++; S.lvl = Math.min(4, S.lvl + 1); S.score += 500;
-          ctx.callout(S.lvl >= 4 ? 'legend' : 'yar', `🎶 음악 LEVEL ${S.lvl}!`); ctx.burst(ctx.W / 2, ctx.H * 0.4, 30, ['#FFD43B', '#fff', '#E21E8C']);
+          // 🎁 정답 혜택: 빨리 맞힐수록 보너스(최대 +1000) · 🔥 피버 타임(약 20초 동안 점수 2배 + 무대 조명) · 🛡 콤보 쉴드 3개 · 🎶 음악 LEVEL UP
+          const left = Math.max(0, Q.tEnd - clock());
+          bonus = 300 + Math.round((left / (QUIZ_BARS * 8 * STEP)) * 700);
+          S.qOk++; S.lvl = Math.min(4, S.lvl + 1); S.score += bonus; S.fever = 8 * 8 * STEP; S.shield = 3;
+          ctx.callout(S.lvl >= 4 ? 'legend' : 'wow', `🔥 FEVER! 🎶 LEVEL ${S.lvl}`); ctx.burst(ctx.W / 2, ctx.H * 0.4, 40, ['#FFD43B', '#fff', '#E21E8C']);
         } else {
           S.lvl = Math.max(0, S.lvl - 1); ctx.sfx('no');
           ctx.floatText(p ? `정답은 ${POS[Q.tgt.pos].name}! 음악 DOWN` : `⏰ 정답은 ${POS[Q.tgt.pos].name}!`, ctx.W / 2, ctx.H * 0.62, '#FF8F8F', 18);
         }
-        qLayer.querySelector('.dq-t small').textContent = ok ? `정답! +500 · 🎶 LEVEL ${S.lvl}` : `${POS[Q.tgt.pos].name}였어요 · 🎶 LEVEL ${S.lvl}`;
+        qLayer.querySelector('.dq-t small').innerHTML = ok ? `정답! <b>+${bonus}</b> · 🔥 FEVER ×2 · 🛡×3 · 🎶 LEVEL ${S.lvl}` : `${POS[Q.tgt.pos].name}였어요 · 🎶 LEVEL ${S.lvl}`;
         setTimeout(() => { qLayer.classList.remove('on'); }, 1400);
       }
 
@@ -219,10 +234,11 @@ export function playDrum() {
         if (S.finished) return;
         S.finished = true;
         window.removeEventListener('keydown', onKey);
+        if (S.qN && S.qOk === S.qN) { S.score += 2000; ctx.callout('legend', '퀴즈 만점! +2000'); } // 🏅 퀴즈 전부 맞히면 큰 보너스 + 간식 쿠폰
         const ok = S.perfect + S.great + S.good;
         const acc = Math.round((ok / total) * 100);
         ctx.end({
-          score: S.score, cleared: acc >= 60, coins: Math.min(30, Math.round(acc / 4)), snack: acc >= 85 ? pick(['choco', 'cake', 'cookie']) : null,
+          score: S.score, cleared: acc >= 60, coins: Math.min(30, Math.round(acc / 4)), snack: acc >= 85 || (S.qN && S.qOk === S.qN) ? pick(['choco', 'cake', 'cookie']) : null,
           headline: acc >= 90 ? '🥁 드럼 마스터!' : acc >= 60 ? '연주 성공!' : '조금만 더 박자에 맞춰!', legendAt: 40000,
           lines: [`🎓 퀴즈 <b>${S.qOk}/${S.qN}</b> · 최고 음악 레벨 🎶${S.lvl}`, `정확도 <b>${acc}%</b> · PERFECT ${S.perfect} · GREAT ${S.great} · GOOD ${S.good}`, `빈 박·틀림 ${S.wrong} · 놓침 ${S.miss} · 최고 콤보 <b>${S.best}</b>`],
         });
@@ -235,16 +251,16 @@ export function playDrum() {
           if (S.finished || t0 === null) return;
           schedule();
           const now = clock();
-          notes.forEach((n) => { if (!n.done && now - arrive(n) > 0.3) { n.done = true; n.miss = true; S.miss++; S.combo = 0; } });
+          notes.forEach((n) => { if (!n.done && now - arrive(n) > 0.3) { n.done = true; n.miss = true; S.miss++; breakCombo(PADS.findIndex((p) => p.pos === n.pos)); } });
           S.fx.forEach((f) => { f.life -= dt; }); S.fx = S.fx.filter((f) => f.life > 0);
           ['L', 'R'].forEach((h) => { S.armT[h] = Math.max(0, S.armT[h] - dt); });
-          S.foot = Math.max(0, S.foot - dt); S.boom = Math.max(0, S.boom - dt);
+          S.foot = Math.max(0, S.foot - dt); S.boom = Math.max(0, S.boom - dt); S.fever = Math.max(0, S.fever - dt);
           Object.keys(S.drumHit).forEach((k) => { S.drumHit[k] = Math.max(0, S.drumHit[k] - dt); });
           // 🎓 퀴즈 마디가 시작되면 퀴즈 카드
           { const bar = Math.floor(((now - t0) / STEP - 8) / 8);
             if (bar >= 0 && isQuizBar(bar) && bar % CYCLE === CYCLE - QUIZ_BARS && S.lastQ !== bar) { S.lastQ = bar; openQuiz(bar); }
             if (S.quiz && !S.quiz.done) { const left = S.quiz.tEnd - now; const el = qLayer.querySelector('.dq-bar i'); if (el) el.style.width = `${Math.max(0, left / ((QUIZ_BARS * 8 * STEP) - 0.4)) * 100}%`; if (left <= 0) answerQuiz(null); } }
-          ctx.hud(`🎶Lv${S.lvl} · 🎵 <b>${notes.filter((n) => n.done).length}</b>/${total} · <b>${S.score}</b>${S.combo > 1 ? ` <i>🔥${S.combo}</i>` : ''}`);
+          ctx.hud(`${S.fever > 0 ? '🔥×2 · ' : ''}${S.shield ? `🛡${S.shield} · ` : ''}🎶Lv${S.lvl} · 🎵 <b>${notes.filter((n) => n.done).length}</b>/${total} · <b>${S.score}</b>${S.combo > 1 ? ` <i>🔥${S.combo}</i>` : ''}`);
           if (now > t0 + Math.max(lastStep + 6, 8 + BARS * 8 + 2) * STEP) finish(); // 마지막 퀴즈 타임까지 다 하고 끝
         },
         draw(g) {
@@ -255,6 +271,10 @@ export function playDrum() {
           // 공연장
           const bg = g.createLinearGradient(0, 0, 0, H); bg.addColorStop(0, '#120C2E'); bg.addColorStop(1, '#3A1E5C');
           g.fillStyle = bg; g.fillRect(0, 0, W, H);
+          if (S.fever > 0) { // 🔥 피버: 금빛 무대 + 깜빡이는 조명
+            g.globalAlpha = 0.18 + 0.14 * Math.abs(Math.sin(now * 8)); g.fillStyle = '#FFB000'; g.fillRect(0, 0, W, H); g.globalAlpha = 1;
+            g.font = "400 22px Jua, sans-serif"; g.textAlign = 'center'; g.lineWidth = 5; g.strokeStyle = '#7A1F1F'; g.strokeText(`🔥 FEVER ×2 · ${Math.ceil(S.fever)}`, W / 2, 34); g.fillStyle = '#FFD43B'; g.fillText(`🔥 FEVER ×2 · ${Math.ceil(S.fever)}`, W / 2, 34);
+          }
           [[W * 0.2, '#E21E8C'], [W * 0.5, '#FFD43B'], [W * 0.8, '#2E9BDA']].forEach(([x, c], k) => {
             const sway = Math.sin(now * 0.8 + k * 2) * 40;
             const gr = g.createLinearGradient(x, 0, x + sway, H * 0.7); gr.addColorStop(0, c + 'AA'); gr.addColorStop(1, c + '00');
@@ -282,7 +302,7 @@ export function playDrum() {
               g.font = "400 15px Jua, 'Noto Sans KR', sans-serif";
               const w = Math.min(70, Math.max(54, g.measureText(n.word).width + 14));
               roundRect(g, x - w / 2, y - 15, w, 30, 15);
-              g.fillStyle = '#FFFBF0'; g.fill(); g.lineWidth = 3; g.strokeStyle = PADS[i].col; g.stroke();
+              g.fillStyle = S.fever > 0 ? '#FFF1B0' : '#FFFBF0'; g.fill(); g.lineWidth = S.fever > 0 ? 4 : 3; g.strokeStyle = S.fever > 0 ? '#F2A900' : PADS[i].col; g.stroke(); /* 피버 땐 금빛 단어 */
               g.fillStyle = '#2B2350'; g.textAlign = 'center'; g.textBaseline = 'middle';
               g.font = `400 ${n.word.length > 8 ? 11 : 14}px Jua, 'Noto Sans KR', sans-serif`;
               g.fillText(n.word, x, y + 1);

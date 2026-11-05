@@ -265,3 +265,8 @@
 .dq-o button.wrong { background: #FFE8E8; border-color: #E0453A; }
 .dq-bar { margin-top: 8px; height: 8px; border-radius: 4px; background: #EEE8F8; overflow: hidden; }
 .dq-bar i { display: block; height: 100%; width: 100%; background: linear-gradient(90deg, #FF8FB1, #FFD43B); }
+
+/* 청크런: 슬라이드 버튼도 점프만큼 또렷하게 (하늘·파랑 계열, 같은 크기) */
+.mg-btn.slide { flex: 1.4; background: linear-gradient(180deg, #CFE6FF, #6FA8F0); color: #10325E; border-color: #fff; box-shadow: 0 5px 0 #2F6FC0, 0 8px 16px rgba(47, 111, 192, .3); }
+.mg-btn.slide.on { box-shadow: 0 1px 0 #2F6FC0; }
+.dq-t small b { color: #E21E8C; }
