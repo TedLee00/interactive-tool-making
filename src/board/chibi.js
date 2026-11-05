@@ -110,8 +110,8 @@ export function makeChibi(id, fallbackColor = '#4F7CC4') {
   if (H === 'perm' || H === 'afro' || H === 'curly') {
     const n = H === 'afro' ? 16 : 13; const R0 = H === 'afro' ? 0.3 : 0.27; const br = H === 'afro' ? 0.12 : 0.1;
     head.add(cap(1.07, 0.55));
-    for (let k = 0; k < n; k++) { const a = (k / n) * Math.PI * 2; const up = k % 2 ? 0.1 : 0.2; head.add(mesh(S(br, 12, 9), hc, { x: Math.cos(a) * R0, y: hy + up + (Math.sin(a) < 0 ? 0.05 : 0), z: Math.sin(a) * R0 - 0.04 })); }
-    head.add(mesh(S(br * 1.3, 12, 9), hc, { y: hy + HR * 0.95 }));
+    for (let k = 0; k < n; k++) { const a = (k / n) * Math.PI * 2; const up = c.hat ? -0.04 : k % 2 ? 0.1 : 0.2; /* 모자를 쓰면 곱슬머리는 모자 아래 옆·뒤로만 */ if (c.hat && Math.sin(a) > 0.3) continue; head.add(mesh(S(br, 12, 9), hc, { x: Math.cos(a) * R0, y: hy + up + (Math.sin(a) < 0 ? 0.05 : 0), z: Math.sin(a) * R0 - 0.04 })); }
+    if (!c.hat) head.add(mesh(S(br * 1.3, 12, 9), hc, { y: hy + HR * 0.95 }));
   }
   if (H === 'mohawk') { head.add(cap(1.02, 0.45)); for (let k = -3; k <= 3; k++) head.add(mesh(new THREE.ConeGeometry(0.045, 0.2, 6), hc, { y: hy + Math.cos(k * 0.3) * HR + 0.08, z: Math.sin(k * 0.3) * HR, rx: k * 0.3 })); }
   if (H === 'pony') { head.add(cap(1.06, 0.55)); head.add(mesh(S(0.1, 12, 9), hc, { y: hy + 0.05, z: -HR - 0.04, sy: 1.6 })); }
