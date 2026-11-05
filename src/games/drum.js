@@ -438,7 +438,7 @@ export function playDrum() {
             g.font = `400 ${28 + J.L * 2}px Jua, sans-serif`; g.textAlign = 'center'; g.textBaseline = 'middle'; g.lineWidth = 7; g.strokeStyle = '#4A1258'; g.strokeText(name, 0, 0);
             g.fillStyle = `hsl(${(now * 200) % 360}, 95%, 65%)`; g.fillText(name, 0, 0);
             const left = J.t1 - now;
-            const sub = left <= BEAT * 4 ? '곧 내 차례! 단어가 내려와요 👇' : '드러머 솔로 감상 · 같이 마음껏 쳐도 OK!';
+            const sub = '드러머 솔로 감상 · 같이 마음껏 쳐도 OK!'; void left;
             g.font = "400 15px Jua, sans-serif"; g.lineWidth = 4; g.strokeText(sub, 0, 30); g.fillStyle = '#fff'; g.fillText(sub, 0, 30);
             g.restore();
           }
@@ -493,8 +493,6 @@ export function playDrum() {
               g.save(); g.translate(W / 2, H * 0.5); g.scale(1.4 - ph * 0.4, 1.4 - ph * 0.4); g.globalAlpha = 1 - ph * 0.5;
               g.font = "400 64px Jua, sans-serif"; g.textAlign = 'center'; g.textBaseline = 'middle'; g.lineWidth = 8; g.strokeStyle = '#2B2350'; g.strokeText(String(n), 0, 0); g.fillStyle = '#FFD43B'; g.fillText(String(n), 0, 0);
               g.restore(); g.globalAlpha = 1;
-            } else if (left <= 0) {
-              g.font = "400 34px Jua, sans-serif"; g.textAlign = 'center'; g.lineWidth = 7; g.strokeStyle = '#2B2350'; g.strokeText('🎵 내 차례!', W / 2, H * 0.5); g.fillStyle = '#8FE08A'; g.fillText('🎵 내 차례!', W / 2, H * 0.5);
             }
           }
           void hy;
