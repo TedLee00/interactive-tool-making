@@ -26,7 +26,7 @@ const tierOfBar = (b) => { let k = 0; TIERS.forEach((t, i) => { if (b >= t) k = 
 const fallOf = (step) => FALLS[tierOfBar(Math.floor((step - 8) / 8))];
 const BARS = 50; // ≈ 2분
 // 🎓 퀴즈 타임: 10마디마다 마지막 3마디는 단어가 안 떨어지고 짧은 청크 퀴즈 → 맞히면 음악 LEVEL UP
-const CYCLE = 10; const QUIZ_BARS = 3;
+const CYCLE = 10; const QUIZ_BARS = 4; // 퀴즈 4마디 — 다음 단어가 떨어지기 전에 퀴즈가 끝나도록
 const isQuizBar = (b) => b % CYCLE >= CYCLE - QUIZ_BARS;
 
 // 그루브 패턴: 마디(8분음표 8칸) 안에서 어느 북을 칠지 — 명=쿵(플로어) 동=짝(스네어) 형=탐 부=심벌 접=킥
@@ -273,8 +273,11 @@ export function playDrum() {
       }
       function openQuiz(qb) {
         const Q = makeQuiz(S.qN); if (!Q) return;
-        const tEnd = t0 + (8 + (qb + QUIZ_BARS) * 8) * STEP - 0.4;
-        S.quiz = { ...Q, tEnd, done: false }; S.qN++;
+        // 퀴즈 카드는 다음 단어가 떨어지기 시작하기 전에 닫힘 (카드에 가려 단어를 놓치지 않게)
+        const nextStep = 8 + (qb + QUIZ_BARS) * 8;
+        const hideBy = t0 + nextStep * STEP - fallOf(nextStep) - 0.15;
+        const tEnd = hideBy - 0.9;
+        S.quiz = { ...Q, tEnd, hideBy, dur: Math.max(1, tEnd - clock()), done: false }; S.qN++;
         qLayer.innerHTML = `<div class="dq-card"><div class="dq-t">🎓 QUIZ ${S.qN} <span class="dq-star">난이도 ${Q.stars}</span> <small>맞히면 🔥 피버 ×2 · 🛡 쉴드 · 🎶 음악 UP · 빨리 맞힐수록 보너스!</small></div>
           <div class="dq-s">${Q.sentHTML}</div>
           <div class="dq-q">${Q.ask}</div>
@@ -292,7 +295,7 @@ export function playDrum() {
         if (ok) {
           // 🎁 정답 혜택: 빨리 맞힐수록 보너스(최대 +1000) · 🔥 피버 타임(약 20초 동안 점수 2배 + 무대 조명) · 🛡 콤보 쉴드 3개 · 🎶 음악 LEVEL UP
           const left = Math.max(0, Q.tEnd - clock());
-          bonus = 300 + Math.round((left / (QUIZ_BARS * 8 * STEP)) * 700);
+          bonus = 300 + Math.round(Math.min(1, left / Q.dur) * 700);
           S.qOk++; S.lvl = Math.min(4, S.lvl + 1); S.score += bonus; S.fever = 8 * 8 * STEP; S.shield = 3;
           S.qStreak = (S.qStreak || 0) + 1; fanfare();
           if (!S.jam || clock() > S.jam.t1) { if (S.qStreak >= 2 || S.combo >= 15) startJam(); } // 🥁 퀴즈 연속 정답 · 리듬 잘 타면 → 자유 연주 타임
@@ -302,7 +305,7 @@ export function playDrum() {
           ctx.floatText(p ? `정답은 ${Q.ansLabel}! 음악 DOWN` : `⏰ 정답은 ${Q.ansLabel}!`, ctx.W / 2, ctx.H * 0.62, '#FF8F8F', 18);
         }
         qLayer.querySelector('.dq-t small').innerHTML = ok ? `정답! <b>+${bonus}</b> · 🔥 FEVER ×2 · 🛡×3 · 🎶 LEVEL ${S.lvl}` : `정답: ${Q.ansLabel} · 🎶 LEVEL ${S.lvl}`;
-        setTimeout(() => { qLayer.classList.remove('on'); }, 1400);
+        setTimeout(() => { qLayer.classList.remove('on'); }, Math.max(500, Math.min(1400, (Q.hideBy - clock()) * 1000)));
       }
 
       // ---- 🥁 자유 연주 타임: 드러머 혼자 솔로 — 뒤 퀴즈일수록(어려울수록) 더 길고 화려하게 · 끝에 4·3·2·1 → 내 차례 ----
@@ -411,7 +414,7 @@ export function playDrum() {
           // 🎓 퀴즈 마디가 시작되면 퀴즈 카드
           { const bar = Math.floor(((now - t0) / STEP - 8) / 8);
             if (bar >= 0 && isQuizBar(bar) && bar % CYCLE === CYCLE - QUIZ_BARS && S.lastQ !== bar) { S.lastQ = bar; openQuiz(bar); }
-            if (S.quiz && !S.quiz.done) { const left = S.quiz.tEnd - now; const el = qLayer.querySelector('.dq-bar i'); if (el) el.style.width = `${Math.max(0, left / ((QUIZ_BARS * 8 * STEP) - 0.4)) * 100}%`; if (left <= 0) answerQuiz(null); } }
+            if (S.quiz && !S.quiz.done) { const left = S.quiz.tEnd - now; const el = qLayer.querySelector('.dq-bar i'); if (el) el.style.width = `${Math.max(0, left / S.quiz.dur) * 100}%`; if (left <= 0) answerQuiz(null); } }
           ctx.hud(`${S.combo >= 50 ? '🌟콤보×2 · ' : S.combo >= 20 ? '🥁콤보×1.5 · ' : ''}${S.fever > 0 ? '🔥×2 · ' : ''}${S.shield ? `🛡${S.shield} · ` : ''}⚡S${(S.tier || 0) + 1} · 🎶Lv${S.lvl} · 🎵 <b>${notes.filter((n) => n.done).length}</b>/${total} · <b>${S.score}</b>${S.combo > 1 ? ` <i>🔥${S.combo}</i>` : ''}`);
           if (now > t0 + Math.max(lastStep + 6, 8 + BARS * 8 + 2) * STEP && (!S.jam || now > S.jam.t1 + 1.2)) finish(); // 마지막 퀴즈 타임까지 다 하고 끝
         },
@@ -491,7 +494,7 @@ export function playDrum() {
           // 판정 글자
           S.fx.forEach((f) => { g.globalAlpha = Math.min(1, f.life * 2); g.font = "400 19px Jua, 'Noto Sans KR', sans-serif"; g.textAlign = 'center'; g.lineWidth = 4; g.strokeStyle = '#120C2E'; const y = hitY(f.i) - 52 - (0.7 - f.life) * 40; g.strokeText(f.txt, colX[f.i](), y); g.fillStyle = f.col; g.fillText(f.txt, colX[f.i](), y); });
           g.globalAlpha = 1;
-          drawDrummer(g, xs[2], H, xs, ys, S);
+          drawDrummer(g, xs[2], H, xs, ys, S, pulse);
           void hy;
         },
       };
@@ -578,13 +581,28 @@ function drawKit(g, xs, ys, S, pulse) {
 }
 
 /** 귀여운 드러머 (위·뒤에서 내려다봄): 둥근 머리 · 헤드폰 · 짧은 스틱, 치는 북으로 손이 쏙 */
-function drawDrummer(g, cx, H, xs, ys, S) {
+function drawDrummer(g, cx, H, xs, ys, S, pulse = 0) {
   const ink = '#2B2350';
   const headY = H - 34;
   const STICK = 34;
   g.lineCap = 'round'; g.lineJoin = 'round';
   // 의자 · 어깨 (위에서 본 넓적한 타원 몸)
   g.fillStyle = 'rgba(0,0,0,.35)'; g.beginPath(); g.ellipse(cx, H - 6, 62, 22, 0, 0, 7); g.fill();
+  // 🦶 오른발: 몸 앞으로 쭉 나와 킥 페달을 까딱까딱 (밟으면 꾹, 평소엔 박자에 맞춰 살짝)
+  {
+    const press = S.foot > 0 ? 1 : 0; const tap = pulse * pulse * 0.25;
+    const pedY = ys[2] + 64; // 페달 가운데
+    const fx = cx + 6; const fy = pedY - 4 - press * 7 - tap * 3;
+    const hx = cx + 38; const hy = headY + 6; // 머리 오른쪽 옆으로 다리가 나옴
+    g.strokeStyle = ink; g.lineWidth = 17; g.beginPath(); g.moveTo(hx, hy); g.quadraticCurveTo(cx + 44, fy + 30, fx + 4, fy + 12); g.stroke();
+    g.strokeStyle = '#3C4A7A'; g.lineWidth = 12; g.beginPath(); g.moveTo(hx, hy); g.quadraticCurveTo(cx + 44, fy + 30, fx + 4, fy + 12); g.stroke();
+    g.save(); g.translate(fx, fy); g.scale(1, 1 - press * 0.12);
+    g.fillStyle = '#fff'; g.strokeStyle = ink; g.lineWidth = 2.5; g.beginPath(); g.ellipse(0, 0, 11, 17, 0, 0, 7); g.fill(); g.stroke(); // 운동화 (위에서 본 모양)
+    g.fillStyle = '#E0453A'; g.beginPath(); g.ellipse(0, -9, 9, 6, 0, 0, 7); g.fill();
+    g.strokeStyle = '#9AA3B5'; g.lineWidth = 1.5; [-2, 3, 8].forEach((dy) => { g.beginPath(); g.moveTo(-5, dy); g.lineTo(5, dy); g.stroke(); });
+    g.restore();
+    if (press) { g.strokeStyle = 'rgba(255,79,174,.8)'; g.lineWidth = 3; g.beginPath(); g.arc(fx, fy, 22, 0, 7); g.stroke(); }
+  }
   const bd = g.createRadialGradient(cx - 14, headY + 4, 4, cx, headY + 14, 60); bd.addColorStop(0, '#A48BF0'); bd.addColorStop(1, '#5B3FB8');
   g.fillStyle = bd; g.strokeStyle = ink; g.lineWidth = 2.5; g.beginPath(); g.ellipse(cx, headY + 16, 50, 30, 0, 0, 7); g.fill(); g.stroke();
   const arm = (h) => {
