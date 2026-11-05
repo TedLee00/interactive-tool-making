@@ -299,3 +299,4 @@
 .mg-freeze .fz-head { margin-top: auto; }
 .mg-freeze > :last-child { margin-bottom: auto; }
 .mg-freeze .card { max-height: none; overflow: visible; }
+.dq-star { font-size: 14px; color: #F2A900; margin-left: 6px; letter-spacing: 1px; }
