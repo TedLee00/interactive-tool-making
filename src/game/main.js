@@ -786,7 +786,12 @@ function quizSheet(type, region = board.cells[S.pos].region, extraSec = 0) {
     async onAnswer(ok) {
       if (ok) {
         S.streak++; S.wrongStreak = 0;
-        callout(S.streak % 3 === 0 ? 'yar' : 'easy', S.streak % 3 === 0 ? `${S.streak}연속 정답!` : undefined);
+        // 연속 정답 보상 (퀴즈 칸이 바뀌어도 이어서 셈, 틀리면 처음부터): 3연속 이지 → 6연속 야르 → 10연속 레전드 (그 뒤 13·16·20 … 반복)
+        const st = ((S.streak - 1) % 10) + 1;
+        if (st === 3) callout('easy', `${S.streak}연속 정답!`);
+        else if (st === 6) callout('yar', `${S.streak}연속 정답!`);
+        else if (st === 10) callout('legend', `${S.streak}연속 정답!`);
+        else sfx('ok');
       } else {
         S.streak = 0; S.wrongStreak++;
         callout('oops', S.wrongStreak >= 2 ? `연속 오답 ${S.wrongStreak}` : '해설을 읽어 봐요');
@@ -794,7 +799,6 @@ function quizSheet(type, region = board.cells[S.pos].region, extraSec = 0) {
       }
       save();
     },
-    onResult(reward) { if (reward.perfect) callout('legend', 'PERFECT 5/5'); },
   };
   return runCell(ov.querySelector('#cellRoot'), { type, questions: qs, config, hooks, timeLimit: timeLimitFor(type, region, config) + extraSec }).then(async (r) => {
     ov.classList.remove('open');

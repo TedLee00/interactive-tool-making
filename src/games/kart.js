@@ -443,7 +443,7 @@ export function playKart({ charId = 'bboy', name = '나', used } = {}) {
           if (ok) {
             quizzes.ok++; streak++;
             gauge = 1; ME.boost = 1.3;
-            E.callout(streak >= 3 ? 'yar' : 'easy', streak >= 3 ? `퀴즈 ${streak}연속!` : '게이지 FULL!');
+            { const st = ((streak - 1) % 10) + 1; if (st === 3) E.callout('easy', `퀴즈 ${streak}연속!`); else if (st === 6) E.callout('yar', `퀴즈 ${streak}연속!`); else if (st === 10) E.callout('legend', `퀴즈 ${streak}연속!`); else E.sfx('ok'); } // 이지 3 · 야르 6 · 레전드 10연속
           } else {
             streak = 0;
             gauge = Math.max(0, gauge - 0.35);
