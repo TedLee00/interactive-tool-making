@@ -231,6 +231,8 @@ export function runStudy({ sfx = () => {} } = {}) {
           answers.set(i, ok);
           sfx(ok ? 'ok' : 'no');
           draw();
+          // 맞히면 잠깐 뒤 자동으로 다음 장 · 틀리면 해설을 읽고 '다음' 버튼
+          if (ok) { const here = i; setTimeout(() => { if (i === here && i < pages.length - 1) { i++; draw(); } }, 1200); }
         };
       });
       ov.querySelector('.scard').scrollTop = 0;
