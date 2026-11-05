@@ -745,6 +745,7 @@ async function playCellGame(cell) {
   save();
   hud();
   if (r.cleared) await awardPet(G.title);
+  if (r.cleared && cell.game === 'drum') { S.bonusRoll = true; save(); toast('🥁 드럼 성공 혜택! 🎲 보너스 주사위 한 번 더!'); } // 드럼 성공 = 한 번 더 굴리기
   if (r.cleared) {
     // 미니게임 성공 → 선생님 댄스
     avatar.setAnim('joy');

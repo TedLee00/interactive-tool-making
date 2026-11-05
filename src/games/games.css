@@ -270,3 +270,11 @@
 .mg-btn.slide { flex: 1.4; background: linear-gradient(180deg, #CFE6FF, #6FA8F0); color: #10325E; border-color: #fff; box-shadow: 0 5px 0 #2F6FC0, 0 8px 16px rgba(47, 111, 192, .3); }
 .mg-btn.slide.on { box-shadow: 0 1px 0 #2F6FC0; }
 .dq-t small b { color: #E21E8C; }
+
+/* 카트 품사 레인 안내: 화면 맨 위에 한 줄로 작게 (장애물 · 도로를 가리지 않게) */
+.mg-kart .klane { top: 2px; left: 6px; right: 22px; padding: 3px 8px; border-width: 3px; border-radius: 14px; display: flex; align-items: center; justify-content: center; gap: 6px; flex-wrap: nowrap; white-space: nowrap; opacity: .95; }
+.mg-kart .klane .kl-t { font-size: 11px; font-weight: 900; color: #7A1F1F; }
+.mg-kart .klane b { font-size: 22px !important; -webkit-text-stroke: 0.8px #7A1F1F; }
+.mg-kart .klane em { margin: 0; gap: 3px; }
+.mg-kart .klane em i { font-size: 12px; padding: 1px 6px; }
+.mg-kart .klane u { margin: 0; font-size: 11px; color: #6B5F8A; }
