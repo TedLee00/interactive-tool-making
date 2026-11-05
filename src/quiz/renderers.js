@@ -214,7 +214,7 @@ export function renderRepair(box, q) {
       // 찾은 경우: 정답 덩어리 기준 보기 / 못 찾은 경우: 누른 덩어리의 다른 라벨 보기
       const opts = found
         ? shuffle(r.fixes)
-        : shuffle(['N', 'V', 'A', 'D'].filter((p) => p !== tapped.pos).map((p) => ({ pos: p, text: tapped.text, words: tapped.words })));
+        : shuffle(['N', 'V', 'A', 'D', 'C'].filter((p) => p !== tapped.pos).map((p) => ({ pos: p, text: tapped.text, words: tapped.words })));
       box.innerHTML = `<div class="qhelp">② <em>바르게 고친 것</em>을 고르세요</div>
         <div class="split-line painted">${r.shown.map((c, i) => chunkHTML(c, i === ti || (found && r.wrongIdx.includes(i)) ? 'sel' : 'dim')).join(' ')}<span class="end">${esc(q.end || '')}</span></div>
         <div class="opts fixes">${opts.map((o, k) => `<button class="opt" data-k="${k}">${chunkHTML(o)}</button>`).join('')}</div>

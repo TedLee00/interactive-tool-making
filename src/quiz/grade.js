@@ -81,7 +81,7 @@ export function buildRepair(q) {
   });
   const target = correct[e.chunk];
   const wrongPos = e.kind === 'label' ? [e.shown] : [];
-  const fixes = ['N', 'V', 'A', 'D'].filter((p) => !wrongPos.includes(p)).map((p) => ({ pos: p, text: target.text, words: target.words, merged: e.kind === 'split' }));
+  const fixes = ['N', 'V', 'A', 'D', 'C'].filter((p) => !wrongPos.includes(p)) /* △접속사도 보기에 (정답이 접속사인 문제가 있음) */.map((p) => ({ pos: p, text: target.text, words: target.words, merged: e.kind === 'split' }));
   return { correct, shown, wrongIdx, fixes, answerPos: target.pos };
 }
 
