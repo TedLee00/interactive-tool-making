@@ -198,7 +198,7 @@
    "i": 24,
    "kind": "gate",
    "region": 1,
-   "game": "run"
+   "game": "kart"
   },
   {
    "i": 25,
@@ -267,7 +267,7 @@
    "i": 36,
    "kind": "gate",
    "region": 2,
-   "game": "kart"
+   "game": "drum"
   },
   {
    "i": 37,
@@ -283,9 +283,8 @@
   },
   {
    "i": 39,
-   "kind": "arcade",
-   "region": 3,
-   "game": "shoot"
+   "kind": "bonus",
+   "region": 3
   },
   {
    "i": 40,
@@ -306,9 +305,9 @@
   },
   {
    "i": 43,
-   "kind": "play",
+   "kind": "gate",
    "region": 3,
-   "game": "drum"
+   "game": "crane"
   },
   {
    "i": 44,
@@ -318,9 +317,9 @@
   },
   {
    "i": 45,
-   "kind": "arcade",
+   "kind": "quiz",
    "region": 3,
-   "game": "kart"
+   "type": 12
   },
   {
    "i": 46,
@@ -332,7 +331,7 @@
    "i": 47,
    "kind": "gate",
    "region": 3,
-   "game": "crane"
+   "game": "run"
   },
   {
    "i": 48,

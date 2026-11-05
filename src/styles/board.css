@@ -1,0 +1,5 @@
+
+/* 🎮 보너스 게임 고르기 */
+.bg-pick { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 12px 0; }
+.bg-pick button { font-family: 'Jua', sans-serif; font-size: 17px; padding: 12px 8px; border-radius: 14px; background: #FFFBF0; border: 2px solid #F2C14E; color: #2B2350; }
+.bg-pick button:last-child:nth-child(odd) { grid-column: 1 / -1; }

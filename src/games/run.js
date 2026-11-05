@@ -5,9 +5,14 @@ import chars from '../../data/characters.json';
 import { sideSVG, tedSVG } from './runner-art.js';
 import '../fx/legacy-run.css';
 
-const iconFor = (label) => { const I = data.run.icons; const k = Object.keys(I).sort((a, b) => b.length - a.length).find((n) => label.endsWith(n)); return k ? I[k] : '🍽️'; };
+const iconFor = (label) => { // 정확한 이름 → 끝 단어 → 문구 속 단어(play the piano well → 🎹) 순서로 그림 찾기
+  if (data.run.labelIcons?.[label]) return data.run.labelIcons[label];
+  const I = data.run.icons; const ks = Object.keys(I).sort((a, b) => b.length - a.length);
+  const k = ks.find((n) => label.endsWith(n)) || ks.find((n) => new RegExp(`\\b${n}\\b`).test(label));
+  return k ? I[k] : '🍽️';
+};
 
-const MISSION_SEC = 30; // 미션 하나 30초 × 6 + 보스 30초 ≈ 3분 30초
+const MISSION_SEC = 24; // 미션 하나 24초 × 8 + 보스 30초 ≈ 3분 40초
 const BOSS_SEC = 30;
 
 export function playRun({ charId = 'bboy' } = {}) {
@@ -17,9 +22,11 @@ export function playRun({ charId = 'bboy' } = {}) {
     subtitle: '바른 음식만 먹고 끝까지!',
     music: 'mgRun',
     howto: [
-      '<span class="hk g">⭕ 바르게 꾸민 음식</span> 먹기 · <b>❌ 틀린 음식 피하기</b>',
-      '<span class="hk b">⬆ 점프</span> 장애물 · 웅덩이 &nbsp;<span class="hk p">⬇ 슬라이드</span> 머리 위',
-      '<span class="hk c">🧁 2단 점프</span> &nbsp;<span class="hk y">🌮 Ted 변신</span>',
+      '<span class="hk g">⭕ 바르게 꾸민 것</span> 먹기 · <b>❌ 틀린 것 피하기</b>',
+      '<span class="hk b">⬆ 점프</span> 한 번 더 누르면 <b>⚡ 2단 점프</b> (부스터 1개)',
+      '<span class="hk c">🧁 컵케이크</span> 2단 점프 부스터 <b>+1</b> (최대 3개)',
+      '<span class="hk p">⬇ 슬라이드</span> 누워서 쭉! <b>머리 높이 장애물</b> 통과',
+      '<span class="hk y">🌮 Ted 변신</span> 점프력 UP + <b>🛡 보호막 1번</b>',
       '<span class="hk r">❤️ 하트 5개</span> 다 잃으면 <b>끝</b>',
     ],
     async setup(ctx) {
@@ -71,7 +78,7 @@ export function playRun({ charId = 'bboy' } = {}) {
       const jump = () => {
         if (S.finished) return;
         const isTed = S.taco > 0; // Ted 선생님 변신 중: 더 높이, 2단 점프 공짜
-        if (S.y === 0 && S.slide <= 0) { S.vy = isTed ? -576 : -492; /* 높이는 그대로, 더 멀리 (체공시간 +25%) */ S.jumps = 1; ctx.sfx('hop'); }
+        if (S.y === 0 && S.slide <= 0) { S.vy = isTed ? -610 : -492; /* 높이는 그대로, 더 멀리 (체공시간 +25%) */ S.jumps = 1; ctx.sfx('hop'); }
         else if (S.jumps === 1 && (isTed || S.boost > 0)) {
           S.vy = isTed ? -512 : -464; S.jumps = 2; ctx.sfx('hop');
           if (!isTed) { S.boost--; syncBoost(); ctx.floatText('⚡ 2단 점프!', PX, GY() + S.y - 70, '#5BE0FF', 16); }
@@ -104,15 +111,17 @@ export function playRun({ charId = 'bboy' } = {}) {
           S.ents.push({ ...k, kind: 'kid', x: ctx.W + 40, y: gy, w: k.f === 'pigeon' ? 54 : 40, h: k.f === 'pigeon' ? 36 : 62 });
         } else if (r < 0.8) {
           // 💧 물웅덩이: 점프로 건너기 (가끔 2~3개가 이어지는 연속 점프 구간)
-          const n = S.t > 25 && Math.random() < 0.45 ? 2 + Math.floor(Math.random() * 2) : 1;
-          for (let k = 0; k < n; k++) { const w = 64 + Math.random() * 30; S.ents.push({ kind: 'puddle', x: ctx.W + 60 + k * 175, y: gy + 4, w, h: 8, lily: Math.random() < 0.5, duck: Math.random() < 0.3, seed: Math.random() * 6 }); }
-          if (n > 1) S.nextSpawn += 1.0;
+          // 2개일 때는 착지해서 다시 뛸 자리가 넉넉하게 (속도에 맞춰 간격)
+          const n = S.t > 25 && Math.random() < 0.35 ? 2 : 1;
+          const gap = S.speed * 1.7 + 110;
+          for (let k = 0; k < n; k++) { const w = 60 + Math.random() * 22; S.ents.push({ kind: 'puddle', x: ctx.W + 60 + k * gap, y: gy + 4, w, h: 8, lily: Math.random() < 0.5, duck: Math.random() < 0.3, seed: Math.random() * 6 }); }
+          if (n > 1) S.nextSpawn += 1.6;
         } else if (r < 0.86) {
           // 귀여운 땅 장애물: 점프로 넘기
           S.ents.push({ kind: pick(['cone', 'crate', 'snail', 'hedgehog', 'mushroom']), x: ctx.W + 40, y: gy, w: 30, h: 32 });
         } else if (r < 0.97) {
           // 머리 높이 장애물: 슬라이드로 통과 (빨래줄 · 낮은 나뭇가지 · 새 · 풍선)
-          S.ents.push({ kind: 'bar', look: pick(['bar', 'branch', 'bird', 'balloons', 'laundry']), x: ctx.W + 40, y: gy - 70, w: 74, h: 18 });
+          S.ents.push({ kind: 'bar', look: pick(['bar', 'branch', 'bird', 'balloons', 'laundry']), x: ctx.W + 40, y: gy - 46, w: 74, h: 22 }); // 머리 높이 (서 있으면 부딪히고, 누우면 통과)
         } else if (S.hearts < 5 && Math.random() < 0.7) {
           S.ents.push({ kind: 'heart', x: ctx.W + 40, y: gy - 100, w: 30, h: 28 });
         } else if (!S.taco) {
@@ -121,7 +130,10 @@ export function playRun({ charId = 'bboy' } = {}) {
       }
 
       function hurt(msg) {
-        if (S.inv > 0 || S.taco > 0) return;
+        if (S.inv > 0) return;
+        if (S.shield > 0) { // 🛡 Ted 보호막: 한 번은 막아 줌
+          S.shield = 0; S.inv = 1.2; ctx.sfx('reveal'); ctx.burst(PX, GY() + S.y - 40, 26, ['#8FD8FF', '#fff', '#FFD43B']); ctx.floatText('🛡 보호막이 막았다!', PX + 30, GY() - 100, '#2E7BC4', 18); return;
+        }
         S.hearts--; S.inv = 1.9; S.combo = 0;
         ctx.shake(8); ctx.sfx('no'); ctx.floatText(msg, PX + 30, GY() - 100, '#E0453A', 18);
         if (S.hearts <= 0) { S.finished = true; ctx.end(result(false)); }
@@ -180,8 +192,11 @@ export function playRun({ charId = 'bboy' } = {}) {
           S.boostT -= dt;
           if (S.boostT <= 0) { S.boostT = rand(9, 14); if (S.boost < 3) S.ents.push({ kind: 'boost', x: ctx.W + 40, y: GY() - rand(70, 120), w: 34, h: 32 }); }
           // 시작할 때 크게: 2단 점프 부스터 · 슬라이드 안내
-          if (S.t < 6) S.tipTxt = S.t < 3.2 ? '🧁 컵케이크 먹으면 ⚡2단 점프!' : '⬇ 슬라이드! 머리 높이 장애물은 쭉 누워서';
-          else S.tipTxt = '';
+          // 시작 연습: 2단 점프 → 컵케이크 → 슬라이드 (설명 + 연습 장애물)
+          S.tipTxt = S.t < 4.5 ? '⬆ 공중에서 한 번 더 = ⚡ 2단 점프!' : S.t < 9 ? '🧁 컵케이크 = 2단 점프 부스터 +1' : S.t < 14 ? '⬇ 슬라이드! 장애물 밑으로 쭉' : '';
+          if (!S.tut1 && S.t > 2) { S.tut1 = true; S.ents.push({ kind: 'crate', x: ctx.W + 60, y: GY(), w: 30, h: 32 }); }
+          if (!S.tut2 && S.t > 6) { S.tut2 = true; S.ents.push({ kind: 'boost', x: ctx.W + 40, y: GY() - 90, w: 34, h: 32 }); }
+          if (!S.tut3 && S.t > 10) { S.tut3 = true; S.ents.push({ kind: 'bar', look: 'laundry', x: ctx.W + 60, y: GY() - 46, w: 74, h: 22 }); }
           // Ted 빼꼼
           peek.t -= dt;
           if (peek.t <= 0 && !peek.on) { peek.on = 2.6; peek.x = rand(ctx.W * 0.45, ctx.W - 50); peek.say = pick(PEEK_SAY); }
@@ -236,8 +251,8 @@ export function playRun({ charId = 'bboy' } = {}) {
             } else if (e.kind === 'boost') {
               S.ents.splice(k, 1); ctx.burst(e.x, e.y - 15, 18, ['#5BE0FF', '#fff', '#FFD43B']); addBoost();
             } else if (e.kind === 'taco') {
-              S.taco = 6; S.ents.splice(k, 1); setForm('ted'); ctx.burst(PX, gy - 60, 30, ['#FFD43B', '#E21E8C', '#fff']);
-              ctx.callout('wow', 'Ted 선생님 변신!'); S.score += 200;
+              S.taco = 8; S.shield = 1; S.ents.splice(k, 1); setForm('ted'); ctx.burst(PX, gy - 60, 30, ['#FFD43B', '#E21E8C', '#fff']);
+              ctx.callout('wow', 'Ted 변신! 점프 UP + 🛡'); S.score += 200;
             } else if (e.kind === 'bar') {
               if (S.slide <= 0) { e.done = true; hurt('쿵! 슬라이드!'); }
             } else if (e.kind === 'puddle') {
@@ -255,7 +270,7 @@ export function playRun({ charId = 'bboy' } = {}) {
               ctx.burst(PX, gy - 60, 40); ctx.end(result(true));
             }
           }
-          ctx.hud(`<span class="hearts">${'❤️'.repeat(Math.max(0, S.hearts))}${'🤍'.repeat(Math.max(0, 5 - S.hearts))}</span> <b>${S.score}</b>${S.combo > 1 ? ` <i>🔥${S.combo}</i>` : ''}`);
+          ctx.hud(`<span class="hearts">${'❤️'.repeat(Math.max(0, S.hearts))}${'🤍'.repeat(Math.max(0, 5 - S.hearts))}</span> ${S.shield ? '🛡 ' : ''}<b>${S.score}</b>${S.combo > 1 ? ` <i>🔥${S.combo}</i>` : ''}`);
         },
         draw(gc) {
           const { W, H } = ctx;
@@ -407,8 +422,26 @@ export function playRun({ charId = 'bboy' } = {}) {
             }
           }
 
+          { // 🏁 코스 진행 막대: 미션 깃발 · 보스 · 결승점 + 지금 내 위치
+            const TT = missions.length * MISSION_SEC + BOSS_SEC;
+            const prog = S.phase === 'goal' ? 1 : Math.min(1, S.t / TT);
+            const bx = 40; const bw = W - 80; const by = gy + 26; // 땅 위쪽 띠 (부스터 표시와 안 겹치게)
+            roundRect(gc, bx - 5, by - 10, bw + 10, 20, 10); gc.fillStyle = 'rgba(43,35,80,.6)'; gc.fill();
+            roundRect(gc, bx, by - 6, bw, 12, 6); gc.fillStyle = 'rgba(255,255,255,.35)'; gc.fill();
+            const pg = gc.createLinearGradient(bx, 0, bx + bw, 0); pg.addColorStop(0, '#8FE08A'); pg.addColorStop(0.7, '#FFD43B'); pg.addColorStop(1, '#FF6F6F');
+            roundRect(gc, bx, by - 6, Math.max(12, bw * prog), 12, 6); gc.fillStyle = pg; gc.fill();
+            gc.textAlign = 'center'; gc.textBaseline = 'middle';
+            for (let k = 1; k <= missions.length; k++) { const x = bx + bw * ((k * MISSION_SEC) / TT); gc.fillStyle = k <= S.mission ? '#fff' : 'rgba(255,255,255,.55)'; gc.fillRect(x - 1, by - 7, 2, 14); }
+            gc.font = "14px 'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji',sans-serif";
+            gc.fillText('☁️', bx + bw * ((missions.length * MISSION_SEC) / TT) + 10, by - 14);
+            gc.fillText('🏁', bx + bw + 2, by - 14);
+            gc.fillStyle = '#fff'; gc.strokeStyle = '#E0453A'; gc.lineWidth = 3; gc.beginPath(); gc.arc(bx + bw * prog, by, 8, 0, 7); gc.fill(); gc.stroke();
+            gc.font = "22px 'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji',sans-serif"; gc.fillText(S.taco > 0 ? '👨‍🏫' : '🏃', bx + bw * prog, by - 16 + Math.sin(S.t * 14) * 1.5);
+            gc.font = "400 13px Jua, 'Noto Sans KR', sans-serif"; gc.fillStyle = '#2B2350'; gc.fillText(`${Math.round(prog * 100)}%`, bx - 20, by);
+          }
           if (S.tipTxt) {
-            gc.font = "400 21px Jua, 'Noto Sans KR', sans-serif"; gc.textAlign = 'center'; gc.textBaseline = 'middle';
+            let fs = 21; gc.textAlign = 'center'; gc.textBaseline = 'middle';
+            do { gc.font = `400 ${fs}px Jua, 'Noto Sans KR', sans-serif`; fs--; } while (gc.measureText(S.tipTxt).width + 30 > ctx.W - 16 && fs > 12);
             const tw3 = gc.measureText(S.tipTxt).width + 30; const ty3 = ctx.H * 0.3;
             roundRect(gc, ctx.W / 2 - tw3 / 2, ty3 - 22, tw3, 44, 20); gc.fillStyle = 'rgba(224,69,58,.92)'; gc.fill();
             gc.lineWidth = 3; gc.strokeStyle = '#fff'; gc.stroke(); gc.fillStyle = '#fff'; gc.fillText(S.tipTxt, ctx.W / 2, ty3 + 1);
@@ -438,7 +471,7 @@ export function playRun({ charId = 'bboy' } = {}) {
             P.style.transformOrigin = '50% 100%';
             P.style.transform = `translate(${(PX - PW / 2) * sc}px,${(gy + S.y - FOOT) * sc}px)${squash}`;
             P.style.opacity = S.inv > 0 && Math.floor(S.inv * 12) % 2 ? 0.35 : 1;
-            if (S.taco > 0) { gc.strokeStyle = `rgba(255,212,59,${0.5 + 0.4 * Math.sin(S.t * 20)})`; gc.lineWidth = 4; gc.beginPath(); gc.arc(PX, gy + S.y - PH / 2, PH * 0.62, 0, 7); gc.stroke(); }
+            if (S.shield > 0) { const r = PH * 0.66 + Math.sin(S.t * 6) * 2; const sg = gc.createRadialGradient(PX, gy + S.y - PH / 2, r * 0.6, PX, gy + S.y - PH / 2, r); sg.addColorStop(0, 'rgba(143,216,255,0)'); sg.addColorStop(1, 'rgba(143,216,255,.45)'); gc.fillStyle = sg; gc.beginPath(); gc.arc(PX, gy + S.y - PH / 2, r, 0, 7); gc.fill(); gc.strokeStyle = `rgba(91,224,255,${0.6 + 0.3 * Math.sin(S.t * 10)})`; gc.lineWidth = 3; gc.stroke(); }
           }
           gc.fillStyle = 'rgba(43,35,80,.18)'; gc.beginPath(); gc.ellipse(PX, gy + 3, 22 + S.y * 0.05, 5, 0, 0, 7); gc.fill();
         },
