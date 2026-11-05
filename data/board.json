@@ -138,9 +138,9 @@
   },
   {
    "i": 14,
-   "kind": "play",
+   "kind": "quiz",
    "region": 1,
-   "game": "drum"
+   "type": 4
   },
   {
    "i": 15,

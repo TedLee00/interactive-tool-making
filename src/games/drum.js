@@ -100,11 +100,16 @@ export function playDrum() {
           const st = nextStep; const t = t0 + st * STEP; const bar = Math.floor((st - 8) / 8);
           if (st < 8) { if (st % 2 === 0) I.hat(D, t, 0.14, st === 6); } // 카운트인 칙 칙 칙 칙
           else if (st <= lastStep + 4) {
-            const b = ((bar % 4) + 4) % 4;
-            I.bass(D, t, m2f(BASS[b][(st - 8) % 8]), STEP * 0.9, 0.12, 'sawtooth');
-            if ((st - 8) % 8 === 0) I.pad(D, t, PROG[b].map(m2f), STEP * 7.5, 0.02);
-            if ((st - 8) % 8 === 4) I.stab(D, t, PROG[b].map((m) => m2f(m + 12)), 0.02);
-            I.hat(D, t, 0.02);
+            const b = ((bar % 4) + 4) % 4; const k = (st - 8) % 8; // k: 마디 안 8분음표 위치 (0·2·4·6 = 1·2·3·4박)
+            // 베이스: 1박 · 2박 반 · 3박 · 4박 반 (통통 튀는 리듬)
+            if (k === 0 || k === 3 || k === 4 || k === 7) I.bass(D, t, m2f(BASS[b][k]), STEP * (k % 4 === 0 ? 1.6 : 0.8), 0.11, 'triangle');
+            if (k === 0) I.pad(D, t, PROG[b].map(m2f), STEP * 7.8, 0.018);
+            if (k === 2 || k === 6) I.stab(D, t, PROG[b].map((m) => m2f(m + 12)), 0.016); // 2·4박 코드 찍기
+            if (k === 5 && b % 2) I.marimba(D, t, m2f(PROG[b][2] + 24), 0.025);
+            // 박자 가이드: 1·3박 작은 킥, 2·4박 작은 클랩, 8분음표 셰이커 → 박자가 귀에 들림 (학생 드럼이 위에 얹힘)
+            if (k === 0 || k === 4) I.kick(D, t, 0.22);
+            if (k === 2 || k === 6) I.clap(D, t, 0.05);
+            I.hat(D, t, k % 2 ? 0.012 : 0.022);
           }
           nextStep++;
         }
@@ -121,12 +126,13 @@ export function playDrum() {
       window.addEventListener('keydown', onKey);
       // 칸 위치 = 버튼 위치 (단어가 그 버튼 바로 위로 떨어짐)
       const cv = ctx.layer.parentElement.querySelector('canvas');
+      const INSET = [18, 4, 0, -4, -18]; // 바깥 북은 살짝 안쪽 (드러머 팔이 짧아도 닿게)
       const colX = PADS.map((_, i) => () => {
         const br = btns[i].getBoundingClientRect(); const cr = cv.getBoundingClientRect();
-        return ((br.left + br.width / 2 - cr.left) / cr.width) * ctx.W;
+        return ((br.left + br.width / 2 - cr.left) / cr.width) * ctx.W + INSET[i];
       });
       // 악기 자리 (위에서 내려다본 드럼 세트: 바깥 북은 낮게, 안쪽 북은 조금 위 — 드러머를 둘러싼 반원)
-      const DY = [158, 192, 176, 192, 158];
+      const DY = [118, 132, 152, 132, 118]; // 악기를 더 아래로 (드러머 가까이)
       const hitY = (i = 2) => ctx.H - DY[i];
 
       function hit(p) {
@@ -257,7 +263,7 @@ function drawSpeakers(g, W, H, S, pulse) {
     g.restore();
   };
   box(4, 6, 46, 64, true); box(W - 50, 6, 46, 64, true);
-  box(2, H - 80, 52, 76, false); box(W - 54, H - 80, 52, 76, false);
+  box(2, H - 64, 46, 60, false); box(W - 48, H - 64, 46, 60, false);
 }
 
 /** 위에서 내려다본 드럼 세트: 플로어 탐 · 스네어 · (가운데 킥) · 하이 탐 · 심벌 — 크게 */
@@ -318,8 +324,8 @@ function drawKit(g, xs, ys, S, pulse) {
 /** 귀여운 드러머 (위·뒤에서 내려다봄): 둥근 머리 · 헤드폰 · 짧은 스틱, 치는 북으로 손이 쏙 */
 function drawDrummer(g, cx, H, xs, ys, S) {
   const ink = '#2B2350';
-  const headY = H - 40;
-  const STICK = 30;
+  const headY = H - 34;
+  const STICK = 34;
   g.lineCap = 'round'; g.lineJoin = 'round';
   // 의자 · 어깨 (위에서 본 넓적한 타원 몸)
   g.fillStyle = 'rgba(0,0,0,.35)'; g.beginPath(); g.ellipse(cx, H - 6, 62, 22, 0, 0, 7); g.fill();
@@ -327,17 +333,19 @@ function drawDrummer(g, cx, H, xs, ys, S) {
   g.fillStyle = bd; g.strokeStyle = ink; g.lineWidth = 2.5; g.beginPath(); g.ellipse(cx, headY + 16, 50, 30, 0, 0, 7); g.fill(); g.stroke();
   const arm = (h) => {
     const s = h === 'L' ? -1 : 1;
-    const sx = cx + s * 40; const sy = headY + 8;
+    const sx = cx + s * 46; const sy = headY + 4;
     const hitting = S.armT[h] > 0 && S.arm[h] !== null;
     const ti = hitting ? S.arm[h] : (h === 'L' ? 1 : 3);
     const tx = xs[ti]; const ty = ys[ti] + (hitting ? 0 : -6);
     const dx = tx - sx; const dy = ty - sy; const L = Math.hypot(dx, dy) || 1;
     const lift = hitting ? 0 : 14; // 쉬는 동안 스틱을 살짝 들고 있음
-    const hx = tx - (dx / L) * STICK; const hyy = ty - (dy / L) * STICK + lift;
+    const reach = Math.min(70, L - STICK); // 팔은 짧게 (최대 70) — 모자라면 스틱이 조금 길어짐
+    const stick = L - reach;
+    const hx = sx + (dx / L) * reach; const hyy = sy + (dy / L) * reach + lift;
     const ex = (sx + hx) / 2 + s * 16; const ey = (sy + hyy) / 2 + 10; // 팔꿈치는 바깥쪽으로 살짝
     g.strokeStyle = ink; g.lineWidth = 14; g.beginPath(); g.moveTo(sx, sy); g.quadraticCurveTo(ex, ey, hx, hyy); g.stroke();
     g.strokeStyle = '#8B6FE0'; g.lineWidth = 9; g.beginPath(); g.moveTo(sx, sy); g.quadraticCurveTo(ex, ey, hx, hyy); g.stroke();
-    const stx = hitting ? tx : hx + (dx / L) * STICK; const sty = hitting ? ty : hyy + (dy / L) * STICK - lift * 0.8;
+    const stx = hitting ? tx : hx + (dx / L) * stick; const sty = hitting ? ty : hyy + (dy / L) * stick - lift * 0.8;
     g.strokeStyle = '#7A4F2A'; g.lineWidth = 6; g.beginPath(); g.moveTo(hx - (dx / L) * 6, hyy - (dy / L) * 6); g.lineTo(stx, sty); g.stroke();
     g.strokeStyle = '#E8C9A0'; g.lineWidth = 2.5; g.beginPath(); g.moveTo(hx, hyy); g.lineTo(stx, sty); g.stroke();
     g.fillStyle = '#F4E3C4'; g.strokeStyle = ink; g.lineWidth = 1.5; g.beginPath(); g.arc(stx, sty, 4, 0, 7); g.fill(); g.stroke();
