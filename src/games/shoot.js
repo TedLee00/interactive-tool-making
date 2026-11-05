@@ -104,7 +104,7 @@ export function playShoot() {
         // 👨‍🏫 Ted 선생님을 쏘면: 아야! 깜짝 · 감점 (선생님이 과녁보다 앞에 있으니 먼저 판정)
         const td = S.ted;
         if (td.mode && !td.ouch && td.box && p.x > td.box.x0 && p.x < td.box.x1 && p.y > td.box.y0 && p.y < td.box.y1) {
-          td.ouch = 1.1; S.combo = 0; if (td.mode === 'peek') td.dur = td.t + 1.3; // 놀란 얼굴을 잠깐 보여 주고 쏙 들어감 S.wrong++; S.score = Math.max(0, S.score - 250); S.left = Math.max(0, S.left - 1);
+          td.ouch = 1.1; S.combo = 0; if (td.mode === 'peek') td.dur = td.t + 1.3; /* 놀란 얼굴을 잠깐 보여 주고 쏙 들어감 */ S.wrong++; S.score -= 250; S.left = Math.max(0, S.left - 1);
           ctx.sfx('no'); ctx.shake(8, 0.3);
           S.pops.push({ x: clamp(p.x, 90, ctx.W - 90), y: p.y - 40, ok: false, big: '아야!! 😵', sub: '선생님은 쏘면 안 돼요! -250 · -1초', life: 1.3 });
           return;
@@ -124,7 +124,7 @@ export function playShoot() {
             pop(hit, true, `🍫 +400`);
             ctx.callout('wow', `${SNACK_NAME[hit.snack]} 획득!`); ctx.sfx('perfect');
           } else {
-            S.wrong++; S.combo = 0; S.left = Math.max(0, S.left - 3); S.score = Math.max(0, S.score - 300);
+            S.wrong++; S.combo = 0; S.left = Math.max(0, S.left - 3); S.score -= 300;
             ctx.shake(12, 0.4); ctx.sfx('no');
             pop(hit, false, '-300 · -3초');
           }
@@ -140,7 +140,7 @@ export function playShoot() {
           ctx.comboCallout(S.combo, `${S.combo} 콤보!`);
         } else {
           S.wrong++; S.combo = 0; S.left = Math.max(0, S.left - 1);
-          S.score = Math.max(0, S.score - 200); // 오답은 확실하게 감점 (정확하게 쏜 학생이 이득)
+          S.score -= 200; // 오답은 확실하게 감점 — 0점 아래로도 내려감 (정확하게 쏜 학생이 이득)
           ctx.shake(8); ctx.sfx('no');
           pop(hit, false, '-200 · -1초');
         }
@@ -159,7 +159,7 @@ export function playShoot() {
         // 맞힌 과자 과녁은 모두 상품 (초코파이 · 오예스 · 쿠키앤크림)
         const snacks = S.snacks.slice();
         ctx.end({
-          score: S.score, cleared: S.hits >= 20, coins: Math.max(0, Math.min(30, Math.round((S.hits - S.wrong) * 0.8))), // 코인(전체 점수)도 오답만큼 깎임 snack: snacks[0] || null, snacks,
+          score: Math.max(0, S.score), cleared: S.hits >= 20, coins: Math.max(0, Math.min(30, Math.round((S.hits - S.wrong) * 0.8))), /* 코인(전체 점수)도 오답만큼 깎임 */ snack: snacks[0] || null, snacks,
           headline: S.hits >= 35 ? '명사수 등장!' : S.hits >= 20 ? '사격 성공!' : '조금만 더 정확하게!', legendAt: 5500,
           lines: [`명중 <b>${S.hits}</b> · 잘못 쏜 과녁 ${S.wrong} · 🍫 과자 과녁 <b>${S.snacks.length}</b>개`, `최고 콤보 <b>${S.best}</b> · 20발 명중하면 성공 · 과자 과녁을 맞히면 그 과자가 상품!`],
         });
