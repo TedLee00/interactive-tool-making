@@ -115,7 +115,7 @@ function pairStep(box, q, first, res) {
     box.innerHTML = `<div class="qhelp">② 두 짝꿍의 <em>품사</em>를 각각 고르세요 <small>${first.ok ? '짝꿍 정답! 이제 품사까지!' : `짝꿍 정답은 「${esc(q.answer)}」 — 이제 품사를 골라 봐요`}</small></div>
       <div class="stem sent pairline">${esc(q.prompt.replace(/\s*\(.*\)\s*$/, '')).replace('___', `<b class="hl">${esc(q.answer)}</b>`)}</div>
       ${['mod', 'head'].map((k) => `<div class="pairrow"><span class="pw">${esc(P[k])}</span><div class="opts pos4">${PAIR_POS.map((p) => `<button class="opt ${picks[k] === p ? 'on' : ''}" data-k="${k}" data-p="${p}">${PNAME[p]}</button>`).join('')}</div></div>`).join('')}
-      <div class="row"><button class="primary" id="pairGo" ${picks.mod && picks.head ? '' : 'disabled'}>확인</button></div>`;
+      <div class="row center"><button class="primary" id="pairGo" ${picks.mod && picks.head ? '' : 'disabled'}>확인</button></div>`;
     box.querySelectorAll('[data-k]').forEach((b) => { b.onclick = () => { picks[b.dataset.k] = b.dataset.p; draw(); }; });
     box.querySelector('#pairGo').onclick = () => {
       const ok2 = picks.mod === P.modPos && picks.head === P.headPos;
@@ -295,7 +295,7 @@ export function renderTower(box, q, cfg) {
         <div class="ko-prompt">${esc(ko.map((c) => c.text).join(' '))}.</div>
         <div class="ansbox">${placed.length ? placed.map((c, k) => `<button class="pchunk" data-k="${k}">${chunkHTML(c)}</button>`).join('') : '<span class="ph">영어 어순으로 놓아 보세요</span>'}</div>
         <div class="pool">${ko.filter((c) => !placed.includes(c)).map((c) => `<button class="pchunk" data-i="${c.i}">${chunkHTML(c)}</button>`).join('')}</div>
-        <div class="row"><button class="primary" id="next" ${placed.length === ko.length ? '' : 'disabled'}>STEP 2 영작하기 ▶</button></div>`;
+        <div class="row center"><button class="primary" id="next" ${placed.length === ko.length ? '' : 'disabled'}>STEP 2 영작하기 ▶</button></div>`;
       box.querySelectorAll('[data-i]').forEach((b) => { b.onclick = () => { placed.push(ko[+b.dataset.i]); step1(); }; });
       box.querySelectorAll('[data-k]').forEach((b) => { b.onclick = () => { placed.splice(+b.dataset.k, 1); step1(); }; });
       box.querySelector('#next').onclick = () => {
@@ -311,7 +311,7 @@ export function renderTower(box, q, cfg) {
         <div class="tower">${rows.map((c) => `<label class="trow"><span class="tko">${chunkHTML(c)}</span>
           <input data-i="${c.i}" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="영어로">
           ${mode === 'tiles' ? `<span class="tiles">${shuffle(c.answers[0].split(' ')).map((w) => `<button type="button" class="tile" data-for="${c.i}">${esc(w)}</button>`).join('')}</span>` : ''}</label>`).join('')}</div>
-        <div class="row"><button class="primary" id="submit">제출</button></div>`;
+        <div class="row center"><button class="primary" id="submit">제출</button></div>`;
       box.querySelectorAll('.tile').forEach((t) => {
         t.onclick = () => {
           const inp = box.querySelector(`input[data-i="${t.dataset.for}"]`);

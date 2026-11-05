@@ -50,6 +50,8 @@ input { font-family: inherit; }
 .primary.big { width: 100%; font-size: 18px; min-height: 54px; }
 .ghost { background: #fff; border: 1.5px solid var(--line); color: var(--ink); border-radius: 12px; padding: 10px 14px; font-weight: 700; min-height: 44px; }
 .row { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: 16px; }
+.row.center { justify-content: center; } /* 버튼 하나뿐일 때(확인 · 제출)는 가운데 */
+.row.center .primary { min-width: 46%; }
 
 /* ---------- 청크 표시 (교재식 기호 + 색) ---------- */
 .ck { display: inline-block; font-weight: 700; padding: 2px 8px; margin: 2px 1px; border-radius: 8px; line-height: 1.4; }
