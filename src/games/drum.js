@@ -73,16 +73,12 @@ export function playDrum() {
   return openGame({
     id: 'drum',
     title: '🥁 품사 드럼',
-    subtitle: '자기 품사 북 위로 떨어지는 단어를 박자에 맞춰 쿵! 짝!',
+    subtitle: '단어가 북에 닿을 때 쿵! 짝!',
     howto: [
-      '단어가 <b class="red">자기 품사 북 위</b>로 떨어져요 — 북에 닿는 순간 아래 버튼을 쿵!',
-      '🎓 <b class="red">퀴즈 타임</b> — 맞히면 <span class="hk y">🔥 피버 ×2 (20초)</span> <span class="hk c">🛡 콤보 쉴드 3개</span> <span class="hk p">🎶 음악 LEVEL UP</span> · 빨리 맞힐수록 보너스 최대 +1000',
-      '<span class="hk g">🏅 퀴즈 전부 맞히면</span> +2000점 + 간식 쿠폰 🍫',
-      '<span class="hk p">🥁 콤보 20 → 점수 ×1.5 · 50 → ×2</span> 드럼 솔로 조명! · <span class="hk g">성공하면 🎲 보너스 주사위</span>',
-      '<span class="hk y">🎤 퀴즈를 연달아 맞히거나 콤보 15 이상에서 맞히면</span> <b class="red">자유 연주 타임!</b> 드러머가 솔로를 보여 줘요 — 뒤 퀴즈(더 어려움)일수록 더 길고 화려한 솔로 · 보너스 최대 +4000',
-      '왼쪽 <b>명사(쿵) · 동사(짝)</b> · 가운데 <b>접속사(킥 페달)</b> · 오른쪽 <b>형용사(탐) · 부사(심벌)</b>',
-      '박자에 맞게 치면 <b class="red">진짜 드럼 비트</b>가 돼요 — PERFECT를 노려 봐!',
-      '틀린 북·놓치면 콤보가 끊겨요 · 정확도 85% 이상이면 간식 쿠폰 🍫',
+      '<span class="hk r">🥁 북에 닿을 때</span> 그 품사 버튼을 <b>쿵!</b>',
+      '<span class="hk y">🎓 퀴즈 정답</span> <b>피버 ×2 · 쉴드 · 음악 UP</b>',
+      '<span class="hk p">🎤 퀴즈 연속 정답</span> <b>드러머 솔로!</b> 뒤로 갈수록 화려하게',
+      '<span class="hk g">🎲 정확도 60%</span> 보너스 주사위 · <b>85% 🍫 쿠폰</b>',
     ],
     async setup(ctx) {
       bgmStop();
@@ -391,7 +387,7 @@ export function playDrum() {
         ctx.end({
           score: S.score, cleared: acc >= 60, coins: Math.min(30, Math.round(acc / 4)), snack: acc >= 85 || (S.qN && S.qOk === S.qN) ? pick(['choco', 'cake', 'cookie']) : null,
           headline: acc >= 90 ? '🥁 드럼 마스터!' : acc >= 60 ? '연주 성공!' : '조금만 더 박자에 맞춰!', legendAt: 40000,
-          lines: [acc >= 60 ? '🎁 성공 혜택: 원정 보드에서 <b>🎲 보너스 주사위 한 번 더!</b> · 펫 친구 합류' : '정확도 60% 넘으면 🎲 보너스 주사위 + 펫 친구!', `🎓 퀴즈 <b>${S.qOk}/${S.qN}</b> · 최고 음악 레벨 🎶${S.lvl}`, `정확도 <b>${acc}%</b> · PERFECT ${S.perfect} · GREAT ${S.great} · GOOD ${S.good}`, `빈 박·틀림 ${S.wrong} · 놓침 ${S.miss} · 최고 콤보 <b>${S.best}</b>`],
+          lines: [acc >= 60 ? '🎁 <b>보너스 주사위 + 펫 친구!</b>' : '정확도 <b>60%</b> 넘으면 🎲 보너스 주사위', `정확도 <b>${acc}%</b> · 🎓 퀴즈 <b>${S.qOk}/${S.qN}</b> · 최고 콤보 <b>${S.best}</b>`],
         });
       }
 

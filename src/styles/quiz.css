@@ -157,3 +157,12 @@ mark.target::after { content: ']'; color: var(--gold); }
 .tower.row-flow .trow .tko { white-space: nowrap; }
 .tower.row-flow .trow input { padding: 7px 8px; font-size: 16px; max-width: 100%; box-sizing: border-box; }
 .tower.row-flow .trow .near, .tower.row-flow .trow .tiles { flex-basis: 100%; }
+
+/* 퀴즈 칸 시작 안내 · 결과: 간결하고 또렷하게 */
+.intro .how { padding: 10px 12px; }
+.intro .how b { margin-top: 0; font-size: 18px; }
+.intro .goal { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin: 10px 0 14px; }
+.intro .goal span { background: #FFF4D0; border: 2px solid #F2C14E; border-radius: 12px; padding: 4px 10px; font-weight: 800; font-size: 15px; color: #6B4A10; }
+.intro .goal span b { color: #C0322A; font-size: 1.1em; }
+.sign { font-style: normal; text-align: right; margin: 10px 4px 6px; }
+.sign b { font-family: 'Jua', sans-serif; font-weight: 400; font-size: 24px; color: var(--navy); letter-spacing: .5px; }

@@ -37,14 +37,13 @@ export function playCrane({ short = false } = {}) {
   return openGame({
     id: 'crane',
     title: '🧸 청크 크레인',
-    subtitle: '지시된 품사 인형만 쏙쏙 뽑아라!',
+    subtitle: '지시된 품사 인형만 쏙쏙!',
     music: 'mgCrane',
     howto: [
-      '집게가 <b>저절로 왔다 갔다</b> 움직여요',
-      '<b class="red">① STOP</b> — 인형 <b>바로 위</b>에서 누르면 집게가 <b>저절로 내려가요</b>',
-      '<b class="red">② HOLD</b> — 내려가던 집게가 인형에 <b>닿는 순간</b> 꾹!',
-      '라운드 <b>5개</b>: 화면 가운데에 나오는 <b class="red">품사</b>의 인형만 3개씩 → 마지막은 영어 청크를 <b>순서대로</b>',
-      '🍫 가끔 <b class="red">과자를 머리에 인 인형</b>이 걸어 다녀요 — 무조건 정답! 잡으면 그 과자가 상품',
+      '<span class="hk r">① STOP</span> 인형 <b>바로 위</b>에서 꾹',
+      '<span class="hk b">② HOLD</span> 인형에 <b>닿는 순간</b> 꾹',
+      '<span class="hk y">📢 가운데 품사</span> 인형만 3개씩 · <b>5라운드</b>',
+      '<span class="hk g">🍫 과자 인형</span> 무조건 정답 + <b>상품!</b>',
     ],
     async setup(ctx) {
       const rounds = [

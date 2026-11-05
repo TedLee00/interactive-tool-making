@@ -71,9 +71,9 @@ export async function runCell(root, { type, questions, config, showIntro = true,
     wrap.innerHTML = `<div class="intro card">
       <div class="kicker">유형 ${type} · 난이도 ${esc(T.level)}</div>
       <h2>${esc(T.name)}</h2>
-      <div class="how">✏️ 이렇게 풀어요<b>${T.how}</b></div>
+      <div class="how"><b>${T.how}</b></div>
       ${timeLimit ? `<div class="tl-note">⏰ 문제마다 제한시간 <b>${timeLimit}초</b>!</div>` : ''}
-      <p>${questions.length}문제 · 5개 다 맞히면 <b>2칸 전진 + PERFECT!</b><br>4개 맞히면 1칸 전진</p>
+      <div class="goal"><span><b>${questions.length}</b>문제</span><span>5개 ✔ <b>2칸 + PERFECT</b></span><span>4개 ✔ <b>1칸</b></span></div>
       ${T.chunkRule ? `<div class="rule">${CHUNK_RULE_HTML}</div>` : ''}
       <button class="primary big" id="go">시작 ▶</button></div>`;
     await wait(wrap, '#go');
@@ -127,7 +127,7 @@ export async function runCell(root, { type, questions, config, showIntro = true,
     <div class="score">${correct}<small>/${questions.length}</small></div>
     <div class="reward">${reward.move ? `🎲 <b>${reward.move}칸 전진</b>` : '이동 없음'} · 🪙 코인 <b>+${reward.coins}</b></div>
     ${wrongs.length ? `<div class="wrong-note"><h4>📒 오답노트</h4>${wrongs.map((w) => `<div class="wn"><div class="wq">${esc(w.question)}</div><div class="wm">내 답: ${esc(w.mine)}</div><div class="wa">정답: ${esc(w.answer)}</div></div>`).join('')}</div>` : '<p class="muted">틀린 문제가 없어요!</p>'}
-    <p class="sign">— ${esc(config.signature || 'Ted')}</p>
+    <p class="sign"><b>${esc(config.signature || 'Ted')}</b></p>
     <button class="primary big" id="done">계속 ▶</button></div>`;
   if (hooks.onResult) hooks.onResult(reward, correct);
   await wait(wrap, '#done');

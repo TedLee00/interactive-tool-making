@@ -20,16 +20,13 @@ export function playShoot() {
   return openGame({
     id: 'shoot',
     title: '🎯 품사 사격장',
-    subtitle: '지시된 품사 과녁만 탕! 탕! 정확하게 맞혀라',
+    subtitle: '지시된 품사 과녁만 탕!',
     music: 'mgArena',
     howto: [
-      '화면 위 <b>지시된 품사</b>의 과녁만 <b>정확히 탭</b>해서 쏘기',
-      '라운드 <b>5개</b> × <b>25초</b>: 명사 → 동사 → 형용사 → 부사 → 부사구 (라운드마다 품사가 바뀌어요)',
-      '<span class="hk r">✘ 틀린 과녁 -200점 · -1초</span> 마구 쏘면 손해! · 빈 곳을 쏘면 콤보가 끊겨요',
-      '🍫 <b class="red">과자 과녁</b>이 가끔 아주 빠르게 지나가요! 맞는 품사면 과자 획득, <b class="red">틀리면 -300점 · -3초</b>',
-      '👨‍🏫 Ted 선생님이 <b>여기저기 모서리에서 고개를 내밀고</b>, 가끔은 <b>화면을 가로질러 뛰어가며</b> 과녁을 가려요 — <b class="red">선생님을 쏘면 아야! -250점 · -1초</b>',
-      '과녁을 맞히면 <b>맞았는지 · 점수 · 단어의 한글 뜻</b>이 잠깐 떠요',
-      '과녁 품사가 바뀌면 화면 가운데에 <b>큰 경고판</b>이 떠요. 연속으로 맞히면 점수가 쑥쑥!',
+      '<span class="hk y">🎯 위에 나온 품사</span> 과녁만 탭! <b>5라운드 × 25초</b>',
+      '<span class="hk r">✘ 틀린 과녁</span> <b>-200점 · -1초</b>',
+      '<span class="hk g">🍫 빠른 과자 과녁</span> 맞히면 <b>과자 획득</b> (틀리면 -300)',
+      '<span class="hk p">👨‍🏫 Ted 쌤</span> 쏘면 <b>아야! -250</b>',
     ],
     async setup(ctx) {
       const tedImg = await charSprite('ted').catch(() => null);
@@ -161,7 +158,7 @@ export function playShoot() {
         ctx.end({
           score: Math.max(0, S.score), cleared: S.hits >= 20, coins: Math.max(0, Math.min(30, Math.round((S.hits - S.wrong) * 0.8))), /* 코인(전체 점수)도 오답만큼 깎임 */ snack: snacks[0] || null, snacks,
           headline: S.hits >= 35 ? '명사수 등장!' : S.hits >= 20 ? '사격 성공!' : '조금만 더 정확하게!', legendAt: 5500,
-          lines: [`명중 <b>${S.hits}</b> · 잘못 쏜 과녁 ${S.wrong} · 🍫 과자 과녁 <b>${S.snacks.length}</b>개`, `최고 콤보 <b>${S.best}</b> · 20발 명중하면 성공 · 과자 과녁을 맞히면 그 과자가 상품!`],
+          lines: [`명중 <b>${S.hits}</b> · 잘못 쏜 과녁 ${S.wrong} · 🍫 과자 과녁 <b>${S.snacks.length}</b>개`, `최고 콤보 <b>${S.best}</b> · <b>20발</b> 명중하면 성공`],
         });
       }
 

@@ -871,7 +871,7 @@ async function honorsMission() {
     const ov = document.createElement('div');
     ov.className = 'study-ask';
     ov.innerHTML = `<div class="sa-card"><div class="sa-ico">🏆</div><h2>아너스 미션<br><em>도전할까요?</em></h2>
-      <p>정답률 <b>${Math.round(acc * 100)}%</b>! 실력자에게만 열리는 마지막 도전<br>🛠️ 오류 수리 · 🧩 청크 퍼즐 · 🗼 번역의 탑 — <b>난이도 상</b><br>맞힌 문제마다 코인 <b>+5</b> 보너스</p>
+      <p>정답률 <b>${Math.round(acc * 100)}%</b>! 실력자 전용 도전<br><b>난이도 상</b> · 맞히면 코인 <b>+5</b></p>
       <div class="sa-btns"><button class="primary big" id="hY">도전! 🔥</button><button class="ghost big" id="hN">다음에 할래요</button></div></div>`;
     document.body.appendChild(ov);
     ov.querySelector('#hY').onclick = () => { ov.remove(); res(true); };
@@ -926,12 +926,12 @@ async function goal() {
       <div class="cb-lv"><span>Lv${LV.lv} ${LV.title}</span>${S.careerDone.after > S.careerDone.before ? '<i>LEVEL UP!</i>' : ''}</div>
       <div class="cb-bar"><i style="width:${LV.pct}%"></i></div>
       <small>${LV.next ? `다음 레벨까지 ${(LV.next.xp - CR.xp).toLocaleString()}점` : '최고 레벨!'}</small>
-      <div class="cb-why"><b>🎁 같은 이름으로 다음 회차를 하면?</b>
+      <div class="cb-why"><b>🎁 같은 이름으로 다시 하면?</b>
         <ul>
-          <li>📈 이번 점수가 <b>계속 쌓여서</b> 캐릭터 <b>레벨</b>이 올라가요</li>
-          <li>👕 레벨이 오르면 <b>새 옷 · 장식</b>을 입어요 — 다음: <b>${nextOutfit}</b></li>
-          <li>📚 이번에 푼 문제는 빼고 <b>새 문제</b>가 나와요 — 문제은행 ${bankN}개 중 <b>${seenN}개</b> 경험 (남은 새 문제 ${bankN - seenN}개)</li>
-          <li>🏆 명예의 전당은 회차마다 <b>최고 기록</b>으로 · 펫 친구도 다시 모아요</li>
+          <li>📈 점수 누적 → <b>레벨 UP</b></li>
+          <li>👕 다음 옷 <b>${nextOutfit}</b></li>
+          <li>📚 <b>새 문제</b>만 나와요 (남은 ${bankN - seenN}개)</li>
+          <li>🏆 명예의 전당은 <b>최고 기록</b>으로</li>
         </ul></div></div>`;
   screen(`<div class="panel-screen goal"><div class="panel card">
     <div class="kicker">GOAL!</div><h2>문장의 성 도착!</h2>

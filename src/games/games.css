@@ -300,3 +300,14 @@
 .mg-freeze > :last-child { margin-bottom: auto; }
 .mg-freeze .card { max-height: none; overflow: visible; }
 .dq-star { font-size: 14px; color: #F2A900; margin-left: 6px; letter-spacing: 1px; }
+
+/* 설명창: 짧고 굵게 — 한 줄에 한 가지, 핵심 꼬리표 + 짧은 말 */
+.mg-card .sub { font-weight: 800; font-size: 15px; color: #E0453A; }
+.mg-card ol { list-style: none; padding: 0; margin: 0 0 14px; font-size: 16px; font-weight: 700; line-height: 1.4; }
+.mg-card ol li { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 6px; margin: 6px 0; padding: 7px 10px; background: #fff; border: 2px solid #EFE4C8; border-radius: 14px; }
+.mg-card ol li b { color: #2B2350; font-weight: 900; }
+.mg-card ol .hk { font-size: 16px; }
+.mg-card ol li:has(.hk) { line-height: 1.4; }
+.mg-card .ln { font-size: 15px; font-weight: 700; color: #4A3F6B; }
+/* 설명창이 떠 있는 동안에는 게임 안 안내판·경고판을 숨겨서 설명창을 가리지 않게 */
+.mg-ov:has(#mgIntro) .mg-layer { visibility: hidden; }
