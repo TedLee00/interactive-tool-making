@@ -60,7 +60,7 @@ export function playShoot() {
         warn.innerHTML = `<div class="sw-in"><small>⚠ 과녁이 바뀌었어요 ⚠</small><b>「<span>${R.target}</span>」만</b><b>맞혀 봐요!</b>${R.pool === 'chunks' ? '<em>단어 하나가 아니라 덩어리(구·절)!</em>' : ''}</div>`;
         warn.classList.remove('on'); void warn.offsetWidth; warn.classList.add('on');
         ctx.sfx('reveal');
-        S.snackT = rand(3, 6);
+        S.snackT = rand(6, 10); // 과자 과녁은 라운드 시작하고 조금 뒤에
       }
 
       function spawn() {
@@ -229,11 +229,11 @@ export function playShoot() {
           // 🍫 과자 과녁: 가끔 아주 빠르게 지나간다 (정답이면 과자 획득, 오답이면 크게 감점)
           S.snackT -= dt;
           if (S.snackT <= 0) {
-            S.snackT = rand(6, 9);
+            S.snackT = rand(11, 16); // 과자 과녁은 가끔만 (예전 6~9초마다)
             const R = ROUNDS[S.round]; const Wd = words(R);
             const good = Math.random() < 0.5;
             const dir = Math.random() < 0.5 ? 1 : -1;
-            S.targets.push({ kind: 'snack', snack: nextSnack(), label: pick(good ? Wd.good : Wd.bad), good, x: dir > 0 ? -50 : ctx.W + 50, y: Math.random() < 0.45 ? ctx.H * 0.45 - 4 : ctx.H * 0.16 + 6, vx: dir * (230 + Math.min(6, S.round) * 18), r: R.pool === 'chunks' ? 34 : 30, t: 0, alive: true });
+            S.targets.push({ kind: 'snack', snack: nextSnack(), label: pick(good ? Wd.good : Wd.bad), good, x: dir > 0 ? -50 : ctx.W + 50, y: Math.random() < 0.45 ? ctx.H * 0.45 - 4 : ctx.H * 0.16 + 6, vx: dir * (300 + Math.min(6, S.round) * 25), r: R.pool === 'chunks' ? 28 : 24, t: 0, alive: true });
             ctx.floatText('🍫 과자 과녁이 온다!', ctx.W / 2, S.targets[S.targets.length - 1].y - 50, '#FFD43B', 18);
           }
           // 👨‍🏫 Ted: 여러 모서리에서 빼꼼 · 가끔 화면을 가로질러 뛰어감 (과녁을 가리며 방해)
@@ -262,7 +262,7 @@ export function playShoot() {
           if (S.spawnT <= 0 && alive < 6) { spawn(); S.spawnT = Math.max(0.45, 0.78 - S.round * 0.08); }
           S.targets.forEach((t) => {
             t.t += dt;
-            if (t.kind === 'snack') { t.x += t.vx * dt; t.ty = t.y + Math.sin(t.t * 9) * 4; if (t.x < -70 || t.x > ctx.W + 70) t.alive = false; }
+            if (t.kind === 'snack') { t.x += t.vx * dt; t.ty = t.y + Math.sin(t.t * 7) * 16; /* 더 빠르고 작고, 위아래로 출렁 */ if (t.x < -70 || t.x > ctx.W + 70) t.alive = false; }
             else if (t.kind === 'slide') { t.x += t.vx * dt; t.ty = t.y + Math.sin(t.t * 4) * 3; if (t.x < -60 || t.x > ctx.W + 60) t.alive = false; }
             else {
               t.life -= dt;
