@@ -322,7 +322,7 @@ export function renderTower(box, q, cfg) {
       box.innerHTML = `<div class="qhelp"><b>STEP 2</b> 덩어리마다 <em>영어로 쓰세요</em> <small>비슷하게 맞으면 정답으로 인정해요</small></div>
         ${orderOk ? '<div class="note ok">✔ 어순 정답!</div>' : `<div class="note no">✘ 어순은 이렇게! <div class="ans-line">${rows.map((c) => chunkHTML(c)).join(' → ')}</div></div>`}
         <div class="tower row-flow">${rows.map((c) => `<label class="trow"><span class="tko">${chunkHTML(c)}</span>
-          <input data-i="${c.i}" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="영어로" style="width:${Math.min(240, Math.max(96, (c.answers[0] || '').length * 11 + 34))}px">
+          <input data-i="${c.i}" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="영어로" style="width:${Math.min(220, Math.max(84, (c.answers[0] || '').length * 9 + 30))}px">
           ${mode === 'tiles' ? `<span class="tiles">${shuffle(c.answers[0].split(' ')).map((w) => `<button type="button" class="tile" data-for="${c.i}">${esc(w)}</button>`).join('')}</span>` : ''}</label>`).join('')}</div>
         <div class="row center"><button class="primary" id="submit">제출</button></div>`;
       box.querySelectorAll('.tile').forEach((t) => {
