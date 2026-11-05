@@ -6,7 +6,8 @@ import { buildWorld } from '../board/world.js';
 import { createAvatar } from '../board/avatar.js';
 import { createDice } from '../board/dice.js';
 import { makeAnimal, animateAnimal, ANIMALS, ANIMAL_KINDS } from '../board/animals.js';
-import { draw, config, setLevel } from '../quiz/bank.js';
+import { draw, config, setLevel, BANK } from '../quiz/bank.js';
+import { getCareer, levelOf, finishRun, CAREER_LEVELS } from './career.js';
 import { runCell, timeLimitFor } from '../quiz/cell.js';
 import { TYPES } from '../quiz/constants.js';
 import { esc } from '../quiz/notation.js';
@@ -37,7 +38,8 @@ function save() {
   try { localStorage.setItem(SAVE_KEY, JSON.stringify(S)); } catch { /* 저장 불가 */ }
 }
 function newGame(name, level, char) {
-  S = { v: 1, name, level, grade: levelName(level), char, pos: 0, coins: 0, correct: 0, answered: 0, cellsPlayed: 0, used: [], notes: [], byType: {}, snacks: [], games: {}, gates: {}, regTypes: {}, streak: 0, wrongStreak: 0, perfects: 0, startedAt: Date.now(), finished: false };
+  const C = getCareer(name); // 🔁 같은 이름이면 다회차: 이전에 푼 문제는 빼고 새 문제부터
+  S = { v: 1, name, level, grade: levelName(level), char, run: C.runs + 1, xp0: C.xp, pos: 0, coins: 0, correct: 0, answered: 0, cellsPlayed: 0, used: [...(C.seen || [])], notes: [], byType: {}, snacks: [], games: {}, gates: {}, regTypes: {}, streak: 0, wrongStreak: 0, perfects: 0, startedAt: Date.now(), finished: false };
   save();
 }
 
@@ -108,7 +110,7 @@ function loop(now) {
   renderer.render(scene, camera);
   requestAnimationFrame(loop);
 }
-window.__CQ = { pets: () => pets, award: (t) => awardPet(t), milestone: () => checkPetMilestone(), get S() { return S; }, get world() { return world; }, cam, get avatar() { return avatar; }, fx: { maWarning, teacherDance, callout }, cell: (i) => resolveCell(board.cells[i]), dice, turn: (sw) => turn(sw), move: (n) => moveBy(n) }; // 테스트용
+window.__CQ = { pets: () => pets, award: (t) => awardPet(t), milestone: () => checkPetMilestone(), goal: () => goal(), get S() { return S; }, get world() { return world; }, cam, get avatar() { return avatar; }, fx: { maWarning, teacherDance, callout }, cell: (i) => resolveCell(board.cells[i]), dice, turn: (sw) => turn(sw), move: (n) => moveBy(n) }; // 테스트용
 
 /* ---------------- 🐾 펫: 미니게임 성공 · 코인 돌파 때 동물 친구가 생겨, 내가 가는 칸 옆을 줄지어 따라 걷는다 ---------------- */
 let pets = [];
@@ -242,7 +244,7 @@ async function awardPet(gameTitle) {
 function placeAvatar(charId) {
   if (avatar) scene.remove(avatar.root);
   const c = chars.players.find((p) => p.id === charId) || chars.players[0];
-  avatar = createAvatar(c);
+  avatar = createAvatar(c, { tier: levelOf(getCareer(S.name).xp).lv }); // 레벨에 따라 새 옷 · 장식
   avatar.root.position.copy(world.cellPosition(S.pos));
   avatar.root.position.y = 0.3;
   scene.add(avatar.root);
@@ -360,10 +362,13 @@ function profile(name = '', grade = 'mid') {
 }
 
 function choose(name, grade) {
-  let pick = chars.players[0].id;
+  const C = getCareer(name);
+  const LV = levelOf(C.xp);
+  let pick = (C.lastChar && chars.players.some((p) => p.id === C.lastChar)) ? C.lastChar : chars.players[0].id;
   const draw = () => {
     const c = chars.players.find((p) => p.id === pick);
     screen(`<div class="panel-screen"><div class="panel card">
+      ${C.runs ? `<div class="career-welcome"><b>🔁 ${esc(name)}의 ${C.runs + 1}회차 원정!</b><span>Lv${LV.lv} ${LV.title} · 누적 <em>${C.xp.toLocaleString()}</em>점</span><small>지난번에 푼 문제 ${C.seen.length}개는 빼고 새 문제부터 나와요 · 옷: ${LV.outfit}</small></div>` : ''}
       <h2>함께 떠날 캐릭터</h2>
       <div class="chars">${chars.players.map((p) => `<button class="ch ${p.id === pick ? 'on' : ''}" data-id="${p.id}" style="--cc:${p.color}"><img src="${charURL(p.id)}" alt=""><b>${esc(p.name)}</b><small class="nick">${esc(p.nick)}</small><small>${esc(p.title)}</small></button>`).join('')}</div>
       <div class="say">${faceImg(c.id)}<p><b>${esc(c.name)}</b> “${esc(c.lines.select)}”</p></div>
@@ -402,7 +407,7 @@ function hud() {
     <div class="progress"><i style="width:${(S.pos / (board.cells.length - 1)) * 100}%"></i>${board.regions.map((r, k) => `<em style="left:${(board.cells.findIndex((c) => c.region === k) / (board.cells.length - 1)) * 100}%"></em>`).join('')}</div>
     <div class="talk talk-top" id="talk"><img id="talkImg" class="face" data-face="ted" alt=""><p id="talkTxt"></p></div>
     <div class="hud-bottom">
-      <div class="me">${faceImg(p.id)}<span>${esc(S.name)}</span></div>
+      <div class="me">${faceImg(p.id)}<span>${esc(S.name)}</span>${(() => { const L = levelOf(S.xp0 || 0); return `<em class="clv">Lv${L.lv} ${L.title}${S.run > 1 ? ` · ${S.run}회차` : ''}</em>`; })()}</div>
     </div>
     <div class="dice-hint" id="diceHint"><i class="ring"></i><i class="ring r2"></i><span>👆 주사위를 <b>위로 휙!</b><small>손가락으로 쓸어 올려요</small></span></div>
     <div class="swipe-line" id="swipeLine"></div>
@@ -520,7 +525,7 @@ function bigNumber(n) {
 }
 const toastLater = (t) => setTimeout(() => toast(t), 1800);
 function toast(text) {
-  const el = ui.querySelector('#toast');
+  const el = ui.querySelector('#toast'); if (!el) return; // 다른 화면(완주 화면 등)에서는 조용히 넘어감
   el.textContent = text;
   el.classList.remove('show'); void el.offsetWidth; el.classList.add('show');
 }
@@ -896,6 +901,32 @@ async function goal() {
   avatar.root.rotation.y = 0;
   cam.zoom = 0.7;
   const acc = S.answered ? Math.round((S.correct / S.answered) * 100) : 0;
+  // 🔁 다회차: 이번 총점을 누적 → 레벨 업이면 새 옷으로 갈아입기
+  if (!S.careerDone) {
+    const RR = finishRun(S.name, { score: totalScore(), used: S.used, char: S.char, level: S.level });
+    S.careerDone = { gain: totalScore(), before: RR.before.lv, after: RR.after.lv }; save();
+    if (RR.after.lv > RR.before.lv) {
+      placeAvatar(S.char); avatar.setAnim('win');
+      callout('legend', `LEVEL UP! Lv${RR.after.lv}`);
+      toastLater(`🎉 레벨 업! Lv${RR.after.lv} ${RR.after.title} — ${RR.after.outfit}을(를) 입었어요!`);
+    }
+  }
+  const CR = getCareer(S.name); const LV = levelOf(CR.xp);
+  const bankN = Object.values(BANK).reduce((a, q) => a + q.length, 0);
+  const seenN = Math.min(bankN, CR.seen.length);
+  const nextOutfit = LV.next ? `Lv${LV.next.lv} ${LV.next.title} · ${LV.next.outfit}` : '최고 레벨 달성! 👑';
+  const careerHTML = `<div class="career-box">
+      <div class="cb-h">🔁 ${CR.runs}회차 완주 · 이번 +${S.careerDone.gain.toLocaleString()}점 → 누적 <b>${CR.xp.toLocaleString()}</b>점</div>
+      <div class="cb-lv"><span>Lv${LV.lv} ${LV.title}</span>${S.careerDone.after > S.careerDone.before ? '<i>LEVEL UP!</i>' : ''}</div>
+      <div class="cb-bar"><i style="width:${LV.pct}%"></i></div>
+      <small>${LV.next ? `다음 레벨까지 ${(LV.next.xp - CR.xp).toLocaleString()}점` : '최고 레벨!'}</small>
+      <div class="cb-why"><b>🎁 같은 이름으로 다음 회차를 하면?</b>
+        <ul>
+          <li>📈 이번 점수가 <b>계속 쌓여서</b> 캐릭터 <b>레벨</b>이 올라가요</li>
+          <li>👕 레벨이 오르면 <b>새 옷 · 장식</b>을 입어요 — 다음: <b>${nextOutfit}</b></li>
+          <li>📚 이번에 푼 문제는 빼고 <b>새 문제</b>가 나와요 — 문제은행 ${bankN}개 중 <b>${seenN}개</b> 경험 (남은 새 문제 ${bankN - seenN}개)</li>
+          <li>🏆 명예의 전당은 회차마다 <b>최고 기록</b>으로 · 펫 친구도 다시 모아요</li>
+        </ul></div></div>`;
   screen(`<div class="panel-screen goal"><div class="panel card">
     <div class="kicker">GOAL!</div><h2>문장의 성 도착!</h2>
     <p>${esc(player().lines.win)}</p>
@@ -904,9 +935,12 @@ async function goal() {
     ${S.honors ? `<div class="honors">🏆 아너스 미션 <b>${S.honors.correct}/${S.honors.total}</b></div>` : ''}
     <div class="total-score"><small>총점 = 코인 ${S.coins} × 10 + 빠른 도착 보너스 ${turnBonus()}</small><b>${totalScore()}<em>점</em></b></div>
     ${(S.snacks || []).length ? `<div class="goal-snacks">${S.snacks.map((k) => `<img src="${BASE}assets/snacks/${k.kind}.svg" alt="">`).join('')}</div>` : ''}
+    ${careerHTML}
     ${rankHTML()}
-    <button class="primary big" id="home">처음으로</button></div></div>`);
+    <button class="primary big" id="again">🔁 ${CR.runs + 1}회차 도전! ▶</button>
+    <button class="ghost big" id="home">처음으로</button></div></div>`);
   ui.querySelector('#home').onclick = title;
+  ui.querySelector('#again').onclick = () => { const { name: n, level: l, char: ch } = S; newGame(n, l, ch); placeAvatar(ch); startBoard(true); };
   // 완주 코인 순위 (반 전체 / 이 기기) — 한 판에 한 번만 기록
   const fill = (R) => { const el = ui.querySelector('#goalRank'); if (el) el.innerHTML = rankTableHTML('board', R, S.name, '점'); };
   if (!S.boardSent) { S.boardSent = true; save(); submitScore('board', totalScore(), S.name).then(fill).catch(() => {}); }

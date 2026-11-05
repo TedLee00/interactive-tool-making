@@ -30,7 +30,7 @@ const CFG = {
 };
 
 /** @returns {{ group: THREE.Group, legL, legR, armL, armR, head, torso }} 발바닥이 y=0, 앞이 +z */
-export function makeChibi(id, fallbackColor = '#4F7CC4') {
+export function makeChibi(id, fallbackColor = '#4F7CC4', tier = 1) {
   const c = CFG[id] || { skin: '#FFE2CC', hair: 'short', hairCol: '#3A2316', top: 'tee', topCol: fallbackColor, botCol: '#1B2F4E', shoe: '#fff' };
   const g = new THREE.Group();
   const ink = '#2B2350';
@@ -126,6 +126,36 @@ export function makeChibi(id, fallbackColor = '#4F7CC4') {
   if (c.hoops) [-1, 1].forEach((s) => head.add(mesh(new THREE.TorusGeometry(0.04, 0.008, 6, 14), '#FFD43B', { x: s * HR * 0.98, y: hy - 0.08, ry: Math.PI / 2 })));
   if (c.phones) { head.add(mesh(new THREE.TorusGeometry(HR * 1.08, 0.022, 6, 24, Math.PI), c.phones, { y: hy, rz: 0 })); [-1, 1].forEach((s) => head.add(mesh(CYL(0.07, 0.07, 0.06, 14), c.phones, { x: s * HR * 1.04, y: hy, rz: Math.PI / 2 }))); }
   if (c.halo) head.add(mesh(new THREE.TorusGeometry(0.17, 0.022, 8, 24), new THREE.MeshBasicMaterial({ color: '#FFD43B' }), { y: hy + HR + 0.14, rx: Math.PI / 2 }));
+  // 🔁 다회차 레벨에 따라 입는 옷 · 장식 (누적)
+  const accent = fallbackColor;
+  let aura = null;
+  if (tier >= 2) { // 🧣 스카프
+    torso.add(mesh(new THREE.TorusGeometry(0.13, 0.045, 8, 20), accent, { y: 0.42, rx: Math.PI / 2 }));
+    torso.add(mesh(new THREE.BoxGeometry(0.07, 0.16, 0.035), accent, { x: 0.07, y: 0.32, z: 0.15, rz: 0.15 }));
+  }
+  if (tier >= 3) { // 🦸 망토 (등 뒤로 펄럭)
+    const cape = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.3, 0.5, 18, 1, true, Math.PI * 0.62, Math.PI * 0.76), brightToon(tier >= 5 ? '#7A3FA8' : '#E0453A'));
+    cape.material = cape.material.clone(); cape.material.side = THREE.DoubleSide;
+    cape.position.set(0, 0.2, -0.02); cape.castShadow = true;
+    torso.add(cape);
+  }
+  if (tier >= 4) { // ⭐ 별 배지 + 금빛 신발
+    const star = new THREE.Shape(); for (let k = 0; k < 10; k++) { const a = (k / 10) * Math.PI * 2 + Math.PI / 2; const r = k % 2 ? 0.022 : 0.05; star[k ? 'lineTo' : 'moveTo'](Math.cos(a) * r, Math.sin(a) * r); }
+    torso.add(mesh(new THREE.ExtrudeGeometry(star, { depth: 0.015, bevelEnabled: false }), '#FFD43B', { x: -0.075, y: 0.3, z: 0.15 }));
+    [legL, legR].forEach((l) => l.children.forEach((m2, i) => { if (i >= 1 && m2.isMesh) m2.material = brightToon('#FFD43B'); }));
+  }
+  if (tier >= 5) { // 👑 황금 왕관
+    const crown = new THREE.Group(); crown.position.set(0, hy + HR * 0.98, 0); crown.rotation.x = -0.25;
+    crown.add(mesh(CYL(0.17, 0.15, 0.09, 16), '#FFD43B')); crown.scale.setScalar(1.15);
+    for (let k = 0; k < 6; k++) { const a = (k / 6) * Math.PI * 2; crown.add(mesh(new THREE.ConeGeometry(0.035, 0.11, 6), '#FFD43B', { x: Math.cos(a) * 0.155, y: 0.095, z: Math.sin(a) * 0.155 })); crown.add(mesh(S(0.02, 8, 6), k % 2 ? '#E0453A' : '#2E9BDA', { x: Math.cos(a) * 0.165, y: 0.005, z: Math.sin(a) * 0.165 })); }
+    head.add(crown);
+  }
+  if (tier >= 6) { // ✨ 황금 오라
+    aura = new THREE.Group();
+    aura.add(mesh(new THREE.TorusGeometry(0.42, 0.018, 8, 40), new THREE.MeshBasicMaterial({ color: '#FFE066', transparent: true, opacity: 0.85 }), { y: 0.06, rx: Math.PI / 2 }));
+    for (let k = 0; k < 6; k++) { const a = (k / 6) * Math.PI * 2; aura.add(mesh(new THREE.OctahedronGeometry(0.045), new THREE.MeshBasicMaterial({ color: '#FFF3B0' }), { x: Math.cos(a) * 0.42, y: 0.25 + (k % 2) * 0.35, z: Math.sin(a) * 0.42 })); }
+    g.add(aura);
+  }
   g.traverse((o) => { if (o.isMesh) o.castShadow = true; });
-  return { group: g, legL, legR, armL, armR, head, torso };
+  return { group: g, legL, legR, armL, armR, head, torso, aura };
 }

@@ -178,3 +178,22 @@ img.face { border-radius: 50%; background: radial-gradient(circle at 50% 35%, #F
 
 .logo-card h1 { display: flex; align-items: flex-end; justify-content: center; gap: 4px; }
 .logo-card h1 .castle { width: 52px; height: 52px; flex: none; margin-bottom: 2px; filter: drop-shadow(0 3px 0 #FFE3F0); }
+
+/* 🔁 다회차 */
+.career-welcome { background: linear-gradient(135deg, #FFF3C4, #FFE1F0); border: 3px solid #F2C14E; border-radius: 16px; padding: 8px 10px; margin-bottom: 8px; text-align: center; }
+.career-welcome b { display: block; font-family: var(--cute); font-weight: 400; font-size: 19px; color: #E21E8C; }
+.career-welcome span { display: block; font-weight: 800; color: var(--plum); }
+.career-welcome em { font-style: normal; color: #D9822B; }
+.career-welcome small { color: var(--muted); }
+.hud .me .clv { display: block; font-style: normal; font-size: 11px; font-weight: 800; color: #fff; background: linear-gradient(90deg, #7A3FA8, #E21E8C); border-radius: 8px; padding: 1px 6px; margin-top: 2px; white-space: nowrap; }
+.career-box { margin: 10px 0; padding: 10px 12px; border-radius: 18px; background: linear-gradient(180deg, #2B2350, #4A2F7A); color: #fff; text-align: left; border: 3px solid #F2C14E; }
+.career-box .cb-h { font-size: 14px; color: #FFE59A; text-align: center; }
+.career-box .cb-h b { font-size: 18px; color: #FFD43B; }
+.career-box .cb-lv { text-align: center; margin: 6px 0 4px; font-family: var(--cute); font-size: 22px; }
+.career-box .cb-lv i { font-style: normal; margin-left: 6px; font-size: 14px; background: #E21E8C; padding: 2px 8px; border-radius: 10px; animation: blink .6s steps(2) 6; }
+.career-box .cb-bar { height: 12px; border-radius: 6px; background: rgba(255, 255, 255, .2); overflow: hidden; }
+.career-box .cb-bar i { display: block; height: 100%; background: linear-gradient(90deg, #8FE08A, #FFD43B); }
+.career-box > small { display: block; text-align: center; font-size: 12px; color: #C9BEEA; margin-top: 3px; }
+.career-box .cb-why { margin-top: 8px; background: rgba(255, 255, 255, .95); color: var(--plum); border-radius: 14px; padding: 8px 10px; }
+.career-box .cb-why > b { font-family: var(--cute); font-weight: 400; font-size: 16px; color: #E21E8C; }
+.career-box .cb-why ul { margin: 4px 0 0; padding-left: 4px; list-style: none; font-size: 13px; line-height: 1.55; }
