@@ -213,6 +213,10 @@ export function playCrane({ short = false } = {}) {
       async function grab(pressed) {
         if (mode !== 'down' && mode !== 'wait') return;
         mode = 'busy'; holdBtn.disabled = true;
+        try { await grabInner(pressed); } catch (e) { console.error(e); claw.classList.add('open'); L = CAB0; setCar(); }
+        finally { if (!S.finished && !S.switching && mode === 'busy') { mode = 'sweep'; stopBtn.disabled = false; } } // 무슨 일이 있어도 다시 움직이게
+      }
+      async function grabInner(pressed) {
         claw.classList.remove('open'); ctx.sfx('bounce'); await sleep(320);
         let caught = null;
         if (block) {
@@ -291,12 +295,13 @@ export function playCrane({ short = false } = {}) {
         if (cleared && !snacks.length) snacks.push(S.ok >= NEED + 4 ? 'cookie' : S.ok >= NEED + 2 ? 'cake' : 'choco');
         ctx.end({
           score: S.score, cleared, coins: Math.min(30, S.ok * 2), snack: snacks[0] || null, snacks,
-          headline: snack ? '간식 인형 GET!' : '조금만 더!', legendAt: 3600,
-          lines: [`맞게 뽑은 인형 <b>${S.ok}</b>개 · 틀린 인형 ${S.wrong}개`, snack ? `${NEED}개 이상 맞혀서 간식 쿠폰 획득!` : `${NEED}개 이상 맞히면 간식 쿠폰!`],
+          headline: snacks.length ? '간식 인형 GET!' : '조금만 더!', legendAt: 3600,
+          lines: [`맞게 뽑은 인형 <b>${S.ok}</b>개 · 틀린 인형 ${S.wrong}개`, snacks.length ? `${NEED}개 이상 맞혀서 간식 쿠폰 획득!` : `${NEED}개 이상 맞히면 간식 쿠폰!`],
         });
       }
 
       startRound(0);
+      window.__CRANE = { S, startRound, get mode() { return mode; } }; // 테스트용
       return {
         update(dt) {
           if (S.finished) return;
