@@ -23,9 +23,9 @@ export function playShoot() {
     howto: [
       '화면 위 <b>지시된 품사</b>의 과녁만 <b>정확히 탭</b>해서 쏘기',
       '라운드 <b>5개</b> × <b>25초</b>: 명사 → 동사 → 형용사 → 부사 → 부사구 (라운드마다 품사가 바뀌어요)',
-      '틀린 과녁을 쏘면 <b>-1초</b> · 빈 곳을 쏘면 콤보가 끊겨요',
+      '<span class="hk r">✘ 틀린 과녁 -200점 · -1초</span> 마구 쏘면 손해! · 빈 곳을 쏘면 콤보가 끊겨요',
       '🍫 <b class="red">과자 과녁</b>이 가끔 아주 빠르게 지나가요! 맞는 품사면 과자 획득, <b class="red">틀리면 -300점 · -3초</b>',
-      '👨‍🏫 Ted 선생님이 <b>여기저기 모서리에서 고개를 내밀고</b>, 가끔은 <b>화면을 가로질러 뛰어가며</b> 과녁을 가려요 — <b class="red">선생님을 쏘면 아야! -150점 · -1초</b>',
+      '👨‍🏫 Ted 선생님이 <b>여기저기 모서리에서 고개를 내밀고</b>, 가끔은 <b>화면을 가로질러 뛰어가며</b> 과녁을 가려요 — <b class="red">선생님을 쏘면 아야! -250점 · -1초</b>',
       '과녁을 맞히면 <b>맞았는지 · 점수 · 단어의 한글 뜻</b>이 잠깐 떠요',
       '과녁 품사가 바뀌면 화면 가운데에 <b>큰 경고판</b>이 떠요. 연속으로 맞히면 점수가 쑥쑥!',
     ],
@@ -102,9 +102,9 @@ export function playShoot() {
         // 👨‍🏫 Ted 선생님을 쏘면: 아야! 깜짝 · 감점 (선생님이 과녁보다 앞에 있으니 먼저 판정)
         const td = S.ted;
         if (td.mode && !td.ouch && td.box && p.x > td.box.x0 && p.x < td.box.x1 && p.y > td.box.y0 && p.y < td.box.y1) {
-          td.ouch = 1.1; S.combo = 0; if (td.mode === 'peek') td.dur = td.t + 1.3; // 놀란 얼굴을 잠깐 보여 주고 쏙 들어감 S.wrong++; S.score = Math.max(0, S.score - 150); S.left = Math.max(0, S.left - 1);
+          td.ouch = 1.1; S.combo = 0; if (td.mode === 'peek') td.dur = td.t + 1.3; // 놀란 얼굴을 잠깐 보여 주고 쏙 들어감 S.wrong++; S.score = Math.max(0, S.score - 250); S.left = Math.max(0, S.left - 1);
           ctx.sfx('no'); ctx.shake(8, 0.3);
-          S.pops.push({ x: clamp(p.x, 90, ctx.W - 90), y: p.y - 40, ok: false, big: '아야!! 😵', sub: '선생님은 쏘면 안 돼요! -150 · -1초', life: 1.3 });
+          S.pops.push({ x: clamp(p.x, 90, ctx.W - 90), y: p.y - 40, ok: false, big: '아야!! 😵', sub: '선생님은 쏘면 안 돼요! -250 · -1초', life: 1.3 });
           return;
         }
         const hit = [...S.targets].reverse().find((t) => t.alive && (t.x - p.x) ** 2 + (t.ty - p.y) ** 2 <= t.r * t.r);
@@ -138,9 +138,9 @@ export function playShoot() {
           if (S.combo % 5 === 0) ctx.callout('yar', `${S.combo} 콤보!`);
         } else {
           S.wrong++; S.combo = 0; S.left = Math.max(0, S.left - 1);
-          S.score = Math.max(0, S.score - 50);
-          ctx.shake(6); ctx.sfx('no');
-          pop(hit, false, `✘ ${ROUNDS[S.round].target} 아님 -1초`);
+          S.score = Math.max(0, S.score - 200); // 오답은 확실하게 감점 (정확하게 쏜 학생이 이득)
+          ctx.shake(8); ctx.sfx('no');
+          pop(hit, false, `✘ ${ROUNDS[S.round].target} 아님 -200 · -1초`);
         }
       }
 
@@ -157,7 +157,7 @@ export function playShoot() {
         // 맞힌 과자 과녁은 모두 상품 (초코파이 · 오예스 · 쿠키앤크림)
         const snacks = S.snacks.slice();
         ctx.end({
-          score: S.score, cleared: S.hits >= 20, coins: Math.min(30, Math.round(S.hits * 0.8)), snack: snacks[0] || null, snacks,
+          score: S.score, cleared: S.hits >= 20, coins: Math.max(0, Math.min(30, Math.round((S.hits - S.wrong) * 0.8))), // 코인(전체 점수)도 오답만큼 깎임 snack: snacks[0] || null, snacks,
           headline: S.hits >= 35 ? '명사수 등장!' : S.hits >= 20 ? '사격 성공!' : '조금만 더 정확하게!', legendAt: 5500,
           lines: [`명중 <b>${S.hits}</b> · 잘못 쏜 과녁 ${S.wrong} · 🍫 과자 과녁 <b>${S.snacks.length}</b>개`, `최고 콤보 <b>${S.best}</b> · 20발 명중하면 성공 · 과자 과녁을 맞히면 그 과자가 상품!`],
         });

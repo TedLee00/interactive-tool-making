@@ -654,24 +654,24 @@ async function checkpoint() {
   return false;
 }
 
-/** 이 지역에서 아직 2종류를 못 풀었으면 남은 유형으로 「관문 시험」 */
+/** 이 지역의 문제 유형을 아직 한 번도 안 풀었으면 「관문 시험」으로 꼭 풀고 가기 — 원정 끝까지 12가지 유형을 모두 한 번씩은 경험 */
 async function regionExam(k) {
   const reg = board.regions[k];
-  const done = new Set(S.regTypes[k] || []);
-  while (done.size < 2) {
-    const left = reg.types.filter((t) => !done.has(t));
-    const fresh = left.filter((t) => !(board.regions[k - 1]?.types || []).includes(t)); // 앞 지역과 겹치지 않는 유형 우선
-    const pool = fresh.length ? fresh : left;
-    const t = pool[Math.floor(Math.random() * pool.length)];
-    toast(`📝 관문 시험: ${reg.name}에서는 두 가지 시험을 꼭 풀어야 해요 (${done.size}/2)`);
-    talk(`잠깐! ${reg.name}을 떠나기 전에 「${TYPES[t].short}」 시험도 풀고 가자!`);
+  const everDone = () => new Set(Object.values(S.regTypes || {}).flat());
+  const need = reg.types.filter((t) => !board.regions.slice(0, k).some((r) => r.types.includes(t)) || !everDone().has(t)); // 앞 지역에서 이미 푼 유형은 빼 줌
+  let left = need.filter((t) => !everDone().has(t));
+  while (left.length) {
+    const t = left[0];
+    const doneN = need.length - left.length;
+    toast(`📝 관문 시험: ${reg.name}의 문제는 모두 한 번씩 풀어 봐야 해요 (${doneN}/${need.length})`);
+    talk(`잠깐! ${reg.name}을 떠나기 전에 아직 안 해 본 「${TYPES[t].short}」도 풀고 가자!`);
     await sleep(1800);
     await playQuiz(t, k);
-    done.add(t);
+    left = need.filter((t2) => !everDone().has(t2));
   }
 }
 
-/** 게이트: 지역 시험 2종 확인 → 미니게임 한 판 (꼭 해야 지나갈 수 있음) */
+/** 게이트: 지역 문제 유형 모두 확인 → 미니게임 한 판 (꼭 해야 지나갈 수 있음) */
 async function gateFlow(cell) {
   await regionExam(cell.region);
   await playCellGame(cell);
@@ -810,7 +810,7 @@ function quizSheet(type, region = board.cells[S.pos].region, extraSec = 0) {
 }
 
 /** 총점: 게임·퀴즈로 모은 코인 × 10 + 적은 턴으로 도착한 보너스 (25턴 기준, 1턴 줄일 때마다 +30점) */
-const turnBonus = () => Math.max(0, 25 - (S.turns || 0)) * 30;
+const turnBonus = () => Math.max(0, 30 - (S.turns || 0)) * 30; // 코스가 길어져서 기준 25 → 30턴
 const totalScore = () => S.coins * 10 + turnBonus();
 function rankHTML() {
   const { list, place } = recordRank();

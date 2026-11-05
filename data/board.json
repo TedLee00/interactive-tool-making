@@ -114,91 +114,91 @@
   },
   {
    "i": 10,
+   "kind": "quiz",
+   "region": 0,
+   "type": 4
+  },
+  {
+   "i": 11,
+   "kind": "quiz",
+   "region": 0,
+   "type": 1
+  },
+  {
+   "i": 12,
    "kind": "gate",
    "region": 0,
    "game": "shoot"
   },
   {
-   "i": 11,
-   "kind": "quiz",
-   "region": 1,
-   "type": 4
-  },
-  {
-   "i": 12,
-   "kind": "quiz",
-   "region": 1,
-   "type": 5
-  },
-  {
    "i": 13,
    "kind": "quiz",
    "region": 1,
-   "type": 6
+   "type": 5
   },
   {
    "i": 14,
    "kind": "quiz",
    "region": 1,
-   "type": 4
+   "type": 6
   },
   {
    "i": 15,
    "kind": "quiz",
    "region": 1,
-   "type": 7
+   "type": 4
   },
   {
    "i": 16,
-   "kind": "portal",
-   "region": 1
+   "kind": "quiz",
+   "region": 1,
+   "type": 7
   },
   {
    "i": 17,
-   "kind": "quiz",
-   "region": 1,
-   "type": 5
+   "kind": "portal",
+   "region": 1
   },
   {
    "i": 18,
    "kind": "quiz",
    "region": 1,
-   "type": 6
+   "type": 5
   },
   {
    "i": 19,
    "kind": "quiz",
    "region": 1,
-   "type": 7
+   "type": 6
   },
   {
    "i": 20,
-   "kind": "gate",
+   "kind": "quiz",
    "region": 1,
-   "game": "run"
+   "type": 7
   },
   {
    "i": 21,
-   "kind": "quiz",
-   "region": 2,
-   "type": 8
+   "kind": "bonus",
+   "region": 1
   },
   {
    "i": 22,
    "kind": "quiz",
-   "region": 2,
-   "type": 9
+   "region": 1,
+   "type": 5
   },
   {
    "i": 23,
-   "kind": "bonus",
-   "region": 2
+   "kind": "quiz",
+   "region": 1,
+   "type": 7
   },
   {
    "i": 24,
-   "kind": "quiz",
-   "region": 2,
-   "type": 10
+   "kind": "gate",
+   "region": 1,
+   "game": "run"
   },
   {
    "i": 25,
@@ -208,14 +208,14 @@
   },
   {
    "i": 26,
-   "kind": "trap",
-   "region": 2
-  },
-  {
-   "i": 27,
    "kind": "quiz",
    "region": 2,
    "type": 9
+  },
+  {
+   "i": 27,
+   "kind": "bonus",
+   "region": 2
   },
   {
    "i": 28,
@@ -225,55 +225,55 @@
   },
   {
    "i": 29,
+   "kind": "quiz",
+   "region": 2,
+   "type": 8
+  },
+  {
+   "i": 30,
+   "kind": "trap",
+   "region": 2
+  },
+  {
+   "i": 31,
+   "kind": "quiz",
+   "region": 2,
+   "type": 9
+  },
+  {
+   "i": 32,
+   "kind": "quiz",
+   "region": 2,
+   "type": 10
+  },
+  {
+   "i": 33,
+   "kind": "quiz",
+   "region": 2,
+   "type": 8
+  },
+  {
+   "i": 34,
    "kind": "bonus",
    "region": 2
   },
   {
-   "i": 30,
+   "i": 35,
+   "kind": "quiz",
+   "region": 2,
+   "type": 9
+  },
+  {
+   "i": 36,
    "kind": "gate",
    "region": 2,
    "game": "kart"
   },
   {
-   "i": 31,
-   "kind": "quiz",
-   "region": 3,
-   "type": 11
-  },
-  {
-   "i": 32,
-   "kind": "quiz",
-   "region": 3,
-   "type": 12
-  },
-  {
-   "i": 33,
-   "kind": "arcade",
-   "region": 3,
-   "game": "shoot"
-  },
-  {
-   "i": 34,
-   "kind": "quiz",
-   "region": 3,
-   "type": 11
-  },
-  {
-   "i": 35,
-   "kind": "quiz",
-   "region": 3,
-   "type": 12
-  },
-  {
-   "i": 36,
-   "kind": "trap",
-   "region": 3
-  },
-  {
    "i": 37,
-   "kind": "arcade",
+   "kind": "quiz",
    "region": 3,
-   "game": "kart"
+   "type": 11
   },
   {
    "i": 38,
@@ -283,12 +283,59 @@
   },
   {
    "i": 39,
+   "kind": "arcade",
+   "region": 3,
+   "game": "shoot"
+  },
+  {
+   "i": 40,
+   "kind": "quiz",
+   "region": 3,
+   "type": 11
+  },
+  {
+   "i": 41,
+   "kind": "quiz",
+   "region": 3,
+   "type": 12
+  },
+  {
+   "i": 42,
+   "kind": "trap",
+   "region": 3
+  },
+  {
+   "i": 43,
+   "kind": "play",
+   "region": 3,
+   "game": "drum"
+  },
+  {
+   "i": 44,
+   "kind": "quiz",
+   "region": 3,
+   "type": 11
+  },
+  {
+   "i": 45,
+   "kind": "arcade",
+   "region": 3,
+   "game": "kart"
+  },
+  {
+   "i": 46,
+   "kind": "quiz",
+   "region": 3,
+   "type": 12
+  },
+  {
+   "i": 47,
    "kind": "gate",
    "region": 3,
    "game": "crane"
   },
   {
-   "i": 40,
+   "i": 48,
    "kind": "goal",
    "region": 3
   }

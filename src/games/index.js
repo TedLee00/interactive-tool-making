@@ -11,5 +11,5 @@ export const GAMES = {
   run: { title: '청크런', icon: '🏃', desc: '바르게 꾸민 음식만 먹으며 달리기' },
   crane: { title: '청크 크레인', icon: '🧸', desc: 'STOP·HOLD로 품사 인형 뽑기' },
   kart: { title: '청크 카트', icon: '🏎️', desc: '6명 레이스 · 퀴즈 존 · 품사 레인' },
-  drum: { title: '품사 드럼 (개선 중)', icon: '🥁', desc: '🛠 베타 — 보드 게임에서는 잠시 빠져 있어요' },
+  drum: { title: '품사 드럼', icon: '🥁', desc: '박자 맞춰 품사 북 치기 + 퀴즈 타임으로 음악 LEVEL UP' },
 };
