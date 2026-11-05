@@ -474,6 +474,11 @@ export function playDrum() {
               g.fillStyle = '#2B2350'; g.textAlign = 'center'; g.textBaseline = 'middle';
               g.font = `400 ${n.word.length > 8 ? 11 : 14}px Jua, 'Noto Sans KR', sans-serif`;
               g.fillText(n.word, x, y + 1);
+              { // 🎵 음표 배지: 단어 왼쪽 위에 품사 색 음표 (8분음표 칸은 ♫, 정박은 ♪)
+                const bx = x - w / 2 + 4; const by = y - 14; const bob = Math.sin(now * 8 + n.step) * 1.5;
+                g.fillStyle = PADS[i].col; g.beginPath(); g.arc(bx, by + bob, 10, 0, 7); g.fill(); g.lineWidth = 2; g.strokeStyle = '#fff'; g.stroke();
+                g.fillStyle = '#fff'; g.font = "400 14px 'Noto Sans KR', sans-serif"; g.fillText(n.step % 2 ? '♫' : '♪', bx, by + bob + 1);
+              }
               g.globalAlpha = 1;
             });
             const cnt = Math.ceil((t0 + 8 * STEP - now) / BEAT);
@@ -487,14 +492,6 @@ export function playDrum() {
           S.fx.forEach((f) => { g.globalAlpha = Math.min(1, f.life * 2); g.font = "400 19px Jua, 'Noto Sans KR', sans-serif"; g.textAlign = 'center'; g.lineWidth = 4; g.strokeStyle = '#120C2E'; const y = hitY(f.i) - 52 - (0.7 - f.life) * 40; g.strokeText(f.txt, colX[f.i](), y); g.fillStyle = f.col; g.fillText(f.txt, colX[f.i](), y); });
           g.globalAlpha = 1;
           drawDrummer(g, xs[2], H, xs, ys, S);
-          if (S.jam && now > S.jam.t1 - BEAT * 4 && now < S.jam.t1 + GAP * STEP) { const left = S.jam.t1 - now; // 4·3·2·1 → 내 차례 (맨 위에 그리기)
-            if (left > 0 && left <= BEAT * 4) { // 4 · 3 · 2 · 1
-              const n = Math.ceil(left / BEAT); const ph = 1 - ((left / BEAT) % 1);
-              g.save(); g.translate(W / 2, H * 0.5); g.scale(1.4 - ph * 0.4, 1.4 - ph * 0.4); g.globalAlpha = 1 - ph * 0.5;
-              g.font = "400 64px Jua, sans-serif"; g.textAlign = 'center'; g.textBaseline = 'middle'; g.lineWidth = 8; g.strokeStyle = '#2B2350'; g.strokeText(String(n), 0, 0); g.fillStyle = '#FFD43B'; g.fillText(String(n), 0, 0);
-              g.restore(); g.globalAlpha = 1;
-            }
-          }
           void hy;
         },
       };
