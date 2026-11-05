@@ -34,7 +34,7 @@ function submitLocal(game, name, score) {
   return { ...rankOf(Object.values(G), name), shared: false };
 }
 
-async function callApi(fn, args) {
+export async function callApi(fn, args) {
   const ctl = new AbortController();
   const tm = setTimeout(() => ctl.abort(), 7000);
   try {
