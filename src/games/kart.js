@@ -119,6 +119,7 @@ export function playKart({ charId = 'bboy', name = '나', used } = {}) {
       const FUEL_SEC = 10, REGEN_SEC = 9, // 악셀 게이지: 10초 동안 쓸 수 있음 (지난번 7초보다 30% 더 천천히) // 게이지가 천천히 줄고 조금 더 빨리 참 (원래 3.36초 / 12초)
         _unused = 0, ACC1 = 1.3, ACC2 = 1.5, ACC_T2 = 2;
       let holdT = 0;
+      let laneBigUntil = 0;
       let mode = 'count', t = 0, steer = 0, order = [], place = 6, quizzes = { ok: 0, n: 0 }, lanes = { ok: 0, n: 0 }, streak = 0, finished = false;
       const FX = [];
       const say = (txt, x, y, col) => FX.push({ txt, x, y, life: 1.1, col });
@@ -507,11 +508,11 @@ export function playKart({ charId = 'bboy', name = '나', used } = {}) {
               if (z && ME.d >= start) z.bannerDone = true;
               const show = z && ME.d < start;
               if (show && laneShown !== z) {
-                laneShown = z;
+                laneShown = z; laneBigUntil = performance.now() + 1800; // 처음엔 화면 가운데 크게 → 위로 올라가서 계속 반짝
                 laneEl.innerHTML = `<span class="kl-t">🛣️ 품사 레인</span><b>${z.word}</b><em>${z.labels.map((l) => `<i>${l}</i>`).join('')}</em><u id="lzDist"></u>`; // 맨 위 한 줄로 작게 (도로를 가리지 않게)
               }
               if (!show) laneShown = null;
-              laneEl.className = `klane${show ? ' on' : ''}${show && start - ME.d < 300 ? ' flash' : ''}`;
+              laneEl.className = `klane${show ? ' on' : ''}${show && performance.now() < laneBigUntil ? ' big' : ''}${show && start - ME.d < 300 ? ' flash' : ''}`;
               if (show) { const dEl = laneEl.querySelector('#lzDist'); if (dEl) dEl.textContent = `${Math.ceil((start - ME.d) / 10)}m`; }
             }
             LZ.forEach((z) => {

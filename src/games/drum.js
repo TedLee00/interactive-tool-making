@@ -7,8 +7,7 @@ import { getAC, getMaster, I } from '../fx/legacy.js';
 import { bgmStop } from '../fx/fx.js';
 import { isMuted } from '../quiz/sound.js';
 import { BANK } from '../quiz/bank.js';
-import { parseChunks } from '../quiz/notation.js';
-import { POS } from '../quiz/constants.js';
+import { ROLES } from '../quiz/constants.js';
 
 const PADS = [
   { pos: '명사', hand: 'L', col: '#E0453A', key: 'a', drum: 'floor' },
@@ -20,7 +19,11 @@ const PADS = [
 const CONJ = ['and', 'but', 'or', 'so', 'because', 'although', 'unless', 'if'];
 const BPM = 96;
 const BEAT = 60 / BPM;
-const FALL = 1.9; // 더 빠르게 떨어짐 (자기 칸으로 떨어지니 읽기 쉬움)
+const FALL = 1.9; // 처음 떨어지는 시간(초)
+// ⚡ 단계가 올라갈수록 단어가 더 빨리 떨어지고, 음표도 촘촘해짐 → 후반엔 더 화려한 연주
+const TIERS = [0, 12, 24, 36]; const FALLS = [1.9, 1.6, 1.36, 1.15];
+const tierOfBar = (b) => { let k = 0; TIERS.forEach((t, i) => { if (b >= t) k = i; }); return k; };
+const fallOf = (step) => FALLS[tierOfBar(Math.floor((step - 8) / 8))];
 const BARS = 50; // ≈ 2분
 // 🎓 퀴즈 타임: 10마디마다 마지막 3마디는 단어가 안 떨어지고 짧은 청크 퀴즈 → 맞히면 음악 LEVEL UP
 const CYCLE = 10; const QUIZ_BARS = 3;
@@ -48,6 +51,8 @@ function makeChart() {
     if (b % 8 === 7) { notes.push({ step: 8 + b * 8, pos: '접속사' }); continue; } // 8마디마다 킥 한 방 + 숨 고르기
     let P = b % 4 === 3 ? pick(FILLS) : pick(GROOVES);
     if (b < 6) P = P.map((c, i) => (i % 2 ? '' : c)); // 처음엔 4분음표만 (천천히 익히기)
+    const extra = b >= 36 ? 3 : b >= 24 ? 2 : b >= 12 ? 1 : 0; // 후반일수록 빈 박자에 음표 추가
+    if (extra) { P = P.slice(); shuffle(P.map((c, k) => (c ? -1 : k)).filter((k) => k > 0)).slice(0, extra).forEach((k) => { P[k] = pick(['형', '부', '명', '동']); }); }
     P.forEach((c, k) => { if (c) notes.push({ step: 8 + b * 8 + k, pos: CODE[c] }); });
     if (b > 8 && b % 8 === 3) notes.push({ step: 8 + b * 8 + 6, pos: '접속사' });
   }
@@ -243,27 +248,22 @@ export function playDrum() {
 
       // ---- 🎓 퀴즈 타임 ----
       const qLayer = document.createElement('div'); qLayer.className = 'dq'; ctx.layer.appendChild(qLayer);
-      const QPOS = ['N', 'V', 'A', 'D', 'C'];
-      const qPool = shuffle((BANK[9] || []).slice());
       const esc2 = (x) => String(x).replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
-      const q7Pool = shuffle((BANK[7] || []).filter((q) => (q.level || 1) >= 2));
+      // 🎓 퀴즈는 '상' 난이도만: 성분(5) · 한글 청크 품사+단위(6) · 영어 청크 품사+단위(7) — 보기 5개
+      const hard = (t) => (BANK[t] || []).filter((q) => (q.level || 1) >= 3);
+      let qPool = [];
+      const refill = () => { qPool = shuffle([...hard(5), ...hard(6), ...hard(7), ...hard(7)]); };
       function makeQuiz() {
-        // ① 덩어리의 「품사 + 단위」 (명사구 · 형용사구 · 부사구 · 부사절 …) — 보기 5개, 조금 어렵게
-        if (q7Pool.length && Math.random() < 0.6) {
-          const q = q7Pool.pop();
-          return { sentHTML: esc2(q.sentence).replace(/\[(.*?)\]/, '<b>[ $1 ]</b>'), ask: '[ ] 덩어리의 품사 + 단위는?', opts: shuffle(q.options.slice()).map((o) => ({ v: o, label: o })), ans: q.answer, ansLabel: q.answer };
+        if (!qPool.length) refill();
+        const q = qPool.pop(); if (!q) return null;
+        const mark = (t) => esc2(t).replace(/\[(.*?)\]/, '<b>[ $1 ]</b>');
+        if (q.type === 5) {
+          return { sentHTML: mark(q.sentence), ask: '[ ] 덩어리의 문장 성분(자리)은? — 품사 아님!', opts: Object.keys(ROLES).map((o) => ({ v: o, label: ROLES[o] })), ans: q.answer, ansLabel: ROLES[q.answer] };
         }
-        // ② 문장 속 덩어리의 품사 — 보기는 늘 5개(접속사까지)
-        for (let k = 0; k < 20; k++) {
-          const q = qPool.pop() || pick(BANK[9]); if (!q) return null;
-          const sent = parseChunks(q.en);
-          const ch = sent.filter((c) => QPOS.includes(c.pos));
-          if (ch.length < 2) continue;
-          const tgt = pick(ch); // 같은 분석 결과에서 고르기 (그래야 문장 속 [ ] 표시가 맞음)
-          return { sentHTML: sent.map((c) => (c === tgt ? `<b>[ ${esc2(c.text)} ]</b>` : esc2(c.text))).join(' ') + esc2(q.end || '.'), ask: '[ ] 덩어리의 품사는?',
-            opts: QPOS.map((p) => ({ v: p, label: `<b>${POS[p].sym}</b>${POS[p].name}`, cls: POS[p].cls })), ans: tgt.pos, ansLabel: POS[tgt.pos].name };
+        if (q.type === 6) {
+          return { sentHTML: `「 <b>${esc2(q.chunk)}</b> 」`, ask: '이 한글 덩어리의 품사 + 단위는?', opts: shuffle(q.options.slice()).map((o) => ({ v: o, label: o })), ans: q.answer, ansLabel: q.answer };
         }
-        return null;
+        return { sentHTML: mark(q.sentence), ask: '[ ] 덩어리의 품사 + 단위는?', opts: shuffle(q.options.slice()).map((o) => ({ v: o, label: o })), ans: q.answer, ansLabel: q.answer };
       }
       function openQuiz(qb) {
         const Q = makeQuiz(); if (!Q) return;
@@ -362,6 +362,8 @@ export function playDrum() {
           const now = clock();
           if (verbSend) { const vv = Math.min(0.9, 0.18 + 0.1 * S.lvl + (S.fever > 0 ? 0.15 : 0) + (S.jam && now < S.jam.t1 + 1 ? 0.25 : 0)); if (Math.abs(vv - lastVerb) > 0.01) { lastVerb = vv; verbSend.gain.setTargetAtTime(vv, AC.currentTime, 0.3); } }
           if (S.jam) jamUpdate(now);
+          { const bNow = Math.floor(((now - t0) / STEP - 8) / 8) + 1; const tk = tierOfBar(bNow); // 새 단계 단어가 떨어지기 시작할 때 알림
+            if (tk > (S.tier || 0)) { S.tier = tk; ctx.floatText(`⚡ STAGE ${tk + 1} · 속도 UP!`, ctx.W / 2, ctx.H * 0.45, '#5BE0FF', 28); ctx.burst(ctx.W / 2, ctx.H * 0.45, 30, ['#5BE0FF', '#fff', '#FFD43B']); } }
           notes.forEach((n) => { if (!n.done && now - arrive(n) > 0.3) { n.done = true; n.miss = true; S.miss++; breakCombo(PADS.findIndex((p) => p.pos === n.pos)); } });
           S.fx.forEach((f) => { f.life -= dt; }); S.fx = S.fx.filter((f) => f.life > 0);
           ['L', 'R'].forEach((h) => { S.armT[h] = Math.max(0, S.armT[h] - dt); });
@@ -371,7 +373,7 @@ export function playDrum() {
           { const bar = Math.floor(((now - t0) / STEP - 8) / 8);
             if (bar >= 0 && isQuizBar(bar) && bar % CYCLE === CYCLE - QUIZ_BARS && S.lastQ !== bar) { S.lastQ = bar; openQuiz(bar); }
             if (S.quiz && !S.quiz.done) { const left = S.quiz.tEnd - now; const el = qLayer.querySelector('.dq-bar i'); if (el) el.style.width = `${Math.max(0, left / ((QUIZ_BARS * 8 * STEP) - 0.4)) * 100}%`; if (left <= 0) answerQuiz(null); } }
-          ctx.hud(`${S.combo >= 50 ? '🌟콤보×2 · ' : S.combo >= 20 ? '🥁콤보×1.5 · ' : ''}${S.fever > 0 ? '🔥×2 · ' : ''}${S.shield ? `🛡${S.shield} · ` : ''}🎶Lv${S.lvl} · 🎵 <b>${notes.filter((n) => n.done).length}</b>/${total} · <b>${S.score}</b>${S.combo > 1 ? ` <i>🔥${S.combo}</i>` : ''}`);
+          ctx.hud(`${S.combo >= 50 ? '🌟콤보×2 · ' : S.combo >= 20 ? '🥁콤보×1.5 · ' : ''}${S.fever > 0 ? '🔥×2 · ' : ''}${S.shield ? `🛡${S.shield} · ` : ''}⚡S${(S.tier || 0) + 1} · 🎶Lv${S.lvl} · 🎵 <b>${notes.filter((n) => n.done).length}</b>/${total} · <b>${S.score}</b>${S.combo > 1 ? ` <i>🔥${S.combo}</i>` : ''}`);
           if (now > t0 + Math.max(lastStep + 6, 8 + BARS * 8 + 2) * STEP && (!S.jam || now > S.jam.t1 + 1.2)) finish(); // 마지막 퀴즈 타임까지 다 하고 끝
         },
         draw(g) {
@@ -418,8 +420,9 @@ export function playDrum() {
           if (t0 !== null) {
             notes.forEach((n) => {
               const left = arrive(n) - now;
-              if (left > FALL + 0.15 || (n.done && !n.miss) || (n.miss && left < -0.5)) return;
-              const i = PADS.findIndex((p) => p.pos === n.pos); const x = colX[i](); const yy = hitY(i); const y = yy - left * ((yy - 30) / FALL);
+              const F = fallOf(n.step);
+              if (left > F + 0.15 || (n.done && !n.miss) || (n.miss && left < -0.5)) return;
+              const i = PADS.findIndex((p) => p.pos === n.pos); const x = colX[i](); const yy = hitY(i); const y = yy - left * ((yy - 30) / F);
               g.globalAlpha = n.miss ? 0.3 : 1;
               g.font = "400 15px Jua, 'Noto Sans KR', sans-serif";
               const w = Math.min(70, Math.max(54, g.measureText(n.word).width + 14));
