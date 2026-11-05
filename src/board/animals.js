@@ -1,9 +1,9 @@
 // 귀여운 동물 친구들 — 동물의 숲 주민처럼 두 발로 서는 2등신 (큰 머리 · 작은 몸 · 옷 · 볼터치)
 // 마을을 돌아다니고, 미니게임 성공 · 점수 돌파 때 펫이 되어 내 말 옆 칸을 따라 걷는다
 import * as THREE from 'three';
+import { brightToon } from './brightMat.js';
 
-const mat = new Map();
-const toon = (c) => { const k = String(c); if (!mat.has(k)) mat.set(k, new THREE.MeshToonMaterial({ color: new THREE.Color(c) })); return mat.get(k); };
+const toon = (c) => brightToon(c);
 const basic = (c) => new THREE.MeshBasicMaterial({ color: c });
 function m(geo, c, o = {}) {
   const x = new THREE.Mesh(geo, typeof c === 'object' ? c : toon(c));

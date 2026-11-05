@@ -1,8 +1,9 @@
 // 진짜 3D 캐릭터 (도형으로 만든 귀여운 2등신 인형) — 캐릭터마다 피부·머리·모자·옷·신발 색과 모양을 그대로
 // 관절: legL / legR (엉덩이) · armL / armR (어깨) · head (목) — avatar.js 가 이걸 움직여 걷고·뛰고·만세를 한다
 import * as THREE from 'three';
+import { brightToon } from './brightMat.js';
 
-const toon = (c) => new THREE.MeshToonMaterial({ color: new THREE.Color(c) });
+const toon = (c) => brightToon(c);
 function mesh(geo, color, { x = 0, y = 0, z = 0, sx = 1, sy = 1, sz = 1, rx = 0, ry = 0, rz = 0 } = {}) {
   const m = new THREE.Mesh(geo, typeof color === 'string' || typeof color === 'number' ? toon(color) : color);
   m.position.set(x, y, z); m.scale.set(sx, sy, sz); m.rotation.set(rx, ry, rz);
