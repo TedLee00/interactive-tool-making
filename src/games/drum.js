@@ -223,7 +223,7 @@ export function playDrum() {
         S.drumHit[i] = 0.14; S.boom = 0.22;
         const b = btns[i]; b.classList.remove('boom'); void b.offsetWidth; b.classList.add('boom');
         const cand = notes.filter((n) => !n.done && n.pos === p.pos && Math.abs(arrive(n) - now) < 0.3).sort((a, c) => Math.abs(arrive(a) - now) - Math.abs(arrive(c) - now))[0];
-        if (!cand && S.jam && now > S.jam.t0 - 0.4 && now < S.jam.t1 + 0.2) { // 🥁 자유 연주 타임: 아무 북이나 마음껏 (감점 없음)
+        if (!cand && S.jam && now > S.jam.t0 - 0.4 && now < S.jam.t1 + GAP * STEP - 0.25) { // 🥁 자유 연주 타임: 아무 북이나 마음껏 (감점 없음)
           drumSound(p.pos); S.score += 20; S.fx.push({ txt: 'JAM!', col: '#FFD43B', life: 0.5, i }); ctx.burst(colX[i](), hitY(i), 8, [p.col, '#fff']); return;
         }
         // 🥁 박자 스냅: 맞는 단어를 조금 일찍 쳤으면 소리는 그 단어의 박자에 정확히 울림 → 늘 음악과 딱 맞게
@@ -331,6 +331,7 @@ export function playDrum() {
         }
         return slots;
       }
+      const GAP = 4; // 솔로가 끝나고 2박(약 1.2초) 숨 고른 뒤 내 연주 시작
       function startJam() {
         const now = clock();
         const L = Math.max(0, Math.min(3, S.qN - 1)); // 퀴즈 1→기본 · 2→불꽃 · 3→번개 · 4·5→레전드
@@ -341,7 +342,7 @@ export function playDrum() {
         // 솔로 동안은 단어가 안 떨어지고, 솔로 바로 다음 마디는 정박만 남겨서 자연스럽게 다시 시작
         for (let k = notes.length - 1; k >= 0; k--) {
           const st = notes[k].step; if (notes[k].done) continue;
-          if ((st >= bs && st < be) || (st >= be && st < be + 8 && (st - be) % 2 === 1)) notes.splice(k, 1);
+          if ((st >= bs && st < be + GAP) || (st >= be && st < be + 8 && (st - be) % 2 === 1)) notes.splice(k, 1);
         }
         total = notes.length; lastStep = notes.length ? notes[notes.length - 1].step : lastStep;
         const ev = []; const d16 = STEP / 2;
@@ -431,7 +432,7 @@ export function playDrum() {
             g.font = "400 22px Jua, sans-serif"; g.textAlign = 'center'; g.lineWidth = 5; g.strokeStyle = '#7A1F1F'; g.strokeText(`🔥 FEVER ×2 · ${Math.ceil(S.fever)}`, W / 2, 34); g.fillStyle = '#FFD43B'; g.fillText(`🔥 FEVER ×2 · ${Math.ceil(S.fever)}`, W / 2, 34);
           }
           if (S.flash > 0) { g.globalAlpha = S.flash * 3; g.fillStyle = '#fff'; g.fillRect(0, 0, W, H); g.globalAlpha = 1; }
-          if (S.jam && now > S.jam.t0 - 0.2 && now < S.jam.t1 + 0.3) { // 🥁 솔로 간판 + 마지막 마디엔 4·3·2·1 → 내 차례
+          if (S.jam && now > S.jam.t0 - 0.2 && now < S.jam.t1 + 0.2) { // 🥁 솔로 간판 + 마지막 마디엔 4·3·2·1 → 내 차례
             const J = S.jam; const name = JAM_NAME[J.L];
             const sc = 1 + (0.08 + J.L * 0.03) * pulse; g.save(); g.translate(W / 2 + (J.L >= 3 ? Math.sin(now * 40) * 2 : 0), H * 0.2); g.scale(sc, sc);
             g.font = `400 ${28 + J.L * 2}px Jua, sans-serif`; g.textAlign = 'center'; g.textBaseline = 'middle'; g.lineWidth = 7; g.strokeStyle = '#4A1258'; g.strokeText(name, 0, 0);
@@ -486,7 +487,7 @@ export function playDrum() {
           S.fx.forEach((f) => { g.globalAlpha = Math.min(1, f.life * 2); g.font = "400 19px Jua, 'Noto Sans KR', sans-serif"; g.textAlign = 'center'; g.lineWidth = 4; g.strokeStyle = '#120C2E'; const y = hitY(f.i) - 52 - (0.7 - f.life) * 40; g.strokeText(f.txt, colX[f.i](), y); g.fillStyle = f.col; g.fillText(f.txt, colX[f.i](), y); });
           g.globalAlpha = 1;
           drawDrummer(g, xs[2], H, xs, ys, S);
-          if (S.jam && now > S.jam.t1 - BEAT * 4 && now < S.jam.t1 + 0.3) { const left = S.jam.t1 - now; // 4·3·2·1 → 내 차례 (맨 위에 그리기)
+          if (S.jam && now > S.jam.t1 - BEAT * 4 && now < S.jam.t1 + GAP * STEP) { const left = S.jam.t1 - now; // 4·3·2·1 → 내 차례 (맨 위에 그리기)
             if (left > 0 && left <= BEAT * 4) { // 4 · 3 · 2 · 1
               const n = Math.ceil(left / BEAT); const ph = 1 - ((left / BEAT) % 1);
               g.save(); g.translate(W / 2, H * 0.5); g.scale(1.4 - ph * 0.4, 1.4 - ph * 0.4); g.globalAlpha = 1 - ph * 0.5;
