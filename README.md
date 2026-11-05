@@ -2,7 +2,7 @@
 「영어의 이해」 특강 내용으로 만드는 1인용 3D 보드게임. 기획서: `GAME_SPEC.md`
 
 ## 미니게임 · 연출 (4·5단계 일부 앞당김)
-- `src/games/` — 청크런 · 청크 크레인 · 청크 카트 · 청크 사격장 (Canvas 2D 공통 엔진)
+- `src/games/` — 청크런 · 청크 크레인 · 청크 카트 · 품사 사격장 (Canvas 2D 공통 엔진)
 - `src/fx/` — 기존 앱 효과 엔진 이식(BGM 합성 · 댄스 쇼 · "마!" · 과자 그림) + 콜아웃(이지/야르/레전드)
 - `data/minigames.json` — 미니게임 학습 단어·미션
 - `public/assets/kart/`, `public/assets/snacks/` — 카트·과자 그림 (기존 앱)

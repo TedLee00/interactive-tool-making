@@ -6,7 +6,7 @@ import config from '../../data/config.json';
 import './rank.css';
 
 const KEY = 'cq.board.v1';
-const GAME_NAME = { crane: '🧸 청크 크레인', shoot: '🎯 청크 사격장', run: '🏃 청크런', kart: '🏎️ 청크 카트', board: '🏰 품사 원정대 총점' };
+const GAME_NAME = { crane: '🧸 청크 크레인', shoot: '🎯 품사 사격장', run: '🏃 청크런', kart: '🏎️ 청크 카트', board: '🏰 품사 원정대 총점' };
 let current = '';
 
 export function setPlayer(name) { current = (name || '').trim(); }
