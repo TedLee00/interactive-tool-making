@@ -126,34 +126,20 @@ export function playKart({ charId = 'bboy', name = '나', used } = {}) {
         <path d="M14 112 L72 104 M186 112 L128 104 M100 132 L100 190" stroke="url(#kwG)" stroke-width="20" stroke-linecap="round"/>
         <circle cx="100" cy="106" r="30" fill="url(#kwG)" stroke="#FFD43B" stroke-width="4"/>
         <text x="100" y="113" text-anchor="middle" font-family="Jua, sans-serif" font-size="20" fill="#FFD43B">TED</text>
-        <!-- 운전자 시점(위에서 내려다봄): 팔은 아래쪽으로 뻗고, 손등이 보이며 네 손가락은 림 안쪽으로 감싸고 엄지는 아래쪽에서 림을 잡음 -->
+        <!-- 운전자 시점(위에서 내려다봄): 팔은 아래쪽으로 뻗고, 손은 동그랗게 — 핸들 림을 덮어 꼭 잡은 느낌 -->
         <defs><linearGradient id="kwSkin" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFE6CC"/><stop offset="1" stop-color="#EDB98C"/></linearGradient>
         <linearGradient id="kwSkin2" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#F6CDA6"/><stop offset="1" stop-color="#FFE6CC"/></linearGradient></defs>
         <g transform="translate(9 100) rotate(-6)"><g stroke="#5A3A2A" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round">
             <path d="M-16 4 L-44 80 L-12 90 L8 14 Z" fill="#2E7BC4" stroke="#1B2F4E" stroke-width="2.2"/>
             <path d="M-16 4 L-12 0 L10 8 L8 14 Z" fill="#1F5C99" stroke="none"/>
-            <path d="M-13 -16 Q-4 -24 6 -20 Q12 -16 11 -4 L10 12 Q4 22 -6 20 Q-16 16 -17 2 Z" fill="url(#kwSkin)"/>
-            <path d="M3 -19 Q14 -21 17 -15 Q18 -10 9 -10 Z" fill="url(#kwSkin2)"/>
-            <path d="M5 -10 Q17 -11 18 -5 Q18 0 7 -1 Z" fill="url(#kwSkin2)"/>
-            <path d="M6 -1 Q18 -1 18 5 Q18 10 7 9 Z" fill="url(#kwSkin2)"/>
-            <path d="M6 9 Q16 9 16 14 Q15 18 6 17 Z" fill="url(#kwSkin2)"/>
-            <path d="M-4 16 Q4 24 14 22 Q20 21 19 27 Q16 31 6 30 Q-6 28 -10 20 Z" fill="url(#kwSkin)"/>
-            <path d="M14 22 Q19 23 18 27" fill="#FFF3E6" stroke-width="1.2"/>
-            <path d="M-8 -12 Q-2 -14 3 -12 M-9 -3 Q-3 -5 3 -3 M-9 6 Q-3 4 3 6" fill="none" stroke="#C98E62" stroke-width="1.3"/>
-            <path d="M-12 -10 Q-13 2 -10 12" fill="none" stroke="#fff" stroke-width="2" opacity=".4"/>
+            <ellipse cx="1" cy="1" rx="17" ry="19" fill="url(#kwSkin)"/>
+            <ellipse cx="-5" cy="-7" rx="6" ry="4" fill="#fff" opacity=".45" stroke="none"/>
           </g></g>
         <g transform="translate(191 100) scale(-1 1) rotate(-6)"><g stroke="#5A3A2A" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round">
             <path d="M-16 4 L-44 80 L-12 90 L8 14 Z" fill="#2E7BC4" stroke="#1B2F4E" stroke-width="2.2"/>
             <path d="M-16 4 L-12 0 L10 8 L8 14 Z" fill="#1F5C99" stroke="none"/>
-            <path d="M-13 -16 Q-4 -24 6 -20 Q12 -16 11 -4 L10 12 Q4 22 -6 20 Q-16 16 -17 2 Z" fill="url(#kwSkin)"/>
-            <path d="M3 -19 Q14 -21 17 -15 Q18 -10 9 -10 Z" fill="url(#kwSkin2)"/>
-            <path d="M5 -10 Q17 -11 18 -5 Q18 0 7 -1 Z" fill="url(#kwSkin2)"/>
-            <path d="M6 -1 Q18 -1 18 5 Q18 10 7 9 Z" fill="url(#kwSkin2)"/>
-            <path d="M6 9 Q16 9 16 14 Q15 18 6 17 Z" fill="url(#kwSkin2)"/>
-            <path d="M-4 16 Q4 24 14 22 Q20 21 19 27 Q16 31 6 30 Q-6 28 -10 20 Z" fill="url(#kwSkin)"/>
-            <path d="M14 22 Q19 23 18 27" fill="#FFF3E6" stroke-width="1.2"/>
-            <path d="M-8 -12 Q-2 -14 3 -12 M-9 -3 Q-3 -5 3 -3 M-9 6 Q-3 4 3 6" fill="none" stroke="#C98E62" stroke-width="1.3"/>
-            <path d="M-12 -10 Q-13 2 -10 12" fill="none" stroke="#fff" stroke-width="2" opacity=".4"/>
+            <ellipse cx="1" cy="1" rx="17" ry="19" fill="url(#kwSkin)"/>
+            <ellipse cx="-5" cy="-7" rx="6" ry="4" fill="#fff" opacity=".45" stroke="none"/>
           </g></g>
       </svg>`;
       E.ctrl.appendChild(wheel);
