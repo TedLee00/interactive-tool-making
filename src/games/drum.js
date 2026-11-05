@@ -21,12 +21,12 @@ const BPM = 96;
 const BEAT = 60 / BPM;
 const FALL = 1.9; // 처음 떨어지는 시간(초)
 // ⚡ 단계가 올라갈수록 단어가 더 빨리 떨어지고, 음표도 촘촘해짐 → 후반엔 더 화려한 연주
-const TIERS = [0, 12, 24, 36]; const FALLS = [1.9, 1.6, 1.36, 1.15];
+const TIERS = [0, 14, 28, 40]; const FALLS = [1.9, 1.6, 1.36, 1.15];
 const tierOfBar = (b) => { let k = 0; TIERS.forEach((t, i) => { if (b >= t) k = i; }); return k; };
 const fallOf = (step) => FALLS[tierOfBar(Math.floor((step - 8) / 8))];
-const BARS = 50; // ≈ 2분
+const BARS = 55; // ≈ 2분 20초
 // 🎓 퀴즈 타임: 10마디마다 마지막 3마디는 단어가 안 떨어지고 짧은 청크 퀴즈 → 맞히면 음악 LEVEL UP
-const CYCLE = 10; const QUIZ_BARS = 4; // 퀴즈 4마디 — 다음 단어가 떨어지기 전에 퀴즈가 끝나도록
+const CYCLE = 11; const QUIZ_BARS = 4; // 연주 7마디 + 퀴즈 4마디 — 연주 시간은 그대로, 퀴즈는 다음 단어가 떨어지기 전에 끝남
 const isQuizBar = (b) => b % CYCLE >= CYCLE - QUIZ_BARS;
 
 // 그루브 패턴: 마디(8분음표 8칸) 안에서 어느 북을 칠지 — 명=쿵(플로어) 동=짝(스네어) 형=탐 부=심벌 접=킥
