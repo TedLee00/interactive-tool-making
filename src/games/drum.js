@@ -178,7 +178,7 @@ export function playDrum() {
         S.score += pts;
         S.fx.push({ txt: grade, col: grade === 'PERFECT' ? '#FFD43B' : grade === 'GREAT' ? '#8FE08A' : '#8FD8FF', life: 0.7, i });
         ctx.burst(colX[i](), hitY(i), grade === 'PERFECT' ? 22 : 12, [p.col, '#fff', '#FFD43B']);
-        if (S.combo > 0 && S.combo % 16 === 0) ctx.callout('yar', `${S.combo} 콤보!`);
+        ctx.comboCallout(S.combo, `${S.combo} 콤보!`, { first: 20, second: 50, every: 50 }); // 드럼은 음표가 많아서 20 · 50 · 100 …
       }
 
       // ---- 🎓 퀴즈 타임 ----
@@ -221,7 +221,7 @@ export function playDrum() {
           const left = Math.max(0, Q.tEnd - clock());
           bonus = 300 + Math.round((left / (QUIZ_BARS * 8 * STEP)) * 700);
           S.qOk++; S.lvl = Math.min(4, S.lvl + 1); S.score += bonus; S.fever = 8 * 8 * STEP; S.shield = 3;
-          ctx.callout(S.lvl >= 4 ? 'legend' : 'yar', `🔥 FEVER! 🎶 LEVEL ${S.lvl}`); ctx.burst(ctx.W / 2, ctx.H * 0.4, 40, ['#FFD43B', '#fff', '#E21E8C']);
+          ctx.callout(S.lvl >= 4 ? 'legend' : 'wow', `🔥 FEVER! 🎶 LEVEL ${S.lvl}`); ctx.burst(ctx.W / 2, ctx.H * 0.4, 40, ['#FFD43B', '#fff', '#E21E8C']);
         } else {
           S.lvl = Math.max(0, S.lvl - 1); ctx.sfx('no');
           ctx.floatText(p ? `정답은 ${POS[Q.tgt.pos].name}! 음악 DOWN` : `⏰ 정답은 ${POS[Q.tgt.pos].name}!`, ctx.W / 2, ctx.H * 0.62, '#FF8F8F', 18);

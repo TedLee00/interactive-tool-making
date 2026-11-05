@@ -227,7 +227,14 @@ const CALLOUTS = {
   yar: { text: '야르!', ko: '3연속 정답', cls: 'co-yar', voice: '야르!', sfx: () => legacySfx([523, 659, 784, 1047], 'square', 0.1, 0.06) },
   legend: { text: 'LEGEND!', ko: '레전드', cls: 'co-legend', voice: '레전드!', sfx: () => legacySfx([523, 659, 784, 1047, 1319, 1568], 'triangle', 0.16, 0.08) },
   oops: { text: '앗!', ko: '', cls: 'co-oops', voice: null, sfx: () => sfxNo() },
+  wow: { text: 'GOOD!', ko: '', cls: 'co-easy', voice: null, sfx: () => sfxOk() }, // 목소리 없이 글자 · 효과음만 (이지·야르를 아끼려고)
 };
+/** 미니게임 연속 칭찬: 5연속 이지 · 10연속 야르 · 그 뒤 10개마다 야르 (그 사이는 목소리 없음) — 원장님 결정 */
+export function comboCallout(n, sub, { first = 5, second = 10, every = 10 } = {}) {
+  if (n === first) return callout('easy', sub);
+  if (n === second || (n > second && every && (n - second) % every === 0)) return callout('yar', sub);
+  return null;
+}
 export function callout(kind, sub) {
   const c = CALLOUTS[kind];
   if (!c) return;

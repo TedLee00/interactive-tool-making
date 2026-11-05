@@ -272,7 +272,7 @@ export function playCrane({ short = false } = {}) {
           const pts = 150 + S.combo * 30; S.score += pts;
           ctx.floatText(`+${pts} ${it.text}`, 60, ctx.H * 0.55, '#1E9B5B', 20);
           ctx.burst(40, ctx.H - 40, 22);
-          if (S.combo >= 3 && S.combo % 3 === 0) ctx.callout('yar', `${S.combo} 연속!`); else ctx.callout('easy');
+          if (!ctx.comboCallout(S.combo, `${S.combo} 연속!`)) ctx.sfx('ok');
           if (R.kind === 'seq') {
             S.seqIdx++;
             const line = banner.querySelector('#seqLine');

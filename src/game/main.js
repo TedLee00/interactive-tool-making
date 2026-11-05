@@ -215,7 +215,7 @@ async function checkPetMilestone() {
     const kind = addPet();
     if (!kind) continue;
     const A = ANIMALS[kind];
-    callout('yar', `🪙 ${at} 돌파!`);
+    callout('wow', `🪙 ${at} 돌파!`);
     toast(`🎉 코인 ${at} 돌파! ${A.emoji} ${josa(A.name, '이', '가')} 친구가 되어 옆에서 따라와요`);
     world.sparkle(S.pos);
     await sleep(1400);
@@ -236,7 +236,7 @@ async function awardPet(gameTitle) {
       <p>이제 ${josa(A.name, '이', '가')} ${esc(josa(S.name, '을', '를'))} <b>끝까지 따라다녀요</b> 🐾<br>성에 도착할 때까지 함께 가요!</p>
       <div class="sa-btns"><button class="primary big" id="petOk">같이 가자! ▶</button></div></div>`;
     document.body.appendChild(ov);
-    callout('yar', `${A.emoji} 새 친구!`);
+    callout('wow', `${A.emoji} 새 친구!`);
     ov.querySelector('#petOk').onclick = () => { ov.remove(); res(); };
   });
 }

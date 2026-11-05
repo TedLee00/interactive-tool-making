@@ -1,6 +1,6 @@
 import { submitScore, rankTableHTML } from '../rank/rank.js';
 // 미니게임 공통 엔진 — 전체 화면 오버레이 · 캔버스(세로 화면) · 입력 · 파티클 · 결과/보상
-import { bgm, callout, snackURL, SNACKS } from '../fx/fx.js';
+import { bgm, callout, comboCallout, snackURL, SNACKS } from '../fx/fx.js';
 import { sfx } from '../quiz/sound.js';
 import './games.css';
 
@@ -129,6 +129,7 @@ export function openGame(opt) {
       g, W, H, input, button, burst, floatText, shake, layer, ctrl,
       hud: (html) => { hudEl.innerHTML = html; },
       callout,
+      comboCallout,
       sfx,
       time: 0,
       ended: false,
@@ -206,7 +207,7 @@ export function openGame(opt) {
       // 점수 기록 + 순위표 (1·2·3등 메달)
       submitScore(opt.id, r.score).then((R) => { const el = card.querySelector('#mgRank'); if (el) el.innerHTML = rankTableHTML(opt.id, R); }).catch(() => { const el = card.querySelector('#mgRank'); if (el) el.innerHTML = ''; });
       sfx(r.cleared ? 'perfect' : 'end');
-      if (r.cleared) callout(r.score >= (r.legendAt || Infinity) ? 'legend' : 'yar', r.headline);
+      if (r.cleared) callout(r.score >= (r.legendAt || Infinity) ? 'legend' : 'wow', r.headline); // 야르는 아껴서 (연속 정답 때만)
       card.querySelector('#mgOk').onclick = () => { cleanup(); resolve(r); };
     }
 
