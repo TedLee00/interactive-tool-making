@@ -112,9 +112,10 @@ export async function runCell(root, { type, questions, config, showIntro = true,
         ${!r.ok && r.mine && !r.timeout ? `<span class="mine">내 답 <s>${esc(r.mine)}</s></span>` : ''}</div>
       ${r.ok ? '' : `<div class="fb-box ans"><div class="lab">✅ 정답</div>${r.answerHTML}</div>
       <div class="fb-box why"><div class="lab">💡 왜 그럴까?</div>${explainHTML(q.explain)}</div>`}
-      <button class="primary" id="next">${i === questions.length - 1 ? '결과 보기 ▶' : '다음 ▶'}</button></div>`;
+      ${r.ok ? '' : `<button class="primary" id="next">${i === questions.length - 1 ? '결과 보기 ▶' : '다음 ▶'}</button>`}</div>`;
     fb.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    const nextClick = wait(fb, '#next');
+    // 정답이면 다음 버튼 없이 잠깐 뒤 자동으로 다음 문제 · 틀리면 해설을 읽고 '다음' 버튼
+    const nextClick = r.ok ? new Promise((res) => setTimeout(res, box.querySelector('.near') ? 2200 : 1100)) : wait(fb, '#next');
     if (hooks.onAnswer) await hooks.onAnswer(r.ok, { index: i, last: i === questions.length - 1 });
     await nextClick;
   }

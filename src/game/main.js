@@ -17,6 +17,7 @@ import { bgm, callout, maWarning, teacherDance, crewDance, finaleDance, dancerSh
 import { playRun, playCrane, playKart, playShoot, playDrum, GAMES } from '../games/index.js';
 import { runStudy, askStudy } from '../study/study.js';
 import { setPlayer, submitScore, getRanking, rankTableHTML } from '../rank/rank.js';
+import { reportQuiz, reportRun, reportSnack } from '../rank/report.js';
 
 const BASE = import.meta.env.BASE_URL;
 const faceImg = (id, cls = '') => `<img class="face ${cls}" data-face="${id}" alt="">`;
@@ -710,6 +711,7 @@ async function playQuiz(type, region) {
   bt.n += r.total;
   S.notes.push(...r.wrongs.map((w) => ({ ...w, at: Date.now() })));
   save();
+  reportQuiz(S, type, r, board.regions[region]?.name || ''); // 📊 선생님 시트: 퀴즈 기록
   hud();
   return r;
 }
@@ -737,6 +739,7 @@ async function playCellGame(cell) {
   for (const k of won) {
     S.snacks.push({ kind: k, how: G.title, code: snackCode(), at: Date.now() });
     save();
+    reportSnack(S, S.snacks[S.snacks.length - 1]); // 📊 선생님 시트: 과자 획득
     await snackCard(k, G.title, S.name);
   }
   save();
@@ -881,6 +884,7 @@ async function honorsMission() {
     talk(`아너스 미션 ${[10, 11, 12].indexOf(t) + 1}/3 — 「${TYPES[t].short}」 상 난이도!`);
     const r = await quizSheet(t, 3, 10);
     ok += r.correct; n += r.total;
+    reportQuiz(S, t, r, '🏆 아너스 미션'); // 📊 선생님 시트
     S.coins += r.reward.coins + r.correct * 5;
   }
   setLevel(keep);
@@ -905,6 +909,7 @@ async function goal() {
   if (!S.careerDone) {
     const RR = finishRun(S.name, { score: totalScore(), used: S.used, char: S.char, level: S.level });
     S.careerDone = { gain: totalScore(), before: RR.before.lv, after: RR.after.lv }; save();
+    reportRun(S, { total: totalScore(), xp: RR.career.xp, levelTitle: `Lv${RR.after.lv} ${RR.after.title}` }); // 📊 선생님 시트: 완주 성적표
     if (RR.after.lv > RR.before.lv) {
       placeAvatar(S.char); avatar.setAnim('win');
       callout('legend', `LEVEL UP! Lv${RR.after.lv}`);
