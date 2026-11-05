@@ -230,4 +230,3 @@
 .mg-btn.jump.charge .bst { animation: bstPop .5s ease-out; }
 @keyframes bstPop { 30% { transform: scale(1.25); } }
 
-.cm-glass2 .cm-dancer .cm-stage { position: absolute; left: -2px; right: -6px; bottom: -8px; height: 10px; border-radius: 6px; background: linear-gradient(180deg, #FF4FAE, #B5126E); box-shadow: 0 3px 0 #7A0B4A, 0 0 12px rgba(255, 79, 174, .6); }

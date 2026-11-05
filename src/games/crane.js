@@ -73,7 +73,7 @@ export function playCrane({ short = false } = {}) {
         <div class="cm-car" id="cmCar"><div class="blk"></div><div class="cm-cable" id="cmCable"></div><div class="cm-claw open" id="cmClaw">${CLAW_SVG}</div></div>
         <div class="cm-msg2" id="cmMsg"></div>
         <div class="cm-show"><div class="cm-neon" id="cmNeon"></div></div>
-        <div class="cm-dancer rabbit dancing">${dancerSVG(DANCERS.latina)}<i class="cm-stage"></i></div>`;
+        <div class="cm-dancer rabbit dancing">${dancerSVG(DANCERS.latina)}</div>`;
       ctx.layer.appendChild(G);
       // Ted 선생님이 가끔 기계 옆에서 빼꼼
       const peekEl = document.createElement('div');
@@ -91,7 +91,7 @@ export function playCrane({ short = false } = {}) {
       const CAB0 = 40; const SWEEP = 80; const DESCEND = 95;
       // 레일: 원래보다 약 13% 아래
       let RAIL = 0;
-      const placeRail = () => { const dc = G.querySelector('.cm-dancer'); if (dc) dc.style.top = `${Math.round(H() * 0.13) + 16}px`; RAIL = Math.round(H() * 0.13); /* 원래 위치(맨 위)에서 약 13%만 아래로 */ G.querySelector('.cm-rail').style.top = `${RAIL}px`; car.style.top = `${RAIL + 2}px`; };
+      const placeRail = () => { const dc = G.querySelector('.cm-dancer'); if (dc) dc.style.top = `${Math.round(H() * 0.2) + 16}px`; RAIL = Math.round(H() * 0.2); /* 원래 위치(맨 위)에서 약 20% 아래로 */ G.querySelector('.cm-rail').style.top = `${RAIL}px`; car.style.top = `${RAIL + 2}px`; };
       let x = 140; let dir = 1; let L = CAB0; let mode = 'sweep'; let stopL = 0; let block = null;
       const setCar = () => { car.style.transform = `translateX(${x - 30}px)`; cable.style.height = `${L}px`; claw.style.top = `${18 + L}px`; };
       const tipY = () => RAIL + 2 + 18 + L + 60;
