@@ -215,15 +215,19 @@
 .cm-glass2 .cm-neon b { font-weight: 400; color: #FFD43B; font-size: 28px; text-shadow: 0 0 8px #FFD43B; }
 .cm-glass2 .cm-neon small { display: block; font-size: 13px; color: #FFC2E0; }
 @keyframes cmNeon { 50% { box-shadow: 0 0 4px #FF4FAE, inset 0 0 4px rgba(255, 79, 174, .3); border-color: #FFC2E0; } }
-.cm-glass2 .cm-bun { width: 56px; transform-origin: 50% 100%; animation: cmBun .9s ease-in-out infinite; }
-.cm-glass2 .cm-bun.r { animation-delay: -.45s; }
-.cm-glass2 .cm-bun svg { width: 100%; display: block; filter: drop-shadow(0 4px 3px rgba(27, 47, 78, .3)); }
-@keyframes cmBun { /* 토끼춤: 깡충 → 옆으로 기우뚱 → 깡충 → 반대로 */
-  0% { transform: translateY(0) rotate(-10deg) scaleY(.92); }
-  25% { transform: translateY(-16px) rotate(0) scaleY(1.05); }
-  50% { transform: translateY(0) rotate(10deg) scaleY(.92); }
-  75% { transform: translateY(-16px) rotate(0) scaleY(1.05); }
-  100% { transform: translateY(0) rotate(-10deg) scaleY(.92); } }
+.cm-glass2 .cm-dancer { position: absolute; left: 2px; width: 78px; z-index: 2; pointer-events: none; } /* 멜빵바지 소녀: OUT 위, 크레인 높이에서 토끼춤 */
+.cm-glass2 .cm-dancer svg { width: 100%; display: block; overflow: visible; filter: drop-shadow(0 4px 4px rgba(27, 47, 78, .25)); }
+.cm-glass2 .cm-show { left: 84px; }
 
 .mg-kart .kgauge { padding: 4px; margin-bottom: 6px; } /* 게이지는 얇게, 악셀보다 한참 위로 */
 .mg-kart .kgauge .bar b { -webkit-text-stroke: 2.5px #2B2350; }
+
+/* 청크런: 2단 점프 부스터 게이지 (점프 버튼 안, 3칸) */
+.mg-btn.jump .bst { display: flex; align-items: center; gap: 4px; margin-top: 3px; }
+.mg-btn.jump .bst em { font-style: normal; font-size: 11px; color: #6B4A10; margin-right: 2px; }
+.mg-btn.jump .bst i { width: 20px; height: 12px; border-radius: 4px; background: rgba(43, 35, 80, .18); border: 2px solid #8A6A2E; }
+.mg-btn.jump .bst i.on { background: linear-gradient(180deg, #A8F0FF, #2E9BDA); border-color: #1F6FA0; box-shadow: 0 0 6px #5BE0FF; }
+.mg-btn.jump.charge .bst { animation: bstPop .5s ease-out; }
+@keyframes bstPop { 30% { transform: scale(1.25); } }
+
+.cm-glass2 .cm-dancer .cm-stage { position: absolute; left: -2px; right: -6px; bottom: -8px; height: 10px; border-radius: 6px; background: linear-gradient(180deg, #FF4FAE, #B5126E); box-shadow: 0 3px 0 #7A0B4A, 0 0 12px rgba(255, 79, 174, .6); }
