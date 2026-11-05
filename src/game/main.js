@@ -818,7 +818,7 @@ function rankHTML() {
   const medal = (i) => ['🥇', '🥈', '🥉'][i] || `${i + 1}`;
   void list; void place; void medal;
   return `<div class="tier"><span>${t.icon}</span><b>${esc(t.name)}</b><small>코인이 많을수록 높은 등급</small></div>
-    <div id="goalRank"><p class="rk-wait">🏆 순위 불러오는 중…</p></div>`;
+    <div id="goalRank"><p class="rk-wait">🏆 명예의 전당 불러오는 중…</p></div>`;
 }
 
 /** 목적지 도착 — 시상식은 4단계에서 */

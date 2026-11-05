@@ -54,7 +54,7 @@ export function playKart({ charId = 'bboy', name = '나', used } = {}) {
       MSG.textContent = '왼손 핸들 ◀ ▶ · 오른발 악셀 페달';
 
       // ---- 코스 (legacy 값 그대로) ----
-      const L = 42000; // 원래 22100 → 약 3분 넘게 달리도록 늘림
+      const L = 33600; // 코스 길이: 42000의 80% (원장님 요청으로 20% 짧게) — 퀴즈 · 레인 · 빗길 · 바나나 위치도 비율대로 함께 줄어듦
       const LS = L / 22100;
       const RW = Math.min(310, W * 0.76); // 도로를 넓게 (원래 232 / 58%)
       const AMP = Math.max(26, (W - RW) / 2 - 10);
