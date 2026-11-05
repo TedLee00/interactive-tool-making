@@ -138,7 +138,7 @@ function pairStep(box, q, first, res) {
   draw();
 }
 
-/* ---------------- 청크 절단소 (8·9) ---------------- */
+/* ---------------- 청크 나눔터 (8·9) ---------------- */
 export function renderSplit(box, q, cfg) {
   const answer = parseChunks(q.ko ?? q.en);
   const { tokens } = chunksToTokens(answer);
@@ -151,8 +151,8 @@ export function renderSplit(box, q, cfg) {
 
   const draw = () => {
     if (phase === 1) {
-      box.innerHTML = `<div class="qhelp">① 단어 사이 틈을 눌러 <em>덩어리로 자르세요</em></div>
-        <div class="split-line">${tokens.map((t, i) => `<span class="tk">${esc(t)}</span>${i < tokens.length - 1 ? `<button class="gap ${cuts.has(i) ? 'cut' : ''}" data-g="${i}" aria-label="자르기"><i></i></button>` : ''}`).join('')}<span class="end">${esc(q.end || '')}</span></div>
+      box.innerHTML = `<div class="qhelp">① 단어 사이 틈을 눌러 <em>덩어리로 나누세요</em></div>
+        <div class="split-line">${tokens.map((t, i) => `<span class="tk">${esc(t)}</span>${i < tokens.length - 1 ? `<button class="gap ${cuts.has(i) ? 'cut' : ''}" data-g="${i}" aria-label="나누기"><i></i></button>` : ''}`).join('')}<span class="end">${esc(q.end || '')}</span></div>
         <div class="row"><span class="muted">덩어리 ${cuts.size + 1}개</span><button class="primary" id="toPaint">② 품사 칠하기 ▶</button></div>`;
       box.querySelectorAll('.gap').forEach((g) => {
         g.onclick = () => {
@@ -173,7 +173,7 @@ export function renderSplit(box, q, cfg) {
     box.innerHTML = `<div class="qhelp">② 붓을 고르고 덩어리마다 <em>품사를 칠하세요</em></div>
       <div class="split-line painted">${chunks.map((c, i) => `<button class="pchunk" data-i="${i}">${chunkHTML(c)}</button>`).join('')}<span class="end">${esc(q.end || '')}</span></div>
       <div class="palette">${palette.map((p) => `<button class="brush ${POS[p].cls} ${p === brush ? 'on' : ''}" data-p="${p}"><b>${esc(POS[p].sym)}</b><small>${POS[p].name}</small></button>`).join('')}</div>
-      <div class="row"><button class="ghost" id="back">◀ 다시 자르기</button><button class="primary" id="submit" ${labels.every(Boolean) ? '' : 'disabled'}>제출</button></div>`;
+      <div class="row"><button class="ghost" id="back">◀ 다시 나누기</button><button class="primary" id="submit" ${labels.every(Boolean) ? '' : 'disabled'}>제출</button></div>`;
     box.querySelectorAll('.brush').forEach((b) => { b.onclick = () => { brush = b.dataset.p; draw(); }; });
     box.querySelectorAll('.pchunk').forEach((b) => { b.onclick = () => { labels[+b.dataset.i] = brush; draw(); }; });
     box.querySelector('#back').onclick = () => { phase = 1; draw(); };

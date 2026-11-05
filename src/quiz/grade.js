@@ -8,9 +8,9 @@ export function gradeChoice(q, picked) {
 }
 
 /**
- * 청크 절단 (유형 8·9)
+ * 청크 나누기 (유형 8·9)
  * @param q        문제 (q.ko 또는 q.en 표기)
- * @param cuts     학생이 자른 틈 번호 배열
+ * @param cuts     학생이 나눈 틈 번호 배열
  * @param labels   학생이 붙인 품사 코드 배열 (청크 순서)
  * @param opts.mergeAdjacent  이 품사끼리 붙어 있으면 합쳐도·나눠도 정답 (기본: 부사 D)
  * @returns {{ok:boolean, chunkOk:boolean[], answer:Array}}

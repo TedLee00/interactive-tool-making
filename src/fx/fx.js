@@ -104,7 +104,7 @@ Object.assign(TRACKS, {
       if ([0, 2, 3, 6, 8, 10, 11, 14].includes(s)) I.bass(D, t, mtof(r + (s % 4 === 2 ? 12 : 0)), 0.14, 0.24, 'square');
       if ([2, 6, 10, 14].includes(s)) I.stab(D, t, c.map((f) => f), 0.022);
       if (s === 0) I.pad(D, t, c, 2, 0.018); } },
-  // 절단 협곡: 두근두근 모험
+  // 나눔 협곡: 두근두근 모험
   canyon: { bpm: 100, vol: 0.5, chords: CH([[57, 60, 64], [55, 59, 62], [53, 57, 60], [52, 56, 59]]), roots: [33, 31, 29, 28],
     play(s, b, t, D, p) { const c = p.chords[b], r = p.roots[b];
       if (s % 4 === 0) I.kick(D, t, 0.55); if (s === 6 || s === 14) I.tom(D, t, 120, 0.35); if (s === 15) I.tom(D, t, 90, 0.3);
@@ -258,7 +258,7 @@ export const crewDance = (msg) => withMusicBack(dance('crew', msg));
 export const finaleDance = (msg) => withMusicBack(dance('finale', msg));
 export const dancerShow = (kind, msg) => withMusicBack(dance(kind, msg));
 export function maWarning() {
-  return withMusicBack(dance('ma', '연속 오답 3개! 정신 차리라, 마!'));
+  return withMusicBack(dance('ma', '연속 오답 3개! 힘내라, 마! 다시 집중!'));
 }
 
 /* ------------------------------------------------------------------

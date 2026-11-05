@@ -24,7 +24,7 @@ setLevel(S.level || 'mid');
 const REGIONS = [
   { name: '품사 마을', level: '하', color: '#3E9B5B', types: [1, 2, 3, 4] },
   { name: '청크 시티', level: '중', color: '#2E7BC4', types: [5, 6, 7] },
-  { name: '절단 협곡', level: '중상', color: '#C2602D', types: [8, 9, 10] },
+  { name: '나눔 협곡', level: '중상', color: '#C2602D', types: [8, 9, 10] },
   { name: '문장의 성', level: '상', color: '#7A3FA8', types: [11, 12] },
 ];
 
