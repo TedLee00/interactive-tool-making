@@ -593,9 +593,9 @@ function drawDrummer(g, cx, H, xs, ys, S, pulse = 0) {
   {
     const press = S.foot > 0 ? 1 : 0; const tap = pulse * pulse * 0.3;
     const pedY = ys[2] + 47; // 페달 가운데
-    const ax = cx + 3; const ay = pedY + 14 - press * 2; // 발목
-    const hipX = cx + 34; const hipY = headY + 14;
-    const kx = cx + 46; const ky = (hipY + ay) / 2 + 6; // 무릎은 바깥쪽으로 살짝
+    const ax = cx + 2; const ay = pedY + 14 - press * 2; // 발목
+    const hipX = cx + 12; const hipY = headY - 10; // 몸 가운데에서 살짝 오른쪽 (오른발)
+    const kx = cx + 20; const ky = (hipY + ay) / 2; // 무릎은 오른쪽으로 아주 살짝
     const limb = (x1, y1, x2, y2, w, col) => { g.lineCap = 'round'; g.strokeStyle = ink; g.lineWidth = w + 5; g.beginPath(); g.moveTo(x1, y1); g.lineTo(x2, y2); g.stroke(); g.strokeStyle = col; g.lineWidth = w; g.beginPath(); g.moveTo(x1, y1); g.lineTo(x2, y2); g.stroke(); };
     limb(hipX, hipY, kx, ky, 15, '#3C4A7A'); // 허벅지
     limb(kx, ky, ax + 4, ay + 2, 12, '#46578C'); // 정강이
