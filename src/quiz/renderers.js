@@ -142,9 +142,9 @@ function pairStep(box, q, first, res) {
 function legendHTML(withC = true) {
   // ① 기호 약속: 기호 = 품사 (기호만 보여 주기)  ② 예문: 문장 속 덩어리에 기호를 친 모습
   const key = (p) => `<span class="lk lk-${p}"><b>${esc(p === 'C' ? '△' : POS[p].sym)}</b>${POS[p].name}</span>`;
-  const ex = withC ? 'N:The tall boy | V:is | A:very happy | C:and | N:he | V:plays | N:soccer | D:after school' : 'N:My little sister | V:looks | A:very happy | D:after school';
-  return `<div class="sym-legend"><div class="lg-key">${['N', 'V', 'A', 'D', ...(withC ? ['C'] : [])].map(key).join('')}</div>
-    <div class="lg-ex"><span class="lg-tag">예</span>${parseChunks(ex).map((c) => chunkHTML(c)).join(' ')}</div></div>`;
+  const ex = withC ? 'N:My sister | V:is | A:happy | C:and | V:sings | D:well' : 'N:My sister | V:looks | A:very happy | D:today';
+  return `<div class="sym-legend"><span class="lg-title">예시</span><div class="lg-key">${['N', 'V', 'A', 'D', ...(withC ? ['C'] : [])].map(key).join('')}</div>
+    <div class="lg-ex">${parseChunks(ex).map((c) => chunkHTML(c)).join(' ')}</div></div>`;
 }
 /** 순서 문제 보기 섞기: 원래 순서 · 정답 순서와 같지 않게 */
 function shuffleNot(list, ...bad) {

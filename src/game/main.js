@@ -795,11 +795,11 @@ function quizSheet(type, region = board.cells[S.pos].region, extraSec = 0) {
     async onAnswer(ok) {
       if (ok) {
         S.streak++; S.wrongStreak = 0;
-        // 연속 정답 보상 (퀴즈 칸이 바뀌어도 이어서 셈, 틀리면 처음부터): 3연속 이지 → 6연속 야르 → 10연속 레전드 (그 뒤 13·16·20 … 반복)
-        const st = ((S.streak - 1) % 10) + 1;
-        if (st === 3) callout('easy', `${S.streak}연속 정답!`);
-        else if (st === 6) callout('yar', `${S.streak}연속 정답!`);
-        else if (st === 10) callout('legend', `${S.streak}연속 정답!`);
+        // 연속 정답 보상 (퀴즈 칸이 바뀌어도 이어서 셈, 틀리면 처음부터): 5연속 이지 → 10연속 야르 → 15연속 레전드 (그 뒤 20·25·30 … 반복)
+        const st = ((S.streak - 1) % 15) + 1;
+        if (st === 5) callout('easy', `${S.streak}연속 정답!`);
+        else if (st === 10) callout('yar', `${S.streak}연속 정답!`);
+        else if (st === 15) callout('legend', `${S.streak}연속 정답!`);
         else sfx('ok');
       } else {
         S.streak = 0; S.wrongStreak++;

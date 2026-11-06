@@ -224,7 +224,7 @@ function sayLegend() {
 const CALLOUTS = {
   easy: { text: 'EASY!', ko: '이지!', cls: 'co-easy', voice: '이지!', sfx: () => sfxOk() },
   nice: { text: 'NICE!', ko: '나이스!', cls: 'co-easy', voice: '나이스!', sfx: () => sfxOk() },
-  yar: { text: '야르!', ko: '3연속 정답', cls: 'co-yar', voice: '야르!', sfx: () => legacySfx([523, 659, 784, 1047], 'square', 0.1, 0.06) },
+  yar: { text: '야르!', ko: '10연속 정답', cls: 'co-yar', voice: '야르!', sfx: () => legacySfx([523, 659, 784, 1047], 'square', 0.1, 0.06) },
   legend: { text: 'LEGEND!', ko: '레전드', cls: 'co-legend', voice: '레전드!', sfx: () => legacySfx([523, 659, 784, 1047, 1319, 1568], 'triangle', 0.16, 0.08) },
   oops: { text: '앗!', ko: '', cls: 'co-oops', voice: null, sfx: () => sfxNo() },
   wow: { text: 'GOOD!', ko: '', cls: 'co-easy', voice: null, sfx: () => sfxOk() }, // 목소리 없이 글자 · 효과음만 (이지·야르를 아끼려고)
