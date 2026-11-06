@@ -1,6 +1,6 @@
 // 청크 카트 — 기존 앱 「TED 카트 레이스」를 그대로 옮기고(5명 경주 · 악셀 게이지 · 바나나 · 공사중 벽 ·
 // 영크크/늙크크 · 타코 · 응원단), 학습 요소를 더했다:
-//   ❓ 퀴즈 존 — 지나가는 순간 경기가 「순간정지」되고 문제 1개. 맞히면 ⚡ 게이지 가득 + 부스터, 틀리면 게이지 감소.
+//   ❓ 퀴즈 존 — 지나가는 순간 경기가 「순간정지」되고 문제 1개. 맞히면 ⚡ 게이지 +60% + 부스터, 틀리면 게이지 감소.
 // 아래 "legacy" 표시 부분은 legacy/index.html(2266~2540행)에서 자동으로 옮긴 코드다.
 import { bagPick, openGame, loadImage, asset, charSprite, pick, roundRect } from './engine.js';
 import { drawMixed, harderLevel } from '../quiz/bank.js';
@@ -33,8 +33,8 @@ export function playKart({ charId = 'bboy', name = '나', used } = {}) {
     music: 'mgKart',
     howto: [
       '<span class="hk b">🕹 ◀ ▶ 핸들</span> + <b>악셀 꾹</b> (2초면 2단 가속)',
-      '<span class="hk y">❓ 퀴즈 존</span> 정답이면 <b>⚡ 게이지 가득</b>',
-      '<span class="hk r">🛣 품사 레인</span> 위 단어의 품사 레인 → <b>부스터!</b>',
+      '<span class="hk y">❓ 퀴즈 존</span> 정답이면 <b>⚡ 게이지 +60%</b>',
+      '<span class="hk r">🛣 품사 레인</span> 위 단어의 품사 레인 → <b>부스터 + 게이지 50%</b>',
       '<span class="hk c">🌧 빗길</span> 악셀 떼기 · <b>🍌 🚧 피하기</b>',
       '<span class="hk g">🏆 1등</span> <b>쿠키앤크림!</b>',
     ],
@@ -65,7 +65,7 @@ export function playKart({ charId = 'bboy', name = '나', used } = {}) {
       const BAN = [], TAC = [];
       const WALL = { d: Math.round(L / 3), k: -0.05, w: RW * 0.26, th: 16 };
       const PEDS = [{ d: Math.round(L * 0.27), kind: 'young', sp: 235, x: -30, on: false, wait: false, done: false, dir: 1 },
-        { d: Math.round(L * 2 / 3), kind: 'old', sp: 78, /* 늙크크: 느릿느릿 */ x: -30, on: false, wait: false, done: false, dir: 1 }];
+        { d: Math.round(L * 2 / 3), kind: 'old', sp: 94, /* 늙크크: 느릿느릿 + 가운데서 한 번 멈춤 */ x: -30, on: false, wait: false, done: false, dir: 1 }];
       // legacy ↓
       for (let d = 950; d < L - 450; d += 300 + rnd() * 160) { const k = (rnd() * 2 - 1) * .36; BAN.push({d, k, gone: false}); if (rnd() < .35) BAN.push({d: d + 26, k: k + (k > 0 ? -.2 : .2), gone: false}); }
     [2300, 5000, 7700, 10200, 12800, 15900, 18400, 20500].forEach((d, i) => TAC.push({d: Math.round(d * LS), k: [-.28, .3, -.05, .26, -.2, .12, -.3, .22][i], gone: false}));
@@ -75,7 +75,7 @@ export function playKart({ charId = 'bboy', name = '나', used } = {}) {
       // legacy ↑
 
       // ❓ 퀴즈 존 (벽·보행자와 떨어진 곳)
-      const QZ = [0.08, 0.22, 0.4, 0.53, 0.7, 0.88].map((f) => ({ d: Math.round(L * f), done: false }));
+      const QZ = [0.12, 0.38, 0.62, 0.86].map((f) => ({ d: Math.round(L * f), done: false }));
       BAN.forEach((b) => { if (QZ.some((z) => Math.abs(b.d - z.d) < 240)) b.gone = true; });
       // 🛣️ 품사 레인: 길이 3줄로 나뉘고 줄마다 품사 이름. 위에 나온 단어의 품사 레인으로 지나가면 부스터!
       // 🌧️ 빗길 구간: 길이 미끄러워 악셀을 밟으면 차가 흔들리고 미끄러진다 → 악셀을 떼는 게 안전
@@ -187,8 +187,8 @@ export function playKart({ charId = 'bboy', name = '나', used } = {}) {
       const onRoad = r => Math.abs(r.x - cx(r.d)) < RW / 2 - 6;
     function spinOut(r) { r.nSpin = (r.nSpin || 0) + 1; (r.spinD = r.spinD || []).push(Math.round(r.d)); r.spin = 1.15; r.boost = 0; r.v *= .6; say('빙글!', r.x, PY - (r.d - ME.d) - KH * .7, '#F2A01E');
       if (r.me) { lsfxNo(); MSG.textContent = '🍌 바나나! 빙글빙글~ 다음엔 피해요!'; } }
-    function boost(r) { gauge = 1; say('타코! 게이지 FULL!', r.x, PY - KH * .8, '#E21E8C');
-      lsfx([392, 523, 659, 784, 1047], 'square', .09, .04); MSG.textContent = '🌮 타코! 악셀 게이지가 가득 찼어요!'; }
+    function boost(r) { gauge = Math.min(1, gauge + 0.3); say('타코! 게이지 +30%', r.x, PY - KH * .8, '#E21E8C');
+      lsfx([392, 523, 659, 784, 1047], 'square', .09, .04); MSG.textContent = '🌮 타코! 악셀 게이지 +30%'; }
     function stepRacer(r, dt) {
       if (r.fin && !r.me) { r.v += (r.base * .55 - r.v) * dt; r.d += r.v * dt; return; }
       if (r.fin && r.me) { r.v -= r.v * Math.min(1, dt * 2.2); r.d += r.v * dt; r.x += (cx(r.d) - r.x) * Math.min(1, dt * 2); r.head *= .9; return; }   // brake past the finish line
@@ -200,7 +200,7 @@ export function playKart({ charId = 'bboy', name = '나', used } = {}) {
         if (lv === 2 && r.acc === 1) { say('⚡⚡ 2단 가속!', r.x, PY - KH * .9, '#2E9BDA'); lsfx([523, 784, 1047, 1568], 'square', .08, .04); }
         r.acc = lv;
         if (!r.acc && mode === 'race') gauge = Math.min(1, gauge + dt / REGEN_SEC);   // refills slowly by itself while the pedal is up
-        if (r.acc) { tgt *= lv === 2 ? ACC2 : ACC1; gauge = Math.max(0, gauge - dt / FUEL_SEC); if (gauge === 0) MSG.textContent = '⚡ 게이지 바닥! 손을 떼면 천천히 차요 · 🌮 타코 = 가득!'; } }
+        if (r.acc) { tgt *= lv === 2 ? ACC2 : ACC1; gauge = Math.max(0, gauge - dt / FUEL_SEC); if (gauge === 0) MSG.textContent = '⚡ 게이지 바닥! 손을 떼면 천천히 차요 · 🌮 타코 = +30%'; } }
       if (r.spin > 0) { tgt *= .3; r.spin -= dt; }
       if (inRain(r.d)) {
         tgt *= r.me ? (r.acc ? 1 : 0.92) : 0.86; // 빗길에서는 모두 조심조심
@@ -313,7 +313,7 @@ export function playKart({ charId = 'bboy', name = '나', used } = {}) {
       ctx.font = "900 10px 'Noto Sans KR',sans-serif"; ctx.textAlign = 'center'; ctx.lineWidth = 4; ctx.strokeStyle = '#1B2F4E'; ctx.strokeText('⚠ 공사중', x, y - h / 2 - 5); ctx.fillStyle = '#FFD43B'; ctx.fillText('⚠ 공사중', x, y - h / 2 - 5); ctx.textAlign = 'left';
     }
     function ajussi(PED) {   // a pedestrian crossing the track, looking left and right (old: 늙크크 · young: 영크크)
-      if (!PED.on && !PED.wait) return; const y = sy(PED.d); if (y < -60 || y > H + 60) return; const x = PED.x, tm = performance.now() / 1000, look = Math.sin(tm * (PED.on ? 6 : 3)) > 0 ? 1 : -1, step = PED.on ? Math.sin(tm * (PED.kind === 'old' ? 10 : 30)) * 1.6 : 0;
+      if (!PED.on && !PED.wait) return; const y = sy(PED.d); if (y < -60 || y > H + 60) return; const x = PED.x, tm = performance.now() / 1000, look = Math.sin(tm * (PED.pauseT > 0 ? 9 : PED.on ? 5 : 3)) > 0 ? 1 : -1, step = PED.on && !(PED.pauseT > 0) ? Math.sin(tm * (PED.kind === 'old' ? 12 : 30)) * 1.6 : 0;
       if (PED.kind === 'young') return teen(PED, x, y, tm, look, step);
       ctx.fillStyle = 'rgba(0,0,0,.2)'; ctx.beginPath(); ctx.ellipse(x + 2, y + 18, 12, 4, 0, 0, 7); ctx.fill();
       ctx.strokeStyle = '#1B2F4E'; ctx.lineWidth = 1.8; ctx.lineJoin = 'round';
@@ -327,6 +327,9 @@ export function playKart({ charId = 'bboy', name = '나', used } = {}) {
       ctx.strokeStyle = '#3A332E'; ctx.lineWidth = 1.6; ctx.beginPath(); ctx.moveTo(x - 6, y - 23); ctx.quadraticCurveTo(x, y - 28, x + 7, y - 22); ctx.stroke();   // comb-over
       ctx.fillStyle = '#1B2F4E'; ctx.beginPath(); ctx.arc(x - 3 + look * 2.4, y - 18, 1.3, 0, 7); ctx.arc(x + 3 + look * 2.4, y - 18, 1.3, 0, 7); ctx.fill();
       ctx.strokeStyle = '#3A332E'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(x - 4 + look * 1.5, y - 13.5); ctx.lineTo(x + 4 + look * 1.5, y - 13.5); ctx.stroke();   // mustache
+      ctx.strokeStyle = '#B4466A'; ctx.lineWidth = 1.6; ctx.beginPath(); ctx.arc(x + look * 1.5, y - 12.5, 3.2, 0.25, Math.PI - 0.25); ctx.stroke();   // 싱글벙글 웃는 입
+      ctx.fillStyle = 'rgba(255,140,140,.55)'; ctx.beginPath(); ctx.arc(x - 6 + look * 1.5, y - 15, 1.8, 0, 7); ctx.arc(x + 6 + look * 1.5, y - 15, 1.8, 0, 7); ctx.fill();   // 볼터치
+      if (PED.pauseT > 0) { ctx.font = "900 11px 'Noto Sans KR',sans-serif"; ctx.textAlign = 'center'; ctx.fillStyle = '#1B2F4E'; ctx.fillText(look > 0 ? '허허~' : '어디 보자~', x + look * 22, y - 52); ctx.textAlign = 'left'; }
       ctx.font = "900 11px 'Noto Sans KR',sans-serif"; ctx.textAlign = 'center'; const bw = 48;
       rr(x - bw / 2, y - 45, bw, 15, 7, '#fff'); ctx.strokeStyle = '#1B2F4E'; ctx.lineWidth = 1.4; ctx.strokeRect(x - bw / 2 + 1, y - 45, bw - 2, 15);
       ctx.fillStyle = '#1B2F4E'; ctx.fillText('늙크크', x, y - 34); ctx.textAlign = 'left';
@@ -439,7 +442,7 @@ export function playKart({ charId = 'bboy', name = '나', used } = {}) {
         const q = drawMixed(QUIZ_TYPES, used, harderLevel());
         const box = document.createElement('div');
         box.className = 'mg-freeze';
-        box.innerHTML = `<div class="fz-head"><b>❓ 퀴즈 존 · 순간정지!</b><span>맞히면 ⚡ 게이지 가득</span></div><div class="card q" id="fzq"></div><i class="fz-bar"></i>`;
+        box.innerHTML = `<div class="fz-head"><b>❓ 퀴즈 존 · 순간정지!</b><span>맞히면 ⚡ 게이지 +60%</span></div><div class="card q" id="fzq"></div><i class="fz-bar"></i>`;
         E.layer.appendChild(box);
         let settled = false;
         const settle = (ok, answerHTML) => {
@@ -448,18 +451,18 @@ export function playKart({ charId = 'bboy', name = '나', used } = {}) {
           box.querySelectorAll('.opt').forEach((b) => { b.disabled = true; });
           const fb = document.createElement('div');
           fb.className = `fz-fb ${ok ? 'ok' : 'no'}`;
-          fb.innerHTML = ok ? '<b>정답! ⚡ 게이지 가득!</b>' : `<b>${answerHTML ? '아쉬워요!' : '⏰ 시간 초과!'}</b> ${answerHTML || `정답: <b>${q.answer}</b>`}<small>💡 ${q.explain}</small>`;
+          fb.innerHTML = ok ? '<b>정답! ⚡ 게이지 +60%!</b>' : `<b>${answerHTML ? '아쉬워요!' : '⏰ 시간 초과!'}</b> ${answerHTML || `정답: <b>${q.answer}</b>`}<small>💡 ${q.explain}</small>`;
           box.appendChild(fb);
           if (ok) {
             quizzes.ok++; streak++;
-            gauge = 1; ME.boost = 1.3;
+            gauge = Math.min(1, gauge + 0.6); ME.boost = 1.3;
             if (!E.comboCallout(streak, `퀴즈 ${streak}연속!`)) E.sfx('ok'); // 5연속 이지 · 10연속 야르
           } else {
             streak = 0;
             gauge = Math.max(0, gauge - 0.35);
             lsfxNo();
           }
-          setTimeout(() => { box.remove(); MSG.textContent = ok ? '⚡ 게이지 가득! 악셀을 꾹!' : '다음 퀴즈 존에서 만회하자!'; mode = 'race'; }, ok ? 1100 : 2600);
+          setTimeout(() => { box.remove(); MSG.textContent = ok ? '⚡ 게이지 +60%! 악셀을 꾹!' : '다음 퀴즈 존에서 만회하자!'; mode = 'race'; }, ok ? 1100 : 2600);
         };
         renderChoice(box.querySelector('#fzq'), q).then((r) => settle(r.ok, r.ok ? '' : r.answerHTML));
         setTimeout(() => settle(false, ''), 10000);
@@ -495,7 +498,9 @@ export function playKart({ charId = 'bboy', name = '나', used } = {}) {
             if (!Q.wait && !Q.on && !Q.done && ME.d > Q.d - (PY + 60)) { Q.wait = true; Q.dir = ME.x < cx(Q.d) ? -1 : 1; Q.x = cx(Q.d) - Q.dir * (RW / 2 + 26); }
             if (Q.wait && !Q.on) { const dist = Q.d - ME.d, need = Math.abs(ME.x - Q.x) / Q.sp;
               if (dist < Math.max(60, ME.v * need)) { Q.on = true; Q.wait = false; lsfx(Q.kind === 'old' ? [660, 520] : [880, 1100], 'square', 0.05, 0.06); } }
-            if (Q.on) { Q.x += Q.dir * Q.sp * dt; if (Math.abs(Q.x - cx(Q.d)) > RW / 2 + 60 && Math.sign(Q.x - cx(Q.d)) === Q.dir) { Q.on = false; Q.done = true; } }
+            if (Q.on && Q.kind === 'old' && !Q.paused && Math.sign(Q.x - cx(Q.d)) === Q.dir) { Q.paused = true; Q.pauseT = 1.1; } // 길 가운데서 한 번 서서 두리번
+            if (Q.on && Q.pauseT > 0) Q.pauseT -= dt;
+            else if (Q.on) { Q.x += Q.dir * Q.sp * dt; if (Math.abs(Q.x - cx(Q.d)) > RW / 2 + 60 && Math.sign(Q.x - cx(Q.d)) === Q.dir) { Q.on = false; Q.done = true; } }
             if (Q.wait && ME.d > Q.d + 40) { Q.wait = false; Q.done = true; }
           });
           for (let i = FX.length - 1; i >= 0; i--) { FX[i].life -= dt; FX[i].y -= 34 * dt; if (FX[i].life <= 0) FX.splice(i, 1); }
@@ -521,7 +526,7 @@ export function playKart({ charId = 'bboy', name = '나', used } = {}) {
                 const c = cx(z.d);
                 const k = Math.max(0, Math.min(2, Math.floor((ME.x - (c - RW / 2)) / (RW / 3))));
                 if (z.labels[k] === z.target) {
-                  ME.boost = 2.2; gauge = Math.min(1, gauge + 0.35); lanes.ok++;
+                  ME.boost = 2.2; gauge = Math.min(1, gauge + 0.5); lanes.ok++;
                   say(`⚡ ${z.word} = ${z.target}! 부스터!`, ME.x, PY - KH, '#1E9B5B');
                   E.callout('wow', `${z.target} 레인 정답!`); MSG.textContent = `⚡ 정답! ${z.word} = <span class="tg">${z.target}</span> · 부스터!`;
                   lsfx([523, 659, 784, 1047], 'square', 0.08, 0.04);

@@ -589,27 +589,33 @@ function drawDrummer(g, cx, H, xs, ys, S, pulse = 0) {
   g.lineCap = 'round'; g.lineJoin = 'round';
   // 의자 · 어깨 (위에서 본 넓적한 타원 몸)
   g.fillStyle = 'rgba(0,0,0,.35)'; g.beginPath(); g.ellipse(cx, H - 6, 62, 22, 0, 0, 7); g.fill();
-  // 🦶 오른발: 허벅지 → 무릎 → 정강이 → 운동화가 킥 페달 위에 (밟으면 발끝이 꾹, 평소엔 박자에 맞춰 까딱)
+  // 🦶 두 다리: 오른발은 킥 페달 위 (밟으면 발끝이 꾹, 평소엔 박자에 맞춰 까딱) · 왼발은 그 왼쪽 조금 아래에 편하게 구부려 바닥에
   {
     const press = S.foot > 0 ? 1 : 0; const tap = pulse * pulse * 0.3;
     const pedY = ys[2] + 47; // 페달 가운데
-    const ax = cx + 3; const ay = pedY + 14 - press * 2; // 발목
-    const hipX = cx + 34; const hipY = headY + 14;
-    const kx = cx + 46; const ky = (hipY + ay) / 2 + 6; // 무릎은 바깥쪽으로 살짝
     const limb = (x1, y1, x2, y2, w, col) => { g.lineCap = 'round'; g.strokeStyle = ink; g.lineWidth = w + 5; g.beginPath(); g.moveTo(x1, y1); g.lineTo(x2, y2); g.stroke(); g.strokeStyle = col; g.lineWidth = w; g.beginPath(); g.moveTo(x1, y1); g.lineTo(x2, y2); g.stroke(); };
-    limb(hipX, hipY, kx, ky, 15, '#3C4A7A'); // 허벅지
-    limb(kx, ky, ax + 4, ay + 2, 12, '#46578C'); // 정강이
-    g.fillStyle = '#46578C'; g.strokeStyle = ink; g.lineWidth = 2; g.beginPath(); g.arc(kx, ky, 8, 0, 7); g.fill(); g.stroke(); // 무릎
-    g.fillStyle = '#2B3A66'; g.beginPath(); g.ellipse(ax + 3, ay + 2, 8, 4, -0.3, 0, 7); g.fill(); // 바짓단
-    // 운동화 (위에서 본 모양: 뒤꿈치는 아래, 발끝은 페달 쪽 위로)
-    g.save(); g.translate(ax, ay); g.rotate(-0.12); g.scale(1, 1 - press * 0.16 - tap * 0.08);
-    g.fillStyle = '#F4F6FA'; g.strokeStyle = ink; g.lineWidth = 2.2;
-    g.beginPath(); g.moveTo(-7, 2); g.quadraticCurveTo(-9, -12, -6, -20); g.quadraticCurveTo(0, -28, 6, -20); g.quadraticCurveTo(9, -12, 7, 2); g.quadraticCurveTo(0, 7, -7, 2); g.closePath(); g.fill(); g.stroke();
-    g.fillStyle = '#E0453A'; g.beginPath(); g.moveTo(-6, -18); g.quadraticCurveTo(0, -27, 6, -18); g.quadraticCurveTo(0, -15, -6, -18); g.fill(); // 앞코
-    g.strokeStyle = '#2E7BC4'; g.lineWidth = 1.6; [-12, -8, -4].forEach((dy) => { g.beginPath(); g.moveTo(-3.5, dy); g.lineTo(3.5, dy - 1); g.stroke(); }); // 끈
-    g.fillStyle = '#E0453A'; g.beginPath(); g.arc(0, 1, 2.2, 0, 7); g.fill(); // 뒤꿈치 탭
-    g.restore();
-    if (press) { g.strokeStyle = 'rgba(255,79,174,.75)'; g.lineWidth = 2.5; g.beginPath(); g.arc(ax, ay - 12, 16, 0, 7); g.stroke(); }
+    const shoe = (x, y, rot, squash) => { // 운동화 (위에서 본 모양: 뒤꿈치는 아래, 발끝은 위로)
+      g.save(); g.translate(x, y); g.rotate(rot); g.scale(1, 1 - squash);
+      g.fillStyle = '#F4F6FA'; g.strokeStyle = ink; g.lineWidth = 2.2;
+      g.beginPath(); g.moveTo(-7, 2); g.quadraticCurveTo(-9, -12, -6, -20); g.quadraticCurveTo(0, -28, 6, -20); g.quadraticCurveTo(9, -12, 7, 2); g.quadraticCurveTo(0, 7, -7, 2); g.closePath(); g.fill(); g.stroke();
+      g.fillStyle = '#E0453A'; g.beginPath(); g.moveTo(-6, -18); g.quadraticCurveTo(0, -27, 6, -18); g.quadraticCurveTo(0, -15, -6, -18); g.fill(); // 앞코
+      g.strokeStyle = '#2E7BC4'; g.lineWidth = 1.6; [-12, -8, -4].forEach((dy) => { g.beginPath(); g.moveTo(-3.5, dy); g.lineTo(3.5, dy - 1); g.stroke(); }); // 끈
+      g.fillStyle = '#E0453A'; g.beginPath(); g.arc(0, 1, 2.2, 0, 7); g.fill(); // 뒤꿈치 탭
+      g.restore();
+    };
+    const leg = (hipX, hipY, kx, ky, ax, ay) => {
+      limb(hipX, hipY, kx, ky, 15, '#3C4A7A'); // 허벅지
+      limb(kx, ky, ax, ay + 2, 12, '#46578C'); // 정강이
+      g.fillStyle = '#46578C'; g.strokeStyle = ink; g.lineWidth = 2; g.beginPath(); g.arc(kx, ky, 8, 0, 7); g.fill(); g.stroke(); // 무릎
+      g.fillStyle = '#2B3A66'; g.beginPath(); g.ellipse(ax, ay + 2, 8, 4, 0, 0, 7); g.fill(); // 바짓단
+    };
+    // 왼발: 몸 가운데 살짝 왼쪽에서 나와 무릎을 왼쪽으로 편하게 굽히고, 오른발보다 조금 아래(몸 쪽) 바닥에
+    { const ax = cx - 26; const ay = pedY + 30; const hipX = cx - 12; const hipY = headY - 10;
+      leg(hipX, hipY, cx - 34, (hipY + ay) / 2 + 2, ax, ay); shoe(ax, ay, 0.22, 0); }
+    // 오른발: 몸 가운데 살짝 오른쪽에서 나와 무릎을 살짝 굽혀 페달 위로
+    { const ax = cx + 2; const ay = pedY + 14 - press * 2; const hipX = cx + 12; const hipY = headY - 10;
+      leg(hipX, hipY, cx + 20, (hipY + ay) / 2, ax + 3, ay); shoe(ax, ay, -0.12, press * 0.16 + tap * 0.08);
+      if (press) { g.strokeStyle = 'rgba(255,79,174,.75)'; g.lineWidth = 2.5; g.beginPath(); g.arc(ax, ay - 12, 16, 0, 7); g.stroke(); } }
     g.lineCap = 'butt';
   }
   const bd = g.createRadialGradient(cx - 14, headY + 4, 4, cx, headY + 14, 60); bd.addColorStop(0, '#A48BF0'); bd.addColorStop(1, '#5B3FB8');
