@@ -133,6 +133,11 @@ const TRACKS = {
       if (s === 0) I.trom(D, t, mtof(62 - b * 2), .9, .06); if (s === 8) I.trom(D, t, mtof(61 - b * 2), .9, .06); }},
 };
 const MUS = {timer: null, gain: null, cur: null};
+// 정답 효과음이 또렷하게 들리도록 배경음악을 잠깐 줄였다가 다시 키움
+if (typeof window !== 'undefined') window.addEventListener('cq-duck', () => {
+  if (!MUS.gain || !AC || !MUS.cur) return; const v = TRACKS[MUS.cur]?.vol ?? MUS.gain.gain.value, t = AC.currentTime, gg = MUS.gain.gain;
+  gg.cancelScheduledValues(t); gg.setValueAtTime(gg.value, t); gg.linearRampToValueAtTime(v * 0.25, t + 0.04); gg.setValueAtTime(v * 0.25, t + 0.45); gg.linearRampToValueAtTime(v, t + 0.9);
+});
 function music(name) {
   musicStop(); MUS.cur = name; if (muted || !name || !ac()) return;
   const P = TRACKS[name], g = AC.createGain(); g.gain.value = P.vol; g.connect(MASTER); MUS.gain = g;
