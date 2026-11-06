@@ -12,8 +12,8 @@ const iconFor = (label) => { // 정확한 이름 → 끝 단어 → 문구 속 �
   return k ? I[k] : '🍽️';
 };
 
-const MISSION_SEC = 24; // 미션 하나 24초 × 8 + 보스 30초 ≈ 3분 40초
-const BOSS_SEC = 30;
+const MISSION_SEC = 17; // 미션 하나 17초 × 8 + 보스 21초 ≈ 2분 37초 (30% 짧게)
+const BOSS_SEC = 21;
 
 export function playRun({ charId = 'bboy' } = {}) {
   return openGame({
@@ -37,8 +37,8 @@ export function playRun({ charId = 'bboy' } = {}) {
       const friends = chars.players.filter((p) => p.id !== charId);
       const imgs = await Promise.all(friends.map((p) => charSprite(p.id).catch(() => null)));
       const KIDS = friends.map((p, k) => ({ kind: 'kid', img: imgs[k], say: SAYS[p.id] || '앗!', name: p.name })).filter((k) => k.img);
-      // 익살 캐릭터 (그림으로 그림): 허허 아저씨 · 꼬마 크크 · 숙제 더미 · 졸린 판다 · 비둘기 떼
-      ['oldman', 'teen', 'hwmon', 'panda', 'pigeon'].forEach((f) => KIDS.push({ kind: 'funny', f, name: { oldman: '허허 아저씨', teen: '꼬마 크크', hwmon: '숙제 더미', panda: '졸린 판다', pigeon: '비둘기 떼' }[f], say: { oldman: '어이쿠!', teen: '앗 죄송!', hwmon: '숙제 같이 하자~', panda: 'zzz…', pigeon: '구구구!' }[f] }));
+      // 익살 캐릭터 (그림으로 그림): 늙크크 · 영크크 · 숙제 더미 · 졸린 판다 · 비둘기 떼
+      ['oldman', 'teen', 'hwmon', 'panda', 'pigeon'].forEach((f) => KIDS.push({ kind: 'funny', f, name: { oldman: '늙크크', teen: '영크크', hwmon: '숙제 더미', panda: '졸린 판다', pigeon: '비둘기 떼' }[f], say: { oldman: '어이쿠!', teen: '앗 죄송!', hwmon: '숙제 같이 하자~', panda: 'zzz…', pigeon: '구구구!' }[f] }));
       let bag = [];
       const nextKid = () => { if (!bag.length) bag = [...KIDS].sort(() => Math.random() - 0.5); return bag.pop(); };
       const POSC = { 명사: '#E0453A', 동사: '#2E7BC4', 형용사: '#28A064', 부사: '#D9822B' };
@@ -486,7 +486,7 @@ function drawFunny(g, f, x, y, t) {
   g.lineWidth = 2.5; g.strokeStyle = ink; g.lineJoin = 'round'; g.lineCap = 'round';
   const bob = Math.sin(t * 8) * 2;
   if (f === 'oldman') {
-    // 허허 아저씨: 빗어 넘긴 머리 · 콧수염 · 비닐봉지
+    // 늙크크: 빗어 넘긴 머리 · 콧수염 · 비닐봉지
     g.fillStyle = '#5A5F6B'; g.fillRect(x - 9, y - 22, 7, 22); g.fillRect(x + 2, y - 22, 7, 22);
     g.fillStyle = '#fff'; g.beginPath(); g.roundRect(x - 15, y - 50, 30, 30, 6); g.fill(); g.stroke();
     g.fillStyle = 'rgba(255,255,255,.9)'; g.beginPath(); g.ellipse(x + 20, y - 28 + bob, 7, 9, 0, 0, 7); g.fill(); g.stroke();
@@ -495,7 +495,7 @@ function drawFunny(g, f, x, y, t) {
     g.lineWidth = 3.5; g.beginPath(); g.moveTo(x - 6, y - 56 + bob); g.lineTo(x + 6, y - 56 + bob); g.stroke();
     g.fillStyle = ink; g.beginPath(); g.arc(x - 4, y - 63 + bob, 1.6, 0, 7); g.arc(x + 4, y - 63 + bob, 1.6, 0, 7); g.fill();
   } else if (f === 'teen') {
-    // 꼬마 크크: 거꾸로 쓴 모자 · 후드 · 가방 메고 전력 질주
+    // 영크크: 거꾸로 쓴 모자 · 후드 · 가방 메고 전력 질주
     g.fillStyle = '#2E4A78'; g.fillRect(x - 9, y - 24, 7, 24 + bob); g.fillRect(x + 2, y - 24, 7, 24 - bob);
     g.fillStyle = '#28A064'; g.beginPath(); g.roundRect(x - 14, y - 52, 28, 30, 7); g.fill(); g.stroke();
     g.fillStyle = '#F2A01E'; g.fillRect(x + 12, y - 50, 8, 18); g.strokeRect(x + 12, y - 50, 8, 18);

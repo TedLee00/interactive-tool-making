@@ -1,5 +1,5 @@
 // 청크 카트 — 기존 앱 「TED 카트 레이스」를 그대로 옮기고(5명 경주 · 악셀 게이지 · 바나나 · 공사중 벽 ·
-// 꼬마 크크/허허 아저씨 · 타코 · 응원단), 학습 요소를 더했다:
+// 영크크/늙크크 · 타코 · 응원단), 학습 요소를 더했다:
 //   ❓ 퀴즈 존 — 지나가는 순간 경기가 「순간정지」되고 문제 1개. 맞히면 ⚡ 게이지 가득 + 부스터, 틀리면 게이지 감소.
 // 아래 "legacy" 표시 부분은 legacy/index.html(2266~2540행)에서 자동으로 옮긴 코드다.
 import { bagPick, openGame, loadImage, asset, charSprite, pick, roundRect } from './engine.js';
@@ -65,7 +65,7 @@ export function playKart({ charId = 'bboy', name = '나', used } = {}) {
       const BAN = [], TAC = [];
       const WALL = { d: Math.round(L / 3), k: -0.05, w: RW * 0.26, th: 16 };
       const PEDS = [{ d: Math.round(L * 0.27), kind: 'young', sp: 235, x: -30, on: false, wait: false, done: false, dir: 1 },
-        { d: Math.round(L * 2 / 3), kind: 'old', sp: 120, x: -30, on: false, wait: false, done: false, dir: 1 }];
+        { d: Math.round(L * 2 / 3), kind: 'old', sp: 78, /* 늙크크: 느릿느릿 */ x: -30, on: false, wait: false, done: false, dir: 1 }];
       // legacy ↓
       for (let d = 950; d < L - 450; d += 300 + rnd() * 160) { const k = (rnd() * 2 - 1) * .36; BAN.push({d, k, gone: false}); if (rnd() < .35) BAN.push({d: d + 26, k: k + (k > 0 ? -.2 : .2), gone: false}); }
     [2300, 5000, 7700, 10200, 12800, 15900, 18400, 20500].forEach((d, i) => TAC.push({d: Math.round(d * LS), k: [-.28, .3, -.05, .26, -.2, .12, -.3, .22][i], gone: false}));
@@ -250,7 +250,7 @@ export function playKart({ charId = 'bboy', name = '나', used } = {}) {
             if (r.me) { lsfxNo(); MSG.textContent = '쿵! 벽에 막혔어요 — ◀ ▶ 로 옆으로 빠져나가요!'; } } } }
       PEDS.forEach(q => { if (q.on && !(r.pedHit || {})[q.kind] && r.spin <= 0 && Math.abs(r.d - q.d) < KH * .5 && Math.abs(r.x - q.x) < KW * .5 + 8) {
         (r.pedHit = r.pedHit || {})[q.kind] = true; spinOut(r); say(q.kind === 'old' ? '어이쿠!' : '앗 죄송!', q.x, sy(q.d) - 46, '#1B2F4E');
-        if (r.me) MSG.textContent = q.kind === 'old' ? '앗! 허허 아저씨가 길을 건너요! 다음엔 살짝 피해요 🙂' : '앗! 꼬마 크크가 지나가요! 다음엔 살짝 피해요 🙂'; } });
+        if (r.me) MSG.textContent = q.kind === 'old' ? '앗! 늙크크가 길을 건너요! 다음엔 살짝 피해요 🙂' : '앗! 영크크가 지나가요! 다음엔 살짝 피해요 🙂'; } });
       if (!r.fin && r.d >= L) { r.fin = t; order.push(r); if (r.me) finishRace(); else if (!ME.fin) MSG.textContent = `🏁 ${r.name.split(' ·')[0]} 골인! 서둘러요!`; }
     }
     function bump() {   // karts push each other sideways
@@ -312,8 +312,8 @@ export function playKart({ charId = 'bboy', name = '나', used } = {}) {
       ctx.restore(); ctx.strokeStyle = '#1B2F4E'; ctx.lineWidth = 2; ctx.strokeRect(x - w / 2, y - h / 2, w, h);
       ctx.font = "900 10px 'Noto Sans KR',sans-serif"; ctx.textAlign = 'center'; ctx.lineWidth = 4; ctx.strokeStyle = '#1B2F4E'; ctx.strokeText('⚠ 공사중', x, y - h / 2 - 5); ctx.fillStyle = '#FFD43B'; ctx.fillText('⚠ 공사중', x, y - h / 2 - 5); ctx.textAlign = 'left';
     }
-    function ajussi(PED) {   // a pedestrian crossing the track, looking left and right (old: 허허 아저씨 · young: 꼬마 크크)
-      if (!PED.on && !PED.wait) return; const y = sy(PED.d); if (y < -60 || y > H + 60) return; const x = PED.x, tm = performance.now() / 1000, look = Math.sin(tm * (PED.on ? 6 : 3)) > 0 ? 1 : -1, step = PED.on ? Math.sin(tm * (PED.kind === 'old' ? 18 : 30)) * 1.6 : 0;
+    function ajussi(PED) {   // a pedestrian crossing the track, looking left and right (old: 늙크크 · young: 영크크)
+      if (!PED.on && !PED.wait) return; const y = sy(PED.d); if (y < -60 || y > H + 60) return; const x = PED.x, tm = performance.now() / 1000, look = Math.sin(tm * (PED.on ? 6 : 3)) > 0 ? 1 : -1, step = PED.on ? Math.sin(tm * (PED.kind === 'old' ? 10 : 30)) * 1.6 : 0;
       if (PED.kind === 'young') return teen(PED, x, y, tm, look, step);
       ctx.fillStyle = 'rgba(0,0,0,.2)'; ctx.beginPath(); ctx.ellipse(x + 2, y + 18, 12, 4, 0, 0, 7); ctx.fill();
       ctx.strokeStyle = '#1B2F4E'; ctx.lineWidth = 1.8; ctx.lineJoin = 'round';
@@ -329,9 +329,9 @@ export function playKart({ charId = 'bboy', name = '나', used } = {}) {
       ctx.strokeStyle = '#3A332E'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(x - 4 + look * 1.5, y - 13.5); ctx.lineTo(x + 4 + look * 1.5, y - 13.5); ctx.stroke();   // mustache
       ctx.font = "900 11px 'Noto Sans KR',sans-serif"; ctx.textAlign = 'center'; const bw = 48;
       rr(x - bw / 2, y - 45, bw, 15, 7, '#fff'); ctx.strokeStyle = '#1B2F4E'; ctx.lineWidth = 1.4; ctx.strokeRect(x - bw / 2 + 1, y - 45, bw - 2, 15);
-      ctx.fillStyle = '#1B2F4E'; ctx.fillText('허허 아저씨', x, y - 34); ctx.textAlign = 'left';
+      ctx.fillStyle = '#1B2F4E'; ctx.fillText('늙크크', x, y - 34); ctx.textAlign = 'left';
     }
-    function teen(PED, x, y, tm, look, step) {   // 꼬마 크크: hoodie, backwards cap, backpack, sprinting
+    function teen(PED, x, y, tm, look, step) {   // 영크크: hoodie, backwards cap, backpack, sprinting
       ctx.fillStyle = 'rgba(0,0,0,.2)'; ctx.beginPath(); ctx.ellipse(x + 2, y + 18, 12, 4, 0, 0, 7); ctx.fill();
       ctx.strokeStyle = '#1B2F4E'; ctx.lineWidth = 1.8; ctx.lineJoin = 'round';
       [[-4, step], [4, -step]].forEach(([o, s2]) => { ctx.fillStyle = '#2E4A78'; ctx.fillRect(x + o - 2.5, y + 3, 5, 11 + s2 * 2.5); ctx.strokeRect(x + o - 2.5, y + 3, 5, 11 + s2 * 2.5);
@@ -347,7 +347,7 @@ export function playKart({ charId = 'bboy', name = '나', used } = {}) {
       ctx.strokeStyle = '#1B2F4E'; ctx.lineWidth = 1.4; ctx.beginPath(); ctx.arc(x + look * 1.5, y - 12.5, 2.6, .1 * Math.PI, .9 * Math.PI); ctx.stroke();
       ctx.font = "900 11px 'Noto Sans KR',sans-serif"; ctx.textAlign = 'center'; const bw = 48;
       rr(x - bw / 2, y - 45, bw, 15, 7, '#fff'); ctx.strokeStyle = '#28A064'; ctx.lineWidth = 1.4; ctx.strokeRect(x - bw / 2 + 1, y - 45, bw - 2, 15);
-      ctx.fillStyle = '#28A064'; ctx.fillText('꼬마 크크', x, y - 34); ctx.textAlign = 'left';
+      ctx.fillStyle = '#28A064'; ctx.fillText('영크크', x, y - 34); ctx.textAlign = 'left';
     }
     function taco(x, y) {
       const tm = performance.now() / 1000, pulse = .5 + .5 * Math.sin(tm * 8);
