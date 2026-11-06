@@ -126,7 +126,7 @@ export async function runCell(root, { type, questions, config, showIntro = true,
     ${reward.perfect ? '<div class="perfect-banner">PERFECT!</div>' : ''}
     <div class="score">${correct}<small>/${questions.length}</small></div>
     <div class="reward">${reward.move ? `🎲 <b>${reward.move}칸 전진</b>` : '이동 없음'} · 🪙 코인 <b>+${reward.coins}</b></div>
-    ${wrongs.length ? `<div class="wrong-note"><h4>📒 오답노트</h4>${wrongs.map((w) => `<div class="wn"><div class="wq">${esc(w.question)}</div><div class="wm">내 답: ${esc(w.mine)}</div><div class="wa">정답: ${esc(w.answer)}</div></div>`).join('')}</div>` : '<p class="muted">틀린 문제가 없어요!</p>'}
+    ${wrongs.length ? `<div class="wrong-note"><h4>📒 오답노트</h4>${wrongs.map((w) => `<div class="wn"><div class="wq">${esc(w.question)}</div><div class="wm">내 답: ${esc(w.mine)}</div><div class="wa">정답: ${esc(w.answer)}</div></div>`).join('')}</div>` : '<p class="no-wrong">🎉 틀린 문제가 없어요!</p>'}
     <p class="sign"><b>${esc(config.signature || 'Ted')}</b></p>
     <button class="primary big" id="done">계속 ▶</button></div>`;
   if (hooks.onResult) hooks.onResult(reward, correct);
