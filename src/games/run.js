@@ -12,8 +12,8 @@ const iconFor = (label) => { // 정확한 이름 → 끝 단어 → 문구 속 �
   return k ? I[k] : '🍽️';
 };
 
-const MISSION_SEC = 24; // 미션 하나 24초 × 8 + 보스 30초 ≈ 3분 40초
-const BOSS_SEC = 30;
+const MISSION_SEC = 17; // 미션 하나 17초 × 8 + 보스 21초 ≈ 2분 37초 (30% 짧게)
+const BOSS_SEC = 21;
 
 export function playRun({ charId = 'bboy' } = {}) {
   return openGame({
