@@ -2,7 +2,7 @@
 // 꼬마 크크/허허 아저씨 · 타코 · 응원단), 학습 요소를 더했다:
 //   ❓ 퀴즈 존 — 지나가는 순간 경기가 「순간정지」되고 문제 1개. 맞히면 ⚡ 게이지 가득 + 부스터, 틀리면 게이지 감소.
 // 아래 "legacy" 표시 부분은 legacy/index.html(2266~2540행)에서 자동으로 옮긴 코드다.
-import { openGame, loadImage, asset, charSprite, pick, roundRect } from './engine.js';
+import { bagPick, openGame, loadImage, asset, charSprite, pick, roundRect } from './engine.js';
 import { drawMixed, harderLevel } from '../quiz/bank.js';
 import { renderChoice } from '../quiz/renderers.js';
 import { legacySfx as lsfx, sfxNo as lsfxNo } from '../fx/legacy.js';
@@ -84,8 +84,8 @@ export function playKart({ charId = 'bboy', name = '나', used } = {}) {
       let rainShown = false;
       const LANE_LEN = 900;
       const LZ = [0.15, 0.45, 0.6, 0.78, 0.95].map((f) => {
-        const target = pick(['명사', '동사', '형용사', '부사']);
-        const word = pick(mg.pos[target]);
+        const target = bagPick('kart-pos', ['명사', '동사', '형용사', '부사']); // 레인 품사도 골고루
+        const word = bagPick(`kart-${target}`, mg.pos[target]);
         const others = ['명사', '동사', '형용사', '부사'].filter((x) => x !== target);
         const labels = [target, ...others.sort(() => Math.random() - 0.5).slice(0, 2)].sort(() => Math.random() - 0.5);
         return { d: Math.round(L * f), target, word, labels, done: false, shown: false };

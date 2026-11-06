@@ -1,5 +1,5 @@
 // 품사 사격장 — 지시된 품사가 적힌 과녁만 정확히 탭해서 맞힌다. 라운드마다 12초!
-import { openGame, rand, pick, shuffle, clamp, roundRect, loadImage, asset, charSprite } from './engine.js';
+import { bagPick, openGame, rand, pick, shuffle, clamp, roundRect, loadImage, asset, charSprite } from './engine.js';
 import data from '../../data/minigames.json';
 import { tedSVG } from './runner-art.js';
 import '../fx/legacy-run.css'; // 달리는 Ted 동작
@@ -67,7 +67,7 @@ export function playShoot() {
         const W = words(R);
         const good = Math.random() < 0.45;
         const present = new Set(S.targets.map((t) => t.label));
-        const label = pick((good ? W.good : W.bad).filter((w) => !present.has(w))) || pick(good ? W.good : W.bad);
+        const label = bagPick(`shoot${S.round}${good}`, good ? W.good : W.bad, (w) => present.has(w)); // 주머니 뽑기: 같은 단어 연달아 X
         const r = R.pool === 'chunks' ? 36 : 31;
         const ry = rows();
         const lvl = Math.min(6, S.round * 1.5); // 라운드마다 조금씩 빨라짐

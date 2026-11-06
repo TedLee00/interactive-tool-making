@@ -1,7 +1,7 @@
 // 청크 크레인 — 예전 앱(스텝업)의 인형뽑기 기계를 그대로 옮겼다:
 //   집게가 저절로 좌우로 움직임 → ① STOP(멈추면 집게가 저절로 내려감) → ② 집게가 인형에 닿는 순간 HOLD!
 // 학습 요소: 인형마다 단어 꼬리표. 지시된 품사 인형만 뽑기 · 마지막엔 영어 청크를 순서대로 뽑아 문장 완성.
-import { openGame, pick, shuffle } from './engine.js';
+import { bagPick, openGame, pick, shuffle } from './engine.js';
 import { BANK } from '../quiz/bank.js';
 import { parseChunks } from '../quiz/notation.js';
 import { PRIZE_ART, dancerSVG, C as DANCERS } from '../fx/legacy.js';
@@ -136,7 +136,7 @@ export function playCrane({ short = false } = {}) {
         const R = rounds[S.round];
         if (R.kind !== 'pos' || walker) return;
         const has = new Set(items.map((i) => i.text));
-        const word = pick(data.pos[R.target].filter((w) => !has.has(w))) || pick(data.pos[R.target]);
+        const word = bagPick(`crane-${R.target}`, data.pos[R.target], (w) => has.has(w));
         const snack = nextSnack();
         const el = document.createElement('div');
         el.className = 'cm-it cm-walker';
@@ -250,8 +250,8 @@ export function playCrane({ short = false } = {}) {
           const sl = freeSlot(); if (sl < 0) break;
           const has = new Set(items.map((i) => i.text));
           const needTarget = !items.some((i) => i.info.pos === R.target);
-          const p = needTarget || Math.random() < 0.45 ? R.target : pick(POSLIST);
-          const w = pick(data.pos[p].filter((v) => !has.has(v)));
+          const p = needTarget || Math.random() < 0.45 ? R.target : bagPick('crane-pos', POSLIST);
+          const w = data.pos[p].some((v) => !has.has(v)) ? bagPick(`crane-${p}`, data.pos[p], (v) => has.has(v)) : null;
           if (!w) break;
           addItem(w, { text: w, pos: p }, sl);
         }

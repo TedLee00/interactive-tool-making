@@ -21,6 +21,20 @@ export const asset = (p) => `${BASE}assets/${p}`;
 
 export const rand = (a, b) => a + Math.random() * (b - a);
 export const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
+/** 주머니 뽑기: 목록을 섞어 하나씩 꺼내고, 다 꺼내면 다시 섞기 (같은 것이 연달아 · 자주 나오지 않게). avoid(x)가 true면 건너뜀 */
+const BAGS = new Map();
+export function bagPick(key, arr, avoid) {
+  if (!arr?.length) return undefined;
+  let b = BAGS.get(key);
+  if (!b || !b.items.length || b.src !== arr) {
+    let items = arr.slice(); for (let i = items.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [items[i], items[j]] = [items[j], items[i]]; }
+    if (b && items.length > 1 && items[items.length - 1] === b.last) items = [items[items.length - 1], ...items.slice(0, -1)]; // 직전에 나온 것은 바로 다시 안 나오게
+    b = { src: arr, items, last: b?.last }; BAGS.set(key, b);
+  }
+  let k = b.items.length - 1;
+  if (avoid) { for (let i = b.items.length - 1; i >= 0; i--) if (!avoid(b.items[i])) { k = i; break; } }
+  const [x] = b.items.splice(k, 1); b.last = x; return x;
+}
 export const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 export function shuffle(a) {
   const b = a.slice();

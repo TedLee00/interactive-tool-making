@@ -33,7 +33,11 @@ function tone(freqs, type = 'triangle', vol = 0.12, step = 0.08, len = 0.14) {
 }
 
 export function sfx(kind) {
-  if (kind === 'ok') tone([660, 880]);
+  if (kind === 'ok') { // 딩동! — 또렷하고 밝게 (두 음 + 반짝이는 윗음)
+    tone([784, 1175], 'square', 0.09, 0.09, 0.16);
+    tone([784, 1175], 'triangle', 0.22, 0.09, 0.26);
+    tone([2349], 'sine', 0.08, 0, 0.3);
+  }
   else if (kind === 'no') tone([220, 175], 'square', 0.06, 0.12, 0.18);
   else if (kind === 'perfect') tone([523, 659, 784, 1047, 1319], 'triangle', 0.14, 0.09, 0.22);
   else if (kind === 'end') tone([392, 330], 'triangle', 0.08, 0.12, 0.2);
