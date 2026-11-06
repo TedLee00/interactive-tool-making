@@ -1,5 +1,5 @@
 // 청크런 — 횡스크롤 러너. 미션에 맞는 "바르게 꾸민" 음식만 먹고, 장애물은 점프·슬라이드로 피한다.
-import { openGame, loadImage, asset, charSprite, rand, pick, clamp, roundRect, tag } from './engine.js';
+import { bagPick, openGame, loadImage, asset, charSprite, rand, pick, clamp, roundRect, tag } from './engine.js';
 import data from '../../data/minigames.json';
 import chars from '../../data/characters.json';
 import { sideSVG, tedSVG } from './runner-art.js';
@@ -105,7 +105,7 @@ export function playRun({ charId = 'bboy' } = {}) {
           const good = Math.random() < 0.55;
           // 좋은 음식: 땅 또는 공중(점프해서 먹기) · 오답 음식: 땅(점프로 넘기) 또는 머리 높이(슬라이드로 지나가기)
           const y = good ? (Math.random() < 0.4 ? gy - 120 : gy - 30) : (Math.random() < 0.5 ? gy - 52 : gy - 4);
-          { const label = pick(good ? m.good : m.bad); S.ents.push({ kind: 'food', good, label, icon: iconFor(label), x: ctx.W + 40, y, w: 46, h: 38, head: !good && y < gy - 20 }); }
+          { const label = bagPick(`run${S.mission}${good}`, good ? m.good : m.bad); S.ents.push({ kind: 'food', good, label, icon: iconFor(label), x: ctx.W + 40, y, w: 46, h: 38, head: !good && y < gy - 20 }); }
         } else if (r < 0.68) {
           const k = nextKid();
           S.ents.push({ ...k, kind: 'kid', x: ctx.W + 40, y: gy, w: k.f === 'pigeon' ? 54 : 40, h: k.f === 'pigeon' ? 36 : 62 });
@@ -180,11 +180,11 @@ export function playRun({ charId = 'bboy' } = {}) {
             if (S.bossT > BOSS_SEC) { S.phase = 'goal'; S.goalX = ctx.W + 60; }
             if (Math.random() < dt * 1.6) {
               const m = missions[Math.floor(Math.random() * missions.length)];
-              { const label = pick(m.bad); S.ents.push({ kind: 'shot', good: false, label, icon: iconFor(label), x: ctx.W - 60, y: GY() - 170, vx: -rand(160, 240), vy: rand(-80, 40), w: 46, h: 38 }); }
+              { const label = bagPick('runboss-bad', missions.flatMap((mm) => mm.bad)); S.ents.push({ kind: 'shot', good: false, label, icon: iconFor(label), x: ctx.W - 60, y: GY() - 170, vx: -rand(160, 240), vy: rand(-80, 40), w: 46, h: 38 }); }
             }
             if (Math.random() < dt * 0.5) {
               const m = missions[Math.floor(Math.random() * missions.length)];
-              { const label = pick(m.good); S.ents.push({ kind: 'food', good: true, label, icon: iconFor(label), x: ctx.W + 40, y: GY() - (Math.random() < 0.5 ? 30 : 120), w: 50, h: 40 }); }
+              { const label = bagPick('runboss-good', missions.flatMap((mm) => mm.good)); S.ents.push({ kind: 'food', good: true, label, icon: iconFor(label), x: ctx.W + 40, y: GY() - (Math.random() < 0.5 ? 30 : 120), w: 50, h: 40 }); }
             }
           }
 
