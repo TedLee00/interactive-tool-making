@@ -140,8 +140,11 @@ function pairStep(box, q, first, res) {
 
 /* 기호 범례 (청크 유형 맨 위): ○명사 · □동사 · ( )형용사 · < >부사 · △접속사 — 예시와 함께 */
 function legendHTML(withC = true) {
-  const it = (p, ex) => `<span class="lg ${POS[p].cls}"><b>${esc(POS[p].sym)}</b>${POS[p].name}<i>${ex}</i></span>`;
-  return `<div class="sym-legend">${it('N', '○the tall boy')}${it('V', '□runs')}${it('A', '(very happy)')}${it('D', '&lt;after school&gt;')}${withC ? it('C', '△and') : ''}</div>`;
+  // ① 기호 약속: 기호 = 품사 (기호만 보여 주기)  ② 예문: 문장 속 덩어리에 기호를 친 모습
+  const key = (p) => `<span class="lk lk-${p}"><b>${esc(p === 'C' ? '△' : POS[p].sym)}</b>${POS[p].name}</span>`;
+  const ex = withC ? 'N:The tall boy | V:is | A:very happy | C:and | N:he | V:plays | N:soccer | D:after school' : 'N:My little sister | V:looks | A:very happy | D:after school';
+  return `<div class="sym-legend"><div class="lg-key">${['N', 'V', 'A', 'D', ...(withC ? ['C'] : [])].map(key).join('')}</div>
+    <div class="lg-ex"><span class="lg-tag">예</span>${parseChunks(ex).map((c) => chunkHTML(c)).join(' ')}</div></div>`;
 }
 /** 순서 문제 보기 섞기: 원래 순서 · 정답 순서와 같지 않게 */
 function shuffleNot(list, ...bad) {
@@ -185,7 +188,7 @@ export function renderSplit(box, q, cfg) {
     box.innerHTML = `${legendHTML(q.type === 9)}<div class="qhelp">② 붓을 고르고 덩어리마다 <em>품사를 칠하세요</em></div>
       <div class="split-line painted">${chunks.map((c, i) => `<button class="pchunk" data-i="${i}">${chunkHTML(c)}</button>`).join('')}<span class="end">${esc(q.end || '')}</span></div>
       <div class="palette">${palette.map((p) => `<button class="brush ${POS[p].cls} ${p === brush ? 'on' : ''}" data-p="${p}"><b>${esc(POS[p].sym)}</b><small>${POS[p].name}</small></button>`).join('')}</div>
-      <div class="row"><button class="ghost" id="back">◀ 다시 나누기</button><button class="primary" id="submit" ${labels.every(Boolean) ? '' : 'disabled'}>제출</button></div>`;
+      <div class="row center sub-row"><button class="ghost" id="back">◀ 다시 나누기</button><button class="primary big" id="submit" ${labels.every(Boolean) ? '' : 'disabled'}>제출</button></div>`;
     box.querySelectorAll('.brush').forEach((b) => { b.onclick = () => { brush = b.dataset.p; draw(); }; });
     box.querySelectorAll('.pchunk').forEach((b) => { b.onclick = () => { labels[+b.dataset.i] = brush; draw(); }; });
     box.querySelector('#back').onclick = () => { phase = 1; draw(); };
@@ -272,7 +275,7 @@ export function renderPuzzle(box, q) {
         <div class="ko-prompt">${esc(q.ko)}</div>
         <div class="ansbox">${placed.length ? shownPlaced.map((c, k) => `<button class="pchunk" data-k="${k}">${chunkHTML(c)}</button>`).join('') + `<span class="end">${esc(q.end || '')}</span>` : '<span class="ph">여기에 문장이 만들어져요</span>'}</div>
         <div class="pool">${pool.map((c, k) => `<button class="pchunk" data-p="${k}">${chunkHTML(c)}</button>`).join('')}</div>
-        <div class="row"><button class="ghost" id="reset">↺ 다시</button><button class="primary" id="submit" ${pool.length ? 'disabled' : ''}>제출</button></div>`;
+        <div class="row center sub-row"><button class="ghost" id="reset">↺ 다시</button><button class="primary big" id="submit" ${pool.length ? 'disabled' : ''}>제출</button></div>`;
       box.querySelectorAll('[data-p]').forEach((b) => { b.onclick = () => { placed.push(pool.splice(+b.dataset.p, 1)[0]); draw(); }; });
       box.querySelectorAll('[data-k]').forEach((b) => { b.onclick = () => { pool.push(placed.splice(+b.dataset.k, 1)[0]); draw(); }; });
       box.querySelector('#reset').onclick = () => { pool = shuffle(chunks); placed.length = 0; draw(); };
