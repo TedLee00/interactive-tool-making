@@ -730,7 +730,7 @@ async function playCellGame(cell) {
   talk(cell.kind === 'gate' ? `미니게임 게이트! 「${G.title}」에 도전해 보자!` : cell.kind === 'arcade' ? `잘하고 있어! 「${G.title}」 한 판 더!` : cell.kind === 'play' ? `🎵 「${G.title}」 칸이야! 박자에 맞춰 품사 북을 쳐 보자!` : '간식 뽑기 칸이야! 품사 인형을 뽑아 간식을 노려 봐!');
   await sleep(1300);
   const play = { run: playRun, crane: playCrane, kart: playKart, shoot: playShoot, drum: playDrum }[cell.game];
-  const r = await play({ charId: S.char, name: S.name, short: cell.kind === 'snack' });
+  const r = await play({ charId: S.char, name: S.name, short: cell.kind === 'snack', song: cell.kind === 'arcade' ? 2 : 1 }); // 보너스 게임으로 고른 드럼은 2곡
   bgm(regionOf(S.pos).id);
   S.coins += r.coins || 0;
   const best = S.games[cell.game] || 0;

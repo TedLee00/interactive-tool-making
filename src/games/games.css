@@ -311,3 +311,8 @@
 .mg-card .ln { font-size: 15px; font-weight: 700; color: #4A3F6B; }
 /* 설명창이 떠 있는 동안에는 게임 안 안내판·경고판을 숨겨서 설명창을 가리지 않게 */
 .mg-ov:has(#mgIntro) .mg-layer { visibility: hidden; }
+
+/* 🎤 앙코르 찬스 */
+.encore-ask { position: fixed; inset: 0; z-index: 60; display: flex; align-items: center; justify-content: center; padding: 16px; background: rgba(18, 12, 46, .75); font-family: 'Noto Sans KR', sans-serif; --plum: #2B2350; }
+.encore-ask .mg-card { border-color: #FFD43B; }
+.encore-ask .kicker { color: #E21E8C; font-weight: 900; letter-spacing: 2px; }
