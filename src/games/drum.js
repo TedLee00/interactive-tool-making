@@ -26,15 +26,15 @@ const tierOfBar = (b) => { let k = 0; TIERS.forEach((t, i) => { if (b >= t) k = 
 const fallOf = (step) => FALLS[tierOfBar(Math.floor((step - 8) / 8))];
 let BARS = 62; // ≈ 2분 35초 (5단계 FINAL STAGE 포함)
 // 🎓 퀴즈 타임: 10마디마다 마지막 3마디는 단어가 안 떨어지고 짧은 청크 퀴즈 → 맞히면 음악 LEVEL UP
-const CYCLE = 11; const QUIZ_BARS = 4; // 연주 7마디 + 퀴즈 4마디 — 연주 시간은 그대로, 퀴즈는 다음 단어가 떨어지기 전에 끝남
+let CYCLE = 11; const QUIZ_BARS = 4; // 연주 7마디 + 퀴즈 4마디 — 연주 시간은 그대로, 퀴즈는 다음 단어가 떨어지기 전에 끝남
 const isQuizBar = (b) => b % CYCLE >= CYCLE - QUIZ_BARS;
 /** 곡 설정: 1곡(기본) · 2곡(보너스 게임에서 고르면 — 더 신나는 곡) · 앙코르(10만 점 넘으면 — 2곡을 어렵게: 연주 → 퀴즈 → 연주 → 퀴즈 → 연주 → 퀴즈 → 연주) */
 const SONGS = {
   1: { title: '🎵 1곡 · 품사 비트', bpm: 96, bars: 62, tiers: [0, 14, 28, 40, 55], falls: [1.9, 1.6, 1.36, 1.15, 0.98], extra: [0, 1, 2, 3, 4], easyStart: true },
   2: { title: '🎸 2곡 · 청크 펑키', bpm: 108, bars: 62, tiers: [0, 14, 28, 40, 55], falls: [1.75, 1.5, 1.28, 1.1, 0.95], extra: [1, 1, 2, 3, 4], easyStart: true },
-  encore: { title: '🎤 앙코르 · 청크 펑키', bpm: 112, bars: 40, tiers: [0, 11, 22, 33], falls: [1.3, 1.15, 1.02, 0.92], extra: [2, 3, 3, 4], easyStart: false }, // 연주 4구간 · 퀴즈 3번 (약 1분 30초)
+  encore: { title: '🎤 앙코르 · 청크 펑키', bpm: 112, bars: 48, cycle: 13, tiers: [0, 13, 26, 39], falls: [1.3, 1.15, 1.02, 0.92], extra: [2, 3, 3, 4], easyStart: false }, // 연주 4구간(9마디씩) · 퀴즈 3번 (약 1분 50초)
 };
-function applySong(cfg) { BPM = cfg.bpm; BEAT = 60 / BPM; BARS = cfg.bars; TIERS = cfg.tiers; FALLS = cfg.falls; EXTRA = cfg.extra; EASY_START = cfg.easyStart; }
+function applySong(cfg) { CYCLE = cfg.cycle || 11; BPM = cfg.bpm; BEAT = 60 / BPM; BARS = cfg.bars; TIERS = cfg.tiers; FALLS = cfg.falls; EXTRA = cfg.extra; EASY_START = cfg.easyStart; }
 
 // 그루브 패턴: 마디(8분음표 8칸) 안에서 어느 북을 칠지 — 명=쿵(플로어) 동=짝(스네어) 형=탐 부=심벌 접=킥
 const GROOVES = [
