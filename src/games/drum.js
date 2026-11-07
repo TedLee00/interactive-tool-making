@@ -28,11 +28,11 @@ let BARS = 62; // ≈ 2분 35초 (5단계 FINAL STAGE 포함)
 // 🎓 퀴즈 타임: 10마디마다 마지막 3마디는 단어가 안 떨어지고 짧은 청크 퀴즈 → 맞히면 음악 LEVEL UP
 const CYCLE = 11; const QUIZ_BARS = 4; // 연주 7마디 + 퀴즈 4마디 — 연주 시간은 그대로, 퀴즈는 다음 단어가 떨어지기 전에 끝남
 const isQuizBar = (b) => b % CYCLE >= CYCLE - QUIZ_BARS;
-/** 곡 설정: 1곡(기본) · 2곡(보너스 게임에서 고르면 — 더 신나는 곡) · 앙코르(10만 점 넘으면 — 2곡을 짧고 어렵게: 연주 → 퀴즈 → 연주 → 퀴즈 → 연주) */
+/** 곡 설정: 1곡(기본) · 2곡(보너스 게임에서 고르면 — 더 신나는 곡) · 앙코르(10만 점 넘으면 — 2곡을 어렵게: 연주 → 퀴즈 → 연주 → 퀴즈 → 연주 → 퀴즈 → 연주) */
 const SONGS = {
   1: { title: '🎵 1곡 · 품사 비트', bpm: 96, bars: 62, tiers: [0, 14, 28, 40, 55], falls: [1.9, 1.6, 1.36, 1.15, 0.98], extra: [0, 1, 2, 3, 4], easyStart: true },
   2: { title: '🎸 2곡 · 청크 펑키', bpm: 108, bars: 62, tiers: [0, 14, 28, 40, 55], falls: [1.75, 1.5, 1.28, 1.1, 0.95], extra: [1, 1, 2, 3, 4], easyStart: true },
-  encore: { title: '🎤 앙코르 · 청크 펑키', bpm: 112, bars: 29, tiers: [0, 11, 22], falls: [1.3, 1.12, 0.95], extra: [2, 3, 4], easyStart: false },
+  encore: { title: '🎤 앙코르 · 청크 펑키', bpm: 112, bars: 40, tiers: [0, 11, 22, 33], falls: [1.3, 1.15, 1.02, 0.92], extra: [2, 3, 3, 4], easyStart: false }, // 연주 4구간 · 퀴즈 3번 (약 1분 30초)
 };
 function applySong(cfg) { BPM = cfg.bpm; BEAT = 60 / BPM; BARS = cfg.bars; TIERS = cfg.tiers; FALLS = cfg.falls; EXTRA = cfg.extra; EASY_START = cfg.easyStart; }
 
@@ -91,7 +91,7 @@ function encoreAsk(score) {
     ov.className = 'encore-ask';
     ov.innerHTML = `<div class="mg-card"><div class="kicker">ENCORE!</div><h2>🎤 앙코르 찬스!</h2>
       <p class="sub">${score.toLocaleString()}점 — 10만 점 돌파! 관객들이 한 곡 더 원해요</p>
-      <ol><li><span class="hk p">🎸 새 곡</span> 더 신나는 펑키 음악</li><li><span class="hk r">🔥 더 빠르게</span> 연주 → 퀴즈 → 연주 → 퀴즈 → 연주</li><li><span class="hk y">➕ 보너스</span> 드럼 점수에 그대로 더해져요</li></ol>
+      <ol><li><span class="hk p">🎸 새 곡</span> 더 신나는 펑키 음악</li><li><span class="hk r">🔥 더 빠르게</span> 연주 4구간 · 퀴즈 3번</li><li><span class="hk y">➕ 보너스</span> 드럼 점수에 그대로 더해져요</li></ol>
       <button class="primary big" id="eY">한 곡 더! 🎤</button><button class="ghost" id="eN" style="margin-top:8px;width:100%">여기까지 할래요</button></div>`;
     document.body.appendChild(ov);
     ov.querySelector('#eY').onclick = () => { ov.remove(); res(true); };
@@ -105,7 +105,7 @@ function playDrumSong({ song = 1, base = 0 } = {}) {
   return openGame({
     id: 'drum',
     title: isEncore ? '🎤 앙코르 드럼' : '🥁 품사 드럼',
-    subtitle: isEncore ? '10만 점 돌파 보너스! 더 신나고 더 빠르게 — 연주 3구간' : `${SONG.title} · 단어가 북에 닿을 때 쿵! 짝!`,
+    subtitle: isEncore ? '10만 점 돌파 보너스! 더 신나고 더 빠르게 — 연주 4구간' : `${SONG.title} · 단어가 북에 닿을 때 쿵! 짝!`,
     howto: [
       '<span class="hk r">🥁 북에 닿을 때</span> 그 품사 버튼을 <b>쿵!</b>',
       '<span class="hk y">🎓 퀴즈 정답</span> <b>피버 ×2 · 쉴드 · 음악 UP</b>',
