@@ -7,7 +7,7 @@ import { createAvatar } from '../board/avatar.js';
 import { createDice } from '../board/dice.js';
 import { makeAnimal, animateAnimal, ANIMALS, ANIMAL_KINDS } from '../board/animals.js';
 import { draw, config, setLevel, BANK } from '../quiz/bank.js';
-import { getCareer, levelOf, finishRun, CAREER_LEVELS } from './career.js';
+import { getCareer, levelOf, finishRun, addRunBonus, CAREER_LEVELS } from './career.js';
 import { runCell, timeLimitFor } from '../quiz/cell.js';
 import { TYPES } from '../quiz/constants.js';
 import { esc } from '../quiz/notation.js';
@@ -912,29 +912,47 @@ async function honorsMission() {
   await sleep(1600);
 }
 
-async function goal() {
-  const first = !S.finished;
-  if (first) await finalChecks();
-  S.finished = true;
-  save();
-  avatar.setAnim('win');
-  if (first) { bgm('castle'); await finaleDance(`🎉 ALL CLEAR! ${S.name} 문장의 성 도착`); } // ALL CLEAR 피날레: 선생님 · 원정대 다 같이 댄스
-  if (first) await honorsMission();
-  if (first) await bonusGamePick();
-  avatar.root.rotation.y = 0;
-  cam.zoom = 0.7;
-  const acc = S.answered ? Math.round((S.correct / S.answered) * 100) : 0;
-  // 🔁 다회차: 이번 총점을 누적 → 레벨 업이면 새 옷으로 갈아입기
-  if (!S.careerDone) {
-    const RR = finishRun(S.name, { score: totalScore(), used: S.used, char: S.char, level: S.level });
-    S.careerDone = { gain: totalScore(), before: RR.before.lv, after: RR.after.lv }; save();
-    reportRun(S, { total: totalScore(), xp: RR.career.xp, levelTitle: `Lv${RR.after.lv} ${RR.after.title}` }); // 📊 선생님 시트: 완주 성적표
+/** 📊 완주 기록: 처음엔 누적 점수 · 선생님 시트 · 완주 순위에 기록하고, 그 뒤 점수가 늘었으면(아너스 · 보너스 게임) 늘어난 만큼만 더해서 다시 기록 */
+let boardP = null;
+function recordRun() {
+  const tot = totalScore();
+  const levelUp = (RR) => {
     if (RR.after.lv > RR.before.lv) {
       placeAvatar(S.char); avatar.setAnim('win');
       callout('legend', `LEVEL UP! Lv${RR.after.lv}`);
       toastLater(`🎉 레벨 업! Lv${RR.after.lv} ${RR.after.title} — ${RR.after.outfit}을(를) 입었어요!`);
     }
+  };
+  if (!S.careerDone) {
+    const RR = finishRun(S.name, { score: tot, used: S.used, char: S.char, level: S.level });
+    S.careerDone = { gain: tot, before: RR.before.lv, after: RR.after.lv }; S.recorded = tot; S.boardSent = true; save();
+    reportRun(S, { total: tot, xp: RR.career.xp, levelTitle: `Lv${RR.after.lv} ${RR.after.title}` }); // 선생님 시트: 완주 성적표
+    boardP = submitScore('board', tot, S.name);
+    levelUp(RR);
+  } else if (tot > (S.recorded ?? S.careerDone.gain)) {
+    const delta = tot - (S.recorded ?? S.careerDone.gain);
+    const RR = addRunBonus(S.name, delta, tot);
+    S.careerDone.gain += delta; S.careerDone.after = RR.after.lv; S.recorded = tot; save();
+    reportRun(S, { total: tot, xp: RR.career.xp, levelTitle: `Lv${RR.after.lv} ${RR.after.title} (보너스 반영)` });
+    boardP = submitScore('board', tot, S.name);
+    levelUp(RR);
   }
+}
+
+async function goal() {
+  const first = !S.finished;
+  if (first) await finalChecks();
+  S.finished = true;
+  save();
+  recordRun(); // 📊 도착하자마자 성적 기록 (보너스 게임을 안 하고 나가도 점수가 남게)
+  avatar.setAnim('win');
+  if (first) { bgm('castle'); await finaleDance(`🎉 ALL CLEAR! ${S.name} 문장의 성 도착`); } // ALL CLEAR 피날레: 선생님 · 원정대 다 같이 댄스
+  if (first) await honorsMission();
+  if (first) await bonusGamePick();
+  recordRun(); // 아너스 · 보너스 게임으로 늘어난 점수만 더해서 다시 기록
+  avatar.root.rotation.y = 0;
+  cam.zoom = 0.7;
+  const acc = S.answered ? Math.round((S.correct / S.answered) * 100) : 0;
   const CR = getCareer(S.name); const LV = levelOf(CR.xp);
   const bankN = Object.values(BANK).reduce((a, q) => a + q.length, 0);
   const seenN = Math.min(bankN, CR.seen.length);
@@ -967,8 +985,7 @@ async function goal() {
   ui.querySelector('#again').onclick = () => { const { name: n, level: l, char: ch } = S; newGame(n, l, ch); placeAvatar(ch); startBoard(true); };
   // 완주 코인 순위 (반 전체 / 이 기기) — 한 판에 한 번만 기록
   const fill = (R) => { const el = ui.querySelector('#goalRank'); if (el) el.innerHTML = rankTableHTML('board', R, S.name, '점'); };
-  if (!S.boardSent) { S.boardSent = true; save(); submitScore('board', totalScore(), S.name).then(fill).catch(() => {}); }
-  else getRanking('board', S.name).then(fill).catch(() => {});
+  (boardP || getRanking('board', S.name)).then(fill).catch(() => {});
 }
 
 // iOS: 첫 터치에서 소리 시작
