@@ -36,7 +36,7 @@ export function playKart({ charId = 'bboy', name = '나', used } = {}) {
       '<span class="hk y">❓ 퀴즈 존</span> 정답이면 <b>⚡ 게이지 +60%</b>',
       '<span class="hk r">🛣 품사 레인</span> 위 단어의 품사 레인 → <b>부스터 + 게이지 50%</b>',
       '<span class="hk c">🌧 빗길</span> 악셀 떼기 · <b>🍌 🚧 피하기</b>',
-      '<span class="hk g">🏆 1등</span> <b>쿠키앤크림!</b>',
+      '<span class="hk g">🏆 1등</span> <b>쿠키앤크림!</b> · 😈 <b>보강대장</b>이 밀쳐요!',
     ],
     async setup(E) {
       const ctx = E.g;
@@ -107,12 +107,12 @@ export function playKart({ charId = 'bboy', name = '나', used } = {}) {
       const mk = (o) => Object.assign({ v: 0, spin: 0, boost: 0, head: 0, fin: 0, steerX: 0, lane: o.lane0 || 0, laneT: 0 }, o);
       const R = [
         mk({ id: 'ted', name: MYNAME, col: '#751A19', img: 'ted', base: 238, x: W / 2, d: START - 140, me: true }),
-        mk({ id: 'g', name: '보강 여신', col: '#9B6BE0', img: 'goddess', base: 258, x: W / 2 - RW * 0.2, d: START, lane0: -0.2, hits: 1 }),
-        mk({ id: 'm', name: '묵언수행', col: '#1B2F4E', img: 'scooter', base: 254, x: W / 2 + RW * 0.2, d: START, lane0: 0.2, hits: 1 }),
-        mk({ id: 'b', name: '보강대장', col: '#E0453A', img: 'cart', base: 250, x: W / 2 - RW * 0.2, d: START - 70, lane0: -0.15, hits: 1 }),
-        mk({ id: 's', name: 'B-BOY', col: '#28A064', img: 'skate', base: 253, x: W / 2 + RW * 0.2, d: START - 70, lane0: 0.15, hits: 1 }),
+        mk({ id: 'g', name: '보강 여신', col: '#9B6BE0', img: 'goddess', base: 262, x: W / 2 - RW * 0.2, d: START, lane0: -0.2, hits: 1 }),
+        mk({ id: 'm', name: '묵언수행', col: '#1B2F4E', img: 'scooter', base: 258, x: W / 2 + RW * 0.2, d: START, lane0: 0.2, hits: 1 }),
+        mk({ id: 'b', name: '보강대장', col: '#E0453A', img: 'cart', base: 262, x: W / 2 - RW * 0.2, d: START - 70, lane0: -0.15, hits: 1, role: 'block' }), // 😈 방해꾼: 내 옆에 붙어 밀고 앞을 막음
+        mk({ id: 's', name: 'B-BOY', col: '#28A064', img: 'skate', base: 257, x: W / 2 + RW * 0.2, d: START - 70, lane0: 0.15, hits: 1 }),
         // 6번째 라이벌: 퀵보드 타는 디스코 태오 (작고 날쌔서 출발이 빠름)
-        mk({ id: 'k', name: '퀵보드 태오', col: '#7B5CD6', img: 'kick', base: 251, x: W / 2, d: START - 200, lane0: 0, hits: 1 })];
+        mk({ id: 'k', name: '퀵보드 태오', col: '#7B5CD6', img: 'kick', base: 266, x: W / 2, d: START - 200, lane0: 0, hits: 1, role: 'chase' })]; // 🏁 라이벌: 끝까지 1등 다툼
       const ME = R[0];
       let gauge = 1, accel = false;
       const FUEL_SEC = 10, REGEN_SEC = 9, // 악셀 게이지: 10초 동안 쓸 수 있음 (지난번 7초보다 30% 더 천천히) // 게이지가 천천히 줄고 조금 더 빨리 참 (원래 3.36초 / 12초)
@@ -210,7 +210,12 @@ export function playKart({ charId = 'bboy', name = '나', used } = {}) {
         } else if (r.me) r.slip = 0;
       }
       if (!r.me && !r.fin) {   // light rubber-band so the race stays close
-        const gap = ME.d - r.d; if (gap > 300) tgt *= 1.2; else if (gap > 120) tgt *= 1.08; else if (gap < -600) tgt *= .96; } // 라이벌이 끝까지 따라붙게
+        const gap = ME.d - r.d;
+        const harass = r.role === 'block' && (t % 20) < 13; // 방해꾼: 13초 괴롭히고 7초 쉬기
+        if (harass) { if (gap > 260) tgt *= 1.7; else if (gap > 120) tgt *= 1.4; else if (gap > 20) tgt *= 1.2; else if (gap < -110) tgt = Math.min(tgt, Math.max(40, ME.v * (gap < -300 ? 0.7 : 0.88))); } // 너무 앞서면 기다렸다가 다시 방해 // 방해꾼은 늘 내 근처에
+        else if (r.role === 'block') { if (gap > 200) tgt *= 1.3; else if (gap < -250) tgt = Math.min(tgt, Math.max(60, ME.v)); } // 쉬는 동안에도 멀리 달아나지 않음
+        else if (r.role === 'chase') { if (gap > 300) tgt *= 1.55; else if (gap > 120) tgt *= 1.28; else if (gap > 0) tgt *= 1.12; else if (gap < -700) tgt *= .8; else if (gap < -300) tgt *= .92; } // 앞서도 따라잡을 만큼만 // 라이벌은 바짝 쫓아옴
+        else if (gap > 300) tgt *= 1.22; else if (gap > 120) tgt *= 1.1; else if (gap < -600) tgt *= .96; } // 라이벌이 끝까지 따라붙게
       r.v += (tgt - r.v) * Math.min(1, dt * (r.v < tgt * .5 ? 1.6 : 3.2));
       r.d += r.v * dt;
       let vx;
@@ -229,6 +234,11 @@ export function playKart({ charId = 'bboy', name = '나', used } = {}) {
           if (Math.abs(b.k - lane) < .22) lane = b.k + (b.k > 0 ? -.28 : .28); });
         const tc = TAC.find(o => !o.gone && o.d > r.d + 20 && o.d < r.d + 320); if (tc && r.d < ME.d + 150 && Math.abs(tc.k - lane) < .26 && (tc.d / 97 + r.base) % 2 < 1) lane = tc.k;   // sometimes go for the taco (not when far ahead)
         if (Math.abs(ME.d - r.d) < 130 && !ME.fin && !r.aim) lane = (ME.x - cx(r.d)) / RW + (r.x < ME.x ? -.08 : .08);   // side by side → lean on the player
+        if (r.role === 'block' && (t % 20) < 13 && !ME.fin && !r.aim) { // 😈 방해꾼: 앞에 있으면 내 길을 막고, 옆·뒤에 있으면 들이받기
+          const dd = r.d - ME.d;
+          if (dd > -300 && dd < 340) { lane = (ME.x - cx(r.d)) / RW + (dd > 30 ? 0 : (r.x < ME.x ? .05 : -.05));
+            if (!r.tauntT || t - r.tauntT > 4.5) { r.tauntT = t; say(dd > 30 ? '못 지나가지~' : '비켜 비켜!', r.x, sy(r.d) - KH * .8, '#E0453A'); } } }
+        if (r.role === 'chase' && !ME.fin && !r.aim && Math.abs(ME.d - r.d) < 220 && Math.random() < dt * 0.6) lane = (ME.x - cx(r.d)) / RW + (r.x < ME.x ? -.1 : .1); // 라이벌도 가끔 몸싸움
         if (WALL.d > r.d && WALL.d - r.d < 340) { const wl = WALL.k - WALL.w / RW / 2 - .12, wr = WALL.k + WALL.w / RW / 2 + .12;
           if (lane > wl && lane < wr) lane = (lane - WALL.k) < 0 ? wl - .02 : wr + .02; }
         lane = Math.max(-.4, Math.min(.4, lane));
@@ -257,7 +267,7 @@ export function playKart({ charId = 'bboy', name = '나', used } = {}) {
       for (let i = 0; i < R.length; i++) for (let j = i + 1; j < R.length; j++) { const a = R[i], b = R[j];
         const dd = a.d - b.d, dx = a.x - b.x;
         if (Math.abs(dd) < KH * .8 && Math.abs(dx) < KW * .9) { const push = (KW * .9 - Math.abs(dx)) / 2 * (dx >= 0 ? 1 : -1);
-          a.x += push * 1.25; b.x -= push * 1.25; const back = dd < 0 ? a : b; back.v *= .995; if (a.me || b.me) { if (!bump.t || t - bump.t > .5) { bump.t = t; lsfx([140, 110], 'square', .06, .05); } } } }
+          const k2 = (a.role === 'block' || b.role === 'block') && (a.me || b.me) ? 1.6 : 1.25; a.x += push * k2; b.x -= push * k2; const back = dd < 0 ? a : b; back.v *= .995; if (a.me || b.me) { if (!bump.t || t - bump.t > .5) { bump.t = t; lsfx([140, 110], 'square', .06, .05); } } } }
     }
     const placeOf = r => r.fin ? order.indexOf(r) + 1 : order.length + 1 + R.filter(o => !o.fin && o !== r && o.d > r.d).length;
     // ---- drawing ----
