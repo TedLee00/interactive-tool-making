@@ -31,6 +31,15 @@ export function levelOf(xp) {
 }
 
 /** 한 회차를 마쳤을 때: 총점을 누적하고, 푼 문제를 기억한다 → { before, after, career } */
+/** 완주 뒤 보너스(아너스 · 보너스 게임)로 늘어난 점수만 누적에 더하기 (회차 수는 그대로) */
+export function addRunBonus(name, delta, total) {
+  const all = loadAll(); const k = keyOf(name);
+  const c = all[k] || { name, runs: 1, xp: 0, best: 0, seen: [] };
+  const before = levelOf(c.xp);
+  c.xp += Math.max(0, Math.round(delta)); c.best = Math.max(c.best, total || 0);
+  all[k] = c; saveAll(all);
+  return { before, after: levelOf(c.xp), career: c };
+}
 export function finishRun(name, { score, used, char, level }) {
   const all = loadAll();
   const k = keyOf(name);
