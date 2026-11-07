@@ -75,7 +75,7 @@ export function playKart({ charId = 'bboy', name = '나', used } = {}) {
       // legacy ↑
 
       // ❓ 퀴즈 존 (벽·보행자와 떨어진 곳)
-      const QZ = [0.12, 0.38, 0.62, 0.86].map((f) => ({ d: Math.round(L * f), done: false }));
+      const QZ = [0.38, 0.72].map((f) => ({ d: Math.round(L * f), done: false }));
       BAN.forEach((b) => { if (QZ.some((z) => Math.abs(b.d - z.d) < 240)) b.gone = true; });
       // 🛣️ 품사 레인: 길이 3줄로 나뉘고 줄마다 품사 이름. 위에 나온 단어의 품사 레인으로 지나가면 부스터!
       // 🌧️ 빗길 구간: 길이 미끄러워 악셀을 밟으면 차가 흔들리고 미끄러진다 → 악셀을 떼는 게 안전
@@ -83,7 +83,7 @@ export function playKart({ charId = 'bboy', name = '나', used } = {}) {
       const inRain = (d) => d > RAIN.d0 && d < RAIN.d1;
       let rainShown = false;
       const LANE_LEN = 900;
-      const LZ = [0.15, 0.45, 0.6, 0.78, 0.95].map((f) => {
+      const LZ = [0.2, 0.55, 0.88].map((f) => { // 품사 레인 5 → 3 (운전 구간을 넉넉하게)
         const target = bagPick('kart-pos', ['명사', '동사', '형용사', '부사']); // 레인 품사도 골고루
         const word = bagPick(`kart-${target}`, mg.pos[target]);
         const others = ['명사', '동사', '형용사', '부사'].filter((x) => x !== target);
