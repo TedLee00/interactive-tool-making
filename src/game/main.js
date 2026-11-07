@@ -13,7 +13,7 @@ import { TYPES } from '../quiz/constants.js';
 import { esc } from '../quiz/notation.js';
 import { sfx, setMuted, isMuted } from '../quiz/sound.js';
 import { loadChar, fillFaces, charURL } from '../board/charart.js';
-import { bgm, callout, maWarning, teacherDance, crewDance, finaleDance, dancerShow, snackCard, snackCode, SNACKS, syncMute, unlockAudio } from '../fx/fx.js';
+import { bgm, callout, maWarning, teacherDance, finaleDance, snackCard, snackCode, SNACKS, syncMute, unlockAudio } from '../fx/fx.js';
 import { playRun, playCrane, playKart, playShoot, playDrum, GAMES } from '../games/index.js';
 import { runStudy, askStudy } from '../study/study.js';
 import { setPlayer, submitScore, getRanking, rankTableHTML } from '../rank/rank.js';
@@ -689,9 +689,8 @@ async function gateFlow(cell) {
   if (!(S.showsDone ||= []).includes(cell.region)) {
     S.showsDone.push(cell.region); save();
     avatar.setAnim('joy');
-    if (cell.region === 0) await crewDance(`${reg.name} 클리어! 원정대 다 같이 🎉`);
-    else if (cell.region === 1) await teacherDance(`${reg.name} 클리어! ${S.name}, 선생님도 참을 수 없다 📚`);
-    else if (cell.region === 2) await dancerShow('pyramid', `${reg.name} 클리어! 피라미드 퍼레이드 🔺`);
+    // 💃 댄스는 2단계(청크 시티) 클리어 때 선생님 「치어링 댄스」 한 번만
+    if (cell.region === 1) await teacherDance(`📣 치어링 댄스! ${reg.name} 클리어 — ${S.name}, 힘내라!`);
     avatar.setAnim('idle');
   }
 }
@@ -919,7 +918,7 @@ async function goal() {
   S.finished = true;
   save();
   avatar.setAnim('win');
-  if (first) { bgm('castle'); await finaleDance(`🎉 ALL CLEAR! ${S.name} 문장의 성 도착`); }
+  if (first) { bgm('castle'); await finaleDance(`🎉 ALL CLEAR! ${S.name} 문장의 성 도착`); } // ALL CLEAR 피날레: 선생님 · 원정대 다 같이 댄스
   if (first) await honorsMission();
   if (first) await bonusGamePick();
   avatar.root.rotation.y = 0;
