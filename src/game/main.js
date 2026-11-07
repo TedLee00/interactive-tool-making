@@ -13,7 +13,7 @@ import { TYPES } from '../quiz/constants.js';
 import { esc } from '../quiz/notation.js';
 import { sfx, setMuted, isMuted } from '../quiz/sound.js';
 import { loadChar, fillFaces, charURL } from '../board/charart.js';
-import { bgm, callout, maWarning, teacherDance, snackCard, snackCode, SNACKS, syncMute, unlockAudio } from '../fx/fx.js';
+import { bgm, callout, maWarning, teacherDance, finaleDance, snackCard, snackCode, SNACKS, syncMute, unlockAudio } from '../fx/fx.js';
 import { playRun, playCrane, playKart, playShoot, playDrum, GAMES } from '../games/index.js';
 import { runStudy, askStudy } from '../study/study.js';
 import { setPlayer, submitScore, getRanking, rankTableHTML } from '../rank/rank.js';
@@ -918,7 +918,7 @@ async function goal() {
   S.finished = true;
   save();
   avatar.setAnim('win');
-  if (first) { bgm('castle'); callout('legend', `ALL CLEAR! ${S.name}`); await sleep(1600); } // 피날레 댄스 없이 축하만
+  if (first) { bgm('castle'); await finaleDance(`🎉 ALL CLEAR! ${S.name} 문장의 성 도착`); } // ALL CLEAR 피날레: 선생님 · 원정대 다 같이 댄스
   if (first) await honorsMission();
   if (first) await bonusGamePick();
   avatar.root.rotation.y = 0;
