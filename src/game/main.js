@@ -7,7 +7,7 @@ import { createAvatar } from '../board/avatar.js';
 import { createDice } from '../board/dice.js';
 import { makeAnimal, animateAnimal, ANIMALS, ANIMAL_KINDS } from '../board/animals.js';
 import { draw, config, setLevel, BANK } from '../quiz/bank.js';
-import { getCareer, levelOf, finishRun, addRunBonus, CAREER_LEVELS } from './career.js';
+import { getCareer, levelOf, finishRun, addRunBonus, markPass, CAREER_LEVELS } from './career.js';
 import { runCell, timeLimitFor } from '../quiz/cell.js';
 import { TYPES } from '../quiz/constants.js';
 import { esc } from '../quiz/notation.js';
@@ -912,6 +912,10 @@ async function honorsMission() {
   await sleep(1600);
 }
 
+/** ✅ 보드 게임 PASS 기준: 정답률 — 상 70% · 중 80% · 하 80% */
+const passCut = () => (S.level === 'high' ? 70 : 80);
+const accNow = () => (S.answered ? Math.round((S.correct / S.answered) * 100) : 0);
+const isPass = () => accNow() >= passCut();
 /** 📊 완주 기록: 처음엔 누적 점수 · 선생님 시트 · 완주 순위에 기록하고, 그 뒤 점수가 늘었으면(아너스 · 보너스 게임) 늘어난 만큼만 더해서 다시 기록 */
 let boardP = null;
 function recordRun() {
@@ -926,14 +930,15 @@ function recordRun() {
   if (!S.careerDone) {
     const RR = finishRun(S.name, { score: tot, used: S.used, char: S.char, level: S.level });
     S.careerDone = { gain: tot, before: RR.before.lv, after: RR.after.lv }; S.recorded = tot; S.boardSent = true; save();
-    reportRun(S, { total: tot, xp: RR.career.xp, levelTitle: `Lv${RR.after.lv} ${RR.after.title}` }); // 선생님 시트: 완주 성적표
+    if (isPass()) markPass(S.name, S.level);
+    reportRun(S, { total: tot, xp: RR.career.xp, levelTitle: `${isPass() ? 'PASS' : '재도전'} · Lv${RR.after.lv} ${RR.after.title}` }); // 선생님 시트: 완주 성적표 (PASS 여부를 레벨 칸 앞에)
     boardP = submitScore(`board-${S.level}`, tot, S.name); // 완주 총점 순위는 난이도(하 · 중 · 상)별로 따로
     levelUp(RR);
   } else if (tot > (S.recorded ?? S.careerDone.gain)) {
     const delta = tot - (S.recorded ?? S.careerDone.gain);
     const RR = addRunBonus(S.name, delta, tot);
     S.careerDone.gain += delta; S.careerDone.after = RR.after.lv; S.recorded = tot; save();
-    reportRun(S, { total: tot, xp: RR.career.xp, levelTitle: `Lv${RR.after.lv} ${RR.after.title} (보너스 반영)` });
+    reportRun(S, { total: tot, xp: RR.career.xp, levelTitle: `${isPass() ? 'PASS' : '재도전'} · Lv${RR.after.lv} (보너스 반영)` });
     boardP = submitScore(`board-${S.level}`, tot, S.name); // 완주 총점 순위는 난이도(하 · 중 · 상)별로 따로
     levelUp(RR);
   }
@@ -971,6 +976,8 @@ async function goal() {
         </ul></div></div>`;
   screen(`<div class="panel-screen goal"><div class="panel card">
     <div class="kicker">GOAL!</div><h2>문장의 성 도착!</h2>
+    ${isPass() ? `<div class="pass-box ok"><b>🎉 PASS!</b><span>정답률 <em>${acc}%</em> · 기준 ${passCut()}% (${{ low: '하', mid: '중', high: '상' }[S.level]})</span><small>이 난이도는 통과! 다시 안 해도 돼요 — 원하면 더 높은 난이도에 도전!</small></div>`
+    : `<div class="pass-box again"><b>💪 다시 도전해요!</b><span>정답률 <em>${acc}%</em> · PASS 기준 ${passCut()}% (${{ low: '하', mid: '중', high: '상' }[S.level]})</span><small>조금만 더! 한 번 더 하면 PASS 할 수 있어요</small></div>`}
     <p>${esc(player().lines.win)}</p>
     <div class="goal-stats"><div><b>${S.correct}</b><small>정답</small></div><div><b>${acc}%</b><small>정답률</small></div><div><b>🪙 ${S.coins}</b><small>코인</small></div><div><b>🎲 ${S.turns || 0}</b><small>턴</small></div></div>
     ${(S.pets || []).length ? `<div class="goal-pets"><small>끝까지 함께한 친구들</small><span>${S.pets.map((k) => `<i title="${ANIMALS[k].name}">${ANIMALS[k].emoji}</i>`).join('')}</span></div>` : ''}

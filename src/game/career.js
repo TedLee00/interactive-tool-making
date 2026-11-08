@@ -31,6 +31,11 @@ export function levelOf(xp) {
 }
 
 /** 한 회차를 마쳤을 때: 총점을 누적하고, 푼 문제를 기억한다 → { before, after, career } */
+/** ✅ 이 난이도 PASS 표시 (한 번 PASS면 계속 남음) */
+export function markPass(name, level) {
+  const all = loadAll(); const k = keyOf(name); const c = all[k]; if (!c) return;
+  (c.pass ||= {})[level] = true; all[k] = c; saveAll(all);
+}
 /** 완주 뒤 보너스(아너스 · 보너스 게임)로 늘어난 점수만 누적에 더하기 (회차 수는 그대로) */
 export function addRunBonus(name, delta, total) {
   const all = loadAll(); const k = keyOf(name);
