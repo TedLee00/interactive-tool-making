@@ -3,7 +3,7 @@
 //   ❓ 퀴즈 존 — 지나가는 순간 경기가 「순간정지」되고 문제 1개. 맞히면 ⚡ 게이지 +60% + 부스터, 틀리면 게이지 감소.
 // 아래 "legacy" 표시 부분은 legacy/index.html(2266~2540행)에서 자동으로 옮긴 코드다.
 import { bagPick, openGame, loadImage, asset, charSprite, pick, roundRect } from './engine.js';
-import { drawMixed, harderLevel } from '../quiz/bank.js';
+import { drawMixed } from '../quiz/bank.js';
 import { renderChoice } from '../quiz/renderers.js';
 import { legacySfx as lsfx, sfxNo as lsfxNo } from '../fx/legacy.js';
 import mg from '../../data/minigames.json';
@@ -449,7 +449,7 @@ export function playKart({ charId = 'bboy', name = '나', used } = {}) {
         mode = 'quiz';
         accel = false;
         lsfx([880, 660, 880], 'square', 0.08, 0.06);
-        const q = drawMixed(QUIZ_TYPES, used, harderLevel());
+        const q = drawMixed(QUIZ_TYPES, used, 'high'); // 미니게임은 난이도와 상관없이 모두 같게 (명예의 전당을 함께 쓰므로)
         const box = document.createElement('div');
         box.className = 'mg-freeze';
         box.innerHTML = `<div class="fz-head"><b>❓ 퀴즈 존 · 순간정지!</b><span>맞히면 ⚡ 게이지 +60%</span></div><div class="card q" id="fzq"></div><i class="fz-bar"></i>`;

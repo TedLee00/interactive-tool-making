@@ -3,3 +3,12 @@
 .bg-pick { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 12px 0; }
 .bg-pick button { font-family: 'Jua', sans-serif; font-size: 17px; padding: 12px 8px; border-radius: 14px; background: #FFFBF0; border: 2px solid #F2C14E; color: #2B2350; }
 .bg-pick button:last-child:nth-child(odd) { grid-column: 1 / -1; }
+
+/* ✅ PASS / 다시 도전 */
+.pass-box { margin: 8px 0 10px; padding: 10px 12px; border-radius: 14px; display: flex; flex-direction: column; align-items: center; gap: 2px; border: 3px solid; }
+.pass-box b { font-family: 'Jua', sans-serif; font-weight: 400; font-size: 30px; line-height: 1.1; }
+.pass-box span { font-weight: 800; font-size: 15px; color: #2B2350; }
+.pass-box span em { font-style: normal; font-size: 18px; }
+.pass-box small { font-size: 13px; font-weight: 700; color: #6B5F8A; }
+.pass-box.ok { background: #E7F8EE; border-color: #2FB36B; } .pass-box.ok b, .pass-box.ok em { color: #1E9B5B; }
+.pass-box.again { background: #FFF4E5; border-color: #F2A01E; } .pass-box.again b, .pass-box.again em { color: #D9822B; }

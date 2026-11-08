@@ -6,7 +6,7 @@ import config from '../../data/config.json';
 import './rank.css';
 
 const KEY = 'cq.board.v1';
-const GAME_NAME = { crane: '🧸 청크 크레인', shoot: '🎯 품사 사격장', run: '🏃 청크런', kart: '🏎️ 청크 카트', drum: '🥁 품사 드럼', board: '🏰 품사 원정대 총점' };
+const GAME_NAME = { crane: '🧸 청크 크레인', shoot: '🎯 품사 사격장', run: '🏃 청크런', kart: '🏎️ 청크 카트', drum: '🥁 품사 드럼', board: '🏰 품사 원정대 총점', 'board-low': '🏰 원정대 총점 · 🌱 난이도 하', 'board-mid': '🏰 원정대 총점 · 🙂 난이도 중', 'board-high': '🏰 원정대 총점 · 🔥 난이도 상' };
 let current = '';
 
 export function setPlayer(name) { current = (name || '').trim(); }
