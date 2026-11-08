@@ -29,6 +29,15 @@ const LEVELS = [
 ];
 const levelName = (id) => (LEVELS.find((l) => l.id === id) || LEVELS[0]).name;
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+/** 👩‍🏫 선생님 기기: 주소 끝에 ?teacher=1 로 한 번 들어오면 그 기기에서는 계속 「문제 검수」 버튼이 보임 (?teacher=0 이면 끔) */
+function isTeacher() {
+  try {
+    const q = new URLSearchParams(location.search).get('teacher');
+    if (q === '1') localStorage.setItem('cq.teacher', '1');
+    if (q === '0') localStorage.removeItem('cq.teacher');
+    return localStorage.getItem('cq.teacher') === '1';
+  } catch { return false; }
+}
 
 /* ---------------- 저장 ---------------- */
 function loadSave() {
@@ -333,7 +342,7 @@ function title() {
       ${can ? `<button class="primary big" id="cont">이어하기 · ${esc(sv.name)} (${sv.pos}/${board.cells.length - 1}칸)</button>` : ''}
       <button class="${can ? 'ghost big' : 'primary big'}" id="new">${can ? '처음부터 새로 하기' : '시작하기 ▶'}</button>
       <button class="ghost big study-btn" id="study">📚 출발 전 개념 학습</button>
-      <div class="title-links"><a href="./quiz-lab.html">🧪 연습장 · 미니게임</a><a href="./review.html">📋 문제 검수</a></div>
+      <div class="title-links"><a href="./quiz-lab.html">🧪 연습장 · 미니게임</a>${isTeacher() ? '<a href="./review.html">📋 문제 검수</a>' : ''}</div>
     </div></div>`);
   ui.querySelector('#study').onclick = async () => { unlockAudio(); await runStudy({ sfx }); };
   ui.querySelector('#new').onclick = () => {
