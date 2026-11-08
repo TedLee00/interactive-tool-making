@@ -321,3 +321,7 @@
 .kwheel .mg-btn.left::before, .kwheel .mg-btn.right::before { content: ''; position: absolute; top: -56px; bottom: -56px; }
 .kwheel .mg-btn.left::before { left: -44px; right: 0; }
 .kwheel .mg-btn.right::before { left: 0; right: -30px; }
+.encore-ask .enc-pick { display: flex; gap: 8px; }
+.encore-ask .enc-pick .primary { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 20px; padding: 10px 6px; }
+.encore-ask .enc-pick .primary small { font-family: 'Noto Sans KR', sans-serif; font-size: 11px; font-weight: 700; opacity: .8; }
+.encore-ask .enc-pick .rock { background: linear-gradient(180deg, #FF8A8A, #E0453A); color: #fff; box-shadow: 0 4px 0 #A62A21; }
