@@ -36,7 +36,7 @@ function submitLocal(game, name, score) {
 
 export async function callApi(fn, args) {
   const ctl = new AbortController();
-  const tm = setTimeout(() => ctl.abort(), 7000);
+  const tm = setTimeout(() => ctl.abort(), 20000); // 시트가 커지면 기록이 느려질 수 있어 넉넉하게
   try {
     const res = await fetch(config.rankApi, { method: 'POST', body: JSON.stringify({ fn, args }), headers: { 'Content-Type': 'text/plain;charset=utf-8' }, signal: ctl.signal });
     const j = await res.json();
@@ -45,14 +45,33 @@ export async function callApi(fn, args) {
   } finally { clearTimeout(tm); }
 }
 
+/** 📮 보내지 못한 기록 보관함: 인터넷이 끊기거나 시트가 늦게 답하면 기기에 모아 두었다가 다음에 다시 보냄 (기록이 사라지지 않게) */
+const PKEY = 'cq.pending.v1';
+const loadPending = () => { try { return JSON.parse(localStorage.getItem(PKEY)) || []; } catch { return []; } };
+const savePending = (q) => { try { localStorage.setItem(PKEY, JSON.stringify(q.slice(-200))); } catch { /* 저장 불가 */ } };
+export function queueSend(fn, args) { const q = loadPending(); q.push({ fn, args, at: Date.now() }); savePending(q); }
+let flushing = false;
+export async function flushPending() {
+  if (flushing || !config.rankApi) return; flushing = true;
+  try {
+    let q = loadPending();
+    while (q.length) {
+      try { await callApi(q[0].fn, q[0].args); } catch { break; } // 아직 안 되면 다음 기회에
+      q = loadPending(); q.shift(); savePending(q);
+    }
+  } finally { flushing = false; }
+}
+if (typeof window !== 'undefined' && config.rankApi) { setTimeout(flushPending, 4000); window.addEventListener('online', flushPending); }
+
 /** 점수 기록 + 순위 → { list:[{name,best,total,plays}], myRank, count, shared } */
 export async function submitScore(game, score, name = getPlayer() || '연습생') {
   const local = submitLocal(game, name, Math.round(score) || 0);
   if (!config.rankApi) return local;
   try {
     const r = await callApi('submitScore', [{ game, name, score: Math.round(score) || 0 }]);
+    flushPending();
     return { ...r, shared: true };
-  } catch { return local; }
+  } catch { queueSend('submitScore', [{ game, name, score: Math.round(score) || 0 }]); return local; } // 못 보낸 점수는 보관했다가 다시 보냄
 }
 
 /** 기록하지 않고 순위만 보기 */

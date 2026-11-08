@@ -1,10 +1,10 @@
 // 📊 선생님용 구글 시트 기록 — 성적표(완주) · 퀴즈 기록(칸마다) · 과자 획득
 // data/config.json 의 rankApi(구글 Apps Script 웹 앱 주소)가 있을 때만 보낸다. 실패해도 게임은 그대로 (조용히 넘어감)
 import config from '../../data/config.json';
-import { callApi } from './rank.js';
+import { callApi, queueSend, flushPending } from './rank.js';
 import { TYPES } from '../quiz/constants.js';
 
-const send = (fn, row) => { if (!config.rankApi) return; callApi(fn, [row]).catch(() => {}); };
+const send = (fn, row) => { if (!config.rankApi) return; callApi(fn, [row]).then(() => flushPending()).catch(() => queueSend(fn, [row])); }; // 실패하면 보관했다가 다시
 
 /** 퀴즈 칸 하나를 끝냈을 때 */
 export function reportQuiz(S, type, r, where = '') {

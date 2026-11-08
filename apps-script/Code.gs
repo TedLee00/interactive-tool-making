@@ -61,8 +61,8 @@ function getRanking(game, me) {
   list.forEach(function (p, i) { if (p.name === String(me || '').trim()) myRank = i + 1; });
   return { list: list.slice(0, Math.max(10, myRank)), myRank: myRank, count: list.length };
 }
-function rankList_(game) {
-  const rows = sheet_().getDataRange().getValues().slice(1);
+function rankList_(game, allRows) {
+  const rows = allRows || sheet_().getDataRange().getValues().slice(1);
   const by = {};
   rows.forEach(function (row) {
     if (String(row[1]) !== String(game)) return;
@@ -83,10 +83,11 @@ function updateHall_() {
   if (!sh) sh = ss.insertSheet('명예의전당');
   sh.clear();
   const games = Object.keys(GAME_NAME);
+  const all = sheet_().getDataRange().getValues().slice(1); // 시트를 한 번만 읽어서 빠르게
   const medal = ['1위 (금)', '2위 (은)', '3위 (동)'];
   games.forEach(function (g, k) {
     const col = 1 + k * 4;
-    const list = rankList_(g).slice(0, 10);
+    const list = rankList_(g, all).slice(0, 10);
     sh.getRange(1, col, 1, 3).merge().setValue(GAME_NAME[g]).setBackground('#2B2350').setFontColor('#FFD43B').setFontWeight('bold').setHorizontalAlignment('center');
     sh.getRange(2, col, 1, 3).setValues([['순위', '이름', '최고 점수']]).setFontWeight('bold').setBackground('#EDE6FF');
     const rows = list.map(function (p, i) { return [medal[i] || (i + 1), p.name, p.best]; });
