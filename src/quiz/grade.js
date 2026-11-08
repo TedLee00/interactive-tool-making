@@ -1,6 +1,6 @@
 // 유형별 채점 — 순수 함수 (UI와 분리해 테스트한다)
 import { parseChunks, chunksToTokens, tokensToChunks } from './notation.js';
-import { matchesAny, nearMatch } from './normalize.js';
+import { matchesAny, nearMatch, closeSentence } from './normalize.js';
 
 /** 선택형 (유형 1~7) */
 export function gradeChoice(q, picked) {
@@ -136,6 +136,12 @@ export function gradeTowerTyping(q, inputs /* 한글 덩어리 번호 → 입력
     if (n) { near[i] = n; return true; } // 비슷한 답도 정답 (더 정확한 표현은 따로 보여 준다)
     return false;
   });
+  // 덩어리 몇 개가 조금 달라도, 문장 전체로 보면 거의 같으면 정답 (뜻 · 문법이 맞으면 인정)
+  if (!each.every(Boolean) && q.order) {
+    const full = q.order.map((i) => inputs[i] ?? '').join(' ');
+    const ans = q.order.map((i) => (chunks[i].answers || [''])[0]).join(' ');
+    if (closeSentence(full, ans)) { chunks.forEach((c, i) => { if (!each[i]) { each[i] = true; near[i] = (c.answers || [''])[0]; } }); }
+  }
   return { ok: each.every(Boolean), each, near };
 }
 

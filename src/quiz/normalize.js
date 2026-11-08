@@ -49,8 +49,13 @@ function lev(a, b, eq = (x, y) => x === y) {
 const STOP = new Set(['a', 'an', 'the']);
 const stem = (w) => (w.length <= 3 ? w : w.replace(/ies$/, 'y').replace(/(es|s|ed|ing|d)$/, ''));
 /** 같은 단어로 보기: 철자 실수(4글자 이상 1개, 7글자 이상 2개) · 어미(-s/-es/-ed/-ing) 차이 */
+// 뜻이 같은 흔한 바꿔 쓰기 (같은 단어로 인정)
+const SYN = [['movie', 'film'], ['big', 'large'], ['start', 'begin'], ['kid', 'child'], ['kids', 'children'], ['shop', 'store'], ['quickly', 'fast'], ['glad', 'happy'], ['sad', 'unhappy'], ['smart', 'clever'], ['pretty', 'beautiful'], ['home', 'house'], ['test', 'exam'], ['mom', 'mother'], ['dad', 'father'], ['class', 'lesson'], ['every day', 'everyday'], ['tired', 'sleepy'], ['funny', 'fun'], ['finish', 'complete'], ['look', 'seem'], ['school', 'academy'], ['comics', 'comic books'], ['near', 'close to'], ['very', 'really', 'so']];
+const SYNMAP = new Map(); SYN.forEach((g, k) => g.forEach((w) => SYNMAP.set(w, k)));
 const sameWord = (x, y) => {
   if (x === y) return true;
+  if (SYNMAP.has(x) && SYNMAP.get(x) === SYNMAP.get(y)) return true;
+  if (x.length >= 3 && y.length >= 3 && SYNMAP.has(stem(x)) && SYNMAP.get(stem(x)) === SYNMAP.get(stem(y))) return true;
   if (x.length >= 3 && y.length >= 3 && stem(x) === stem(y)) return true;
   const L = Math.min(x.length, y.length);
   return L >= 4 && lev([...x], [...y]) <= (L >= 7 ? 2 : 1);
@@ -88,4 +93,13 @@ export function nearMatch(input, answers) {
     if (dist <= allow && common >= Math.ceil(aw.length / 2) && (!best || dist < best.dist)) best = { answer: a, dist };
   }
   return best ? best.answer : null;
+}
+
+/** 문장 전체가 거의 같은지: 단어 하나만 다르고(동의어 · 어미 · 철자 실수는 같은 단어로) 5단어 이상인 문장 */
+export function closeSentence(input, answer) {
+  const w = words(input); const aw = words(answer);
+  if (aw.length < 5) return false;
+  const NEG = /\b(not|never|no)\b/;
+  if (NEG.test(normalize(answer)) !== NEG.test(normalize(input))) return false;
+  return lev(w, aw, sameWord) <= 1;
 }
