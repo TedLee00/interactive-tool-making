@@ -927,14 +927,14 @@ function recordRun() {
     const RR = finishRun(S.name, { score: tot, used: S.used, char: S.char, level: S.level });
     S.careerDone = { gain: tot, before: RR.before.lv, after: RR.after.lv }; S.recorded = tot; S.boardSent = true; save();
     reportRun(S, { total: tot, xp: RR.career.xp, levelTitle: `Lv${RR.after.lv} ${RR.after.title}` }); // 선생님 시트: 완주 성적표
-    boardP = submitScore('board', tot, S.name);
+    boardP = submitScore(`board-${S.level}`, tot, S.name); // 완주 총점 순위는 난이도(하 · 중 · 상)별로 따로
     levelUp(RR);
   } else if (tot > (S.recorded ?? S.careerDone.gain)) {
     const delta = tot - (S.recorded ?? S.careerDone.gain);
     const RR = addRunBonus(S.name, delta, tot);
     S.careerDone.gain += delta; S.careerDone.after = RR.after.lv; S.recorded = tot; save();
     reportRun(S, { total: tot, xp: RR.career.xp, levelTitle: `Lv${RR.after.lv} ${RR.after.title} (보너스 반영)` });
-    boardP = submitScore('board', tot, S.name);
+    boardP = submitScore(`board-${S.level}`, tot, S.name); // 완주 총점 순위는 난이도(하 · 중 · 상)별로 따로
     levelUp(RR);
   }
 }
@@ -984,8 +984,8 @@ async function goal() {
   ui.querySelector('#home').onclick = title;
   ui.querySelector('#again').onclick = () => { const { name: n, level: l, char: ch } = S; newGame(n, l, ch); placeAvatar(ch); startBoard(true); };
   // 완주 코인 순위 (반 전체 / 이 기기) — 한 판에 한 번만 기록
-  const fill = (R) => { const el = ui.querySelector('#goalRank'); if (el) el.innerHTML = rankTableHTML('board', R, S.name, '점'); };
-  (boardP || getRanking('board', S.name)).then(fill).catch(() => {});
+  const fill = (R) => { const el = ui.querySelector('#goalRank'); if (el) el.innerHTML = rankTableHTML(`board-${S.level}`, R, S.name, '점'); };
+  (boardP || getRanking(`board-${S.level}`, S.name)).then(fill).catch(() => {});
 }
 
 // iOS: 첫 터치에서 소리 시작
