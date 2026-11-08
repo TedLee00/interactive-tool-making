@@ -1072,7 +1072,7 @@
   "id": "12-069",
   "type": 12,
   "level": 3,
-  "ko": "N:나는=I | N:그 영화가=the movie | A:지루하다고=boring | V:생각했다=found",
+  "ko": "N:나는=I | N:그 영화가=the movie | A:지루하다고=boring | V:생각했다=found/thought/considered",
   "order": [
    0,
    3,
@@ -1324,7 +1324,7 @@
   "id": "12-086",
   "type": 12,
   "level": 3,
-  "ko": "N:나는=I | N:수학이=math | A:어렵다고=difficult/hard | V:생각한다=find",
+  "ko": "N:나는=I | N:수학이=math | A:어렵다고=difficult/hard | V:생각한다=find/think/consider",
   "order": [
    0,
    3,
@@ -1517,7 +1517,7 @@
   "id": "12-099",
   "type": 12,
   "level": 3,
-  "ko": "N:경원이는=kyungwon | N:그 영화가=the movie | A:재미있다고=interesting/fun | V:생각했다=found",
+  "ko": "N:경원이는=kyungwon | N:그 영화가=the movie | A:재미있다고=interesting/fun | V:생각했다=found/thought/considered",
   "order": [
    0,
    3,

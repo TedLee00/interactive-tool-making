@@ -298,6 +298,31 @@ export function renderPuzzle(box, q) {
 }
 
 /* ---------------- 번역의 탑 (12) ---------------- */
+/** 💡 동사 힌트: 정답 동사의 원형을 보여 줌 (예: 생각했다 → find) — 학생은 시제 · 3인칭에 맞게 바꿔 쓰기 */
+const LEMMA = { eat: 'eat', ate: 'eat', reads: 'read', read: 'read', finished: 'finish', play: 'play', plays: 'play', played: 'play', gave: 'give', sleeps: 'sleep', slept: 'sleep', made: 'make', makes: 'make', is: 'be', are: 'be', was: 'be', were: 'be', won: 'win', need: 'need', stayed: 'stay', like: 'like', likes: 'like', barked: 'bark', went: 'go', lives: 'live', lived: 'live', enjoy: 'enjoy', became: 'become', look: 'look', looked: 'look', showed: 'show', call: 'call', called: 'call', speaks: 'speak', visit: 'visit', reviewed: 'review', turned: 'turn', watched: 'watch', solved: 'solve', opens: 'open', smells: 'smell', memorize: 'memorize', practiced: 'practice', drink: 'drink', cooks: 'cook', bought: 'buy', know: 'know', got: 'get', teaches: 'teach', found: 'find', find: 'find', sang: 'sing', sings: 'sing', ran: 'run', cried: 'cry', waited: 'wait', closes: 'close', kept: 'keep', wonder: 'wonder', greets: 'greet', met: 'meet', thought: 'think', sleeping: 'sleep', studying: 'study', playing: 'play' };
+const AUX = new Set(['is', 'are', 'was', 'were', 'am', 'be', 'do', 'does', 'did', 'not', "don't", "doesn't", "didn't", 'will', 'can', 'would', 'should', 'have', 'has', 'had']);
+function verbHint(ans) {
+  const w = String(ans || '').toLowerCase().split(/\s+/).filter(Boolean);
+  if (!w.length) return '';
+  const main = w.find((x, k) => !AUX.has(x) || (k === w.length - 1)) || w[w.length - 1];
+  const base = LEMMA[main] || main.replace(/ies$/, 'y').replace(/(ch|sh|x|s)es$/, '$1').replace(/([^s])s$/, '$1');
+  const rest = w.slice(w.indexOf(main) + 1).filter((x) => !AUX.has(x)).join(' '); // got up → get up
+  return `${base}${rest ? ' ' + rest : ''}`;
+}
+/** 📐 문장 틀 힌트 (해설에서 찾기) */
+function patternHint(q) {
+  const e = String(q.explain || '');
+  const out = [];
+  if (/5형식/.test(e)) out.push('5형식: 주어 + 동사 + 목적어 + <b>목적보어</b>');
+  else if (/4형식/.test(e)) out.push('4형식: 주어 + 동사 + <b>~에게</b> + <b>~을</b>');
+  else if (/2형식|보어/.test(e)) out.push('2형식: 주어 + 동사 + <b>보어</b>');
+  if (/진행/.test(e) || /\bis \w+ing|are \w+ing/.test(q.ko)) out.push('진행형: <b>be + -ing</b>');
+  if (/to부정사/.test(e)) out.push('<b>to + 동사원형</b>');
+  if (/동명사/.test(e)) out.push('<b>동사 + ing</b> (동명사)');
+  if (/최상급/.test(e)) out.push('<b>the + 최상급</b>');
+  return out.join(' · ');
+}
+
 export function renderTower(box, q, cfg) {
   const ko = parseChunks(q.ko).map((c, i) => ({ ...c, i }));
   const mode = cfg?.grading?.type12Mode || 'typing';
@@ -322,9 +347,11 @@ export function renderTower(box, q, cfg) {
     };
     const step2 = (order) => {
       const rows = order.map((i) => ko[i]);
-      box.innerHTML = `<div class="qhelp"><b>STEP 2</b> 덩어리마다 <em>영어로 쓰세요</em> <small>비슷하게 맞으면 정답으로 인정해요</small></div>
+      const pat = patternHint(q);
+      box.innerHTML = `<div class="qhelp"><b>STEP 2</b> 덩어리마다 <em>영어로 쓰세요</em> <small>💡 동사는 원형 힌트 — 시제 · -s에 맞게 바꿔 써요 · 비슷하게 맞으면 정답</small></div>
+        ${pat ? `<div class="pat-hint">📐 ${pat}</div>` : ''}
         ${orderOk ? '<div class="note ok">✔ 어순 정답!</div>' : `<div class="note no">✘ 어순은 이렇게! <div class="ans-line">${rows.map((c) => chunkHTML(c)).join(' → ')}</div></div>`}
-        <div class="tower row-flow">${rows.map((c) => `<label class="trow"><span class="tko">${chunkHTML(c)}</span>
+        <div class="tower row-flow">${rows.map((c) => `<label class="trow"><span class="tko">${chunkHTML(c)}</span>${c.pos === 'V' ? `<small class="thint">💡 ${esc(verbHint(c.answers[0]))}</small>` : ''}
           <input data-i="${c.i}" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="영어로" style="width:${Math.min(220, Math.max(84, (c.answers[0] || '').length * 9 + 30))}px">
           ${mode === 'tiles' ? `<span class="tiles">${shuffle(c.answers[0].split(' ')).map((w) => `<button type="button" class="tile" data-for="${c.i}">${esc(w)}</button>`).join('')}</span>` : ''}</label>`).join('')}</div>
         <div class="row center"><button class="primary" id="submit">제출</button></div>`;
