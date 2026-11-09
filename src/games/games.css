@@ -325,3 +325,10 @@
 .encore-ask .enc-pick .primary { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 20px; padding: 10px 6px; }
 .encore-ask .enc-pick .primary small { font-family: 'Noto Sans KR', sans-serif; font-size: 11px; font-weight: 700; opacity: .8; }
 .encore-ask .enc-pick .rock { background: linear-gradient(180deg, #FF8A8A, #E0453A); color: #fff; box-shadow: 0 4px 0 #A62A21; }
+
+/* 🕹 핸들 ◀ ▶ 버튼을 핸들 폭 끝까지 크게 (손 그림을 덮어도 괜찮음) */
+.kwheel .mg-btn { flex: 0 0 86px; height: 96px; min-height: 96px; font-size: 38px; margin-top: -4px; opacity: .96; }
+.kwheel .mg-btn.left { border-radius: 48px 10px 10px 48px; margin-right: 0; }
+.kwheel .mg-btn.right { border-radius: 10px 48px 48px 10px; }
+.kwheel .mg-btn.left::before { left: -30px; top: -40px; bottom: -40px; }
+.kwheel .mg-btn.right::before { right: -22px; top: -40px; bottom: -40px; }
