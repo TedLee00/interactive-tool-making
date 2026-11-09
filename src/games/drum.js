@@ -119,7 +119,7 @@ function encoreAsk(score) {
     ov.innerHTML = `<div class="mg-card"><div class="kicker">ENCORE!</div><h2>🎤 앙코르 찬스!</h2>
       <p class="sub">${score.toLocaleString()}점 — 10만 점 돌파! 한 곡 골라요</p>
       <ol><li><span class="hk r">🔥 더 빠르게</span> 연주 4구간 · 퀴즈 3번</li><li><span class="hk y">➕ 보너스</span> 드럼 점수에 그대로 더해져요</li></ol>
-      <div class="enc-pick"><button class="primary big" id="eF">🎸 펑키<small>신나고 통통 튀는</small></button><button class="primary big rock" id="eR">🤘 록<small>더 빠르게 · 두 북 동시치기!</small></button></div>
+      <div class="enc-pick"><button class="primary big" id="eF">🎸 펑키<small>난이도 ★★★★ · 통통 튀는 펑키</small></button><button class="primary big rock" id="eR">🤘 록<small>난이도 ★★★★ · 신나는 록</small></button></div>
       <button class="ghost" id="eN" style="margin-top:8px;width:100%">여기까지 할래요</button></div>`;
     document.body.appendChild(ov);
     ov.querySelector('#eF').onclick = () => { ov.remove(); res('encore'); };
@@ -134,7 +134,7 @@ function playDrumSong({ song = 1, base = 0 } = {}) {
   return openGame({
     id: 'drum',
     title: isRock ? '🤘 앙코르 록' : isEncore ? '🎤 앙코르 드럼' : '🥁 품사 드럼',
-    subtitle: isRock ? '두 북 동시치기! 둘 다 쳐야 DOUBLE — 연주 4구간' : isEncore ? '10만 점 돌파 보너스! 더 신나고 더 빠르게 — 연주 4구간' : `${SONG.title} · 단어가 북에 닿을 때 쿵! 짝!`,
+    subtitle: isRock ? '난이도 ★★★★ · 신나는 록 — 연주 4구간' : isEncore ? '난이도 ★★★★ · 통통 튀는 펑키 — 연주 4구간' : `${SONG.title} · 단어가 북에 닿을 때 쿵! 짝!`,
     howto: [
       '<span class="hk r">🥁 북에 닿을 때</span> 그 품사 버튼을 <b>쿵!</b>',
       '<span class="hk y">🎓 퀴즈 정답</span> <b>피버 ×2 · 쉴드 · 음악 UP</b>',
@@ -583,7 +583,6 @@ function playDrumSong({ song = 1, base = 0 } = {}) {
               const pts = n.dbl.map((o) => { const i = PADS.findIndex((p) => p.pos === o.pos); const yy = hitY(i); return [colX[i](), yy - left * ((yy - 30) / F)]; }).sort((p, q) => p[0] - q[0]);
               g.save(); g.strokeStyle = `rgba(255,90,240,${0.55 + 0.35 * pulse})`; g.lineWidth = 6; g.lineCap = 'round'; g.shadowColor = '#FF5AF0'; g.shadowBlur = 10;
               g.beginPath(); g.moveTo(pts[0][0], pts[0][1]); pts.slice(1).forEach((q) => g.lineTo(q[0], q[1])); g.stroke(); g.restore();
-              if (n.last) { g.font = "400 18px Jua, sans-serif"; g.textAlign = 'center'; g.fillStyle = '#FFD43B'; g.fillText('🎆 마지막 한 방! 같이 쾅!', (pts[0][0] + pts[pts.length - 1][0]) / 2, pts[0][1] - 26); }
             });
             notes.forEach((n) => {
               const left = arrive(n) - now;
