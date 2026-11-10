@@ -33,7 +33,7 @@ const SONGS = {
   1: { title: '🎵 1곡 · 품사 비트', bpm: 96, bars: 62, tiers: [0, 14, 28, 40, 55], falls: [1.9, 1.6, 1.36, 1.15, 0.98], extra: [0, 1, 2, 3, 4], easyStart: true },
   2: { title: '🎸 2곡 · 청크 펑키', bpm: 108, bars: 62, tiers: [0, 14, 28, 40, 55], falls: [1.75, 1.5, 1.28, 1.1, 0.95], extra: [1, 1, 2, 3, 4], easyStart: true },
   rock: { title: '🤘 앙코르 · 청크 록', bpm: 112, bars: 48, cycle: 13, tiers: [0, 13, 26, 39], falls: [1.3, 1.15, 1.02, 0.92], extra: [1, 2, 2, 3], easyStart: false, doubles: true }, // 🤘 록: 펑키와 비슷한 난이도 · 가끔 두 북 동시치기
-  kpop: { title: '🎧 앙코르 · 청크 히어로즈', bpm: 124, bars: 48, cycle: 13, tiers: [0, 13, 26, 39], falls: [1.24, 1.1, 0.98, 0.88], extra: [1, 2, 2, 3], easyStart: false, kpop: true }, // 🎧 K-pop 댄스: 빌드업 → 드롭 (펑키 · 록보다 조금 어렵게)
+  kpop: { title: '🎧 앵앵콜 · K-POP', bpm: 124, bars: 48, cycle: 13, tiers: [0, 13, 26, 39], falls: [1.24, 1.1, 0.98, 0.88], extra: [1, 2, 2, 3], easyStart: false, kpop: true }, // 🎧 K-pop 댄스: 빌드업 → 드롭 (펑키 · 록보다 조금 어렵게)
   encore: { title: '🎤 앙코르 · 청크 펑키', bpm: 112, bars: 48, cycle: 13, tiers: [0, 13, 26, 39], falls: [1.3, 1.15, 1.02, 0.92], extra: [2, 3, 3, 4], easyStart: false }, // 연주 4구간(9마디씩) · 퀴즈 3번 (약 1분 50초)
 };
 let DOUBLES = false; let KPOP = false;
@@ -128,7 +128,38 @@ export async function playDrum({ song = 1 } = {}) {
   const pickSong = await encoreAsk(r.score); if (!pickSong) return r;
   const r2 = await playDrumSong({ song: pickSong, base: r.score });
   if (r2.quit) return r;
-  return { ...r, score: r2.score, coins: (r.coins || 0) + (r2.coins || 0), snack: r.snack, encore: true };
+  const out = { ...r, score: r2.score, coins: (r.coins || 0) + (r2.coins || 0), snack: r.snack, encore: true };
+  // 🎧 앵앵콜: 앙코르(펑키 · 록)를 정확도 80% 이상으로 잘 치면 K-POP 한 곡 더
+  if ((r2.acc || 0) < 80) { await encore2Sorry(r2.acc || 0); return out; }
+  if (!(await encore2Ask(r2.score, r2.acc))) return out;
+  const r3 = await playDrumSong({ song: 'kpop', base: r2.score });
+  if (r3.quit) return out;
+  return { ...out, score: r3.score, coins: out.coins + (r3.coins || 0), encore2: true };
+}
+function encore2Ask(score, acc) {
+  return new Promise((res) => {
+    const ov = document.createElement('div');
+    ov.className = 'encore-ask';
+    ov.innerHTML = `<div class="mg-card"><div class="kicker">ENCORE · ENCORE!</div><h2>🎧 앵앵콜!</h2>
+      <p class="sub">앙코르 정확도 ${acc}% — 관객들이 한 번 더 외쳐요!</p>
+      <ol><li><span class="hk p">🎧 K-POP</span> 난이도 ★★★★★</li><li><span class="hk y">➕ 보너스</span> 드럼 점수에 그대로 더해져요</li></ol>
+      <button class="primary big kpop" id="kY">🎧 K-POP 앵앵콜!<small>난이도 ★★★★★</small></button>
+      <button class="ghost" id="kN" style="margin-top:8px;width:100%">여기까지 할래요</button></div>`;
+    document.body.appendChild(ov);
+    ov.querySelector('#kY').onclick = () => { ov.remove(); res(true); };
+    ov.querySelector('#kN').onclick = () => { ov.remove(); res(false); };
+  });
+}
+function encore2Sorry(acc) {
+  return new Promise((res) => {
+    const ov = document.createElement('div');
+    ov.className = 'encore-ask';
+    ov.innerHTML = `<div class="mg-card"><div class="kicker">NEXT TIME!</div><h2>🎧 K-POP 앵앵콜은<br>다음 기회에!</h2>
+      <p class="sub">앙코르 정확도 ${acc}% · <b class="red">80% 이상</b>이면 K-POP 앵앵콜이 열려요</p>
+      <button class="primary big" id="sOk">다음엔 꼭! 💪</button></div>`;
+    document.body.appendChild(ov);
+    ov.querySelector('#sOk').onclick = () => { ov.remove(); res(); };
+  });
 }
 function encoreAsk(score) {
   return new Promise((res) => {
@@ -138,12 +169,11 @@ function encoreAsk(score) {
       <p class="sub">${score.toLocaleString()}점 — 10만 점 돌파! 한 곡 골라요</p>
       <ol><li><span class="hk r">🔥 더 빠르게</span> 연주 4구간 · 퀴즈 3번</li><li><span class="hk y">➕ 보너스</span> 드럼 점수에 그대로 더해져요</li></ol>
       <div class="enc-pick"><button class="primary big" id="eF">🎸 펑키<small>난이도 ★★★★ · 통통 튀는 펑키</small></button><button class="primary big rock" id="eR">🤘 록<small>난이도 ★★★★ · 신나는 록</small></button></div>
-      <button class="primary big kpop" id="eK">🎧 K-pop 댄스<small>난이도 ★★★★★ · 빌드업 → 드롭!</small></button>
+      <p class="sub" style="margin:8px 0 0">🎧 정확도 80% 이상이면 <b class="red">K-POP 앵앵콜</b>이 열려요!</p>
       <button class="ghost" id="eN" style="margin-top:8px;width:100%">여기까지 할래요</button></div>`;
     document.body.appendChild(ov);
     ov.querySelector('#eF').onclick = () => { ov.remove(); res('encore'); };
     ov.querySelector('#eR').onclick = () => { ov.remove(); res('rock'); };
-    ov.querySelector('#eK').onclick = () => { ov.remove(); res('kpop'); };
     ov.querySelector('#eN').onclick = () => { ov.remove(); res(null); };
   });
 }
@@ -153,8 +183,8 @@ function playDrumSong({ song = 1, base = 0 } = {}) {
   const isRock = song === 'rock'; const isKpop = song === 'kpop';
   return openGame({
     id: 'drum',
-    title: isKpop ? '🎧 앙코르 K-pop' : isRock ? '🤘 앙코르 록' : isEncore ? '🎤 앙코르 드럼' : '🥁 품사 드럼',
-    subtitle: isKpop ? '난이도 ★★★★★ · 청크 히어로즈 — 빌드업 → 드롭!' : isRock ? '난이도 ★★★★ · 신나는 록 — 연주 4구간' : isEncore ? '난이도 ★★★★ · 통통 튀는 펑키 — 연주 4구간' : `${SONG.title} · 단어가 북에 닿을 때 쿵! 짝!`,
+    title: isKpop ? '🎧 앵앵콜 K-POP' : isRock ? '🤘 앙코르 록' : isEncore ? '🎤 앙코르 드럼' : '🥁 품사 드럼',
+    subtitle: isKpop ? '난이도 ★★★★★ · K-POP — 연주 4구간' : isRock ? '난이도 ★★★★ · 신나는 록 — 연주 4구간' : isEncore ? '난이도 ★★★★ · 통통 튀는 펑키 — 연주 4구간' : `${SONG.title} · 단어가 북에 닿을 때 쿵! 짝!`,
     howto: [
       '<span class="hk r">🥁 북에 닿을 때</span> 그 품사 버튼을 <b>쿵!</b>',
       '<span class="hk y">🎓 퀴즈 정답</span> <b>피버 ×2 · 쉴드 · 음악 UP</b>',
@@ -532,8 +562,9 @@ function playDrumSong({ song = 1, base = 0 } = {}) {
         const acc = Math.round((ok / total) * 100);
         if (acc >= 60) cheer(2.8, 1);
         if (isEncore) { // 앙코르: 드럼 점수는 크게 (앞 곡 점수에 더해짐) · 원정 총점에는 코인 조금만
-          ctx.end({ score: S.score, cleared: acc >= 60, coins: Math.min(8, Math.round(acc / 12)), snack: null, headline: acc >= 90 ? '🎤 앙코르 대성공!' : acc >= 60 ? '🎤 앙코르 성공!' : '앙코르 끝!', legendAt: 160000,
-            lines: [`앙코르 점수 <b>+${(S.score - base).toLocaleString()}</b> → 드럼 총점 <b>${S.score.toLocaleString()}</b>`, `정확도 <b>${acc}%</b> · 🎓 퀴즈 <b>${S.qOk}/${S.qN}</b> · 최고 콤보 <b>${S.best}</b>`, '원정 총점에는 🪙 코인으로 조금만 더해져요'] });
+          const nm = isKpop ? '🎧 앵앵콜' : '🎤 앙코르';
+          ctx.end({ acc, score: S.score, cleared: acc >= 60, coins: Math.min(8, Math.round(acc / 12)), snack: null, headline: acc >= 90 ? `${nm} 대성공!` : acc >= 60 ? `${nm} 성공!` : `${nm} 끝!`, legendAt: 160000,
+            lines: [isKpop ? '' : (acc >= 80 ? '🎧 <b class="red">정확도 80% 이상! K-POP 앵앵콜 찬스!</b>' : '🎧 정확도 80% 이상이면 K-POP 앵앵콜!'), `${isKpop ? '앵앵콜' : '앙코르'} 점수 <b>+${(S.score - base).toLocaleString()}</b> → 드럼 총점 <b>${S.score.toLocaleString()}</b>`, `정확도 <b>${acc}%</b> · 🎓 퀴즈 <b>${S.qOk}/${S.qN}</b> · 최고 콤보 <b>${S.best}</b>`, '원정 총점에는 🪙 코인으로 조금만 더해져요'].filter(Boolean) });
           return;
         }
         ctx.end({
