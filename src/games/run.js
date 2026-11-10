@@ -91,7 +91,7 @@ export function playRun({ charId = 'bboy' } = {}) {
         ctx.floatText(`⚡ 2단 점프 부스터 +1 (${S.boost}/3)${why ? ' ' + why : ''}`, ctx.W / 2, GY() - 150, '#5BE0FF', 18);
         jb.classList.remove('charge'); void jb.offsetWidth; jb.classList.add('charge');
       };
-      ctx.button('⬇<small>슬라이드</small>', 'slide', { onDown: () => { if (S.y === 0) { S.slide = 0.875; ctx.sfx('whoosh'); } } }); // 슬라이딩 25% 더 길게
+      ctx.button('⬇<small>슬라이드</small>', 'slide', { onDown: () => { if (S.y === 0) { S.slide = 1.05; ctx.sfx('whoosh'); } } }); // 슬라이딩 20% 더 길게 (0.875 → 1.05초)
       const jb = ctx.button('⬆<small>점프</small><span class="bst"><em>2단 부스터</em><i></i><i></i><i></i></span>', 'jump', { onDown: jump });
       function syncBoost() { jb.querySelectorAll('.bst i').forEach((el, k) => el.classList.toggle('on', k < S.boost)); }
       syncBoost();
@@ -162,7 +162,7 @@ export function playRun({ charId = 'bboy' } = {}) {
           S.t += dt;
           if (ctx.input.taps.some((p) => p.y < ctx.H * 0.72)) jump();
           if (ctx.input.keys.ArrowUp || ctx.input.keys[' ']) { if (!S.kh) jump(); S.kh = true; } else S.kh = false;
-          if (ctx.input.keys.ArrowDown && S.y === 0) S.slide = 0.5;
+          if (ctx.input.keys.ArrowDown && S.y === 0) S.slide = Math.max(S.slide, 0.6);
 
           // 구간 진행
           const total = missions.length * MISSION_SEC;
