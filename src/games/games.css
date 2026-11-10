@@ -332,3 +332,6 @@
 .kwheel .mg-btn.right { border-radius: 10px 48px 48px 10px; }
 .kwheel .mg-btn.left::before { left: -30px; top: -40px; bottom: -40px; }
 .kwheel .mg-btn.right::before { right: -22px; top: -40px; bottom: -40px; }
+
+.encore-ask .kpop { width: 100%; margin-top: 8px; display: flex; flex-direction: column; align-items: center; gap: 2px; background: linear-gradient(90deg, #7B5CD6, #E21E8C); color: #fff; box-shadow: 0 4px 0 #5B2A9E; }
+.encore-ask .kpop small { font-family: 'Noto Sans KR', sans-serif; font-size: 11px; font-weight: 700; opacity: .9; }
