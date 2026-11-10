@@ -34,10 +34,11 @@ const SONGS = {
   2: { title: '🎸 2곡 · 청크 펑키', bpm: 108, bars: 62, tiers: [0, 14, 28, 40, 55], falls: [1.75, 1.5, 1.28, 1.1, 0.95], extra: [1, 1, 2, 3, 4], easyStart: true },
   rock: { title: '🤘 앙코르 · 청크 록', bpm: 112, bars: 48, cycle: 13, tiers: [0, 13, 26, 39], falls: [1.3, 1.15, 1.02, 0.92], extra: [1, 2, 2, 3], easyStart: false, doubles: true }, // 🤘 록: 펑키와 비슷한 난이도 · 가끔 두 북 동시치기
   kpop: { title: '🎧 앵앵콜 · K-POP', bpm: 124, bars: 48, cycle: 13, tiers: [0, 13, 26, 39], falls: [1.24, 1.1, 0.98, 0.88], extra: [1, 2, 2, 3], easyStart: false, kpop: true }, // 🎧 K-pop 댄스: 빌드업 → 드롭 (펑키 · 록보다 조금 어렵게)
+  city: { title: '🌃 커튼콜 · 굿나잇, 시티', bpm: 104, bars: 56, cycle: 15, tiers: [0, 15, 30, 45], falls: [1.36, 1.2, 1.06, 0.96], extra: [1, 1, 2, 2], easyStart: false, city: true }, // 🌃 시티팝: 콘서트 마지막 곡 (연주 4구간 · 11마디씩 · 퀴즈 3번)
   encore: { title: '🎤 앙코르 · 청크 펑키', bpm: 112, bars: 48, cycle: 13, tiers: [0, 13, 26, 39], falls: [1.3, 1.15, 1.02, 0.92], extra: [2, 3, 3, 4], easyStart: false }, // 연주 4구간(9마디씩) · 퀴즈 3번 (약 1분 50초)
 };
-let DOUBLES = false; let KPOP = false;
-function applySong(cfg) { DOUBLES = !!cfg.doubles; KPOP = !!cfg.kpop; CYCLE = cfg.cycle || 11; BPM = cfg.bpm; BEAT = 60 / BPM; BARS = cfg.bars; TIERS = cfg.tiers; FALLS = cfg.falls; EXTRA = cfg.extra; EASY_START = cfg.easyStart; }
+let DOUBLES = false; let KPOP = false; let CITY = false;
+function applySong(cfg) { DOUBLES = !!cfg.doubles; KPOP = !!cfg.kpop; CITY = !!cfg.city; CYCLE = cfg.cycle || 11; BPM = cfg.bpm; BEAT = 60 / BPM; BARS = cfg.bars; TIERS = cfg.tiers; FALLS = cfg.falls; EXTRA = cfg.extra; EASY_START = cfg.easyStart; }
 
 // 그루브 패턴: 마디(8분음표 8칸) 안에서 어느 북을 칠지 — 명=쿵(플로어) 동=짝(스네어) 형=탐 부=심벌 접=킥
 const GROOVES = [
@@ -85,6 +86,31 @@ const KP_DROP = [
   ['명', '', '동', '형', '명', '명', '동', '부'],
   ['부', '', '동', '형', '명', '', '동', '형'],
 ];
+// 🌃 시티팝 그루브: 엇박(당김음)이 살아 있는 리듬 — 4박째 뒤에서 미리 치는 '당김'이 특징
+const CITY_GROOVES = [
+  ['명', '', '동', '명', '', '형', '동', ''],
+  ['명', '', '동', '', '형', '명', '동', '부'],
+  ['명', '형', '동', '', '명', '', '동', '형'],
+  ['', '명', '동', '', '명', '형', '동', ''],
+];
+const CITY_FILLS = [
+  ['명', '', '동', '형', '형', '명', '명', '부'],
+  ['동', '', '형', '동', '', '명', '형', '부'],
+];
+// 🌃 커튼콜 엔딩: 탐 · 스네어를 좌우로 다다닥 몰아치다가 → 마지막에 심벌 + 스네어 동시에 꽝!
+const CITY_FINALE = [
+  ['형', '형', '동', '동', '명', '명', '형', '동'],
+  ['명', '형', '동', '명', '형', '동', '명', ''],
+];
+// 곡마다 다른 피날레
+const KP_FINALE = [
+  ['동', '동', '동', '동', '동', '동', '동', ''], // 마지막 빌드업 따다다닥 →
+  ['명+부', '', '', '', '명+부', '', '명+부', ''], // 쾅 · · · 쾅 · 쾅!
+];
+const ROCK_FINALE = [
+  ['명+부', '', '명+부', '', '명+부', '', '명+부', ''], // 4박 내내 쾅쾅쾅쾅
+  ['형', '형', '명', '명', '동', '동', '형', ''],
+];
 const CODE = { 명: '명사', 동: '동사', 형: '형용사', 부: '부사', 접: '접속사' };
 
 function makeChart() {
@@ -92,9 +118,10 @@ function makeChart() {
   for (let b = 0; b < BARS; b++) {
     if (isQuizBar(b)) continue; // 퀴즈 타임
     const fin = b >= BARS - 2; // 마지막 2마디 = 피날레
-    if (!fin && !KPOP && b % 8 === 7) { notes.push({ step: 8 + b * 8, pos: '접속사' }); continue; } // 8마디마다 킥 한 방 + 숨 고르기
+    if (!fin && !KPOP && !CITY && b % 8 === 7) { notes.push({ step: 8 + b * 8, pos: '접속사' }); continue; } // 8마디마다 킥 한 방 + 숨 고르기
     const sec = b % CYCLE; // K-pop: 구간 안 몇 번째 마디인지
-    let P = fin ? FINALE[b - (BARS - 2)] : KPOP ? (sec < 4 ? pick(KP_VERSE) : sec < 6 ? KP_BUILD[sec - 4] : sec === 6 ? KP_DROP_IN : pick(KP_DROP)) : DOUBLES ? (b % 4 === 3 ? pick(ROCK_FILLS) : pick(ROCK_GROOVES)) : (b % 4 === 3 ? pick(FILLS) : pick(GROOVES));
+    const FIN = CITY ? CITY_FINALE : KPOP ? KP_FINALE : DOUBLES ? ROCK_FINALE : FINALE;
+    let P = fin ? FIN[b - (BARS - 2)] : CITY ? (b % 4 === 3 ? pick(CITY_FILLS) : pick(CITY_GROOVES)) : KPOP ? (sec < 4 ? pick(KP_VERSE) : sec < 6 ? KP_BUILD[sec - 4] : sec === 6 ? KP_DROP_IN : pick(KP_DROP)) : DOUBLES ? (b % 4 === 3 ? pick(ROCK_FILLS) : pick(ROCK_GROOVES)) : (b % 4 === 3 ? pick(FILLS) : pick(GROOVES));
     if (EASY_START && b < 6) P = P.map((c, i) => (i % 2 ? '' : c)); // 처음엔 4분음표만 (천천히 익히기)
     const extra = EXTRA[tierOfBar(b)] || 0; // 후반일수록 빈 박자에 음표 추가 (FINAL STAGE는 4개)
     if (extra && !fin && !(KPOP && sec >= 4 && sec <= 6)) { P = P.slice(); const nearDbl = (k) => [k - 1, k + 1].some((j) => (P[j] || '').includes('+')); shuffle(P.map((c, k) => (c || nearDbl(k) ? -1 : k)).filter((k) => k > 0)).slice(0, extra).forEach((k) => { P[k] = pick(['형', '부', '명', '동']); }); } // 두 북 동시치기 바로 옆에는 안 넣음
@@ -102,7 +129,7 @@ function makeChart() {
     if (!fin && b > 8 && b % 8 === 3) notes.push({ step: 8 + b * 8 + 6, pos: '접속사' });
   }
   // 🎆 마지막 한 방: 심벌 + 킥 동시에 쾅!
-  notes.push({ step: 8 + BARS * 8, pos: '부사', last: true }, { step: 8 + BARS * 8, pos: '접속사', last: true });
+  notes.push({ step: 8 + BARS * 8, pos: '부사', last: true }, { step: 8 + BARS * 8, pos: CITY ? '동사' : '접속사', last: true }); // 마지막 한 방 (커튼콜은 심벌 + 스네어)
   notes.sort((a, b) => a.step - b.step);
   // 같은 시각 · 같은 북 중복만 빼기 (다른 북 두 개는 동시치기로 남김)
   const seen = new Set();
@@ -134,7 +161,26 @@ export async function playDrum({ song = 1 } = {}) {
   if (!(await encore2Ask(r2.score, r2.acc))) return out;
   const r3 = await playDrumSong({ song: 'kpop', base: r2.score });
   if (r3.quit) return out;
-  return { ...out, score: r3.score, coins: out.coins + (r3.coins || 0), encore2: true };
+  const out3 = { ...out, score: r3.score, coins: out.coins + (r3.coins || 0), encore2: true };
+  // 🌃 커튼콜: 콘서트를 마무리하는 시티팝 한 곡 (난이도는 오히려 ★★★★로 편하게)
+  if (!(await curtainAsk(r3.score))) return out3;
+  const r4 = await playDrumSong({ song: 'city', base: r3.score });
+  if (r4.quit) return out3;
+  return { ...out3, score: r4.score, coins: out3.coins + (r4.coins || 0), curtain: true };
+}
+function curtainAsk(score) {
+  return new Promise((res) => {
+    const ov = document.createElement('div');
+    ov.className = 'encore-ask';
+    ov.innerHTML = `<div class="mg-card"><div class="kicker">CURTAIN CALL</div><h2>🌃 커튼콜</h2>
+      <p class="sub">${score.toLocaleString()}점! 오늘 공연의 마지막 곡을 함께할까요?</p>
+      <ol><li><span class="hk p">🌃 굿나잇, 시티</span> 시티팝 · 난이도 ★★★★</li><li><span class="hk y">➕ 보너스</span> 드럼 점수에 그대로 더해져요</li></ol>
+      <button class="primary big city" id="cY">🌃 마지막 곡 연주하기<small>굿나잇, 시티 · ★★★★</small></button>
+      <button class="ghost" id="cN" style="margin-top:8px;width:100%">여기서 인사할래요</button></div>`;
+    document.body.appendChild(ov);
+    ov.querySelector('#cY').onclick = () => { ov.remove(); res(true); };
+    ov.querySelector('#cN').onclick = () => { ov.remove(); res(false); };
+  });
 }
 function encore2Ask(score, acc) {
   return new Promise((res) => {
@@ -179,12 +225,12 @@ function encoreAsk(score) {
 }
 function playDrumSong({ song = 1, base = 0 } = {}) {
   const SONG = SONGS[song] || SONGS[1]; applySong(SONG);
-  const isEncore = song === 'encore' || song === 'rock' || song === 'kpop';
-  const isRock = song === 'rock'; const isKpop = song === 'kpop';
+  const isEncore = song === 'encore' || song === 'rock' || song === 'kpop' || song === 'city';
+  const isRock = song === 'rock'; const isKpop = song === 'kpop'; const isCity = song === 'city';
   return openGame({
     id: 'drum',
-    title: isKpop ? '🎧 앵앵콜 K-POP' : isRock ? '🤘 앙코르 록' : isEncore ? '🎤 앙코르 드럼' : '🥁 품사 드럼',
-    subtitle: isKpop ? '난이도 ★★★★★ · K-POP — 연주 4구간' : isRock ? '난이도 ★★★★ · 신나는 록 — 연주 4구간' : isEncore ? '난이도 ★★★★ · 통통 튀는 펑키 — 연주 4구간' : `${SONG.title} · 단어가 북에 닿을 때 쿵! 짝!`,
+    title: isCity ? '🌃 커튼콜' : isKpop ? '🎧 앵앵콜 K-POP' : isRock ? '🤘 앙코르 록' : isEncore ? '🎤 앙코르 드럼' : '🥁 품사 드럼',
+    subtitle: isCity ? '굿나잇, 시티 · 난이도 ★★★★ — 오늘 공연의 마지막 곡' : isKpop ? '난이도 ★★★★★ · K-POP — 연주 4구간' : isRock ? '난이도 ★★★★ · 신나는 록 — 연주 4구간' : isEncore ? '난이도 ★★★★ · 통통 튀는 펑키 — 연주 4구간' : `${SONG.title} · 단어가 북에 닿을 때 쿵! 짝!`,
     howto: [
       '<span class="hk r">🥁 북에 닿을 때</span> 그 품사 버튼을 <b>쿵!</b>',
       '<span class="hk y">🎓 퀴즈 정답</span> <b>피버 ×2 · 쉴드 · 음악 UP</b>',
@@ -284,11 +330,12 @@ function playDrumSong({ song = 1, base = 0 } = {}) {
       }
       const thud = () => { const D = out(); if (D) I.tom(D, AC.currentTime, 52, 0.3); };
       const m2f = (m) => 440 * 2 ** ((m - 69) / 12);
+      const cp = isCity; // 🌃 시티팝: Fmaj7–E7–Am7–Gm7 · 엇박 베이스 · 일렉피아노 · 16비트 하이햇
       const kp = isKpop; // 🎧 K-pop 댄스: Bm–G–D–A · 신스 훅 · 빌드업 → 드롭
       const rock = isRock; // 🤘 록: E단조 파워코드(Em C D B) · 8비트 드라이브 베이스 · 크래시
-      const funky = song !== 1 && !rock && !kp; // 2곡 · 앙코르: 밝은 C장조 펑키 (C G Am F) + 엇박 베이스 · 기타 컷 · 16비트 셰이커
-      const PROG = kp ? [[59, 62, 66], [55, 59, 62], [50, 54, 57], [57, 61, 64]] : rock ? [[52, 56, 59], [47, 51, 54], [49, 52, 56], [45, 49, 52]] : funky ? [[60, 64, 67], [55, 59, 62], [57, 60, 64], [53, 57, 60]] : [[57, 60, 64], [53, 57, 60], [48, 52, 55], [55, 59, 62]];
-      const BASS = kp ? [[35, 35, 47, 35, 35, 47, 35, 47], [31, 31, 43, 31, 31, 43, 31, 43], [38, 38, 50, 38, 38, 50, 38, 50], [33, 33, 45, 33, 33, 45, 33, 45]] : rock ? [[40, 40, 52, 40, 40, 40, 47, 40], [35, 35, 47, 35, 35, 35, 42, 35], [37, 37, 49, 37, 37, 37, 44, 37], [33, 33, 45, 33, 33, 33, 40, 33]] : funky ? [[36, 36, 43, 36, 38, 40, 43, 40], [31, 31, 38, 31, 33, 35, 38, 35], [33, 33, 40, 33, 35, 36, 40, 36], [29, 29, 36, 29, 31, 33, 36, 33]].map((r) => r.map((m) => m + 12))
+      const funky = song !== 1 && !rock && !kp && !cp; // 2곡 · 앙코르: 밝은 C장조 펑키 (C G Am F) + 엇박 베이스 · 기타 컷 · 16비트 셰이커
+      const PROG = cp ? [[53, 57, 60, 64], [52, 56, 59, 62], [57, 60, 64, 67], [55, 58, 62, 65]] : kp ? [[59, 62, 66], [55, 59, 62], [50, 54, 57], [57, 61, 64]] : rock ? [[52, 56, 59], [47, 51, 54], [49, 52, 56], [45, 49, 52]] : funky ? [[60, 64, 67], [55, 59, 62], [57, 60, 64], [53, 57, 60]] : [[57, 60, 64], [53, 57, 60], [48, 52, 55], [55, 59, 62]];
+      const BASS = cp ? [[41, 41, 53, 41, 41, 48, 53, 51], [40, 40, 52, 40, 40, 47, 52, 50], [45, 45, 57, 45, 45, 52, 57, 55], [43, 43, 55, 43, 43, 50, 55, 48]] : kp ? [[35, 35, 47, 35, 35, 47, 35, 47], [31, 31, 43, 31, 31, 43, 31, 43], [38, 38, 50, 38, 38, 50, 38, 50], [33, 33, 45, 33, 33, 45, 33, 45]] : rock ? [[40, 40, 52, 40, 40, 40, 47, 40], [35, 35, 47, 35, 35, 35, 42, 35], [37, 37, 49, 37, 37, 37, 44, 37], [33, 33, 45, 33, 33, 33, 40, 33]] : funky ? [[36, 36, 43, 36, 38, 40, 43, 40], [31, 31, 38, 31, 33, 35, 38, 35], [33, 33, 40, 33, 35, 36, 40, 36], [29, 29, 36, 29, 31, 33, 36, 33]].map((r) => r.map((m) => m + 12))
         : [[45, 45, 52, 45, 47, 45, 52, 47], [41, 41, 48, 41, 43, 41, 48, 43], [36, 36, 43, 36, 38, 36, 43, 38], [43, 43, 50, 43, 45, 43, 50, 45]];
       const MELODY = rock ? [76, 78, 80, 83, 80, 78, 76, 71] : funky ? [79, 81, 79, 76, 74, 76, 79, 84] : [76, 74, 72, 74, 76, 79, 76, 72];
       let nextStep = 0;
@@ -300,11 +347,27 @@ function playDrumSong({ song = 1, base = 0 } = {}) {
           else if (st === 8 + BARS * 8) { // 🎆 피날레 마지막 한 방: 크래시 · 킥 · 큰 화음이 길게 울리고 끝
             const c = PROG[0]; I.brass(D, t, c.map((m) => m2f(m)), STEP * 10, 0.05); I.brass(D, t, c.map((m) => m2f(m + 12)), STEP * 10, 0.035); I.pad(D, t, c.map((m) => m2f(m - 12)), STEP * 12, 0.04);
             I.kick(D, t, 0.9); I.hat(D, t, 0.25, true); I.hat(D, t + 0.02, 0.18, true);
+            if (cp) { // 🌃 커튼콜 엔딩: 꽝! 뒤에 일렉피아노가 천천히 내려오며 '굿나잇' 인사 (점점 느려지게)
+              const NOTES = [84, 81, 77, 76, 72, 69, 65, 60]; let tt = t + 0.5;
+              NOTES.forEach((m, j) => { I.marimba(D, tt, m2f(m), 0.04); I.pluck(D, tt, m2f(m - 12), 0.025); tt += 0.18 + j * 0.06; });
+              I.pad(D, tt, [53, 57, 60, 64, 67].map(m2f), 3.5, 0.03); // 마지막 Fmaj9 화음이 길게
+            }
           }
           else if (st < 8 + BARS * 8) {
             const b = ((bar % 4) + 4) % 4; const k = (st - 8) % 8; // k: 마디 안 8분음표 위치 (0·2·4·6 = 1·2·3·4박)
             // 베이스: 1박 · 2박 반 · 3박 · 4박 반 (통통 튀는 리듬)
-            if (kp) { // 🎧 K-pop 댄스 — 구간마다 벌스 → 빌드업 → 드롭
+            if (cp) { // 🌃 시티팝 — 통통 엇박 베이스 · 일렉피아노 코드(당김음) · 16비트 하이햇 · 브라스 · 멜로디
+              const c = PROG[b]; const sec = ((bar % CYCLE) + CYCLE) % CYCLE;
+              if (k === 0 || k === 2 || k === 3 || k === 5 || k === 6 || k === 7) I.bass(D, t, m2f(BASS[b][k]), STEP * (k === 0 ? 1.4 : 0.7), 0.13, 'triangle');
+              if (k === 0) c.forEach((m, j) => I.pluck(D, t + j * 0.012, m2f(m + 12), 0.03)); // 일렉피아노 (살짝 흩어 치기)
+              if (k === 3 || k === 7) c.forEach((m) => I.pluck(D, t, m2f(m + 12), 0.022)); // 당김음 코드 찍기
+              if (k === 0) I.pad(D, t, c.map((m) => m2f(m)), STEP * 7.6, 0.012);
+              I.hat(D, t, k % 2 ? 0.014 : 0.024); I.hat(D, t + STEP / 2, 0.01);
+              if (k === 0 || k === 4) I.kick(D, t, 0.34); if (k === 2 || k === 6) I.clap(D, t, 0.11);
+              const MEL_CP = [[72, 76, 79, 76, 74, 72, 69, 72], [71, 74, 76, 74, 71, 68, 71, 74], [76, 79, 81, 79, 76, 74, 72, 74], [74, 77, 79, 77, 74, 72, 70, 72]];
+              if (sec >= 4 && k % 2 === 0) I.marimba(D, t, m2f(MEL_CP[b][k] + 12), 0.03); // 반짝이는 멜로디 (구간 후반)
+              if (sec >= 8 && k === 7) I.brass(D, t, c.slice(0, 3).map((m) => m2f(m + 12)), STEP * 0.8, 0.03); // 브라스 '빠밤!'
+            } else if (kp) { // 🎧 K-pop 댄스 — 구간마다 벌스 → 빌드업 → 드롭
               const c = PROG[b]; const sec = ((bar % CYCLE) + CYCLE) % CYCLE;
               const HOOK = [[71, 74, 76, 78, 76, 74, 71, 69], [74, 76, 78, 81, 78, 76, 74, 76], [78, 76, 74, 71, 74, 76, 78, 83], [76, 78, 81, 78, 76, 73, 76, 69]]; // 신스 훅 (우리 곡만의 멜로디)
               if (sec < 4) { // 벌스: 통통 튀는 플럭 + 박수
@@ -334,24 +397,24 @@ function playDrumSong({ song = 1, base = 0 } = {}) {
               if (k % 2 === 0) I.kick(D, t, 0.36); if (k === 2 || k === 6) I.snare(D, t, 0.13); if (k === 0 && b === 0) I.hat(D, t, 0.08, true);
             }
             else if (funky ? (k === 0 || k === 2 || k === 3 || k === 5 || k === 6) : (k === 0 || k === 3 || k === 4 || k === 7)) I.bass(D, t, m2f(BASS[b][k]), STEP * (k % 4 === 0 ? 1.6 : 0.8), 0.11, 'triangle');
-            if (!kp) { // K-pop은 자기 반주만 (벌스 · 빌드업 · 드롭이 또렷하게)
+            if (!kp && !cp) { // K-pop · 시티팝은 자기 반주만 (벌스 · 빌드업 · 드롭이 또렷하게)
             if (k === 0 && !rock) I.pad(D, t, PROG[b].map(m2f), STEP * 7.8, 0.018);
             if (k === 2 || k === 6) I.stab(D, t, PROG[b].map((m) => m2f(m + 12)), 0.016); // 2·4박 코드 찍기
             if (k === 5 && b % 2) I.marimba(D, t, m2f(PROG[b][2] + 24), 0.025);
             }
             if (funky) { if (k === 1 || k === 5) I.stab(D, t, PROG[b].map((m) => m2f(m + 12)), 0.012); I.hat(D, t + STEP / 2, 0.012); } // 기타 컷 + 16비트 셰이커
-            if (!kp && (tierOfBar(bar) >= 4 || (isEncore && tierOfBar(bar) >= 2))) { if (k % 2 === 0) I.kick(D, t, 0.4); if (k === 0) I.hat(D, t, 0.1, true); I.hat(D, t + STEP / 2, 0.02); } // 🔥 FINAL: 쿵쿵쿵쿵 4비트 + 크래시
+            if (!kp && !cp && (tierOfBar(bar) >= 4 || (isEncore && tierOfBar(bar) >= 2))) { if (k % 2 === 0) I.kick(D, t, 0.4); if (k === 0) I.hat(D, t, 0.1, true); I.hat(D, t + STEP / 2, 0.02); } // 🔥 FINAL: 쿵쿵쿵쿵 4비트 + 크래시
             // 박자 가이드: 1·3박 작은 킥, 2·4박 작은 클랩, 8분음표 셰이커 → 박자가 귀에 들림 (학생 드럼이 위에 얹힘)
-            if (!kp && (k === 0 || k === 4)) I.kick(D, t, 0.32);
-            if (!kp && (k === 2 || k === 6)) I.clap(D, t, 0.09);
+            if (!kp && !cp && (k === 0 || k === 4)) I.kick(D, t, 0.32);
+            if (!kp && !cp && (k === 2 || k === 6)) I.clap(D, t, 0.09);
             // 🥁 떨어지는 단어의 드럼을 반주에 은은하게 → 음악이 드럼 박자(단어)와 딱 맞게 흘러감 (학생이 치면 그 위에 크게)
             notes.forEach((n) => { if (n.step === st) drumSound(n.pos, t, 0.16, D); });
             I.hat(D, t, k % 2 ? 0.012 : 0.022);
             // 🎶 음악 레벨 (퀴즈를 맞힐수록 악기가 하나씩 늘어남)
             const Lv = S.lvl; const c = PROG[b];
-            if (Lv >= 1 && !kp) I.marimba(D, t, m2f([c[0], c[1], c[2], c[1] + 12][k % 4] + 12), 0.03); // 반짝 아르페지오
+            if (Lv >= 1 && !kp && !cp) I.marimba(D, t, m2f([c[0], c[1], c[2], c[1] + 12][k % 4] + 12), 0.03); // 반짝 아르페지오
             if (Lv >= 2) { I.hat(D, t + STEP / 2, 0.014); if (k === 0) I.brass(D, t, c.map((m) => m2f(m + 12)), STEP * 3, 0.022); } // 16비트 하이햇 + 브라스
-            if (Lv >= 3 && !kp) { const MEL = MELODY; if (k % 2 === 0) I.pluck(D, t, m2f(MEL[(bar * 4 + k / 2) % 8] - (b === 2 ? 3 : 0)), 0.045); } // 멜로디
+            if (Lv >= 3 && !kp && !cp) { const MEL = MELODY; if (k % 2 === 0) I.pluck(D, t, m2f(MEL[(bar * 4 + k / 2) % 8] - (b === 2 ? 3 : 0)), 0.045); } // 멜로디
             if (Lv >= 4 && k === 0 && bar % 2 === 0) { I.hat(D, t, 0.12, true); I.zap(D, t, 0.025); } // 크래시 + 반짝
           }
           nextStep++;
@@ -400,7 +463,13 @@ function playDrumSong({ song = 1, base = 0 } = {}) {
         cand.done = true;
         if (cand.dbl && cand.dbl.every((o) => o.done && !o.miss)) { // 🥁🥁 동시치기 성공
           const bonusD = cand.last ? 1000 : 300; S.score += bonusD; S.fx.push({ txt: `DOUBLE! +${bonusD}`, col: '#FF5AF0', life: 0.9, i }); ctx.burst(ctx.W / 2, hitY(2) - 70, cand.last ? 60 : 18, ['#FF5AF0', '#FFD43B', '#fff']);
-          if (cand.last) { ctx.callout('legend', '🎆 FINALE!'); cheer(3, 1); ctx.shake?.(10, 0.5); }
+          if (cand.last) {
+            ctx.callout('legend', isCity ? '🌃 GOOD NIGHT!' : '🎆 FINALE!'); cheer(isCity ? 4.5 : 3, 1); ctx.shake?.(10, 0.5);
+            if (isCity) { // 🎆 커튼콜: 불꽃이 차례로 터지고 작별 인사
+              [0.4, 0.9, 1.4, 1.9].forEach((d, j) => setTimeout(() => ctx.burst(ctx.W * (0.2 + 0.2 * j), ctx.H * (0.15 + 0.08 * (j % 2)), 50, ['#FFD43B', '#FF8AD8', '#8FE3FF', '#fff']), d * 1000));
+              setTimeout(() => ctx.floatText('🌃 굿나잇! 오늘 연주 고마워요!', ctx.W / 2, ctx.H * 0.32, '#FFD43B', 26), 900);
+            }
+          }
         }
         const dt = Math.abs(arrive(cand) - now);
         const grade = dt <= 0.09 ? 'PERFECT' : dt <= 0.18 ? 'GREAT' : 'GOOD';
@@ -562,9 +631,9 @@ function playDrumSong({ song = 1, base = 0 } = {}) {
         const acc = Math.round((ok / total) * 100);
         if (acc >= 60) cheer(2.8, 1);
         if (isEncore) { // 앙코르: 드럼 점수는 크게 (앞 곡 점수에 더해짐) · 원정 총점에는 코인 조금만
-          const nm = isKpop ? '🎧 앵앵콜' : '🎤 앙코르';
+          const nm = isCity ? '🌃 커튼콜' : isKpop ? '🎧 앵앵콜' : '🎤 앙코르';
           ctx.end({ acc, score: S.score, cleared: acc >= 60, coins: Math.min(8, Math.round(acc / 12)), snack: null, headline: acc >= 90 ? `${nm} 대성공!` : acc >= 60 ? `${nm} 성공!` : `${nm} 끝!`, legendAt: 160000,
-            lines: [isKpop ? '' : (acc >= 80 ? '🎧 <b class="red">정확도 80% 이상! K-POP 앵앵콜 찬스!</b>' : '🎧 정확도 80% 이상이면 K-POP 앵앵콜!'), `${isKpop ? '앵앵콜' : '앙코르'} 점수 <b>+${(S.score - base).toLocaleString()}</b> → 드럼 총점 <b>${S.score.toLocaleString()}</b>`, `정확도 <b>${acc}%</b> · 🎓 퀴즈 <b>${S.qOk}/${S.qN}</b> · 최고 콤보 <b>${S.best}</b>`, '원정 총점에는 🪙 코인으로 조금만 더해져요'].filter(Boolean) });
+            lines: [isCity ? '🌃 오늘 공연 끝! 끝까지 함께해 줘서 고마워요 👏' : isKpop ? '' : (acc >= 80 ? '🎧 <b class="red">정확도 80% 이상! K-POP 앵앵콜 찬스!</b>' : '🎧 정확도 80% 이상이면 K-POP 앵앵콜!'), `${isCity ? '커튼콜' : isKpop ? '앵앵콜' : '앙코르'} 점수 <b>+${(S.score - base).toLocaleString()}</b> → 드럼 총점 <b>${S.score.toLocaleString()}</b>`, `정확도 <b>${acc}%</b> · 🎓 퀴즈 <b>${S.qOk}/${S.qN}</b> · 최고 콤보 <b>${S.best}</b>`, '원정 총점에는 🪙 코인으로 조금만 더해져요'].filter(Boolean) });
           return;
         }
         ctx.end({
