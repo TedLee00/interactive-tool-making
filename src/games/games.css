@@ -335,3 +335,9 @@
 
 .encore-ask .kpop { width: 100%; margin-top: 8px; display: flex; flex-direction: column; align-items: center; gap: 2px; background: linear-gradient(90deg, #7B5CD6, #E21E8C); color: #fff; box-shadow: 0 4px 0 #5B2A9E; }
 .encore-ask .kpop small { font-family: 'Noto Sans KR', sans-serif; font-size: 11px; font-weight: 700; opacity: .9; }
+
+/* 청크런: 미션 · 예시 안내판을 맨 위로 작게 붙여서 게임 화면을 덜 가리게 */
+.mg-run .mg-mission { top: 0; left: 4px; right: 4px; padding: 2px 8px 3px; border-width: 2px; border-radius: 0 0 14px 14px; background: rgba(255, 251, 240, .9); }
+.mg-run .mg-mission small { display: inline; font-size: 10px; margin-right: 4px; }
+.mg-run .mg-mission b { display: inline; font-size: 15px; line-height: 1.25; }
+.mg-run .mg-mission em { font-size: 11px; line-height: 1.25; margin-top: 1px; }
