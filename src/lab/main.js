@@ -52,9 +52,9 @@ function home() {
       if (!S.name) { S.name = (prompt('순위표에 올릴 이름(닉네임)을 써 주세요', '') || '').trim().slice(0, 12) || '연습생'; save(); }
       setPlayer(S.name);
       const fn = { run: playRun, crane: playCrane, kart: playKart, shoot: playShoot, drum: playDrum }[b.dataset.g];
-      // 👩‍🏫 선생님 미리 듣기: quiz-lab.html?drum=encore · rock · kpop · city 로 열면 드럼 곡을 바로 골라 연습
+      // 👩‍🏫 선생님 미리 듣기: quiz-lab.html?drum=encore · rock · kpop 로 열면 드럼 곡을 바로 골라 연습
       const dq = new URLSearchParams(location.search).get('drum');
-      const song = ['2', 'encore', 'rock', 'kpop', 'city'].includes(dq) ? (dq === '2' ? 2 : dq) : 1;
+      const song = ['2', 'encore', 'rock', 'kpop'].includes(dq) ? (dq === '2' ? 2 : dq) : 1;
       const r = await fn({ charId: 'bboy', name: S.name, song });
       S.coins += r.coins || 0; save(); home();
     };
