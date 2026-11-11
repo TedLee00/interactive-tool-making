@@ -342,5 +342,3 @@
 .mg-run .mg-mission b { display: inline; font-size: 15px; line-height: 1.25; }
 .mg-run .mg-mission em { font-size: 11px; line-height: 1.25; margin-top: 1px; }
 
-.encore-ask .city { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 2px; background: linear-gradient(90deg, #2B2350, #7B5CD6 55%, #FF8AD8); color: #fff; box-shadow: 0 4px 0 #1B1430; }
-.encore-ask .city small { font-family: 'Noto Sans KR', sans-serif; font-size: 11px; font-weight: 700; opacity: .9; }
