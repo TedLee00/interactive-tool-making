@@ -4,6 +4,7 @@ export { playCrane } from './crane.js';
 export { playKart } from './kart.js';
 export { playShoot } from './shoot.js';
 export { playDrum } from './drum.js';
+export { setNoPrize } from './engine.js';
 
 // 보드에서 만나는 순서: 사격장(10칸) → 청크런(20칸) → 크레인(30칸) → 카트(39칸)
 export const GAMES = {

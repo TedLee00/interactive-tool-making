@@ -4,7 +4,7 @@ import { BANK, config, draw, setLevel, getLevel } from '../quiz/bank.js';
 import { runCell, timeLimitFor } from '../quiz/cell.js';
 import { esc } from '../quiz/notation.js';
 import { setMuted, isMuted } from '../quiz/sound.js';
-import { playRun, playCrane, playKart, playShoot, playDrum, GAMES } from '../games/index.js';
+import { playRun, playCrane, playKart, playShoot, playDrum, GAMES, setNoPrize } from '../games/index.js';
 import { syncMute, unlockAudio } from '../fx/fx.js';
 import { runStudy } from '../study/study.js';
 import { setPlayer } from '../rank/rank.js';
@@ -19,6 +19,7 @@ const save = () => {
   try { localStorage.setItem(KEY, JSON.stringify(S)); } catch { /* 저장 불가 */ }
 };
 const used = new Set(S.used);
+setNoPrize(true); // 연습장 미니게임은 상품 없음
 setLevel(S.level || 'mid');
 
 const REGIONS = [

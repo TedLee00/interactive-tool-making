@@ -64,6 +64,10 @@ export function tag(g, text, x, y, { bg = '#fff', fg = '#2B2350', border = '#2B2
   return w;
 }
 
+/** 🎮 미니게임 도전 · 연습장: 상품(과자 쿠폰) 없이 점수 · 순위만 */
+let NO_PRIZE = false;
+export function setNoPrize(v) { NO_PRIZE = !!v; }
+
 /**
  * @param opt { id, title, subtitle, howto: string[], music, setup(ctx) → {update(dt), draw(g), result()} }
  * @returns Promise<{score, cleared, coins, snack, detail}>
@@ -207,6 +211,7 @@ export function openGame(opt) {
 
     function showResult(res) {
       const r = { score: 0, cleared: false, coins: 0, snack: null, lines: [], ...res };
+      if (NO_PRIZE) { r.snack = null; r.snacks = []; }
       const card = document.createElement('div');
       card.className = 'mg-intro';
       card.innerHTML = `<div class="mg-card result ${r.cleared ? 'win' : ''}">
@@ -214,7 +219,7 @@ export function openGame(opt) {
         <h2>${r.headline || (r.cleared ? '대성공!' : '아쉬워요!')}</h2>
         <div class="mg-score">${r.score}<small>점</small></div>
         ${r.lines.map((l) => `<p class="ln">${l}</p>`).join('')}
-        <div class="mg-reward"><span class="co">🪙 코인 <b>+${r.coins}</b></span>${(r.snacks?.length ? r.snacks : r.snack ? [r.snack] : []).map((k) => `<span class="sn"><img src="${snackURL(k)}" alt="">${SNACKS[k].short} 쿠폰!</span>`).join('')}</div>
+        <div class="mg-reward">${NO_PRIZE ? '<span class="co">🏆 순위 도전 · 상품 없음</span>' : `<span class="co">🪙 코인 <b>+${r.coins}</b></span>`}${(r.snacks?.length ? r.snacks : r.snack ? [r.snack] : []).map((k) => `<span class="sn"><img src="${snackURL(k)}" alt="">${SNACKS[k].short} 쿠폰!</span>`).join('')}</div>
         <div id="mgRank"><p class="rk-wait">🏆 명예의 전당 기록 중…</p></div>
         <button class="primary big" id="mgOk">계속 ▶</button></div>`;
       ov.appendChild(card);

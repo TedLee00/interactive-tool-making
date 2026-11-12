@@ -197,3 +197,25 @@ img.face { border-radius: 50%; background: radial-gradient(circle at 50% 35%, #F
 .career-box .cb-why { margin-top: 8px; background: rgba(255, 255, 255, .95); color: var(--plum); border-radius: 14px; padding: 8px 10px; }
 .career-box .cb-why > b { font-family: var(--cute); font-weight: 400; font-size: 16px; color: #E21E8C; }
 .career-box .cb-why ul { margin: 4px 0 0; padding-left: 4px; list-style: none; font-size: 13px; line-height: 1.55; }
+
+/* 🎮 미니게임 도전 (PASS 원정대원 보너스) */
+.challenge-btn { width: 100%; min-height: 58px; border-radius: 18px; font-size: 20px; padding: 6px 10px; display: flex; justify-content: center; flex-direction: column; align-items: center; gap: 2px; border: 0; color: #fff; background: linear-gradient(90deg, #E21E8C, #7B5CD6); box-shadow: 0 5px 0 #8A1557; font-family: 'Jua', sans-serif; }
+.challenge-btn small { font-family: 'Noto Sans KR', sans-serif; font-size: 12px; font-weight: 700; opacity: .92; }
+.panel.challenge { text-align: center; }
+.challenge .ch-kick { font-family: 'Jua', sans-serif; color: #E21E8C; font-size: 14px; letter-spacing: .5px; }
+.challenge h2 { margin: 2px 0 6px; }
+.challenge .ch-names { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-bottom: 6px; }
+.challenge .ch-names button { border: 2px solid #E2D7F5; background: #fff; border-radius: 999px; padding: 5px 12px; font-weight: 800; color: #6B5F8A; }
+.challenge .ch-names button.on { background: #7B5CD6; border-color: #7B5CD6; color: #fff; }
+.challenge .ch-me { margin: 4px 0 10px; font-size: 18px; line-height: 1.5; }
+.challenge .ch-me small { font-size: 12.5px; color: #6B5F8A; }
+.challenge .pbadge { display: inline-block; font-size: 11px; font-weight: 900; color: #fff; background: #1E9B5B; border-radius: 999px; padding: 2px 8px; margin-left: 4px; vertical-align: middle; }
+.challenge .ch-games { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+.challenge .ch-g { display: flex; flex-direction: column; align-items: center; gap: 2px; background: #fff; border: 3px solid #EADFF5; border-radius: 18px; padding: 10px 6px; color: #2B2350; }
+.challenge .ch-g:last-child { grid-column: 1 / -1; }
+.challenge .ch-g span { font-size: 34px; line-height: 1.1; }
+.challenge .ch-g b { font-family: 'Jua', sans-serif; font-weight: 400; font-size: 19px; }
+.challenge .ch-g small { font-size: 11.5px; color: #6B5F8A; line-height: 1.35; }
+.challenge .ch-g:active { transform: scale(.97); }
+.pass-box .unlock { display: block; margin-top: 6px; font-weight: 800; color: #E21E8C; }
+.pass-box .unlock.lock { color: #6B5F8A; }
