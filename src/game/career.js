@@ -34,7 +34,12 @@ export function levelOf(xp) {
 /** ✅ 이 난이도 PASS 표시 (한 번 PASS면 계속 남음) */
 export function markPass(name, level) {
   const all = loadAll(); const k = keyOf(name); const c = all[k]; if (!c) return;
-  (c.pass ||= {})[level] = true; all[k] = c; saveAll(all);
+  (c.pass ||= {})[level] = true; c.passAt = Date.now(); all[k] = c; saveAll(all);
+}
+/** 🎮 이 기기에서 PASS한 원정대원들 (미니게임 도전 해금) — 최근에 한 사람부터 */
+export function passedPlayers() {
+  return Object.values(loadAll()).filter((c) => c && c.pass && Object.values(c.pass).some(Boolean))
+    .sort((a, b) => (b.passAt || 0) - (a.passAt || 0));
 }
 /** 완주 뒤 보너스(아너스 · 보너스 게임)로 늘어난 점수만 누적에 더하기 (회차 수는 그대로) */
 export function addRunBonus(name, delta, total) {

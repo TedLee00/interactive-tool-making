@@ -7,14 +7,14 @@ import { createAvatar } from '../board/avatar.js';
 import { createDice } from '../board/dice.js';
 import { makeAnimal, animateAnimal, ANIMALS, ANIMAL_KINDS } from '../board/animals.js';
 import { draw, config, setLevel, BANK } from '../quiz/bank.js';
-import { getCareer, levelOf, finishRun, addRunBonus, markPass, CAREER_LEVELS } from './career.js';
+import { getCareer, levelOf, finishRun, addRunBonus, markPass, passedPlayers, CAREER_LEVELS } from './career.js';
 import { runCell, timeLimitFor } from '../quiz/cell.js';
 import { TYPES } from '../quiz/constants.js';
 import { esc } from '../quiz/notation.js';
 import { sfx, setMuted, isMuted } from '../quiz/sound.js';
 import { loadChar, fillFaces, charURL } from '../board/charart.js';
 import { bgm, callout, maWarning, teacherDance, finaleDance, snackCard, snackCode, SNACKS, syncMute, unlockAudio } from '../fx/fx.js';
-import { playRun, playCrane, playKart, playShoot, playDrum, GAMES } from '../games/index.js';
+import { playRun, playCrane, playKart, playShoot, playDrum, GAMES, setNoPrize } from '../games/index.js';
 import { runStudy, askStudy } from '../study/study.js';
 import { setPlayer, submitScore, getRanking, rankTableHTML } from '../rank/rank.js';
 import { reportQuiz, reportRun, reportSnack } from '../rank/report.js';
@@ -323,6 +323,8 @@ function title() {
   clearPets();
   const sv = loadSave();
   const can = sv && !sv.finished;
+  const passed = passedPlayers(); // 🎮 끝까지 해서 PASS한 원정대원만 「미니게임 도전」 해금
+  const teacher = isTeacher();
   screen(`<div class="title-screen">
     <div class="logo-card">
       <div class="ted-logo"><img class="face" data-face="ted" alt=""><div class="tl-t"><b>Ted</b><span>와 함께하는</span></div></div>
@@ -342,14 +344,45 @@ function title() {
       ${can ? `<button class="primary big" id="cont">이어하기 · ${esc(sv.name)} (${sv.pos}/${board.cells.length - 1}칸)</button>` : ''}
       <button class="${can ? 'ghost big' : 'primary big'}" id="new">${can ? '처음부터 새로 하기' : '시작하기 ▶'}</button>
       <button class="ghost big study-btn" id="study">📚 출발 전 개념 학습</button>
-      <div class="title-links"><a href="./quiz-lab.html">🧪 연습장 · 미니게임</a>${isTeacher() ? '<a href="./review.html">📋 문제 검수</a>' : ''}</div>
+      ${passed.length ? '<button class="big challenge-btn" id="chal">🎮 미니게임 도전<small>PASS 원정대원 보너스 · 내 이름으로 순위 도전!</small></button>' : ''}
+      ${teacher ? '<div class="title-links"><a href="./quiz-lab.html">🧪 연습장</a><a href="./review.html">📋 문제 검수</a></div>' : ''}
     </div></div>`);
   ui.querySelector('#study').onclick = async () => { unlockAudio(); await runStudy({ sfx }); };
+  if (passed.length) ui.querySelector('#chal').onclick = () => { unlockAudio(); challenge(passed[0].name); };
   ui.querySelector('#new').onclick = () => {
     if (can && !confirm('저장된 진행 상황이 지워져요. 새로 시작할까요?')) return;
     profile();
   };
   if (can) ui.querySelector('#cont').onclick = () => { S = sv; startBoard(false); };
+}
+
+/** 🎮 미니게임 도전 — 보드 게임을 끝까지 해서 PASS한 원정대원만. 미니게임을 바로 골라 하고, 점수는 그 이름으로 순위에 올라간다 (상품 없음) */
+function challenge(name) {
+  const passed = passedPlayers();
+  const me = passed.find((c) => c.name === name) || passed[0];
+  if (!me) return title();
+  const LV = { low: '하', mid: '중', high: '상' };
+  const badges = Object.keys(me.pass || {}).filter((k) => me.pass[k]).map((k) => `<span class="pbadge">PASS ${LV[k] || k}</span>`).join('');
+  screen(`<div class="panel-screen"><div class="panel card challenge">
+    <div class="ch-kick">BONUS · MINI GAME CHALLENGE</div>
+    <h2>🎮 미니게임 도전</h2>
+    ${passed.length > 1 ? `<div class="ch-names">${passed.map((c) => `<button class="${c.name === me.name ? 'on' : ''}" data-n="${esc(c.name)}">${esc(c.name)}</button>`).join('')}</div>` : ''}
+    <p class="ch-me"><b>${esc(me.name)}</b> ${badges}<br><small>점수는 <b>${esc(me.name)}</b> 이름으로 명예의 전당에 올라가요 · 상품은 없어요</small></p>
+    <div class="ch-games">${['shoot', 'run', 'crane', 'kart', 'drum'].map((k) => `<button class="ch-g" data-g="${k}"><span>${GAMES[k].icon}</span><b>${GAMES[k].title}</b><small>${GAMES[k].desc}</small></button>`).join('')}</div>
+    <button class="ghost big" id="chBack">◀ 처음 화면</button></div></div>`);
+  ui.querySelectorAll('.ch-names button').forEach((b) => { b.onclick = () => challenge(b.dataset.n); });
+  ui.querySelector('#chBack').onclick = () => title();
+  ui.querySelectorAll('.ch-g').forEach((b) => {
+    b.onclick = async () => {
+      unlockAudio(); syncMute();
+      setPlayer(me.name); setNoPrize(true);
+      const play = { run: playRun, crane: playCrane, kart: playKart, shoot: playShoot, drum: playDrum }[b.dataset.g];
+      const charId = me.lastChar || chars.players[0].id;
+      try { await play({ charId, name: me.name, song: 1 }); } finally { setNoPrize(false); }
+      bgm('title');
+      challenge(me.name);
+    };
+  });
 }
 
 function profile(name = '', grade = 'mid') {
@@ -985,8 +1018,8 @@ async function goal() {
         </ul></div></div>`;
   screen(`<div class="panel-screen goal"><div class="panel card">
     <div class="kicker">GOAL!</div><h2>문장의 성 도착!</h2>
-    ${isPass() ? `<div class="pass-box ok"><b>🎉 PASS!</b><span>정답률 <em>${acc}%</em> · 기준 ${passCut()}% (${{ low: '하', mid: '중', high: '상' }[S.level]})</span><small>이 난이도는 통과! 다시 안 해도 돼요 — 원하면 더 높은 난이도에 도전!</small></div>`
-    : `<div class="pass-box again"><b>💪 다시 도전해요!</b><span>정답률 <em>${acc}%</em> · PASS 기준 ${passCut()}% (${{ low: '하', mid: '중', high: '상' }[S.level]})</span><small>조금만 더! 한 번 더 하면 PASS 할 수 있어요</small></div>`}
+    ${isPass() ? `<div class="pass-box ok"><b>🎉 PASS!</b><span>정답률 <em>${acc}%</em> · 기준 ${passCut()}% (${{ low: '하', mid: '중', high: '상' }[S.level]})</span><small>이 난이도는 통과! 다시 안 해도 돼요 — 원하면 더 높은 난이도에 도전!</small><small class="unlock">🎮 <b>미니게임 도전</b> 해금! 처음 화면에서 내 이름으로 순위 도전!</small></div>`
+    : `<div class="pass-box again"><b>💪 다시 도전해요!</b><span>정답률 <em>${acc}%</em> · PASS 기준 ${passCut()}% (${{ low: '하', mid: '중', high: '상' }[S.level]})</span><small>조금만 더! 한 번 더 하면 PASS 할 수 있어요</small><small class="unlock lock">🔒 PASS하면 처음 화면에 <b>🎮 미니게임 도전</b>이 열려요</small></div>`}
     <p>${esc(player().lines.win)}</p>
     <div class="goal-stats"><div><b>${S.correct}</b><small>정답</small></div><div><b>${acc}%</b><small>정답률</small></div><div><b>🪙 ${S.coins}</b><small>코인</small></div><div><b>🎲 ${S.turns || 0}</b><small>턴</small></div></div>
     ${(S.pets || []).length ? `<div class="goal-pets"><small>끝까지 함께한 친구들</small><span>${S.pets.map((k) => `<i title="${ANIMALS[k].name}">${ANIMALS[k].emoji}</i>`).join('')}</span></div>` : ''}
