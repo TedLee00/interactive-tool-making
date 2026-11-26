@@ -16,6 +16,7 @@ const PADS = [
   { pos: '형용사', hand: 'R', col: '#E4801A', key: 'k', drum: 'tom' },
   { pos: '부사', hand: 'R', col: '#7A3FA8', key: 'l', drum: 'cymbal' },
 ];
+let WORDBANK = null; // 📚 레슨 모드: 떨어지는 단어 = 학습지 단어 { 명사: [{ en, ko }], … } (영어/한글 섞어서 · 치면 반대 말로)
 const CONJ = ['and', 'but', 'or', 'so', 'because', 'although', 'unless', 'if'];
 let BPM = 96;
 let BEAT = 60 / BPM;
@@ -126,6 +127,11 @@ function makeChart() {
   for (let k = out.length - 1; k >= 0; k--) { const n = out[k]; if (!n.dbl && (dblSteps.has(n.step - 1) || dblSteps.has(n.step + 1))) out.splice(k, 1); }
   const bags = {};
   out.forEach((n) => {
+    if (WORDBANK && WORDBANK[n.pos]?.length) {
+      if (!bags[n.pos]?.length) bags[n.pos] = shuffle(WORDBANK[n.pos].slice());
+      const it = bags[n.pos].pop(); const ko = Math.random() < 0.5;
+      n.word = ko ? it.ko : it.en; n.alt = ko ? it.en : it.ko; return;
+    }
     if (n.pos === '접속사') { n.word = pick(CONJ); return; }
     if (!bags[n.pos]?.length) bags[n.pos] = shuffle(data.pos[n.pos].slice());
     n.word = bags[n.pos].pop();
@@ -190,14 +196,16 @@ function encoreAsk(score) {
   });
 }
 /** 📚 레슨 모드 (정관중 L7·8 앱): 곡을 30% 길게 · 문법 퀴즈 4번(각 1분, 푸는 동안 연주 멈춤) · 정답이면 드럼 솔로 + 환호 */
-export function playDrumLesson({ song = 1, round = 1, rounds = 3, quizzes = [], quizSec = 60, prizeNote = '' } = {}) {
-  return playDrumSong({ song, ext: { round, rounds, quizzes, quizSec, prizeNote } });
+export function playDrumLesson({ song = 1, round = 1, rounds = 3, quizzes = [], quizSec = 60, prizeNote = '', words = null } = {}) {
+  return playDrumSong({ song, ext: { round, rounds, quizzes, quizSec, prizeNote, words } });
 }
 function playDrumSong({ song = 1, base = 0, ext = null } = {}) {
   let SONG = SONGS[song] || SONGS[1];
-  if (ext) { // 곡 길이 +30% · 단계(속도)도 같은 비율로 · 퀴즈 4번을 고르게
-    const bars = Math.round(SONG.bars * 1.3);
-    SONG = { ...SONG, bars, tiers: SONG.tiers.map((t) => Math.round(t * 1.3)), quizAt: [0.2, 0.4, 0.6, 0.8].map((f) => Math.round(bars * f)) };
+  WORDBANK = ext?.words || null;
+  if (ext) { // 곡 길이 +20% · 단계(속도)도 같은 비율로 · 퀴즈 5번을 고르게
+    const bars = Math.round(SONG.bars * 1.2);
+    const nq = ext.quizzes.length || 5;
+    SONG = { ...SONG, bars, tiers: SONG.tiers.map((t) => Math.round(t * 1.2)), quizAt: Array.from({ length: nq }, (_, k) => Math.round(bars * (0.14 + (0.7 * k) / Math.max(1, nq - 1)))) };
   }
   applySong(SONG);
   const isEncore = !ext && (song === 'encore' || song === 'rock' || song === 'kpop');
@@ -207,10 +215,11 @@ function playDrumSong({ song = 1, base = 0, ext = null } = {}) {
     rankId: ext ? false : undefined,
     rewardHTML: ext ? (r) => `<span class="co">📚 문법 <b>${r.qOk}/${r.qN}</b> 정답</span>` : undefined,
     title: ext ? `🥁 문법 드럼 ${ext.round}/${ext.rounds}` : isKpop ? '🎧 앵앵콜 K-POP' : isRock ? '🤘 앙코르 록' : isEncore ? '🎤 앙코르 드럼' : '🥁 품사 드럼',
-    subtitle: ext ? `${SONG.title.replace(/^\S+\s/, '')} · 연주하다가 문법 퀴즈 4번!` : isKpop ? '난이도 ★★★★★ · K-POP — 연주 4구간' : isRock ? '난이도 ★★★★ · 신나는 록 — 연주 4구간' : isEncore ? '난이도 ★★★★ · 통통 튀는 펑키 — 연주 4구간' : `${SONG.title} · 단어가 북에 닿을 때 쿵! 짝!`,
+    subtitle: ext ? `${SONG.title.replace(/^\S+\s/, '')} · 연주하다가 문법 퀴즈 5번!` : isKpop ? '난이도 ★★★★★ · K-POP — 연주 4구간' : isRock ? '난이도 ★★★★ · 신나는 록 — 연주 4구간' : isEncore ? '난이도 ★★★★ · 통통 튀는 펑키 — 연주 4구간' : `${SONG.title} · 단어가 북에 닿을 때 쿵! 짝!`,
     howto: ext ? [
       '<span class="hk r">🥁 북에 닿을 때</span> 그 품사 버튼을 <b>쿵!</b>',
-      '<span class="hk y">📚 문법 퀴즈 4번</span> to부정사 · 비인칭 it · 수여동사 · 시간 접속사',
+      '<span class="hk y">📚 문법 퀴즈 5번</span> to부정사 · 비인칭 it · 수여동사 · 시간 접속사',
+      '<span class="hk c">🔤 학습지 단어 노트</span> 영어 ↔ 한글 — 치면 뜻이 바뀌어요!',
       '<span class="hk p">⏱ 한 문제 1분</span> 푸는 동안 연주는 잠깐 멈춤 · 정답이면 <b>🥁 드럼 솔로 + 환호!</b>',
       ext.prizeNote ? `<span class="hk g">🏆 상품</span> ${ext.prizeNote}` : '',
     ].filter(Boolean) : [
@@ -439,7 +448,7 @@ function playDrumSong({ song = 1, base = 0, ext = null } = {}) {
         const pts = Math.round(({ PERFECT: 300, GREAT: 200, GOOD: 100 }[grade] + Math.min(20, S.combo) * 10) * mult);
         if (S.combo === 20 || S.combo === 50) { S.solo = 2.5; ctx.burst(ctx.W / 2, ctx.H * 0.35, 50, ['#FFD43B', '#E21E8C', '#5BE0FF', '#fff']); ctx.floatText(S.combo === 20 ? '🥁 드럼 솔로! 점수 ×1.5' : '🌟 슈퍼 솔로! 점수 ×2', ctx.W / 2, ctx.H * 0.3, '#FFD43B', 26); }
         S.score += pts;
-        S.fx.push({ txt: grade, col: grade === 'PERFECT' ? '#FFD43B' : grade === 'GREAT' ? '#8FE08A' : '#8FD8FF', life: 0.7, i });
+        S.fx.push({ txt: cand.alt || grade, col: grade === 'PERFECT' ? '#FFD43B' : grade === 'GREAT' ? '#8FE08A' : '#8FD8FF', life: cand.alt ? 1 : 0.7, i, word: !!cand.alt }); // 📚 레슨: 판정 대신 뜻(영↔한)이 뜸
         ctx.burst(colX[i](), hitY(i), grade === 'PERFECT' ? 22 : 12, [p.col, '#fff', '#FFD43B']);
         ctx.comboCallout(S.combo, `${S.combo} 콤보!`, { first: 20, second: 50, every: 50 }); // 드럼은 음표가 많아서 20 · 50 · 100 …
       }
@@ -479,12 +488,12 @@ function playDrumSong({ song = 1, base = 0, ext = null } = {}) {
         if (ext) { // 📚 레슨: 1분 동안 연주를 멈추고 문법 문제
           S.paused = true; S.pauseLast = clock();
           S.quiz = { ...Q, tEnd: clock() + ext.quizSec, hideBy: 0, dur: ext.quizSec, done: false }; S.qN++;
-          qLayer.innerHTML = `<div class="dq-card lesson"><div class="dq-t">📚 문법 QUIZ ${S.qN}/${QUIZ_AT.length} <span class="dq-tag">${Q.tag || ''}</span> <small>⏱ 1분 · 연주는 잠깐 멈춤 · 맞히면 🥁 드럼 솔로 + 환호!</small></div>
+          qLayer.innerHTML = `<div class="dq-card lesson"><div class="dq-t">📚 문법 QUIZ ${S.qN}/${QUIZ_AT.length} <span class="dq-tag">${Q.tag || ''}</span> <small>연주는 잠깐 멈춤 · 맞히면 🥁 드럼 솔로 + 환호!</small></div>
             <div class="dq-s">${Q.sentHTML}</div>
             <div class="dq-q">${Q.ask}</div>
             <div class="dq-o col">${Q.opts.map((o) => `<button data-p="${o.v}">${o.label}</button>`).join('')}</div>
             <div class="dq-x"></div>
-            <div class="dq-bar"><i></i></div></div>`;
+            <div class="dq-timer"><b class="dq-sec">${ext.quizSec}</b><div class="dq-bar"><i></i></div></div></div>`;
           qLayer.classList.add('on');
           qLayer.querySelectorAll('.dq-o button').forEach((bt) => { bt.onclick = () => answerQuiz(bt.dataset.p); });
           return;
@@ -671,7 +680,7 @@ function playDrumSong({ song = 1, base = 0, ext = null } = {}) {
           // 🎓 퀴즈 마디가 시작되면 퀴즈 카드
           { const bar = Math.floor(((now - t0) / STEP - 8) / 8);
             if (bar >= 0 && bar < BARS && isQuizStart(bar) && S.lastQ !== bar) { S.lastQ = bar; openQuiz(bar); }
-            if (S.quiz && !S.quiz.done) { const left = S.quiz.tEnd - now; const el = qLayer.querySelector('.dq-bar i'); if (el) el.style.width = `${Math.max(0, left / S.quiz.dur) * 100}%`; if (left <= 0) answerQuiz(null); } }
+            if (S.quiz && !S.quiz.done) { const left = S.quiz.tEnd - now; const el = qLayer.querySelector('.dq-bar i'); if (el) el.style.width = `${Math.max(0, left / S.quiz.dur) * 100}%`; const sec = qLayer.querySelector('.dq-sec'); if (sec) { sec.textContent = Math.max(0, Math.ceil(left)); sec.classList.toggle('low', left <= 10); } if (left <= 0) answerQuiz(null); } }
           ctx.hud(`${S.combo >= 50 ? '🌟콤보×2 · ' : S.combo >= 20 ? '🥁콤보×1.5 · ' : ''}${S.fever > 0 ? '🔥×2 · ' : ''}${S.shield ? `🛡${S.shield} · ` : ''}⚡S${(S.tier || 0) + 1} · 🎶Lv${S.lvl} · 🎵 <b>${notes.filter((n) => n.done).length}</b>/${total} · <b>${S.score}</b>${S.combo > 1 ? ` <i>🔥${S.combo}</i>` : ''}`);
           if (now > t0 + Math.max(lastStep + 6, 8 + BARS * 8 + 2) * STEP && (!S.jam || now > S.jam.t1 + 1.2)) finish(); // 마지막 퀴즈 타임까지 다 하고 끝
         },
@@ -738,11 +747,11 @@ function playDrumSong({ song = 1, base = 0, ext = null } = {}) {
               const i = PADS.findIndex((p) => p.pos === n.pos); const x = colX[i](); const yy = hitY(i); const y = yy - left * ((yy - 30) / F);
               g.globalAlpha = n.miss ? 0.3 : 1;
               g.font = "400 15px Jua, 'Noto Sans KR', sans-serif";
-              const w = Math.min(70, Math.max(54, g.measureText(n.word).width + 14));
+              const w = Math.min(WORDBANK ? 84 : 70, Math.max(54, g.measureText(n.word).width + 14));
               roundRect(g, x - w / 2, y - 15, w, 30, 15);
               g.fillStyle = S.fever > 0 ? '#FFF1B0' : '#FFFBF0'; g.fill(); g.lineWidth = S.fever > 0 ? 4 : 3; g.strokeStyle = S.fever > 0 ? '#F2A900' : PADS[i].col; g.stroke(); /* 피버 땐 금빛 단어 */
               g.fillStyle = '#2B2350'; g.textAlign = 'center'; g.textBaseline = 'middle';
-              g.font = `400 ${n.word.length > 8 ? 11 : 14}px Jua, 'Noto Sans KR', sans-serif`;
+              g.font = `400 ${n.word.length > 11 ? 10 : n.word.length > 8 ? 11 : 14}px Jua, 'Noto Sans KR', sans-serif`;
               g.fillText(n.word, x, y + 1);
               { // 🎵 음표 배지: 단어 왼쪽 위에 품사 색 음표 (8분음표 칸은 ♫, 정박은 ♪)
                 const bx = x - w / 2 + 4; const by = y - 14; const bob = Math.sin(now * 8 + n.step) * 1.5;
@@ -759,7 +768,7 @@ function playDrumSong({ song = 1, base = 0, ext = null } = {}) {
           drawSpeakers(g, W, H, S, pulse);
           drawKit(g, xs, ys, S, pulse);
           // 판정 글자
-          S.fx.forEach((f) => { g.globalAlpha = Math.min(1, f.life * 2); g.font = "400 19px Jua, 'Noto Sans KR', sans-serif"; g.textAlign = 'center'; g.lineWidth = 4; g.strokeStyle = '#120C2E'; const y = hitY(f.i) - 52 - (0.7 - f.life) * 40; g.strokeText(f.txt, colX[f.i](), y); g.fillStyle = f.col; g.fillText(f.txt, colX[f.i](), y); });
+          S.fx.forEach((f) => { g.globalAlpha = Math.min(1, f.life * 2); g.font = `400 ${f.word && f.txt.length > 7 ? 15 : 19}px Jua, 'Noto Sans KR', sans-serif`; g.textAlign = 'center'; g.lineWidth = 4; g.strokeStyle = '#120C2E'; const y = hitY(f.i) - 52 - (0.7 - f.life) * 40; g.strokeText(f.txt, colX[f.i](), y); g.fillStyle = f.col; g.fillText(f.txt, colX[f.i](), y); });
           g.globalAlpha = 1;
           drawDrummer(g, xs[2], H, xs, ys, S, pulse);
           void hy;

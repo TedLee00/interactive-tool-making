@@ -146,3 +146,69 @@ body.jg { background: linear-gradient(180deg, #FFF4E3 0%, #FFE7EC 55%, #E9F1FF 1
 .mg-freeze.lesson .kq-o .opt.wrong { background: #FFE8E8; border-color: #E0453A; }
 .mg-freeze.lesson .kq-full { display: block; margin-top: 4px; font-size: 14px; line-height: 1.5; }
 .mg-freeze.lesson .kq-full b { color: #C0322A; }
+
+/* ⏱ 남은 시간: 숫자 + 줄어드는 게이지 */
+.wtimer { display: flex; align-items: center; gap: 8px; margin-top: 10px; }
+.wtimer b { min-width: 40px; text-align: center; font-family: 'Jua', sans-serif; font-weight: 400; font-size: 24px; color: #2E7BC4; background: #EEF4FF; border-radius: 12px; padding: 0 6px; }
+.wtimer b.low { color: #fff; background: #E0453A; animation: jgPulse .5s infinite alternate; }
+.wbar { flex: 1; height: 12px; border-radius: 6px; background: #F1E6E1; overflow: hidden; }
+.wbar i { display: block; height: 100%; width: 100%; background: linear-gradient(90deg, #7AD7FF, #2E7BC4); transition: width .1s linear; }
+.wbar i.low { background: linear-gradient(90deg, #FF8F8F, #E0453A); }
+@keyframes jgPulse { to { transform: scale(1.12); } }
+.dq-timer, .fz-timer { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
+.dq-timer .dq-bar, .fz-timer .fz-bar { flex: 1; margin: 0; }
+.dq-sec, .fz-sec { min-width: 38px; text-align: center; font-family: 'Jua', sans-serif; font-weight: 400; font-size: 22px; color: #2E7BC4; background: #EEF4FF; border-radius: 10px; }
+.dq-sec.low, .fz-sec.low { color: #fff; background: #E0453A; animation: jgPulse .5s infinite alternate; }
+
+/* 🏆 PASS / NOT PASS */
+.res .stamp { display: inline-block; vertical-align: middle; font-family: 'Jua', sans-serif; font-size: 22px; padding: 2px 12px; border-radius: 10px; border: 4px solid; transform: rotate(-8deg); margin-left: 6px; animation: jgStamp .6s cubic-bezier(.2, 1.6, .4, 1) both .3s; }
+.res .stamp.ok { color: #1E9B5B; border-color: #1E9B5B; background: #E8FFF0; }
+.res .stamp.no { color: #E0453A; border-color: #E0453A; background: #FFF0EE; }
+@keyframes jgStamp { from { transform: rotate(-8deg) scale(3); opacity: 0; } }
+.res .acc { font-size: 16px; margin-bottom: 8px; } .res .acc b { color: #C0322A; font-size: 22px; } .res .acc small { color: #8A7A7A; }
+.pass-msg { background: linear-gradient(90deg, #B8F5C9, #FFE08A); border-radius: 16px; padding: 10px; font-family: 'Jua', sans-serif; font-size: 22px; color: #145A32; margin-bottom: 10px; }
+.retry-msg { background: #FFF0EE; border: 3px dashed #E0453A; border-radius: 16px; padding: 10px; font-family: 'Jua', sans-serif; font-size: 22px; color: #C0322A; margin-bottom: 10px; }
+.retry-msg small { display: block; font-family: 'Noto Sans KR', sans-serif; font-size: 13px; color: #6B4F4F; font-weight: 700; }
+.res .bd { grid-template-columns: repeat(4, 1fr); }
+
+/* 🙌 NOT PASS 애니메이션: 캐릭터들이 걸어 나와 응원 */
+.retry-show { position: fixed; inset: 0; z-index: 80; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; padding: 16px; background: linear-gradient(180deg, #6E8BC9 0%, #B9C8F0 60%, #FFE3D6 100%); animation: rsIn .4s ease-out; overflow: hidden; }
+@keyframes rsIn { from { opacity: 0; } }
+.rs-sky i { position: absolute; font-style: normal; font-size: 64px; opacity: .8; animation: rsCloud 9s linear infinite; }
+.rs-sky i:nth-child(1) { top: 8%; left: -20%; } .rs-sky i:nth-child(2) { top: 18%; left: -40%; animation-delay: -4s; font-size: 48px; }
+.rs-sky i:nth-child(3) { top: 4%; right: 6%; left: auto; animation: rsRain 3s ease-in-out infinite alternate; }
+@keyframes rsCloud { to { transform: translateX(160vw); } }
+@keyframes rsRain { to { transform: translateY(10px) scale(1.06); } }
+.rs-title { text-align: center; animation: rsDrop .7s cubic-bezier(.2, 1.5, .4, 1) both .2s; }
+.rs-title b { display: block; font-family: 'Jua', sans-serif; font-weight: 400; font-size: 54px; color: #fff; -webkit-text-stroke: 2px #7A1F1F; text-shadow: 0 5px 0 #7A1F1F; }
+.rs-title span { font-family: 'Jua', sans-serif; font-size: 30px; color: #FFD43B; text-shadow: 0 3px 0 #2B2350; }
+@keyframes rsDrop { from { transform: translateY(-120px); opacity: 0; } }
+.rs-crew { display: flex; align-items: flex-end; justify-content: center; gap: 2px; height: 200px; }
+.rs-c { position: relative; width: 70px; display: flex; flex-direction: column; align-items: center; animation: rsWalk 1s ease-out both, rsBob .6s ease-in-out infinite alternate; animation-delay: calc(var(--k) * .18s), calc(1s + var(--k) * .1s); }
+.rs-c img { height: 150px; }
+.rs-c:first-child img { height: 175px; }
+.rs-c em { position: absolute; top: -10px; white-space: nowrap; font-style: normal; font-family: 'Jua', sans-serif; font-size: 14px; background: #fff; color: #2B2350; border-radius: 10px; padding: 2px 8px; border: 2px solid #2B2350; animation: rsPop .4s both; animation-delay: calc(1.1s + var(--k) * .2s); }
+.rs-sign { position: absolute; top: -40px; white-space: nowrap; background: #FFD43B; border: 3px solid #7A1F1F; border-radius: 12px; padding: 4px 10px; font-family: 'Jua', sans-serif; font-size: 18px; color: #7A1F1F; box-shadow: 0 4px 0 #7A1F1F; animation: rsPop .5s both 1s, rsWave 1.2s ease-in-out infinite alternate 1.5s; }
+@keyframes rsWalk { from { transform: translateX(var(--from, 120vw)); } }
+.rs-c:nth-child(odd) { --from: -120vw; }
+@keyframes rsBob { to { transform: translateY(-8px) rotate(3deg); } }
+@keyframes rsPop { from { transform: scale(0); } }
+@keyframes rsWave { to { transform: rotate(-6deg); } }
+.rs-info { background: rgba(255, 255, 255, .92); border-radius: 16px; padding: 10px 14px; text-align: center; font-size: 16px; color: #2B2350; }
+.rs-info b { color: #C0322A; } .rs-info small { color: #6B4F4F; }
+.retry-show .primary { max-width: 360px; }
+
+/* 💬 대화문 사격장: 한글 문장 고정 + 아래에 영어 문장이 만들어짐 */
+.mg-mission.shoot-ban.dlg { left: 8px; right: 8px; top: 6px; transform: none; display: block; padding: 8px 10px; text-align: center; background: rgba(255, 251, 240, .97); border: 3px solid #FFD43B; border-radius: 16px; }
+.shoot-ban.dlg .dlg-top { display: flex; align-items: center; gap: 6px; font-size: 12px; }
+.shoot-ban.dlg .dlg-top small { background: #7A1F1F; color: #fff; border-radius: 999px; padding: 1px 8px; font-weight: 900; }
+.shoot-ban.dlg .dlg-who { color: #8A7A7A; font-weight: 700; }
+.shoot-ban.dlg .dlg-sec { margin-left: auto; font-style: normal; font-family: 'Jua', sans-serif; font-size: 20px; color: #2E7BC4; }
+.shoot-ban.dlg .dlg-sec.low { color: #E0453A; }
+.shoot-ban.dlg .dlg-ko { font-family: 'Jua', sans-serif; font-size: 20px; color: #2B2350; margin: 2px 0; }
+.shoot-ban.dlg .dlg-en { font-size: 16px; font-weight: 800; color: #8A7A7A; line-height: 1.5; min-height: 24px; }
+.shoot-ban.dlg .dlg-en b { color: #1E9B5B; } .shoot-ban.dlg .dlg-en i { font-style: normal; letter-spacing: -1px; }
+.shoot-ban.dlg .dlg-en.ok b { color: #1E9B5B; } .shoot-ban.dlg .dlg-en.miss s { text-decoration: none; color: #E0453A; }
+.shoot-ban.dlg .dlg-bar { height: 6px; border-radius: 3px; background: #EEE8F8; overflow: hidden; margin-top: 4px; }
+.shoot-ban.dlg .dlg-bar i { display: block; height: 100%; background: linear-gradient(90deg, #7AD7FF, #2E7BC4); }
+.mg-mission.shoot-ban.dlg { white-space: normal; }

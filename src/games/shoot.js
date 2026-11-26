@@ -16,13 +16,26 @@ const PAUSE = 2.4; // 라운드 사이: 화면 가운데 큰 경고판이 깜빡
 const SNACK_NAME = { choco: '초코파이', cake: '오예스', cookie: '쿠키앤크림' };
 const RING = ['#E0453A', '#fff', '#2E7BC4', '#fff', '#FFD43B'];
 
-export function playShoot() {
+/** 💬 대화문 사격장 (정관중 L7·8 앱): 위에 한글 문장 → 올라오는 영어 단어 과녁을 순서대로 쏴서 문장 완성 · 문장당 30초 */
+export function playShootDialog({ sentences = [], round = 1, rounds = 2, sec = 30, prizeNote = '' } = {}) {
+  return playShoot({ ext: { sentences, round, rounds, sec, prizeNote } });
+}
+const toks = (en) => en.split(/\s+/).map((w) => w.replace(/[.,!?]+$/g, '')).filter(Boolean);
+export function playShoot({ ext = null } = {}) {
   return openGame({
     id: 'shoot',
-    title: '🎯 품사 사격장',
-    subtitle: '지시된 품사 과녁만 탕!',
+    rankId: ext ? false : undefined,
+    rewardHTML: ext ? (r) => `<span class="co">💬 문장 <b>${r.qOk}/${r.qN}</b> 완성</span>` : undefined,
+    title: ext ? `💬 대화문 사격장 ${ext.round}/${ext.rounds}` : '🎯 품사 사격장',
+    subtitle: ext ? `한글 문장을 보고 영어 단어 과녁을 순서대로 탕! · ${ext.sentences.length}문장` : '지시된 품사 과녁만 탕!',
     music: 'mgArena',
-    howto: [
+    howto: ext ? [
+      '<span class="hk y">💬 위에 한글 문장</span> 영어 단어 과녁을 <b>문장 순서대로</b> 쏘기',
+      '<span class="hk g">✏️ 쏠 때마다</span> 한글 아래에 영어 문장이 만들어져요',
+      `<span class="hk r">⏱ 문장당 ${ext.sec}초</span> 순서가 틀린 과녁은 <b>-100 · -1초</b>`,
+      '<span class="hk p">👨‍🏫 Ted 쌤</span> 쏘면 <b>아야! -250</b>',
+      ext.prizeNote ? `<span class="hk b">🏆 상품</span> ${ext.prizeNote}` : '',
+    ].filter(Boolean) : [
       '<span class="hk y">🎯 위에 나온 품사</span> 과녁만 탭! <b>5라운드 × 25초</b>',
       '<span class="hk r">✘ 틀린 과녁</span> <b>-200점 · -1초</b>',
       '<span class="hk g">🍫 빠른 과자 과녁</span> 맞히면 <b>과자 획득</b> (틀리면 -300)',
@@ -38,7 +51,7 @@ export function playShoot() {
       const warn = document.createElement('div');
       warn.className = 'shoot-warn';
       ctx.layer.appendChild(warn);
-      const S = { ted: { t: 5, mode: null, ouch: 0 }, pops: [], snacks: [], snackT: 4, round: -1, t: 0, left: 0, targets: [], spawnT: 0, score: 0, hits: 0, wrong: 0, combo: 0, best: 0, holes: [], gun: 0, aim: { x: 180, y: 300 }, finished: false, flash: 0 };
+      const S = { ted: { t: 5, mode: null, ouch: 0 }, pops: [], snacks: [], snackT: 4, round: -1, t: 0, left: 0, targets: [], spawnT: 0, score: 0, hits: 0, wrong: 0, combo: 0, best: 0, holes: [], gun: 0, aim: { x: 180, y: 300 }, finished: false, flash: 0, qOk: 0 };
       const banner = document.createElement('div');
       banner.className = 'mg-mission shoot-ban';
       ctx.layer.appendChild(banner);
@@ -48,7 +61,27 @@ export function playShoot() {
         if (R.pool === 'pos') return { good: data.pos[R.target], bad: Object.entries(data.pos).filter(([k]) => k !== R.target).flatMap(([, v]) => v) };
         return { good: data.chunks[R.target], bad: Object.entries(data.chunks).filter(([k]) => k !== R.target).flatMap(([, v]) => v) };
       };
+      // 💬 대화문 모드: 문장 하나 = 한 라운드
+      function dlgBanner(state = '') {
+        const D = S.dlg; const T = D.tokens;
+        const built = T.slice(0, D.idx).map((w) => `<b>${w}</b>`).join(' ');
+        const rest = state === 'miss' ? T.slice(D.idx).map((w) => `<s>${w}</s>`).join(' ') : T.slice(D.idx).map(() => '<i>___</i>').join(' ');
+        banner.innerHTML = `<div class="dlg-top"><small>💬 ${S.round + 1}/${ext.sentences.length}</small><span class="dlg-who">${D.who || ''}</span><em class="dlg-sec ${S.left <= 8 ? 'low' : ''}">${Math.max(0, Math.ceil(S.left))}초</em></div>
+          <div class="dlg-ko">${D.ko}</div><div class="dlg-en ${state}">${built} ${rest}${D.idx >= T.length ? D.end : ''}</div><div class="dlg-bar"><i style="width:${Math.max(0, S.left / ext.sec) * 100}%"></i></div>`;
+      }
+      function nextSentence() {
+        S.round++;
+        if (S.round >= ext.sentences.length) return finish();
+        const Q = ext.sentences[S.round];
+        S.dlg = { ko: Q.ko, who: Q.who, tokens: toks(Q.en), end: (Q.en.match(/[.!?]$/) || [''])[0], extra: Q.x || [], idx: 0, done: false };
+        S.left = ext.sec; S.targets = []; S.spawnT = 0; S.pause = 1.4;
+        dlgBanner(); banner.classList.add('dlg');
+        warn.innerHTML = `<div class="sw-in"><small>💬 문장 ${S.round + 1}/${ext.sentences.length}</small><b>${Q.ko}</b><em>영어 단어를 순서대로 쏴요!</em></div>`;
+        warn.classList.remove('on'); void warn.offsetWidth; warn.classList.add('on');
+        ctx.sfx('reveal');
+      }
       function nextRound() {
+        if (ext) return nextSentence();
         S.round++;
         if (S.round >= ROUNDS.length) return finish();
         const R = ROUNDS[S.round];
@@ -63,15 +96,30 @@ export function playShoot() {
       }
 
       function spawn() {
-        const R = ROUNDS[S.round];
-        const W = words(R);
-        const good = Math.random() < 0.45;
-        const present = new Set(S.targets.map((t) => t.label));
-        const label = bagPick(`shoot${S.round}${good}`, good ? W.good : W.bad, (w) => present.has(w)); // 주머니 뽑기: 같은 단어 연달아 X
+        const R = ext ? { pool: 'pos' } : ROUNDS[S.round];
+        let label; let good = false;
+        const present = new Set(S.targets.filter((t) => t.alive).map((t) => t.label));
+        if (ext) { // 다음에 쏠 단어는 자주 · 뒤에 올 단어 · 헷갈리는 오답을 섞어서
+          const D = S.dlg; if (!D || D.done) return;
+          const next = D.tokens[D.idx];
+          const later = D.tokens.slice(D.idx + 1).filter((w) => w !== next && !present.has(w));
+          const extra = D.extra.filter((w) => !present.has(w));
+          const roll = Math.random();
+          if (!present.has(next) && (roll < 0.55 || !later.length)) label = next;
+          else if (roll < 0.75 && later.length) label = pick(later);
+          else if (extra.length) label = pick(extra);
+          else if (later.length) label = pick(later);
+          else if (!present.has(next)) label = next;
+          else return;
+        } else {
+          const W = words(R);
+          good = Math.random() < 0.45;
+          label = bagPick(`shoot${S.round}${good}`, good ? W.good : W.bad, (w) => present.has(w)); // 주머니 뽑기: 같은 단어 연달아 X
+        }
         const r = R.pool === 'chunks' ? 36 : 31;
         const ry = rows();
-        const lvl = Math.min(6, S.round * 1.5); // 라운드마다 조금씩 빨라짐
-        const sp = 60 + lvl * 12;
+        const lvl = ext ? 0 : Math.min(6, S.round * 1.5); // 라운드마다 조금씩 빨라짐
+        const sp = ext ? 48 : 60 + lvl * 12;
         // 줄마다 방향 고정(겹치지 않게) · 입구가 비어 있는 줄에만 등장
         const free = [0, 1, 2].filter((row) => {
           const dir = row % 2 ? -1 : 1;
@@ -91,7 +139,7 @@ export function playShoot() {
           if (pops.every((t) => Math.abs(t.x - c) > r * 2 + 16)) x = c;
         }
         if (x === null) return;
-        S.targets.push({ kind: 'pop', label, good, x, y: ctx.H * 0.8, base: ctx.H * 0.8, up: 0, life: 2.4 - lvl * 0.12, r, t: 0, alive: true });
+        S.targets.push({ kind: 'pop', label, good, x, y: ctx.H * 0.8, base: ctx.H * 0.8, up: 0, life: ext ? 3.4 : 2.4 - lvl * 0.12, r, t: 0, alive: true });
       }
 
       function shoot(p) {
@@ -114,6 +162,25 @@ export function playShoot() {
           return;
         }
         hit.alive = false;
+        if (ext) {
+          const D = S.dlg; if (!D || D.done) return;
+          if (hit.label === D.tokens[D.idx]) {
+            D.idx++; S.hits++; S.combo++; S.best = Math.max(S.best, S.combo);
+            const pts = 100 + Math.min(10, S.combo) * 10; S.score += pts;
+            ctx.burst(hit.x, hit.ty, 18, ['#FFD43B', '#fff', '#E0453A']); ctx.sfx('ok');
+            S.pops.push({ x: clamp(hit.x, 80, ctx.W - 80), y: hit.ty - 34, ok: true, big: `+${pts}`, sub: '', life: 0.9 });
+            if (D.idx >= D.tokens.length) { // ✅ 문장 완성!
+              D.done = true; S.qOk++; const bonus = 300 + Math.round(S.left) * 20; S.score += bonus;
+              dlgBanner('ok'); ctx.callout(S.qOk >= 3 ? 'legend' : 'wow', `문장 완성! +${bonus}`); ctx.burst(ctx.W / 2, ctx.H * 0.3, 60, ['#FFD43B', '#8FE08A', '#fff']);
+              S.targets = []; S.pause = 99; setTimeout(() => { if (!S.finished) nextSentence(); }, 1700);
+            } else dlgBanner();
+          } else {
+            S.wrong++; S.combo = 0; S.score -= 100; S.left = Math.max(0, S.left - 1);
+            ctx.shake(6); ctx.sfx('no');
+            S.pops.push({ x: clamp(hit.x, 80, ctx.W - 80), y: hit.ty - 34, ok: false, big: '✘ -100 · -1초', sub: D.tokens.slice(D.idx).includes(hit.label) ? '아직 순서가 아니에요!' : '문장에 없는 단어!', life: 1.1 });
+          }
+          return;
+        }
         if (hit.kind === 'snack') {
           if (hit.good) {
             S.hits++; S.combo++; S.best = Math.max(S.best, S.combo); S.score += 400; S.snacks.push(hit.snack);
@@ -152,6 +219,13 @@ export function playShoot() {
       function finish() {
         if (S.finished) return;
         S.finished = true;
+        if (ext) {
+          const n = ext.sentences.length;
+          ctx.end({ score: Math.max(0, S.score), cleared: S.qOk >= Math.ceil(n / 2), coins: 0, snack: null, qOk: S.qOk, qN: n,
+            headline: S.qOk === n ? '💬 대화문 명사수!' : S.qOk >= Math.ceil(n / 2) ? '💬 대화문 사격 성공!' : '조금만 더 정확하게!', legendAt: 4000,
+            lines: [`명중 <b>${S.hits}</b> · 잘못 쏜 과녁 ${S.wrong}`, `최고 콤보 <b>${S.best}</b>`] });
+          return;
+        }
         // 과자 과녁을 맞혔으면 그 과자, 아니면 55발 이상 명중 시 오예스
         // 맞힌 과자 과녁은 모두 상품 (초코파이 · 오예스 · 쿠키앤크림)
         const snacks = S.snacks.slice();
@@ -230,15 +304,21 @@ export function playShoot() {
         update(dt) {
           if (S.finished || S.round < 0) return;
           if (S.pause > 0) { S.pause -= dt; ctx.hud(`⏸ 준비! · 🎯 ${S.hits} · <b>${S.score}</b>`); return; }
+          if (ext && S.dlg) { const before = Math.ceil(S.left); if (Math.ceil(S.left - dt) !== before || S.left - dt <= 8) S.dlgTick = true; }
           ctx.input.taps.forEach(shoot);
           S.t += dt;
           S.left -= dt;
           S.gun = Math.max(0, S.gun - dt);
           S.flash = Math.max(0, S.flash - dt);
+          if (ext && S.left <= 0) { // ⏰ 시간 끝: 정답 문장을 보여 주고 다음 문장
+            const D = S.dlg; D.done = true; dlgBanner('miss'); ctx.floatText('⏰ TIME!', ctx.W / 2, ctx.H * 0.45, '#D9822B', 30); ctx.sfx('no');
+            S.targets = []; S.pause = 99; setTimeout(() => { if (!S.finished) nextSentence(); }, 2600); return;
+          }
+          if (ext && S.dlgTick) { S.dlgTick = false; dlgBanner(); }
           if (S.left <= 0) { ctx.floatText('TIME!', ctx.W / 2, ctx.H * 0.45, '#D9822B', 30); nextRound(); return; }
           // 🍫 과자 과녁: 가끔 아주 빠르게 지나간다 (정답이면 과자 획득, 오답이면 크게 감점)
           S.snackT -= dt;
-          if (S.snackT <= 0) {
+          if (!ext && S.snackT <= 0) {
             S.snackT = rand(11, 16); // 과자 과녁은 가끔만 (예전 6~9초마다)
             const R = ROUNDS[S.round]; const Wd = words(R);
             const good = Math.random() < 0.5;
@@ -269,7 +349,7 @@ export function playShoot() {
           S.pops.forEach((q) => { q.life -= dt; }); S.pops = S.pops.filter((q) => q.life > 0);
           S.spawnT -= dt;
           const alive = S.targets.filter((t) => t.alive).length;
-          if (S.spawnT <= 0 && alive < 6) { spawn(); S.spawnT = Math.max(0.45, 0.78 - S.round * 0.08); }
+          if (S.spawnT <= 0 && alive < (ext ? 7 : 6)) { spawn(); S.spawnT = ext ? 0.6 : Math.max(0.45, 0.78 - S.round * 0.08); }
           S.targets.forEach((t) => {
             t.t += dt;
             if (t.kind === 'snack') { t.x += t.vx * dt; t.ty = t.y + Math.sin(t.t * 7) * 16; /* 더 빠르고 작고, 위아래로 출렁 */ if (t.x < -70 || t.x > ctx.W + 70) t.alive = false; }
@@ -285,7 +365,7 @@ export function playShoot() {
           S.targets = S.targets.filter((t) => t.alive);
           S.holes.forEach((h) => { h.life -= dt; });
           S.holes = S.holes.filter((h) => h.life > 0);
-          ctx.hud(`⏱ <b>${Math.max(0, Math.ceil(S.left))}</b>초 · 🎯 ${S.hits} · <b>${S.score}</b>${S.combo > 1 ? ` <i>🔥${S.combo}</i>` : ''}`);
+          ctx.hud(ext ? `💬 ${S.round + 1}/${ext.sentences.length} · <b>${S.score}</b>${S.combo > 1 ? ` <i>🔥${S.combo}</i>` : ''}` : `⏱ <b>${Math.max(0, Math.ceil(S.left))}</b>초 · 🎯 ${S.hits} · <b>${S.score}</b>${S.combo > 1 ? ` <i>🔥${S.combo}</i>` : ''}`);
         },
         draw(g) {
           const { W, H } = ctx;

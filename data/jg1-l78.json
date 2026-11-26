@@ -1,117 +1,1199 @@
 {
-  "title": "정관중 1학년 2학기 기말 · Lesson 7·8",
-  "words": [
-    { "l": 7, "w": "be in charge of", "ko": "~을 담당하다", "p": "phr", "def": "to manage or take control of something or someone", "ex": "The coach ___ the team practice.", "a": "is in charge of" },
-    { "l": 7, "w": "calm", "ko": "진정시키다; 침착한", "p": "v", "def": "to make someone stop feeling upset, angry, or excited", "ex": "I listened to music to ___ myself." },
-    { "l": 7, "w": "capture", "ko": "(사진·영상에) 담다, 포착하다", "p": "v", "def": "to photograph, film, record, paint, etc. somebody or something", "ex": "He pressed the camera button to ___ the sunset." },
-    { "l": 7, "w": "chess", "ko": "체스", "p": "n", "def": "a game for two people on a square board, in which each person has 16 pieces that can be moved on the board in different ways", "ex": "Dad and I often play ___ after dinner." },
-    { "l": 7, "w": "delete", "ko": "삭제하다, 지우다", "p": "v", "def": "to remove something from a written or electronic text", "ex": "How can I ___ a post on social media?" },
-    { "l": 7, "w": "director", "ko": "감독", "p": "n", "def": "a person in charge of a film or play who tells the actors and staff what to do", "ex": "The ___ won an award at the film festival." },
-    { "l": 7, "w": "editor", "ko": "편집자", "p": "n", "def": "a person who makes changes to texts or films", "ex": "The ___ of the book checked grammar and spelling." },
-    { "l": 7, "w": "effect", "ko": "효과", "p": "n", "def": "lights, sounds, special scenery, computer images, etc. used in a play or film, especially in order to show things that do not normally exist or happen", "ex": "The sound ___s of the movie were amazing." },
-    { "l": 7, "w": "engineer", "ko": "기술자, 엔지니어", "p": "n", "def": "a person whose job is to repair or control machines, engines, or electrical equipment", "ex": "He wants to be a computer ___." },
-    { "l": 7, "w": "interview", "ko": "인터뷰, 면담", "p": "n", "def": "a meeting in which someone answers questions about himself or herself for a newspaper article, television show, etc.", "ex": "Did you hear the ___ with the actor on the radio?" },
-    { "l": 7, "w": "location", "ko": "장소, 위치", "p": "n", "def": "a particular place or position that something is in", "ex": "This map shows the ___ of the restaurant." },
-    { "l": 7, "w": "mall", "ko": "쇼핑몰", "p": "n", "def": "a building or group of buildings with connected hallways with shops, restaurants, theaters, etc.", "ex": "I went to the shopping ___ to buy a coat." },
-    { "l": 7, "w": "manager", "ko": "관리자, 매니저", "p": "n", "def": "a person in control of an office, shop, team, etc.", "ex": "The hotel ___ was always kind and smiling." },
-    { "l": 7, "w": "moment", "ko": "순간", "p": "n", "def": "a very short period of time", "ex": "Every ___ with my friends was happy." },
-    { "l": 7, "w": "photographer", "ko": "사진작가", "p": "n", "def": "a person who takes photographs, either as a job or hobby", "ex": "The ___ took lots of photos of the city." },
-    { "l": 7, "w": "photography", "ko": "사진(촬영)술", "p": "n", "def": "the skill or activity of taking photographs", "ex": "James is interested in ___, and he wants to buy an expensive camera." },
-    { "l": 7, "w": "record", "ko": "녹화하다, 녹음하다", "p": "v", "def": "to store music, sound, or pictures on tape or disks", "ex": "This camera will ___ the parking lot at night." },
-    { "l": 7, "w": "rice", "ko": "쌀, 밥", "p": "n", "def": "a white or brown grain that you boil in water until it becomes soft enough to eat", "ex": "Koreans eat ___ almost every day for meals." },
-    { "l": 7, "w": "shoot", "ko": "촬영하다", "p": "v", "def": "to use a camera to record a video or take a photograph", "ex": "I can ___ a movie on my phone." },
-    { "l": 7, "w": "signal", "ko": "신호", "p": "n", "def": "an action or thing that sends a message, often not using words", "ex": "A red light is a ___ of danger." },
-    { "l": 7, "w": "skill", "ko": "기술, 솜씨", "p": "n", "def": "an ability to do something very well because you have learned it", "ex": "This book will improve your writing ___s." },
-    { "l": 7, "w": "storytelling", "ko": "이야기하기", "p": "n", "def": "the activity of writing, telling, or reading stories", "ex": "The writer's ___ skills are great." },
-    { "l": 7, "w": "studio", "ko": "작업실, 스튜디오", "p": "n", "def": "a room with special equipment where television or radio programs or music recordings are made", "ex": "She painted most of her paintings in this ___." },
-    { "l": 7, "w": "take care of", "ko": "~을 돌보다", "p": "phr", "def": "to protect someone or something and provide the things that person or thing needs", "ex": "Her job is to ___ bears in the zoo." },
-    { "l": 7, "w": "wave", "ko": "파도", "p": "n", "def": "a part of the ocean that is going up and down as it moves along", "ex": "At the beach, many surfers are riding the large ___s." },
-    { "l": 7, "w": "wrangler", "ko": "(가축) 조련사, 카우보이", "p": "n", "def": "someone who controls and looks after animals, especially horses or cows on a large farm", "ex": "The ___ led the cows back to the farm." },
-    { "l": 7, "w": "catch a cold", "ko": "감기 걸리다", "p": "phr", "def": "to become sick with a cold", "ex": "Did you ___?" },
-    { "l": 7, "w": "in the future", "ko": "미래에", "p": "phr", "def": "at a time after now; from now on", "ex": "What do you want to be ___?" },
-
-    { "l": 8, "w": "asleep", "ko": "잠이 든, 자고 있는", "p": "a", "def": "sleeping", "ex": "Everyone is ___, and the whole house is quiet." },
-    { "l": 8, "w": "boring", "ko": "지루한", "p": "a", "def": "not interesting", "ex": "The party was ___, and I left early." },
-    { "l": 8, "w": "break into", "ko": "몰래 침입하다, 침입하다", "p": "phr", "def": "to enter a room or a building illegally or by force", "ex": "The man will ___ the store through the back door." },
-    { "l": 8, "w": "cottage", "ko": "오두막", "p": "n", "def": "a small house, usually in the country", "ex": "They spent the weekend in a ___ in the mountains." },
-    { "l": 8, "w": "follower", "ko": "추종자, 팬, 팔로워", "p": "n", "def": "someone who follows others on their social media", "ex": "The actor gained a lot of new ___s on his social media." },
-    { "l": 8, "w": "forever", "ko": "영원히", "p": "ad", "def": "for all of the time in the future", "ex": "They promised to be friends ___." },
-    { "l": 8, "w": "forgive", "ko": "용서하다", "p": "v", "def": "to stop being angry with someone who has done something wrong", "ex": "Josh will ___ his sister for stealing his pencil." },
-    { "l": 8, "w": "hole", "ko": "구멍", "p": "n", "def": "an empty space, especially where something is broken or torn", "ex": "There was a ___ in my sock." },
-    { "l": 8, "w": "in surprise", "ko": "놀라서", "p": "phr", "def": "causing a feeling of surprise", "ex": "She couldn't say a word ___." },
-    { "l": 8, "w": "knock", "ko": "(문을) 두드리다, 노크하다", "p": "v", "def": "to hit a door with your hand so that someone inside knows you are there", "ex": "Please ___ before you enter my room." },
-    { "l": 8, "w": "list", "ko": "열거하다; 목록", "p": "v", "def": "to mention things one after another", "ex": "Can you ___ your favorite desserts for me?" },
-    { "l": 8, "w": "noisy", "ko": "시끄러운", "p": "a", "def": "full of noise and sounds", "ex": "The classroom became ___ when the teacher stepped out." },
-    { "l": 8, "w": "permission", "ko": "허락, 허가", "p": "n", "def": "the act of allowing someone to do something", "ex": "You need ___ to use this photo." },
-    { "l": 8, "w": "personal", "ko": "개인적인", "p": "a", "def": "relating to a single or particular person", "ex": "The writer shared his ___ story in the book." },
-    { "l": 8, "w": "post", "ko": "게시하다; 게시물", "p": "v", "def": "to put information or pictures on a website", "ex": "After you finish your homework, ___ it on the school website." },
-    { "l": 8, "w": "press", "ko": "누르다", "p": "v", "def": "to push something with your finger", "ex": "___ the button to open the door." },
-    { "l": 8, "w": "review", "ko": "논평, 비평, 후기", "p": "n", "def": "a report in a newspaper, magazine, or program that gives an opinion about a new book, film, etc.", "ex": "She reads book ___s before she chooses a novel." },
-    { "l": 8, "w": "selfie", "ko": "셀피(셀카)", "p": "n", "def": "a photograph that you take of yourself, usually with a mobile phone", "ex": "He took a ___ with his phone." },
-    { "l": 8, "w": "shocking", "ko": "충격적인", "p": "a", "def": "very upsetting or surprising", "ex": "The ending of the movie was ___." },
-    { "l": 8, "w": "shout", "ko": "소리 지르다, 외치다", "p": "v", "def": "to say something very loudly", "ex": "We ___ed with joy when our team won a gold medal." },
-    { "l": 8, "w": "smart", "ko": "똑똑한, 영리한", "p": "a", "def": "clever and quick in thinking", "ex": "Amy is ___ and can solve difficult math problems." },
-    { "l": 8, "w": "social", "ko": "사회의, 사회적인", "p": "a", "def": "relating to the people in a society and the way they live", "ex": "Playing team sports is a ___ activity." },
-    { "l": 8, "w": "spicy", "ko": "매운, 양념 맛이 강한", "p": "a", "def": "containing strong flavors from spices", "ex": "I love eating ___ food like gimchi." },
-    { "l": 8, "w": "unique", "ko": "독특한, 특별한, 유일한", "p": "a", "def": "special and different from every other person or thing", "ex": "This handmade gift will be ___ and special." },
-    { "l": 8, "w": "upstairs", "ko": "위층으로, 위층에서", "p": "ad", "def": "on or going toward a higher floor of a building", "ex": "The bedrooms are ___ in this house." }
-  ],
-
-  "grammar": {
-    "to부정사": [
-      { "s": "A: Why did they go to the park?<br>B: They went there ______ soccer.", "q": "빈칸에 알맞은 것은?", "o": ["play", "plays", "to play", "played"], "a": 2, "x": "공원에 간 <b>목적</b>(~하기 위해) → to + 동사원형" },
-      { "s": "건강을 유지하기 위해 그녀는 매일 요가를 한다.", "q": "우리말을 영어로 바르게 옮긴 것은?", "o": ["She does yoga stay healthy every day.", "She stays healthy to do yoga every day.", "To stay healthy, she does yoga every day.", "She does yoga staying healthy every day."], "a": 2, "x": "목적의 to부정사가 문장 앞에 온 형태 — <b>To stay healthy</b>, ~" },
-      { "s": "I'm so glad ______ you.", "q": "빈칸에 알맞은 것은?", "o": ["meet", "to meet", "meeting", "met"], "a": 1, "x": "감정(glad) + to부정사 → <b>감정의 원인</b> '~해서'" },
-      { "s": "The question was difficult <u>to answer</u>.", "q": "밑줄 친 to answer의 의미는?", "o": ["대답하기 위해 (목적)", "대답해서 (감정의 원인)", "대답하기에 (형용사 수식)", "대답하게 되었다 (결과)"], "a": 2, "x": "형용사(difficult) 뒤 to부정사 → <b>'~하기에'</b>" },
-      { "s": "The boy grew up <u>to become</u> a great musician.", "q": "밑줄 친 to become의 의미는?", "o": ["되기 위해 (목적)", "되어서 (감정의 원인)", "되기에 (형용사 수식)", "자라서 ~가 되었다 (결과)"], "a": 3, "x": "grow up to ~ → <b>결과</b> '자라서 ~가 되었다'" },
-      { "s": "We left early ______ the bus.", "q": "빈칸에 알맞은 것은?", "o": ["catch", "caught", "to catch", "catching"], "a": 2, "x": "버스를 타기 <b>위해</b> → 목적의 to부정사" },
-      { "s": "The book is interesting <u>to read</u>.", "q": "밑줄 친 to read의 우리말 해석으로 알맞은 것은?", "o": ["읽기 위해", "읽기에", "읽어서", "읽게 되어"], "a": 1, "x": "형용사(interesting) 수식 → <b>'읽기에'</b> (읽기 위해 ×)" },
-      { "s": "I went to the library ______ a book.", "q": "어법상 알맞은 것은?", "o": ["for read", "to read", "reading", "read"], "a": 1, "x": "목적 = <b>to + 동사원형</b> (for read ×)" }
-    ],
-    "비인칭 주어 it": [
-      { "s": "· ______ is sunny today.<br>· ______ is almost 12 o'clock.", "q": "빈칸에 공통으로 알맞은 것은?", "o": ["It", "This", "That", "There"], "a": 0, "x": "날씨 · 시간 → <b>비인칭 주어 It</b>" },
-      { "s": "여기에서 바닷가까지 2km이다.", "q": "우리말과 같은 뜻의 문장은?", "o": ["This is 2km to the beach from here.", "It is 2km to the beach from here.", "There is 2km to the beach from here.", "That is 2km to the beach from here."], "a": 1, "x": "거리 → <b>비인칭 주어 It</b>" },
-      { "s": "What's the weather like today?", "q": "대답으로 알맞은 것은?", "o": ["That's windy.", "This is very hot.", "It's cold and windy.", "It has rain and snow."], "a": 2, "x": "날씨 대답은 <b>It</b>으로 시작" },
-      { "s": "밑줄 친 It의 쓰임이 나머지와 <b>다른</b> 하나는?", "q": "고르세요", "o": ["<u>It</u> has four legs.", "<u>It</u> is six in the morning.", "<u>It</u> was very hot last week.", "<u>It</u> is 5 kilometers from here."], "a": 0, "x": "① 다리 넷 달린 것을 <b>가리키는 대명사</b> / 나머지는 시간 · 날씨 · 거리 비인칭" },
-      { "s": "빈칸에 비인칭 주어 It을 쓸 수 있는 것은?", "q": "고르세요", "o": ["______ is my sister's hat.", "______ is under the table.", "______ is very dark outside.", "______ is an interesting game."], "a": 2, "x": "<b>명암</b>(어둡다) → 비인칭 It / 나머지는 대명사" },
-      { "s": "What day is it today?", "q": "대답으로 알맞은 것은?", "o": ["It is Wednesday.", "This is Wednesday.", "That is windy.", "There is Wednesday."], "a": 0, "x": "요일 → <b>It is</b> Wednesday." },
-      { "s": "<u>It</u> is raining heavily.", "q": "밑줄 친 It의 쓰임은?", "o": ["그것 (지시대명사)", "비인칭 주어 (날씨)", "가주어", "강조"], "a": 1, "x": "날씨를 나타내는 <b>비인칭 주어</b> — 해석하지 않아요" },
-      { "s": "A: Hurry up. ⓐ___ is getting dark.<br>B: Is ⓑ___ an express bus to the airport here?<br>A: Yes, there is.", "q": "ⓐ, ⓑ에 알맞은 말은?", "o": ["It – it", "It – there", "There – it", "There – there"], "a": 1, "x": "명암 → <b>It</b> / 'Yes, there is'로 답하니 ⓑ는 <b>there</b>" }
-    ],
-    "수여동사": [
-      { "s": "그는 우리에게 샌드위치를 만들어 주었다.", "q": "영어로 바르게 쓴 것은?", "o": ["He made sandwiches us.", "He made us sandwiches.", "He made we sandwiches.", "He made to us sandwiches."], "a": 1, "x": "4형식: 동사 + <b>간접목적어(us)</b> + 직접목적어(sandwiches)" },
-      { "s": "Mr. Kim teaches us math.<br>= Mr. Kim teaches math ______ us.", "q": "빈칸에 알맞은 전치사는?", "o": ["to", "for", "of", "with"], "a": 0, "x": "teach · give · send · show → <b>to</b> (상대에게 전달)" },
-      { "s": "Mom made a sandwich ______ me.", "q": "빈칸에 알맞은 전치사는?", "o": ["to", "for", "of", "at"], "a": 1, "x": "make · buy · cook · get → <b>for</b> (상대를 위해)" },
-      { "s": "He ______ his friend some flowers.", "q": "빈칸에 들어갈 수 <b>없는</b> 것은?", "o": ["sent", "gave", "bought", "saw"], "a": 3, "x": "saw는 수여동사가 아니라 목적어 2개를 못 가져요" },
-      { "s": "다음 중 어법상 <b>어색한</b> 문장은?", "q": "고르세요", "o": ["Can you lend me a pen?", "Who teaches them math?", "I'll send to my family a Christmas card.", "The police showed us the way."], "a": 2, "x": "send <b>my family a card</b> 또는 send a card <b>to my family</b>" },
-      { "s": "She showed (her new phone, me).", "q": "괄호 안 말을 바르게 배열한 것은?", "o": ["She showed her new phone me.", "She showed me her new phone.", "She showed me to her new phone.", "She showed to me her new phone."], "a": 1, "x": "4형식: <b>누구에게(me) + 무엇을(her new phone)</b>" },
-      { "s": "She bought her friend a book.<br>= She bought a book ______ her friend.", "q": "빈칸에 알맞은 전치사는?", "o": ["to", "for", "of", "in"], "a": 1, "x": "buy → <b>for</b> (친구를 위해 사 주다)" },
-      { "s": "다음 중 문장의 형식이 <b>다른</b> 하나는?", "q": "고르세요", "o": ["She lent me her jacket.", "I made my mom a cup of coffee.", "He sent his favorite singer an email.", "We bought a delicious cake for the party."], "a": 3, "x": "④는 3형식 (for the party = 수식어) / 나머지는 4형식" }
-    ],
-    "시간의 접속사": [
-      { "s": "I had breakfast, and then I started studying.<br>= ______ I had breakfast, I started studying.", "q": "빈칸에 알맞은 말은?", "o": ["Before", "After", "When", "Because"], "a": 1, "x": "아침을 먹은 <b>후에</b> 공부 → After" },
-      { "s": "When Amy ______, we will have dinner.", "q": "빈칸에 알맞은 것은?", "o": ["will arrive", "arrives", "arriving", "arrive"], "a": 1, "x": "시간의 부사절은 미래라도 <b>현재 시제</b> → arrives" },
-      { "s": "다음 중 의미가 <b>어색한</b> 문장은?", "q": "고르세요", "o": ["Let's go out after it stops raining.", "He loved chocolate when he was a child.", "Brush your teeth first before you wake up.", "When he heard the news, he was very excited."], "a": 2, "x": "잠에서 깨기 '전에' 양치 → 불가능! before → <b>after</b>" },
-      { "s": "· You should be careful ______ you cross the street.<br>· Did you call me ______ I was sleeping?", "q": "빈칸에 공통으로 알맞은 것은?", "o": ["and", "but", "or", "when"], "a": 3, "x": "'~할 때' → <b>when</b>" },
-      { "s": "After school ______ over, I'll go to the gym.", "q": "빈칸에 알맞은 것은?", "o": ["will be", "is", "was", "be"], "a": 1, "x": "시간의 부사절 → 미래 대신 <b>현재 시제 is</b>" },
-      { "s": "· She takes a nap ⓐ___ she's tired.<br>· ⓑ___ you leave, close all the windows.<br>· He got better ⓒ___ he took the medicine.", "q": "ⓐ~ⓒ에 알맞은 말은?", "o": ["before – After – after", "when – Before – after", "when – After – before", "after – Before – before"], "a": 1, "x": "피곤할 <b>때</b> 낮잠 / 떠나기 <b>전에</b> 창문 닫기 / 약을 먹은 <b>후</b> 나음" },
-      { "s": "밑줄 친 When의 쓰임이 나머지와 <b>다른</b> 하나는?", "q": "고르세요", "o": ["<u>When</u> did she first meet him?", "<u>When</u> will you be back home?", "<u>When</u> do you usually have dinner?", "<u>When</u> he opened the gift, he was surprised."], "a": 3, "x": "④ '~할 때' <b>접속사</b> / 나머지는 '언제' 의문사" },
-      { "s": "나는 양치질을 한 후에 TV를 볼 것이다.<br>I will watch TV after I ______ my teeth.", "q": "빈칸에 알맞은 것은?", "o": ["will brush", "brush", "brushed", "brushing"], "a": 1, "x": "시간의 부사절은 미래라도 <b>현재 시제</b> → brush" }
-    ]
+ "title": "정관중 1학년 2학기 기말 · Lesson 7·8",
+ "words": [
+  {
+   "l": 7,
+   "w": "be in charge of",
+   "ko": "~을 담당하다",
+   "p": "phr",
+   "def": "to manage or take control of something or someone",
+   "ex": "The coach ___ the team practice.",
+   "a": "is in charge of"
   },
-
-  "sentences": [
-    { "src": "L7 본문 · Anna", "ko": "나는 촬영 장소 관리자이고, 내 일은 촬영을 위한 완벽한 장소를 찾는 거야.", "html": "I'm a location manager, and my job is <u>①</u> perfect places <u>②</u>.", "blanks": 2, "o": ["to find – for shooting", "find – for shoot", "finding – to shooting", "to finding – for shot"], "a": 0, "full": "I'm a location manager, and my job is <b>to find</b> perfect places <b>for shooting</b>.", "tip": "to find = 명사적(보어) · for + 동명사(shooting)" },
-    { "src": "L7 본문 · Peter", "ko": "나는 이 영화의 촬영 감독인 Peter야. 나는 모든 카메라를 담당하고 있어.", "html": "I'm Peter, the director of <u>①</u> for this movie. I'm <u>②</u> all the cameras.", "blanks": 2, "o": ["photographer – in charge for", "photography – in charge of", "photography – take care of", "photographer – charge of"], "a": 1, "full": "I'm Peter, the director of <b>photography</b> for this movie. I'm <b>in charge of</b> all the cameras.", "tip": "director of photography = 촬영 감독 · be in charge of = ~을 담당하다" },
-    { "src": "L7 본문 · Peter", "ko": "그들의 행복한 순간을 포착하기 위해, 나는 드론을 사용할 거야.", "html": "<u>①</u> their happy moments, I'm <u>②</u> use drones.", "blanks": 2, "o": ["Capture – going", "Capturing – go to", "To capture – going to", "To capturing – going to"], "a": 2, "full": "<b>To capture</b> their happy moments, I'm <b>going to</b> use drones.", "tip": "To capture = 목적 '~하기 위해' · be going to + 동사원형" },
-    { "src": "L7 본문 · Jennifer", "ko": "나는 Max를 오랫동안 훈련시키고 돌봤어.", "html": "I <u>①</u> and <u>②</u> Max <u>③</u>.", "blanks": 3, "o": ["trained – took care of – for a long time", "trained – take care of – for long time", "train – took care – for a long time", "trained – took care for – a long time"], "a": 0, "full": "I <b>trained</b> and <b>took care of</b> Max <b>for a long time</b>.", "tip": "과거 시제를 나란히 (trained · took) · take care of = ~을 돌보다" },
-    { "src": "L7 본문 · Jennifer", "ko": "Max는 주변에 많은 사람들이 있을 때 가끔 매우 흥분해. 그래서 나는 그를 진정시키기 위해 수신호를 사용해.", "html": "Max sometimes gets too <u>①</u> <u>②</u> a lot of people are around. So, I use hand signals <u>③</u> him.", "blanks": 3, "o": ["exciting – when – calm", "excited – when – to calm", "excited – before – calming", "exciting – after – to calm"], "a": 1, "full": "Max sometimes gets too <b>excited</b> <b>when</b> a lot of people are around. So, I use hand signals <b>to calm</b> him.", "tip": "감정을 느끼면 -ed (excited) · when = ~할 때 · to calm = 진정시키기 위해" },
-    { "src": "L7 본문 · Emma", "ko": "내 일은 촬영이 끝난 후에 시작돼.", "html": "My work begins <u>①</u> the shooting <u>②</u>.", "blanks": 2, "o": ["before – will be over", "after – will be over", "after – is over", "when – was over"], "a": 2, "full": "My work begins <b>after</b> the shooting <b>is over</b>.", "tip": "시간의 부사절 → 미래 대신 현재 시제 (is over)" },
-    { "src": "L7 본문 · Emma", "ko": "더 좋은 이야기를 만들기 위해서, 나는 장면의 순서를 바꾸거나 장면 중 일부를 삭제할 수 있어.", "html": "<u>①</u> a better story, I can change the <u>②</u> of scenes or <u>③</u> some of them.", "blanks": 3, "o": ["To create – order – delete", "Create – order – deleting", "To create – location – capture", "Creating – order – to delete"], "a": 0, "full": "<b>To create</b> a better story, I can change the <b>order</b> of scenes or <b>delete</b> some of them.", "tip": "To create = 목적 · can + 동사원형 change / delete 나란히" },
-    { "src": "L7 본문 · Chris", "ko": "나는 현장에서 녹음하는 게 쉽지 않을 때 내 작업실에서 음향 효과를 만들어 내.", "html": "I create <u>①</u> in my studio <u>②</u> recording <u>③</u> is not easy.", "blanks": 3, "o": ["sound effect – before – in location", "sound effects – when – on location", "sound effects – after – on locate", "sounds effect – when – at location"], "a": 1, "full": "I create <b>sound effects</b> in my studio <b>when</b> recording <b>on location</b> is not easy.", "tip": "sound effects = 음향 효과 · on location = 현장에서" },
-    { "src": "L8 본문 · 좋아요가 필요해", "ko": "처음에 그녀는 일상적인 것들을 게시했지만, 사람들은 그녀에게 많은 좋아요를 주지 않았다.", "html": "At first, she <u>①</u> everyday things, but people didn't <u>②</u>.", "blanks": 2, "o": ["posted – give her many likes", "posted – give many likes her", "post – gave her many likes", "posting – give to her many likes"], "a": 0, "full": "At first, she <b>posted</b> everyday things, but people didn't <b>give her many likes</b>.", "tip": "수여동사 4형식: give + 간접목적어(her) + 직접목적어(many likes)" },
-    { "src": "L8 본문 · 좋아요가 필요해", "ko": "하지만 그녀의 팔로워들은 곧 지루해졌다. 그래서 그녀는 더 충격적인 사진들을 게시하기로 결심했다.", "html": "Her followers, <u>①</u>, soon got <u>②</u>. So, she decided <u>③</u> more shocking pictures.", "blanks": 3, "o": ["because – boring – posting", "however – bored – to post", "however – boring – to post", "but – bored – post"], "a": 1, "full": "Her followers, <b>however</b>, soon got <b>bored</b>. So, she decided <b>to post</b> more shocking pictures.", "tip": "however = 그러나 · 사람이 지루함을 느끼면 bored · decide + to부정사" },
-    { "src": "L8 본문 · 오두막에서", "ko": "날이 어두워지고 있었고, 비가 내리기 시작했다.", "html": "<u>①</u> was getting dark, and it started <u>②</u>.", "blanks": 2, "o": ["This – to rain", "There – raining", "It – to rain", "That – rain"], "a": 2, "full": "<b>It</b> was getting dark, and it started <b>to rain</b>.", "tip": "명암 · 날씨 → 비인칭 주어 It · start + to부정사(목적어)" },
-    { "src": "L8 본문 · 교훈", "ko": "이제부터 나는 게시 버튼을 누르기 전에 두 번 생각할 거야.", "html": "<u>①</u>, I'll think twice <u>②</u> I <u>③</u> POST.", "blanks": 3, "o": ["From now on – after – will press", "From now on – before – press", "In the future – before – will press", "Forever – when – pressed"], "a": 1, "full": "<b>From now on</b>, I'll think twice <b>before</b> I <b>press</b> POST.", "tip": "from now on = 지금부터 · 시간의 부사절은 현재 시제 (press)" }
+  {
+   "l": 7,
+   "w": "calm",
+   "ko": "진정시키다; 침착한",
+   "p": "v",
+   "def": "to make someone stop feeling upset, angry, or excited",
+   "ex": "I listened to music to ___ myself."
+  },
+  {
+   "l": 7,
+   "w": "capture",
+   "ko": "(사진·영상에) 담다, 포착하다",
+   "p": "v",
+   "def": "to photograph, film, record, paint, etc. somebody or something",
+   "ex": "He pressed the camera button to ___ the sunset."
+  },
+  {
+   "l": 7,
+   "w": "chess",
+   "ko": "체스",
+   "p": "n",
+   "def": "a game for two people on a square board, in which each person has 16 pieces that can be moved on the board in different ways",
+   "ex": "Dad and I often play ___ after dinner."
+  },
+  {
+   "l": 7,
+   "w": "delete",
+   "ko": "삭제하다, 지우다",
+   "p": "v",
+   "def": "to remove something from a written or electronic text",
+   "ex": "How can I ___ a post on social media?"
+  },
+  {
+   "l": 7,
+   "w": "director",
+   "ko": "감독",
+   "p": "n",
+   "def": "a person in charge of a film or play who tells the actors and staff what to do",
+   "ex": "The ___ won an award at the film festival."
+  },
+  {
+   "l": 7,
+   "w": "editor",
+   "ko": "편집자",
+   "p": "n",
+   "def": "a person who makes changes to texts or films",
+   "ex": "The ___ of the book checked grammar and spelling."
+  },
+  {
+   "l": 7,
+   "w": "effect",
+   "ko": "효과",
+   "p": "n",
+   "def": "lights, sounds, special scenery, computer images, etc. used in a play or film, especially in order to show things that do not normally exist or happen",
+   "ex": "The sound ___s of the movie were amazing."
+  },
+  {
+   "l": 7,
+   "w": "engineer",
+   "ko": "기술자, 엔지니어",
+   "p": "n",
+   "def": "a person whose job is to repair or control machines, engines, or electrical equipment",
+   "ex": "He wants to be a computer ___."
+  },
+  {
+   "l": 7,
+   "w": "interview",
+   "ko": "인터뷰, 면담",
+   "p": "n",
+   "def": "a meeting in which someone answers questions about himself or herself for a newspaper article, television show, etc.",
+   "ex": "Did you hear the ___ with the actor on the radio?"
+  },
+  {
+   "l": 7,
+   "w": "location",
+   "ko": "장소, 위치",
+   "p": "n",
+   "def": "a particular place or position that something is in",
+   "ex": "This map shows the ___ of the restaurant."
+  },
+  {
+   "l": 7,
+   "w": "mall",
+   "ko": "쇼핑몰",
+   "p": "n",
+   "def": "a building or group of buildings with connected hallways with shops, restaurants, theaters, etc.",
+   "ex": "I went to the shopping ___ to buy a coat."
+  },
+  {
+   "l": 7,
+   "w": "manager",
+   "ko": "관리자, 매니저",
+   "p": "n",
+   "def": "a person in control of an office, shop, team, etc.",
+   "ex": "The hotel ___ was always kind and smiling."
+  },
+  {
+   "l": 7,
+   "w": "moment",
+   "ko": "순간",
+   "p": "n",
+   "def": "a very short period of time",
+   "ex": "Every ___ with my friends was happy."
+  },
+  {
+   "l": 7,
+   "w": "photographer",
+   "ko": "사진작가",
+   "p": "n",
+   "def": "a person who takes photographs, either as a job or hobby",
+   "ex": "The ___ took lots of photos of the city."
+  },
+  {
+   "l": 7,
+   "w": "photography",
+   "ko": "사진(촬영)술",
+   "p": "n",
+   "def": "the skill or activity of taking photographs",
+   "ex": "James is interested in ___, and he wants to buy an expensive camera."
+  },
+  {
+   "l": 7,
+   "w": "record",
+   "ko": "녹화하다, 녹음하다",
+   "p": "v",
+   "def": "to store music, sound, or pictures on tape or disks",
+   "ex": "This camera will ___ the parking lot at night."
+  },
+  {
+   "l": 7,
+   "w": "rice",
+   "ko": "쌀, 밥",
+   "p": "n",
+   "def": "a white or brown grain that you boil in water until it becomes soft enough to eat",
+   "ex": "Koreans eat ___ almost every day for meals."
+  },
+  {
+   "l": 7,
+   "w": "shoot",
+   "ko": "촬영하다",
+   "p": "v",
+   "def": "to use a camera to record a video or take a photograph",
+   "ex": "I can ___ a movie on my phone."
+  },
+  {
+   "l": 7,
+   "w": "signal",
+   "ko": "신호",
+   "p": "n",
+   "def": "an action or thing that sends a message, often not using words",
+   "ex": "A red light is a ___ of danger."
+  },
+  {
+   "l": 7,
+   "w": "skill",
+   "ko": "기술, 솜씨",
+   "p": "n",
+   "def": "an ability to do something very well because you have learned it",
+   "ex": "This book will improve your writing ___s."
+  },
+  {
+   "l": 7,
+   "w": "storytelling",
+   "ko": "이야기하기",
+   "p": "n",
+   "def": "the activity of writing, telling, or reading stories",
+   "ex": "The writer's ___ skills are great."
+  },
+  {
+   "l": 7,
+   "w": "studio",
+   "ko": "작업실, 스튜디오",
+   "p": "n",
+   "def": "a room with special equipment where television or radio programs or music recordings are made",
+   "ex": "She painted most of her paintings in this ___."
+  },
+  {
+   "l": 7,
+   "w": "take care of",
+   "ko": "~을 돌보다",
+   "p": "phr",
+   "def": "to protect someone or something and provide the things that person or thing needs",
+   "ex": "Her job is to ___ bears in the zoo."
+  },
+  {
+   "l": 7,
+   "w": "wave",
+   "ko": "파도",
+   "p": "n",
+   "def": "a part of the ocean that is going up and down as it moves along",
+   "ex": "At the beach, many surfers are riding the large ___s."
+  },
+  {
+   "l": 7,
+   "w": "wrangler",
+   "ko": "(가축) 조련사, 카우보이",
+   "p": "n",
+   "def": "someone who controls and looks after animals, especially horses or cows on a large farm",
+   "ex": "The ___ led the cows back to the farm."
+  },
+  {
+   "l": 7,
+   "w": "catch a cold",
+   "ko": "감기 걸리다",
+   "p": "phr",
+   "def": "to become sick with a cold",
+   "ex": "Did you ___?"
+  },
+  {
+   "l": 7,
+   "w": "in the future",
+   "ko": "미래에",
+   "p": "phr",
+   "def": "at a time after now; from now on",
+   "ex": "What do you want to be ___?"
+  },
+  {
+   "l": 8,
+   "w": "asleep",
+   "ko": "잠이 든, 자고 있는",
+   "p": "a",
+   "def": "sleeping",
+   "ex": "Everyone is ___, and the whole house is quiet."
+  },
+  {
+   "l": 8,
+   "w": "boring",
+   "ko": "지루한",
+   "p": "a",
+   "def": "not interesting",
+   "ex": "The party was ___, and I left early."
+  },
+  {
+   "l": 8,
+   "w": "break into",
+   "ko": "몰래 침입하다, 침입하다",
+   "p": "phr",
+   "def": "to enter a room or a building illegally or by force",
+   "ex": "The man will ___ the store through the back door."
+  },
+  {
+   "l": 8,
+   "w": "cottage",
+   "ko": "오두막",
+   "p": "n",
+   "def": "a small house, usually in the country",
+   "ex": "They spent the weekend in a ___ in the mountains."
+  },
+  {
+   "l": 8,
+   "w": "follower",
+   "ko": "추종자, 팬, 팔로워",
+   "p": "n",
+   "def": "someone who follows others on their social media",
+   "ex": "The actor gained a lot of new ___s on his social media."
+  },
+  {
+   "l": 8,
+   "w": "forever",
+   "ko": "영원히",
+   "p": "ad",
+   "def": "for all of the time in the future",
+   "ex": "They promised to be friends ___."
+  },
+  {
+   "l": 8,
+   "w": "forgive",
+   "ko": "용서하다",
+   "p": "v",
+   "def": "to stop being angry with someone who has done something wrong",
+   "ex": "Josh will ___ his sister for stealing his pencil."
+  },
+  {
+   "l": 8,
+   "w": "hole",
+   "ko": "구멍",
+   "p": "n",
+   "def": "an empty space, especially where something is broken or torn",
+   "ex": "There was a ___ in my sock."
+  },
+  {
+   "l": 8,
+   "w": "in surprise",
+   "ko": "놀라서",
+   "p": "phr",
+   "def": "causing a feeling of surprise",
+   "ex": "She couldn't say a word ___."
+  },
+  {
+   "l": 8,
+   "w": "knock",
+   "ko": "(문을) 두드리다, 노크하다",
+   "p": "v",
+   "def": "to hit a door with your hand so that someone inside knows you are there",
+   "ex": "Please ___ before you enter my room."
+  },
+  {
+   "l": 8,
+   "w": "list",
+   "ko": "열거하다; 목록",
+   "p": "v",
+   "def": "to mention things one after another",
+   "ex": "Can you ___ your favorite desserts for me?"
+  },
+  {
+   "l": 8,
+   "w": "noisy",
+   "ko": "시끄러운",
+   "p": "a",
+   "def": "full of noise and sounds",
+   "ex": "The classroom became ___ when the teacher stepped out."
+  },
+  {
+   "l": 8,
+   "w": "permission",
+   "ko": "허락, 허가",
+   "p": "n",
+   "def": "the act of allowing someone to do something",
+   "ex": "You need ___ to use this photo."
+  },
+  {
+   "l": 8,
+   "w": "personal",
+   "ko": "개인적인",
+   "p": "a",
+   "def": "relating to a single or particular person",
+   "ex": "The writer shared his ___ story in the book."
+  },
+  {
+   "l": 8,
+   "w": "post",
+   "ko": "게시하다; 게시물",
+   "p": "v",
+   "def": "to put information or pictures on a website",
+   "ex": "After you finish your homework, ___ it on the school website."
+  },
+  {
+   "l": 8,
+   "w": "press",
+   "ko": "누르다",
+   "p": "v",
+   "def": "to push something with your finger",
+   "ex": "___ the button to open the door."
+  },
+  {
+   "l": 8,
+   "w": "review",
+   "ko": "논평, 비평, 후기",
+   "p": "n",
+   "def": "a report in a newspaper, magazine, or program that gives an opinion about a new book, film, etc.",
+   "ex": "She reads book ___s before she chooses a novel."
+  },
+  {
+   "l": 8,
+   "w": "selfie",
+   "ko": "셀피(셀카)",
+   "p": "n",
+   "def": "a photograph that you take of yourself, usually with a mobile phone",
+   "ex": "He took a ___ with his phone."
+  },
+  {
+   "l": 8,
+   "w": "shocking",
+   "ko": "충격적인",
+   "p": "a",
+   "def": "very upsetting or surprising",
+   "ex": "The ending of the movie was ___."
+  },
+  {
+   "l": 8,
+   "w": "shout",
+   "ko": "소리 지르다, 외치다",
+   "p": "v",
+   "def": "to say something very loudly",
+   "ex": "We ___ed with joy when our team won a gold medal."
+  },
+  {
+   "l": 8,
+   "w": "smart",
+   "ko": "똑똑한, 영리한",
+   "p": "a",
+   "def": "clever and quick in thinking",
+   "ex": "Amy is ___ and can solve difficult math problems."
+  },
+  {
+   "l": 8,
+   "w": "social",
+   "ko": "사회의, 사회적인",
+   "p": "a",
+   "def": "relating to the people in a society and the way they live",
+   "ex": "Playing team sports is a ___ activity."
+  },
+  {
+   "l": 8,
+   "w": "spicy",
+   "ko": "매운, 양념 맛이 강한",
+   "p": "a",
+   "def": "containing strong flavors from spices",
+   "ex": "I love eating ___ food like gimchi."
+  },
+  {
+   "l": 8,
+   "w": "unique",
+   "ko": "독특한, 특별한, 유일한",
+   "p": "a",
+   "def": "special and different from every other person or thing",
+   "ex": "This handmade gift will be ___ and special."
+  },
+  {
+   "l": 8,
+   "w": "upstairs",
+   "ko": "위층으로, 위층에서",
+   "p": "ad",
+   "def": "on or going toward a higher floor of a building",
+   "ex": "The bedrooms are ___ in this house."
+  }
+ ],
+ "grammar": {
+  "to부정사": [
+   {
+    "s": "A: Why did they go to the park?<br>B: They went there ______ soccer.",
+    "q": "빈칸에 알맞은 것은?",
+    "o": [
+     "play",
+     "plays",
+     "to play",
+     "played"
+    ],
+    "a": 2,
+    "x": "공원에 간 <b>목적</b>(~하기 위해) → to + 동사원형"
+   },
+   {
+    "s": "건강을 유지하기 위해 그녀는 매일 요가를 한다.",
+    "q": "우리말을 영어로 바르게 옮긴 것은?",
+    "o": [
+     "She does yoga stay healthy every day.",
+     "She stays healthy to do yoga every day.",
+     "To stay healthy, she does yoga every day.",
+     "She does yoga staying healthy every day."
+    ],
+    "a": 2,
+    "x": "목적의 to부정사가 문장 앞에 온 형태 — <b>To stay healthy</b>, ~"
+   },
+   {
+    "s": "The question was difficult <u>to answer</u>.",
+    "q": "밑줄 친 to answer의 의미는?",
+    "o": [
+     "대답하기 위해 (목적)",
+     "대답해서 (감정의 원인)",
+     "대답하기에 (형용사 수식)",
+     "대답하게 되었다 (결과)"
+    ],
+    "a": 2,
+    "x": "형용사(difficult) 뒤 to부정사 → <b>'~하기에'</b>"
+   },
+   {
+    "s": "The boy grew up <u>to become</u> a great musician.",
+    "q": "밑줄 친 to become의 의미는?",
+    "o": [
+     "되기 위해 (목적)",
+     "되어서 (감정의 원인)",
+     "되기에 (형용사 수식)",
+     "자라서 ~가 되었다 (결과)"
+    ],
+    "a": 3,
+    "x": "grow up to ~ → <b>결과</b> '자라서 ~가 되었다'"
+   },
+   {
+    "s": "The book is interesting <u>to read</u>.",
+    "q": "밑줄 친 to read의 우리말 해석으로 알맞은 것은?",
+    "o": [
+     "읽기 위해",
+     "읽기에",
+     "읽어서",
+     "읽게 되어"
+    ],
+    "a": 1,
+    "x": "형용사(interesting) 수식 → <b>'읽기에'</b> (읽기 위해 ×)"
+   },
+   {
+    "s": "&lt;보기&gt; What should I do <u>to improve</u> my English?",
+    "q": "밑줄 친 to부정사의 쓰임이 &lt;보기&gt;와 같은 것은?",
+    "o": [
+     "I stopped working <u>to have</u> lunch.",
+     "He doesn't like <u>to wake</u> up early.",
+     "What do you want <u>to do</u> after school?",
+     "She was very happy <u>to see</u> her friends."
+    ],
+    "a": 0,
+    "x": "&lt;보기&gt;·① <b>목적</b>(~하기 위해) / ②③ 명사적(목적어) / ④ 감정의 원인"
+   },
+   {
+    "s": "밑줄 친 부분의 쓰임이 같은 것끼리 짝지어진 것은?",
+    "q": "고르세요",
+    "o": [
+     "<u>To sleep</u> well is important. / He was glad <u>to join</u> the team.",
+     "I have something <u>to tell</u> you. / She hopes <u>to travel</u> the world.",
+     "We studied hard <u>to get</u> good grades. / My dream is <u>to help</u> children.",
+     "<u>To protect</u> herself, she wore a helmet. / They went to the park <u>to walk</u> their dog."
+    ],
+    "a": 3,
+    "x": "④ 둘 다 <b>목적</b>(부사적 용법) — 나머지는 쓰임이 서로 달라요"
+   },
+   {
+    "s": "<u>To find</u> some food, Tom opened the big refrigerator.",
+    "q": "밑줄 친 부분과 쓰임이 같은 것은?",
+    "o": [
+     "<u>To wake</u> up early was very difficult.",
+     "He wanted <u>to eat</u> a giant pizza.",
+     "He ran fast <u>to catch</u> the bus.",
+     "He needed <u>to go</u> to the supermarket."
+    ],
+    "a": 2,
+    "x": "To find = <b>목적</b> '찾기 위해' → ③ to catch / ①②④는 명사적(주어·목적어)"
+   },
+   {
+    "s": "So, she decided ______ more shocking pictures.",
+    "q": "빈칸에 알맞은 것은?",
+    "o": [
+     "post",
+     "posting",
+     "to post",
+     "posted"
+    ],
+    "a": 2,
+    "x": "decide는 <b>to부정사</b>를 목적어로 → decided to post (decided posting ×)"
+   }
+  ],
+  "비인칭 주어 it": [
+   {
+    "s": "여기에서 바닷가까지 2km이다.",
+    "q": "우리말과 같은 뜻의 문장은?",
+    "o": [
+     "This is 2km to the beach from here.",
+     "It is 2km to the beach from here.",
+     "There is 2km to the beach from here.",
+     "That is 2km to the beach from here."
+    ],
+    "a": 1,
+    "x": "거리 → <b>비인칭 주어 It</b>"
+   },
+   {
+    "s": "What's the weather like today?",
+    "q": "대답으로 알맞은 것은?",
+    "o": [
+     "That's windy.",
+     "This is very hot.",
+     "It's cold and windy.",
+     "It has rain and snow."
+    ],
+    "a": 2,
+    "x": "날씨 대답은 <b>It</b>으로 시작"
+   },
+   {
+    "s": "밑줄 친 It의 쓰임이 나머지와 <b>다른</b> 하나는?",
+    "q": "고르세요",
+    "o": [
+     "<u>It</u> has four legs.",
+     "<u>It</u> is six in the morning.",
+     "<u>It</u> was very hot last week.",
+     "<u>It</u> is 5 kilometers from here."
+    ],
+    "a": 0,
+    "x": "① 다리 넷 달린 것을 <b>가리키는 대명사</b> / 나머지는 시간 · 날씨 · 거리 비인칭"
+   },
+   {
+    "s": "빈칸에 비인칭 주어 It을 쓸 수 있는 것은?",
+    "q": "고르세요",
+    "o": [
+     "______ is my sister's hat.",
+     "______ is under the table.",
+     "______ is very dark outside.",
+     "______ is an interesting game."
+    ],
+    "a": 2,
+    "x": "<b>명암</b>(어둡다) → 비인칭 It / 나머지는 대명사"
+   },
+   {
+    "s": "<u>It</u> is raining heavily.",
+    "q": "밑줄 친 It의 쓰임은?",
+    "o": [
+     "그것 (지시대명사)",
+     "비인칭 주어 (날씨)",
+     "가주어",
+     "강조"
+    ],
+    "a": 1,
+    "x": "날씨를 나타내는 <b>비인칭 주어</b> — 해석하지 않아요"
+   },
+   {
+    "s": "A: Hurry up. ⓐ___ is getting dark.<br>B: Is ⓑ___ an express bus to the airport here?<br>A: Yes, there is.",
+    "q": "ⓐ, ⓑ에 알맞은 말은?",
+    "o": [
+     "It – it",
+     "It – there",
+     "There – it",
+     "There – there"
+    ],
+    "a": 1,
+    "x": "명암 → <b>It</b> / 'Yes, there is'로 답하니 ⓑ는 <b>there</b>"
+   },
+   {
+    "s": "밑줄 친 It(it)의 쓰임이 나머지와 <b>다른</b> 것은?",
+    "q": "고르세요",
+    "o": [
+     "<u>It</u>'s winter now in New Zealand.",
+     "How far is <u>it</u> from your school to the zoo?",
+     "<u>It</u>'s very bright in the room.",
+     "I have a puppy, and <u>it</u>'s 3 months old."
+    ],
+    "a": 3,
+    "x": "④ a puppy를 <b>가리키는 대명사</b> / 나머지는 계절 · 거리 · 명암 비인칭"
+   },
+   {
+    "s": "①<u>It</u> often rains in summer. The umbrella is perfect for rainy days. ②<u>It</u> is very useful. ③<u>It</u> is mine. ④<u>It</u>'s a present from my grandma.",
+    "q": "밑줄 친 It 중 쓰임이 <b>다른</b> 하나는?",
+    "o": [
+     "① It (often rains)",
+     "② It (is very useful)",
+     "③ It (is mine)",
+     "④ It('s a present)"
+    ],
+    "a": 0,
+    "x": "① 날씨 → <b>비인칭</b> / ②~④ 모두 the umbrella를 가리키는 대명사"
+   }
+  ],
+  "수여동사": [
+   {
+    "s": "그는 우리에게 샌드위치를 만들어 주었다.",
+    "q": "영어로 바르게 쓴 것은?",
+    "o": [
+     "He made sandwiches us.",
+     "He made us sandwiches.",
+     "He made we sandwiches.",
+     "He made to us sandwiches."
+    ],
+    "a": 1,
+    "x": "4형식: 동사 + <b>간접목적어(us)</b> + 직접목적어(sandwiches)"
+   },
+   {
+    "s": "He ______ his friend some flowers.",
+    "q": "빈칸에 들어갈 수 <b>없는</b> 것은?",
+    "o": [
+     "sent",
+     "gave",
+     "bought",
+     "saw"
+    ],
+    "a": 3,
+    "x": "saw는 수여동사가 아니라 목적어 2개를 못 가져요"
+   },
+   {
+    "s": "다음 중 어법상 <b>어색한</b> 문장은?",
+    "q": "고르세요",
+    "o": [
+     "Can you lend me a pen?",
+     "Who teaches them math?",
+     "I'll send to my family a Christmas card.",
+     "The police showed us the way."
+    ],
+    "a": 2,
+    "x": "send <b>my family a card</b> 또는 send a card <b>to my family</b>"
+   },
+   {
+    "s": "She showed (her new phone, me).",
+    "q": "괄호 안 말을 바르게 배열한 것은?",
+    "o": [
+     "She showed her new phone me.",
+     "She showed me her new phone.",
+     "She showed me to her new phone.",
+     "She showed to me her new phone."
+    ],
+    "a": 1,
+    "x": "4형식: <b>누구에게(me) + 무엇을(her new phone)</b>"
+   },
+   {
+    "s": "She bought her friend a book.<br>= She bought a book ______ her friend.",
+    "q": "빈칸에 알맞은 전치사는?",
+    "o": [
+     "to",
+     "for",
+     "of",
+     "in"
+    ],
+    "a": 1,
+    "x": "buy → <b>for</b> (친구를 위해 사 주다)"
+   },
+   {
+    "s": "다음 중 문장의 형식이 <b>다른</b> 하나는?",
+    "q": "고르세요",
+    "o": [
+     "She lent me her jacket.",
+     "I made my mom a cup of coffee.",
+     "He sent his favorite singer an email.",
+     "We bought a delicious cake for the party."
+    ],
+    "a": 3,
+    "x": "④는 3형식 (for the party = 수식어) / 나머지는 4형식"
+   },
+   {
+    "s": "· Bill sent a letter by me.<br>· Do you teach the students English?<br>· Who bought the book him?<br>· Could you give Mary a call?<br>· Grandma always tells funny stories us.",
+    "q": "어법상 옳은 문장의 개수는?",
+    "o": [
+     "1개",
+     "2개",
+     "3개",
+     "4개"
+    ],
+    "a": 1,
+    "x": "옳은 것: teach the students English / give Mary a call → <b>2개</b><br>sent a letter <b>to</b> me · bought <b>him the book</b> · tells <b>us funny stories</b>"
+   },
+   {
+    "s": "다음 중 어법상 <b>틀린</b> 것은?",
+    "q": "고르세요",
+    "o": [
+     "She didn't send Mike an invitation card.",
+     "Did he buy a new doll his daughter?",
+     "Mr. Kim bought us ice cream.",
+     "I showed my report card to Mom."
+    ],
+    "a": 1,
+    "x": "buy <b>his daughter a new doll</b> 또는 buy a new doll <b>for</b> his daughter"
+   },
+   {
+    "s": "밑줄 친 동사를 괄호 안의 말로 바꿀 때 어법상 <b>어색한</b> 것은?",
+    "q": "고르세요",
+    "o": [
+     "Will you <u>cook</u> me pancakes? (make)",
+     "I <u>lent</u> my friend some money. (gave)",
+     "He <u>brought</u> his parents cookies. (sent)",
+     "The teacher <u>told</u> us an interesting story. (heard)"
+    ],
+    "a": 3,
+    "x": "hear는 <b>수여동사가 아니라</b> 목적어 2개를 못 가져요"
+   },
+   {
+    "s": "They showed me his pictures.",
+    "q": "3형식으로 바르게 바꾼 것은?",
+    "o": [
+     "They showed his pictures me.",
+     "They showed his pictures to me.",
+     "They showed his pictures for me.",
+     "They showed to me his pictures."
+    ],
+    "a": 1,
+    "x": "show → 3형식에서 <b>to</b> + 간접목적어"
+   }
+  ],
+  "시간의 접속사": [
+   {
+    "s": "When Amy ______, we will have dinner.",
+    "q": "빈칸에 알맞은 것은?",
+    "o": [
+     "will arrive",
+     "arrives",
+     "arriving",
+     "arrive"
+    ],
+    "a": 1,
+    "x": "시간의 부사절은 미래라도 <b>현재 시제</b> → arrives"
+   },
+   {
+    "s": "다음 중 의미가 <b>어색한</b> 문장은?",
+    "q": "고르세요",
+    "o": [
+     "Let's go out after it stops raining.",
+     "He loved chocolate when he was a child.",
+     "Brush your teeth first before you wake up.",
+     "When he heard the news, he was very excited."
+    ],
+    "a": 2,
+    "x": "잠에서 깨기 '전에' 양치 → 불가능! before → <b>after</b>"
+   },
+   {
+    "s": "After school ______ over, I'll go to the gym.",
+    "q": "빈칸에 알맞은 것은?",
+    "o": [
+     "will be",
+     "is",
+     "was",
+     "be"
+    ],
+    "a": 1,
+    "x": "시간의 부사절 → 미래 대신 <b>현재 시제 is</b>"
+   },
+   {
+    "s": "· She takes a nap ⓐ___ she's tired.<br>· ⓑ___ you leave, close all the windows.<br>· He got better ⓒ___ he took the medicine.",
+    "q": "ⓐ~ⓒ에 알맞은 말은?",
+    "o": [
+     "before – After – after",
+     "when – Before – after",
+     "when – After – before",
+     "after – Before – before"
+    ],
+    "a": 1,
+    "x": "피곤할 <b>때</b> 낮잠 / 떠나기 <b>전에</b> 창문 닫기 / 약을 먹은 <b>후</b> 나음"
+   },
+   {
+    "s": "밑줄 친 When의 쓰임이 나머지와 <b>다른</b> 하나는?",
+    "q": "고르세요",
+    "o": [
+     "<u>When</u> did she first meet him?",
+     "<u>When</u> will you be back home?",
+     "<u>When</u> do you usually have dinner?",
+     "<u>When</u> he opened the gift, he was surprised."
+    ],
+    "a": 3,
+    "x": "④ '~할 때' <b>접속사</b> / 나머지는 '언제' 의문사"
+   },
+   {
+    "s": "나는 양치질을 한 후에 TV를 볼 것이다.<br>I will watch TV after I ______ my teeth.",
+    "q": "빈칸에 알맞은 것은?",
+    "o": [
+     "will brush",
+     "brush",
+     "brushed",
+     "brushing"
+    ],
+    "a": 1,
+    "x": "시간의 부사절은 미래라도 <b>현재 시제</b> → brush"
+   },
+   {
+    "s": "①School starts at eight every morning. ②Before I go to class, I prepare my books. ③After school ends, I will join the sports club. ④Before I will go home, I will check my homework.",
+    "q": "①~④ 중 어법상 <b>어색한</b> 것은?",
+    "o": [
+     "①",
+     "②",
+     "③",
+     "④"
+    ],
+    "a": 3,
+    "x": "시간의 부사절은 미래라도 <b>현재 시제</b> → Before I <b>go</b> home"
+   },
+   {
+    "s": "민호의 저녁: 6시 저녁 식사 → 8시 숙제 → 10시 취침",
+    "q": "내용과 일치하는 문장은?",
+    "o": [
+     "Minho had dinner after he did his homework.",
+     "Minho went to bed before he did his homework.",
+     "Minho did his homework after he had dinner.",
+     "Minho had dinner when he went to bed."
+    ],
+    "a": 2,
+    "x": "저녁(6시)을 먹은 <b>후에</b> 숙제(8시) → did his homework <b>after</b> he had dinner"
+   }
   ]
+ },
+ "sentences": [
+  {
+   "src": "L7 본문 · Anna",
+   "ko": "나는 촬영 장소 관리자이고, 내 일은 촬영을 위한 완벽한 장소를 찾는 거야.",
+   "html": "I'm a location manager, and my job is <u>①</u> perfect places <u>②</u>.",
+   "blanks": 2,
+   "o": [
+    "to find – for shooting",
+    "find – for shoot",
+    "finding – to shooting",
+    "to finding – for shot"
+   ],
+   "a": 0,
+   "full": "I'm a location manager, and my job is <b>to find</b> perfect places <b>for shooting</b>.",
+   "tip": "to find = 명사적(보어) · for + 동명사(shooting)"
+  },
+  {
+   "src": "L7 본문 · Peter",
+   "ko": "나는 이 영화의 촬영 감독인 Peter야. 나는 모든 카메라를 담당하고 있어.",
+   "html": "I'm Peter, the director of <u>①</u> for this movie. I'm <u>②</u> all the cameras.",
+   "blanks": 2,
+   "o": [
+    "photographer – in charge for",
+    "photography – in charge of",
+    "photography – take care of",
+    "photographer – charge of"
+   ],
+   "a": 1,
+   "full": "I'm Peter, the director of <b>photography</b> for this movie. I'm <b>in charge of</b> all the cameras.",
+   "tip": "director of photography = 촬영 감독 · be in charge of = ~을 담당하다"
+  },
+  {
+   "src": "L7 본문 · Peter",
+   "ko": "그들의 행복한 순간을 포착하기 위해, 나는 드론을 사용할 거야.",
+   "html": "<u>①</u> their happy moments, I'm <u>②</u> use drones.",
+   "blanks": 2,
+   "o": [
+    "Capture – going",
+    "Capturing – go to",
+    "To capture – going to",
+    "To capturing – going to"
+   ],
+   "a": 2,
+   "full": "<b>To capture</b> their happy moments, I'm <b>going to</b> use drones.",
+   "tip": "To capture = 목적 '~하기 위해' · be going to + 동사원형"
+  },
+  {
+   "src": "L7 본문 · Jennifer",
+   "ko": "나는 Max를 오랫동안 훈련시키고 돌봤어.",
+   "html": "I <u>①</u> and <u>②</u> Max <u>③</u>.",
+   "blanks": 3,
+   "o": [
+    "trained – took care of – for a long time",
+    "trained – take care of – for long time",
+    "train – took care – for a long time",
+    "trained – took care for – a long time"
+   ],
+   "a": 0,
+   "full": "I <b>trained</b> and <b>took care of</b> Max <b>for a long time</b>.",
+   "tip": "과거 시제를 나란히 (trained · took) · take care of = ~을 돌보다"
+  },
+  {
+   "src": "L7 본문 · Jennifer",
+   "ko": "Max는 주변에 많은 사람들이 있을 때 가끔 매우 흥분해. 그래서 나는 그를 진정시키기 위해 수신호를 사용해.",
+   "html": "Max sometimes gets too <u>①</u> <u>②</u> a lot of people are around. So, I use hand signals <u>③</u> him.",
+   "blanks": 3,
+   "o": [
+    "exciting – when – calm",
+    "excited – when – to calm",
+    "excited – before – calming",
+    "exciting – after – to calm"
+   ],
+   "a": 1,
+   "full": "Max sometimes gets too <b>excited</b> <b>when</b> a lot of people are around. So, I use hand signals <b>to calm</b> him.",
+   "tip": "감정을 느끼면 -ed (excited) · when = ~할 때 · to calm = 진정시키기 위해"
+  },
+  {
+   "src": "L7 본문 · Emma",
+   "ko": "내 일은 촬영이 끝난 후에 시작돼.",
+   "html": "My work begins <u>①</u> the shooting <u>②</u>.",
+   "blanks": 2,
+   "o": [
+    "before – will be over",
+    "after – will be over",
+    "after – is over",
+    "when – was over"
+   ],
+   "a": 2,
+   "full": "My work begins <b>after</b> the shooting <b>is over</b>.",
+   "tip": "시간의 부사절 → 미래 대신 현재 시제 (is over)"
+  },
+  {
+   "src": "L7 본문 · Emma",
+   "ko": "더 좋은 이야기를 만들기 위해서, 나는 장면의 순서를 바꾸거나 장면 중 일부를 삭제할 수 있어.",
+   "html": "<u>①</u> a better story, I can change the <u>②</u> of scenes or <u>③</u> some of them.",
+   "blanks": 3,
+   "o": [
+    "To create – order – delete",
+    "Create – order – deleting",
+    "To create – location – capture",
+    "Creating – order – to delete"
+   ],
+   "a": 0,
+   "full": "<b>To create</b> a better story, I can change the <b>order</b> of scenes or <b>delete</b> some of them.",
+   "tip": "To create = 목적 · can + 동사원형 change / delete 나란히"
+  },
+  {
+   "src": "L7 본문 · Chris",
+   "ko": "나는 현장에서 녹음하는 게 쉽지 않을 때 내 작업실에서 음향 효과를 만들어 내.",
+   "html": "I create <u>①</u> in my studio <u>②</u> recording <u>③</u> is not easy.",
+   "blanks": 3,
+   "o": [
+    "sound effect – before – in location",
+    "sound effects – when – on location",
+    "sound effects – after – on locate",
+    "sounds effect – when – at location"
+   ],
+   "a": 1,
+   "full": "I create <b>sound effects</b> in my studio <b>when</b> recording <b>on location</b> is not easy.",
+   "tip": "sound effects = 음향 효과 · on location = 현장에서"
+  },
+  {
+   "src": "L8 본문 · 좋아요가 필요해",
+   "ko": "처음에 그녀는 일상적인 것들을 게시했지만, 사람들은 그녀에게 많은 좋아요를 주지 않았다.",
+   "html": "At first, she <u>①</u> everyday things, but people didn't <u>②</u>.",
+   "blanks": 2,
+   "o": [
+    "posted – give her many likes",
+    "posted – give many likes her",
+    "post – gave her many likes",
+    "posting – give to her many likes"
+   ],
+   "a": 0,
+   "full": "At first, she <b>posted</b> everyday things, but people didn't <b>give her many likes</b>.",
+   "tip": "수여동사 4형식: give + 간접목적어(her) + 직접목적어(many likes)"
+  },
+  {
+   "src": "L8 본문 · 좋아요가 필요해",
+   "ko": "하지만 그녀의 팔로워들은 곧 지루해졌다. 그래서 그녀는 더 충격적인 사진들을 게시하기로 결심했다.",
+   "html": "Her followers, <u>①</u>, soon got <u>②</u>. So, she decided <u>③</u> more shocking pictures.",
+   "blanks": 3,
+   "o": [
+    "because – boring – posting",
+    "however – bored – to post",
+    "however – boring – to post",
+    "but – bored – post"
+   ],
+   "a": 1,
+   "full": "Her followers, <b>however</b>, soon got <b>bored</b>. So, she decided <b>to post</b> more shocking pictures.",
+   "tip": "however = 그러나 · 사람이 지루함을 느끼면 bored · decide + to부정사"
+  },
+  {
+   "src": "L8 본문 · 오두막에서",
+   "ko": "날이 어두워지고 있었고, 비가 내리기 시작했다.",
+   "html": "<u>①</u> was getting dark, and it started <u>②</u>.",
+   "blanks": 2,
+   "o": [
+    "This – to rain",
+    "There – raining",
+    "It – to rain",
+    "That – rain"
+   ],
+   "a": 2,
+   "full": "<b>It</b> was getting dark, and it started <b>to rain</b>.",
+   "tip": "명암 · 날씨 → 비인칭 주어 It · start + to부정사(목적어)"
+  },
+  {
+   "src": "L8 본문 · 교훈",
+   "ko": "이제부터 나는 게시 버튼을 누르기 전에 두 번 생각할 거야.",
+   "html": "<u>①</u>, I'll think twice <u>②</u> I <u>③</u> POST.",
+   "blanks": 3,
+   "o": [
+    "From now on – after – will press",
+    "From now on – before – press",
+    "In the future – before – will press",
+    "Forever – when – pressed"
+   ],
+   "a": 1,
+   "full": "<b>From now on</b>, I'll think twice <b>before</b> I <b>press</b> POST.",
+   "tip": "from now on = 지금부터 · 시간의 부사절은 현재 시제 (press)"
+  },
+  {
+   "src": "L7 본문 · Jim",
+   "ko": "그것은 Tom과 그의 개 Max의 우정에 관한 영화야. 많은 사람들이 이 영화를 만들기 위해 열심히 일하고 있어.",
+   "html": "It's a movie about the friendship <u>①</u> Tom <u>②</u> his dog Max. A lot of people are working hard <u>③</u> this movie.",
+   "blanks": 3,
+   "o": [
+    "between – and – to create",
+    "among – and – creating",
+    "between – or – create",
+    "between – and – for create"
+   ],
+   "a": 0,
+   "full": "It's a movie about the friendship <b>between</b> Tom <b>and</b> his dog Max. A lot of people are working hard <b>to create</b> this movie.",
+   "tip": "between A and B = A와 B 사이 · to create = 만들기 위해 (목적)"
+  },
+  {
+   "src": "L8 본문 · 오두막에서",
+   "ko": "그녀는 다시 셀카를 찍었고 그 셀카들을 모두 소셜 미디어에 올렸다. 그리고 그녀는 위층으로 가서 침대 세 개를 발견했다.",
+   "html": "She <u>①</u> again and <u>②</u> all the selfies on social media. Then, she went <u>③</u> and found three beds.",
+   "blanks": 3,
+   "o": [
+    "took selfies – posted – upstairs",
+    "took selfie – post – upstair",
+    "take selfies – posted – to upstairs",
+    "took selfies – posting – upstairs"
+   ],
+   "a": 0,
+   "full": "She <b>took selfies</b> again and <b>posted</b> all the selfies on social media. Then, she went <b>upstairs</b> and found three beds.",
+   "tip": "과거 시제 나란히(took · posted) · upstairs는 부사라 to 없이"
+  },
+  {
+   "src": "L8 본문 · 곰 가족의 귀가",
+   "ko": "너는 우리 집에 침입해서 우리 허락 없이 이 사진들을 올렸어.",
+   "html": "You <u>①</u> our house and posted these pictures <u>②</u> our <u>③</u>.",
+   "blanks": 3,
+   "o": [
+    "broke into – with – permission",
+    "broke into – without – permission",
+    "break into – without – permit",
+    "broke – without – permission"
+   ],
+   "a": 1,
+   "full": "You <b>broke into</b> our house and posted these pictures <b>without</b> our <b>permission</b>.",
+   "tip": "break into = 침입하다 (과거 broke into) · without + 명사(permission)"
+  }
+ ],
+ "dialogs": [
+  {
+   "who": "L7 A-1 · 장래 희망 묻기",
+   "ko": "너는 앞으로 무엇이 되고 싶니?",
+   "en": "What do you want to be in the future?",
+   "x": [
+    "does",
+    "being",
+    "at",
+    "wants"
+   ]
+  },
+  {
+   "who": "L7 A-1 · 관심 말하기",
+   "ko": "나는 모든 종류의 스포츠에 관심이 있어.",
+   "en": "I'm interested in all kinds of sports.",
+   "x": [
+    "interesting",
+    "on",
+    "kind",
+    "sport"
+   ]
+  },
+  {
+   "who": "L7 A-3 · 전치사 + 동명사",
+   "ko": "응, 나는 노래를 만드는 것에 정말로 관심이 있어.",
+   "en": "Yes, I'm really interested in writing songs.",
+   "x": [
+    "write",
+    "to",
+    "song",
+    "interesting"
+   ]
+  },
+  {
+   "who": "L7 C · 제안하기",
+   "ko": "우리 이거 한번 해 볼래?",
+   "en": "Why don't we try this?",
+   "x": [
+    "doesn't",
+    "trying",
+    "to",
+    "How"
+   ]
+  },
+  {
+   "who": "L7 C · 전치사 + 동명사",
+   "ko": "나는 조종하는 것이 아니라, 비행기를 만드는 것에 관심이 있어.",
+   "en": "I'm interested in making airplanes, not flying.",
+   "x": [
+    "make",
+    "to",
+    "fly",
+    "interesting"
+   ]
+  },
+  {
+   "who": "L7 C · 장래 희망",
+   "ko": "나는 비행기 엔지니어가 되고 싶어.",
+   "en": "I want to be an airplane engineer.",
+   "x": [
+    "a",
+    "being",
+    "engineering",
+    "wants"
+   ]
+  },
+  {
+   "who": "L8 A-2 · 의견 묻기",
+   "ko": "너는 이 파스타에 대해 어떻게 생각하니?",
+   "en": "What do you think about this pasta?",
+   "x": [
+    "How",
+    "of",
+    "does",
+    "thinks"
+   ]
+  },
+  {
+   "who": "L8 A-2 · 반대 의견",
+   "ko": "나는 그렇게 생각하지 않아. 내 생각에는 너무 짜.",
+   "en": "I don't think so. I think it's too salty.",
+   "x": [
+    "doesn't",
+    "not",
+    "very",
+    "agree"
+   ]
+  },
+  {
+   "who": "L8 C · 본문 대화",
+   "ko": "네가 블랙홀에 관심이 있는지 몰랐어.",
+   "en": "I didn't know you were interested in black holes.",
+   "x": [
+    "don't",
+    "are",
+    "interesting",
+    "on"
+   ]
+  },
+  {
+   "who": "L8 C · 비교급",
+   "ko": "그리고 전자책은 종이책보다 더 저렴하기도 해.",
+   "en": "And it's also cheaper than the paper book.",
+   "x": [
+    "cheap",
+    "then",
+    "more",
+    "expensive"
+   ]
+  }
+ ]
 }
