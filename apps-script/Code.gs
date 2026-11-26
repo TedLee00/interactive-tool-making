@@ -10,14 +10,14 @@
  *  - 명예의전당    : 게임별 1~10위 (점수가 기록될 때마다 새로 정리) · 원정대 총점은 난이도(하/중/상)별로 따로
  */
 const SHEET = '품사원정대_점수';
-const GAME_NAME = { shoot: '품사 사격장', run: '청크런', kart: '청크 카트', crane: '청크 크레인', drum: '품사 드럼', 'board-low': '원정대 총점 (하)', 'board-mid': '원정대 총점 (중)', 'board-high': '원정대 총점 (상)' };
+const GAME_NAME = { shoot: '품사 사격장', run: '청크런', kart: '청크 카트', crane: '청크 크레인', drum: '품사 드럼', 'board-low': '원정대 총점 (하)', 'board-mid': '원정대 총점 (중)', 'board-high': '원정대 총점 (상)', 'jg78-total': '정관중 L7·8 총점', 'jg78-drum': '정관중 L7·8 드럼 합계', 'jg78-kart': '정관중 L7·8 카트 합계' };
 const SNACK_NAME = { choco: '초코파이', cake: '오예스', cookie: '오예스 쿠키앤크림' };
 
 function doPost(e) {
   const out = (o) => ContentService.createTextOutput(JSON.stringify(o)).setMimeType(ContentService.MimeType.JSON);
   try {
     const req = JSON.parse(e.postData.contents || '{}');
-    const fns = { submitScore: submitScore, getRanking: getRanking, reportQuiz: reportQuiz, reportRun: reportRun, reportSnack: reportSnack };
+    const fns = { submitScore: submitScore, getRanking: getRanking, reportQuiz: reportQuiz, reportRun: reportRun, reportSnack: reportSnack, reportLesson: reportLesson };
     if (!fns[req.fn]) return out({ ok: false, error: 'unknown fn' });
     return out({ ok: true, result: fns[req.fn].apply(null, req.args || []) });
   } catch (err) { return out({ ok: false, error: String(err) }); }
@@ -129,5 +129,12 @@ function reportRun(r) {
 function reportSnack(r) {
   const sh = tab_('과자획득', ['기록 시각', '이름', '난이도', '회차', '과자', '받은 곳', '쿠폰 번호', '지급 확인'], '#D9822B');
   append_(sh, [new Date(), clean_(r.name, 20), clean_(r.level, 10), Number(r.run) || 1, SNACK_NAME[r.kind] || clean_(r.kind, 20), clean_(r.how, 30), clean_(r.code, 20), '']);
+  return true;
+}
+
+/** 📚 정관중 L7·8 학습 앱: 끝까지 마치면 한 줄 (탭: 정관중L78) */
+function reportLesson(r) {
+  const sh = tab_('정관중L78', ['기록 시각', '이름', '총점', '단어 정답', '단어 문항', '단어 정답률(%)', '객관식 정답', '직접 쓰기 정답', '문법(드럼) 정답', '영작(카트) 정답', '드럼 3곡 합계', '카트 3판 합계', '최고 연속 정답', '틀린 단어', '걸린 시간(분)'], '#7A1F1F');
+  append_(sh, [new Date(), String(r.name || '').slice(0, 20), r.total, r.wordOk, r.wordN, r.wordAcc, r.mcOk, r.typeOk, r.gramOk + '/' + r.gramN, r.sentOk + '/' + r.sentN, r.drum, r.kart, r.best, String(r.wrongs || '').slice(0, 900), r.minutes]);
   return true;
 }

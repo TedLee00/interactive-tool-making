@@ -219,12 +219,12 @@ export function openGame(opt) {
         <h2>${r.headline || (r.cleared ? '대성공!' : '아쉬워요!')}</h2>
         <div class="mg-score">${r.score}<small>점</small></div>
         ${r.lines.map((l) => `<p class="ln">${l}</p>`).join('')}
-        <div class="mg-reward">${NO_PRIZE ? '<span class="co">🏆 순위 도전 · 상품 없음</span>' : `<span class="co">🪙 코인 <b>+${r.coins}</b></span>`}${(r.snacks?.length ? r.snacks : r.snack ? [r.snack] : []).map((k) => `<span class="sn"><img src="${snackURL(k)}" alt="">${SNACKS[k].short} 쿠폰!</span>`).join('')}</div>
-        <div id="mgRank"><p class="rk-wait">🏆 명예의 전당 기록 중…</p></div>
+        <div class="mg-reward">${opt.rewardHTML ? opt.rewardHTML(r) : NO_PRIZE ? '<span class="co">🏆 순위 도전 · 상품 없음</span>' : `<span class="co">🪙 코인 <b>+${r.coins}</b></span>`}${(r.snacks?.length ? r.snacks : r.snack ? [r.snack] : []).map((k) => `<span class="sn"><img src="${snackURL(k)}" alt="">${SNACKS[k].short} 쿠폰!</span>`).join('')}</div>
+        ${opt.rankId === false ? '' : '<div id="mgRank"><p class="rk-wait">🏆 명예의 전당 기록 중…</p></div>'}
         <button class="primary big" id="mgOk">계속 ▶</button></div>`;
       ov.appendChild(card);
       // 점수 기록 + 순위표 (1·2·3등 메달)
-      submitScore(opt.id, r.score).then((R) => { const el = card.querySelector('#mgRank'); if (el) el.innerHTML = rankTableHTML(opt.id, R); }).catch(() => { const el = card.querySelector('#mgRank'); if (el) el.innerHTML = ''; });
+      if (opt.rankId !== false) submitScore(opt.rankId || opt.id, r.score).then((R) => { const el = card.querySelector('#mgRank'); if (el) el.innerHTML = rankTableHTML(opt.rankId || opt.id, R); }).catch(() => { const el = card.querySelector('#mgRank'); if (el) el.innerHTML = ''; });
       sfx(r.cleared ? 'perfect' : 'end');
       if (r.cleared) callout(r.score >= (r.legendAt || Infinity) ? 'legend' : 'wow', r.headline); // 야르는 아껴서 (연속 정답 때만)
       card.querySelector('#mgOk').onclick = () => { cleanup(); resolve(r); };

@@ -25,13 +25,24 @@ async function kartImages(name) {
   return IM;
 }
 
-export function playKart({ charId = 'bboy', name = '나', used } = {}) {
+/** 📚 레슨 모드 (정관중 L7·8 앱): 품사 레인 없이 퀴즈 존 4곳 = 본문 핵심 문장 영작(빈칸 2~3개 · 객관식) */
+export function playKartLesson({ charId = 'bboy', name = '나', round = 1, rounds = 3, quizzes = [], quizSec = 30, prizeNote = '' } = {}) {
+  return playKart({ charId, name, ext: { round, rounds, quizzes, quizSec, prizeNote } });
+}
+export function playKart({ charId = 'bboy', name = '나', used, ext = null } = {}) {
   return openGame({
     id: 'kart',
-    title: '🏎️ 청크 카트',
-    subtitle: '6명 레이스! 1등을 노려라',
+    rankId: ext ? false : undefined,
+    rewardHTML: ext ? (r) => `<span class="co">✍️ 영작 <b>${r.qOk}/${r.qN}</b> 정답</span>` : undefined,
+    title: ext ? `🏎️ 영작 카트 ${ext.round}/${ext.rounds}` : '🏎️ 청크 카트',
+    subtitle: ext ? '6명 레이스 · 퀴즈 존 4곳에서 본문 핵심 문장 영작!' : '6명 레이스! 1등을 노려라',
     music: 'mgKart',
-    howto: [
+    howto: ext ? [
+      '<span class="hk b">🕹 ◀ ▶ 핸들</span> + <b>악셀 꾹</b> (2초면 2단 가속)',
+      '<span class="hk y">❓ 퀴즈 존 4곳</span> 교과서 본문 핵심 문장의 <b>빈칸 채우기</b> (객관식)',
+      '<span class="hk r">✍️ 정답이면</span> <b>⚡ 게이지 +60%</b> · 한 문제 30초',
+      ext.prizeNote ? `<span class="hk g">🏆 상품</span> ${ext.prizeNote}` : '',
+    ].filter(Boolean) : [
       '<span class="hk b">🕹 ◀ ▶ 핸들</span> + <b>악셀 꾹</b> (2초면 2단 가속)',
       '<span class="hk y">❓ 퀴즈 존</span> 정답이면 <b>⚡ 게이지 +60%</b>',
       '<span class="hk r">🛣 품사 레인</span> 위 단어의 품사 레인 → <b>부스터 + 게이지 50%</b>',
@@ -75,7 +86,7 @@ export function playKart({ charId = 'bboy', name = '나', used } = {}) {
       // legacy ↑
 
       // ❓ 퀴즈 존 (벽·보행자와 떨어진 곳)
-      const QZ = [0.38, 0.72].map((f) => ({ d: Math.round(L * f), done: false }));
+      const QZ = (ext ? [0.2, 0.4, 0.6, 0.8] : [0.38, 0.72]).map((f) => ({ d: Math.round(L * f), done: false }));
       BAN.forEach((b) => { if (QZ.some((z) => Math.abs(b.d - z.d) < 240)) b.gone = true; });
       // 🛣️ 품사 레인: 길이 3줄로 나뉘고 줄마다 품사 이름. 위에 나온 단어의 품사 레인으로 지나가면 부스터!
       // 🌧️ 빗길 구간: 길이 미끄러워 악셀을 밟으면 차가 흔들리고 미끄러진다 → 악셀을 떼는 게 안전
@@ -83,7 +94,7 @@ export function playKart({ charId = 'bboy', name = '나', used } = {}) {
       const inRain = (d) => d > RAIN.d0 && d < RAIN.d1;
       let rainShown = false;
       const LANE_LEN = 900;
-      const LZ = [0.2, 0.55, 0.88].map((f) => { // 품사 레인 5 → 3 (운전 구간을 넉넉하게)
+      const LZ = (ext ? [] : [0.2, 0.55, 0.88]).map((f) => { // 품사 레인 5 → 3 (운전 구간을 넉넉하게)
         const target = bagPick('kart-pos', ['명사', '동사', '형용사', '부사']); // 레인 품사도 골고루
         const word = bagPick(`kart-${target}`, mg.pos[target]);
         const others = ['명사', '동사', '형용사', '부사'].filter((x) => x !== target);
@@ -449,6 +460,7 @@ export function playKart({ charId = 'bboy', name = '나', used } = {}) {
         mode = 'quiz';
         accel = false;
         lsfx([880, 660, 880], 'square', 0.08, 0.06);
+        if (ext) return lessonQuiz();
         const q = drawMixed(QUIZ_TYPES, used, 'high'); // 미니게임은 난이도와 상관없이 모두 같게 (명예의 전당을 함께 쓰므로)
         const box = document.createElement('div');
         box.className = 'mg-freeze';
@@ -478,6 +490,32 @@ export function playKart({ charId = 'bboy', name = '나', used } = {}) {
         setTimeout(() => settle(false, ''), 10000);
       }
 
+      // 📚 레슨: 본문 핵심 문장 영작 (빈칸 2~3개 · 알맞은 말 묶음 고르기)
+      function lessonQuiz() {
+        const q = ext.quizzes[quizzes.n]; if (!q) { mode = 'race'; return; }
+        const box = document.createElement('div');
+        box.className = 'mg-freeze lesson';
+        box.innerHTML = `<div class="fz-head"><b>✍️ 영작 퀴즈 ${quizzes.n + 1}/4 · 순간정지!</b><span>${q.src || ''} · 맞히면 ⚡ 게이지 +60%</span></div>
+          <div class="card q"><p class="kq-ko">${q.ko}</p><p class="kq-en">${q.html}</p><p class="kq-ask">빈칸 ${q.blanks}개에 들어갈 말로 알맞은 것은?</p>
+          <div class="kq-o">${q.opts.map((o, i) => `<button class="opt" data-i="${i}"><b>${'①②③④⑤'[i]}</b> ${o}</button>`).join('')}</div></div><i class="fz-bar" style="animation-duration:${ext.quizSec}s"></i>`;
+        E.layer.appendChild(box);
+        let settled = false;
+        const settle = (i) => {
+          if (settled) return; settled = true;
+          const ok = i === q.ans; quizzes.n++;
+          box.querySelectorAll('.opt').forEach((b) => { b.disabled = true; const k = +b.dataset.i; if (k === q.ans) b.classList.add('right'); else if (k === i) b.classList.add('wrong'); });
+          const fb = document.createElement('div');
+          fb.className = `fz-fb ${ok ? 'ok' : 'no'}`;
+          fb.innerHTML = `<b>${ok ? '정답! ⚡ 게이지 +60%!' : i === null ? '⏰ 시간 초과!' : '아쉬워요!'}</b><span class="kq-full">${q.full}</span>${q.tip ? `<small>💡 ${q.tip}</small>` : ''}`;
+          box.appendChild(fb);
+          if (ok) { quizzes.ok++; streak++; gauge = Math.min(1, gauge + 0.6); ME.boost = 1.3; if (!E.comboCallout(streak, `영작 ${streak}연속!`)) E.sfx('ok'); }
+          else { streak = 0; gauge = Math.max(0, gauge - 0.35); lsfxNo(); }
+          setTimeout(() => { box.remove(); MSG.textContent = ok ? '⚡ 게이지 +60%! 악셀을 꾹!' : '다음 퀴즈 존에서 만회하자!'; mode = 'race'; }, ok ? 1800 : 3800);
+        };
+        box.querySelectorAll('.opt').forEach((b) => { b.onclick = () => settle(+b.dataset.i); });
+        setTimeout(() => settle(null), ext.quizSec * 1000);
+      }
+
       function finishRace() {
         if (finished) return;
         finished = true;
@@ -486,9 +524,9 @@ export function playKart({ charId = 'bboy', name = '나', used } = {}) {
         const rows = R.slice().sort((a, b) => placeOf(a) - placeOf(b)).map((r) => `${placeOf(r)}. ${r.me ? `<b>${r.name}</b>` : r.name}`).join(' · ');
         setTimeout(() => E.end({
           score: Math.max(0, 1500 - (place - 1) * 300) + quizzes.ok * 200 + lanes.ok * 150, cleared: place <= 3,
-          coins: [0, 20, 14, 10, 6, 4, 2][place], snack: place === 1 ? 'cookie' : null,
+          coins: ext ? 0 : [0, 20, 14, 10, 6, 4, 2][place], snack: ext ? null : place === 1 ? 'cookie' : null, place, qOk: quizzes.ok, qN: quizzes.n,
           headline: place === 1 ? '🏆 1등 골인!' : `${place}등 골인!`, legendAt: 2400,
-          lines: [`❓ 퀴즈 존 <b>${quizzes.ok}</b>/${quizzes.n} 정답 · 🛣️ 품사 레인 <b>${lanes.ok}</b>/${lanes.n}`, rows],
+          lines: [ext ? `✍️ 영작 퀴즈 <b>${quizzes.ok}</b>/${quizzes.n} 정답` : `❓ 퀴즈 존 <b>${quizzes.ok}</b>/${quizzes.n} 정답 · 🛣️ 품사 레인 <b>${lanes.ok}</b>/${lanes.n}`, rows],
         }), 1600);
       }
 

@@ -9,6 +9,7 @@ export default defineConfig({
         index: resolve(__dirname, 'index.html'),
         lab: resolve(__dirname, 'quiz-lab.html'),
         review: resolve(__dirname, 'review.html'),
+        jg78: resolve(__dirname, 'jg1-l78.html'),
       },
     },
   },
