@@ -6,7 +6,7 @@ import config from '../../data/config.json';
 import './rank.css';
 
 const KEY = 'cq.board.v1';
-const GAME_NAME = { crane: '🧸 청크 크레인', shoot: '🎯 품사 사격장', run: '🏃 청크런', kart: '🏎️ 청크 카트', drum: '🥁 품사 드럼', board: '🏰 품사 원정대 총점', 'board-low': '🏰 원정대 총점 · 🌱 난이도 하', 'board-mid': '🏰 원정대 총점 · 🙂 난이도 중', 'board-high': '🏰 원정대 총점 · 🔥 난이도 상' };
+const GAME_NAME = { crane: '🧸 청크 크레인', shoot: '🎯 품사 사격장', run: '🏃 청크런', kart: '🏎️ 청크 카트', drum: '🥁 품사 드럼', board: '🏰 품사 원정대 총점', 'board-low': '🏰 원정대 총점 · 🌱 난이도 하', 'board-mid': '🏰 원정대 총점 · 🙂 난이도 중', 'board-high': '🏰 원정대 총점 · 🔥 난이도 상', 'jg78-total': '📚 정관중 L7·8 · 총점', 'jg78-drum': '🥁 정관중 L7·8 · 드럼 3곡 합계', 'jg78-kart': '🏎️ 정관중 L7·8 · 카트 3판 합계' };
 let current = '';
 
 export function setPlayer(name) { current = (name || '').trim(); }
@@ -56,7 +56,7 @@ export async function flushPending() {
   try {
     let q = loadPending();
     while (q.length) {
-      try { await callApi(q[0].fn, q[0].args); } catch { break; } // 아직 안 되면 다음 기회에
+      try { await callApi(q[0].fn, q[0].args); } catch (e) { if (!/unknown fn/.test(String(e && e.message))) break; } // 아직 안 되면 다음 기회에 (시트에 없는 기능이면 버림)
       q = loadPending(); q.shift(); savePending(q);
     }
   } finally { flushing = false; }
