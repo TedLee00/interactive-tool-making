@@ -196,8 +196,8 @@ function encoreAsk(score) {
   });
 }
 /** 📚 레슨 모드 (정관중 L7·8 앱): 곡을 30% 길게 · 문법 퀴즈 4번(각 1분, 푸는 동안 연주 멈춤) · 정답이면 드럼 솔로 + 환호 */
-export function playDrumLesson({ song = 1, round = 1, rounds = 3, quizzes = [], quizSec = 60, prizeNote = '', words = null } = {}) {
-  return playDrumSong({ song, ext: { round, rounds, quizzes, quizSec, prizeNote, words } });
+export function playDrumLesson({ song = 1, round = 1, rounds = 3, quizzes = [], quizSec = 60, prizeNote = '', words = null, gramLabel = 'to부정사 · 비인칭 it · 수여동사 · 시간 접속사' } = {}) {
+  return playDrumSong({ song, ext: { round, rounds, quizzes, quizSec, prizeNote, words, gramLabel } });
 }
 function playDrumSong({ song = 1, base = 0, ext = null } = {}) {
   let SONG = SONGS[song] || SONGS[1];
@@ -218,7 +218,7 @@ function playDrumSong({ song = 1, base = 0, ext = null } = {}) {
     subtitle: ext ? `${SONG.title.replace(/^\S+\s/, '')} · 연주하다가 문법 퀴즈 5번!` : isKpop ? '난이도 ★★★★★ · K-POP — 연주 4구간' : isRock ? '난이도 ★★★★ · 신나는 록 — 연주 4구간' : isEncore ? '난이도 ★★★★ · 통통 튀는 펑키 — 연주 4구간' : `${SONG.title} · 단어가 북에 닿을 때 쿵! 짝!`,
     howto: ext ? [
       '<span class="hk r">🥁 북에 닿을 때</span> 그 품사 버튼을 <b>쿵!</b>',
-      '<span class="hk y">📚 문법 퀴즈 5번</span> to부정사 · 비인칭 it · 수여동사 · 시간 접속사',
+      `<span class="hk y">📚 문법 퀴즈 5번</span> ${ext.gramLabel}`,
       '<span class="hk c">🔤 학습지 단어 노트</span> 영어 ↔ 한글 — 치면 뜻이 바뀌어요!',
       '<span class="hk p">⏱ 한 문제 1분</span> 푸는 동안 연주는 잠깐 멈춤 · 정답이면 <b>🥁 드럼 솔로 + 환호!</b>',
       ext.prizeNote ? `<span class="hk g">🏆 상품</span> ${ext.prizeNote}` : '',

@@ -6,7 +6,7 @@ import config from '../../data/config.json';
 import './rank.css';
 
 const KEY = 'cq.board.v1';
-const GAME_NAME = { crane: '🧸 청크 크레인', shoot: '🎯 품사 사격장', run: '🏃 청크런', kart: '🏎️ 청크 카트', drum: '🥁 품사 드럼', board: '🏰 품사 원정대 총점', 'board-low': '🏰 원정대 총점 · 🌱 난이도 하', 'board-mid': '🏰 원정대 총점 · 🙂 난이도 중', 'board-high': '🏰 원정대 총점 · 🔥 난이도 상', 'jg78-total': '📚 정관중 L7·8 · 총점', 'jg78-drum': '🥁 정관중 L7·8 · 드럼 3곡 합계', 'jg78-kart': '🏎️ 정관중 L7·8 · 카트 3판 합계', 'jg78-shoot': '💬 정관중 L7·8 · 대화문 사격장 합계' };
+const GAME_NAME = { crane: '🧸 청크 크레인', shoot: '🎯 품사 사격장', run: '🏃 청크런', kart: '🏎️ 청크 카트', drum: '🥁 품사 드럼', board: '🏰 품사 원정대 총점', 'board-low': '🏰 원정대 총점 · 🌱 난이도 하', 'board-mid': '🏰 원정대 총점 · 🙂 난이도 중', 'board-high': '🏰 원정대 총점 · 🔥 난이도 상', 'jg78-total': '📚 정관중 L7·8 · 총점', 'jg78-drum': '🥁 정관중 L7·8 · 드럼 3곡 합계', 'jg78-kart': '🏎️ 정관중 L7·8 · 카트 3판 합계', 'jg78-shoot': '💬 정관중 L7·8 · 대화문 사격장 합계', 'sj78-total': '📚 신정·서생중2 L7·8 · 총점', 'sj78-drum': '🥁 신정·서생중2 L7·8 · 드럼 3곡 합계', 'sj78-kart': '🏎️ 신정·서생중2 L7·8 · 카트 3판 합계', 'sj78-shoot': '💬 신정·서생중2 L7·8 · 대화문 사격장 합계' };
 let current = '';
 
 export function setPlayer(name) { current = (name || '').trim(); }

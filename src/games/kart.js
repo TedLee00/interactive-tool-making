@@ -64,7 +64,8 @@ export function playKart({ charId = 'bboy', name = '나', used, ext = null } = {
       MSG.textContent = '왼손 핸들 ◀ ▶ · 오른발 악셀 페달';
 
       // ---- 코스 (legacy 값 그대로) ----
-      const L = ext ? 45400 : 33600; // 코스 길이: 42000의 80% (원장님 요청으로 20% 짧게) — 퀴즈 · 레인 · 빗길 · 바나나 위치도 비율대로 함께 줄어듦
+      const NQ = ext ? ext.quizzes.length : 2;
+      const L = ext ? Math.round(45400 * (1 + Math.max(0, NQ - 5) * 0.12)) : 33600; // 레슨: 퀴즈 존이 5곳보다 많으면 코스도 길게 // 코스 길이: 42000의 80% (원장님 요청으로 20% 짧게) — 퀴즈 · 레인 · 빗길 · 바나나 위치도 비율대로 함께 줄어듦
       const LS = L / 22100;
       const RW = Math.min(310, W * 0.76); // 도로를 넓게 (원래 232 / 58%)
       const AMP = Math.max(26, (W - RW) / 2 - 10);
@@ -86,7 +87,14 @@ export function playKart({ charId = 'bboy', name = '나', used, ext = null } = {
       // legacy ↑
 
       // ❓ 퀴즈 존 (벽·보행자와 떨어진 곳)
-      const QZ = (ext ? [0.09, 0.31, 0.53, 0.75, 0.95].slice(0, ext.quizzes.length) : [0.38, 0.72]).map((f) => ({ d: Math.round(L * f), done: false }));
+      // 퀴즈 존 위치: 5곳 이하는 고정 · 더 많으면 단어 레인 구간을 피한 빈 구간에 고르게
+      const qzFracs = (n) => {
+        if (n <= 5) return [0.09, 0.31, 0.53, 0.75, 0.95].slice(0, n);
+        const free = [[0.04, 0.13], [0.22, 0.35], [0.44, 0.57], [0.66, 0.79], [0.88, 0.97]];
+        const tot = free.reduce((a, [x, y]) => a + (y - x), 0);
+        return Array.from({ length: n }, (_, k) => { let t = ((k + 0.5) / n) * tot; for (const [x, y] of free) { if (t <= y - x) return x + t; t -= y - x; } return 0.95; });
+      };
+      const QZ = (ext ? qzFracs(NQ) : [0.38, 0.72]).map((f) => ({ d: Math.round(L * f), done: false }));
       BAN.forEach((b) => { if (QZ.some((z) => Math.abs(b.d - z.d) < 240)) b.gone = true; });
       // 🛣️ 품사 레인: 길이 3줄로 나뉘고 줄마다 품사 이름. 위에 나온 단어의 품사 레인으로 지나가면 부스터!
       // 🌧️ 빗길 구간: 길이 미끄러워 악셀을 밟으면 차가 흔들리고 미끄러진다 → 악셀을 떼는 게 안전
@@ -108,6 +116,7 @@ export function playKart({ charId = 'bboy', name = '나', used, ext = null } = {
           if (!z) break;
           q.d = z.d + 700;
         }
+        if (Math.abs(q.d - WALL.d) < 900) q.d = WALL.d + 900; // 벽 바로 앞에서 멈추지 않게
         q.d = Math.min(q.d, L - 600);
       });
       QZ.sort((a, b) => a.d - b.d);
