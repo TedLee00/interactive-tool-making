@@ -197,7 +197,7 @@ export function playShoot({ ext = null } = {}) {
             ctx.burst(hit.x, hit.ty, 18, ['#FFD43B', '#fff', '#E0453A']); ctx.sfx('ok');
             S.pops.push({ x: clamp(hit.x, 80, ctx.W - 80), y: hit.ty - 34, ok: true, big: `+${pts}`, sub: '', life: 0.9 });
             if (D.idx >= D.tokens.length) { // ✅ 문장 완성!
-              D.done = true; S.qOk++; const bonus = 300 + Math.round(S.left) * 20; S.score += bonus;
+              D.done = true; S.qOk++; S.qPts = (S.qPts || 0) + ((ORDER ? ext.convos : ext.sentences)[S.round]?.pts || 0); const bonus = 300 + Math.round(S.left) * 20; S.score += bonus;
               dlgBanner('ok'); ctx.callout(S.qOk >= 3 ? 'legend' : 'wow', `문장 완성! +${bonus}`); ctx.burst(ctx.W / 2, ctx.H * 0.3, 60, ['#FFD43B', '#8FE08A', '#fff']);
               S.targets = []; S.pause = 99; setTimeout(() => { if (!S.finished) nextSentence(); }, 1700);
             } else dlgBanner();
@@ -248,7 +248,7 @@ export function playShoot({ ext = null } = {}) {
         S.finished = true;
         if (ext) {
           const n = N;
-          ctx.end({ score: Math.max(0, S.score), cleared: S.qOk >= Math.ceil(n / 2), coins: 0, snack: null, qOk: S.qOk, qN: n,
+          ctx.end({ score: Math.max(0, S.score), cleared: S.qOk >= Math.ceil(n / 2), coins: 0, snack: null, qOk: S.qOk, qN: n, qPts: S.qPts || 0,
             headline: S.qOk === n ? (ORDER ? '💬 대화 순서 완벽!' : '💬 대화문 명사수!') : S.qOk >= Math.ceil(n / 2) ? '💬 대화문 사격 성공!' : '조금만 더 정확하게!', legendAt: 4000,
             lines: [`명중 <b>${S.hits}</b> · 잘못 쏜 과녁 ${S.wrong}`, `최고 콤보 <b>${S.best}</b>`] });
           return;

@@ -229,3 +229,9 @@ body.jg { background: linear-gradient(180deg, #FFF4E3 0%, #FFE7EC 55%, #E9F1FF 1
 .shoot-ban.dlg .dlg-lines .ok { color: #1E9B5B; font-weight: 800; }
 .shoot-ban.dlg .dlg-lines .miss { color: #E0453A; font-weight: 700; }
 .shoot-ban.dlg .dlg-lines .blank { color: #B0A6C8; }
+.qtag .hard { background: #FFE3E3; color: #C0322A; }
+.qtag .pt { background: #FFF1C2; color: #9A5A00; }
+.qtag .lv1 { background: #E8F6EC; color: #1E7B45; } .qtag .lv2 { background: #E8F0FF; color: #1F4E8A; } .qtag .lv3 { background: #FFE3E3; color: #C0322A; }
+.ptab { width: 100%; border-collapse: collapse; margin: 4px 0 6px; font-size: 12.5px; background: #fff; border-radius: 8px; overflow: hidden; }
+.ptab th, .ptab td { border: 1px solid #DCE6F5; padding: 3px 4px; text-align: center; }
+.ptab td:first-child { text-align: left; font-weight: 800; }
