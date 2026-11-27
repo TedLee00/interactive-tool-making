@@ -16,7 +16,7 @@ const PAUSE = 2.4; // 라운드 사이: 화면 가운데 큰 경고판이 깜빡
 const SNACK_NAME = { choco: '초코파이', cake: '오예스', cookie: '쿠키앤크림' };
 const RING = ['#E0453A', '#fff', '#2E7BC4', '#fff', '#FFD43B'];
 
-/** 💬 대화문 사격장 (정관중 L7·8 앱): 위에 한글 문장 → 올라오는 영어 단어 과녁을 순서대로 쏴서 문장 완성 · 문장당 30초 */
+/** 💬 대화문 사격장 (학교별 L7·8 학습 앱): 위에 한글 문장 → 올라오는 영어 단어 과녁을 순서대로 쏴서 문장 완성 · 문장당 30초 */
 export function playShootDialog({ sentences = [], convos = [], mode = 'words', round = 1, rounds = 2, sec = 30, prizeNote = '' } = {}) {
   return playShoot({ ext: { sentences, convos, mode, round, rounds, sec, prizeNote } });
 }
@@ -78,13 +78,13 @@ export function playShoot({ ext = null } = {}) {
           const done = T.slice(0, D.idx).map((t) => L(t, 'ok')).join('');
           const left = state === 'miss' ? T.slice(D.idx).map((t) => L(t, 'miss')).join('') : T.slice(D.idx).map(() => '<li class="blank"><b class="sp">?</b>______</li>').join('');
           banner.innerHTML = `<div class="dlg-top"><small>💬 ${S.round + 1}/${N}</small><span class="dlg-who">${D.who || ''} · ${D.ko}</span><em class="dlg-sec ${S.left <= 8 ? 'low' : ''}">${Math.max(0, Math.ceil(S.left))}초</em></div>
-            <ol class="dlg-lines">${L(D.first, 'given')}${done}${left}</ol><div class="dlg-bar"><i style="width:${Math.max(0, S.left / ext.sec) * 100}%"></i></div>`;
+            <ol class="dlg-lines">${L(D.first, 'given')}${done}${left}</ol><div class="dlg-bar"><i style="width:${Math.max(0, S.left / (S.dlg.sec || ext.sec)) * 100}%"></i></div>`;
           return;
         }
         const built = T.slice(0, D.idx).map((w) => `<b>${w}</b>`).join(' ');
         const rest = state === 'miss' ? T.slice(D.idx).map((w) => `<s>${w}</s>`).join(' ') : T.slice(D.idx).map(() => '<i>___</i>').join(' ');
         banner.innerHTML = `<div class="dlg-top"><small>💬 ${S.round + 1}/${N}</small><span class="dlg-who">${D.who || ''}</span><em class="dlg-sec ${S.left <= 8 ? 'low' : ''}">${Math.max(0, Math.ceil(S.left))}초</em></div>
-          <div class="dlg-ko">${D.ko}</div><div class="dlg-en ${state}">${built} ${rest}${D.idx >= T.length ? D.end : ''}</div><div class="dlg-bar"><i style="width:${Math.max(0, S.left / ext.sec) * 100}%"></i></div>`;
+          <div class="dlg-ko">${D.ko}</div><div class="dlg-en ${state}">${built} ${rest}${D.idx >= T.length ? D.end : ''}</div><div class="dlg-bar"><i style="width:${Math.max(0, S.left / (S.dlg.sec || ext.sec)) * 100}%"></i></div>`;
       }
       function nextSentence() {
         S.round++;
@@ -92,7 +92,8 @@ export function playShoot({ ext = null } = {}) {
         const Q = ORDER ? ext.convos[S.round] : ext.sentences[S.round];
         S.dlg = ORDER ? { ko: Q.ko, who: Q.who, first: lineOf(Q.lines[0]), tokens: Q.lines.slice(1).map(lineOf), end: '', extra: (Q.x || []).map(lineOf), idx: 0, done: false }
           : { ko: Q.ko, who: Q.who, tokens: toks(Q.en), end: (Q.en.match(/[.!?]$/) || [''])[0], extra: Q.x || [], idx: 0, done: false };
-        S.left = ext.sec; S.targets = []; S.spawnT = 0; S.pause = 1.4;
+        S.dlg.sec = ORDER ? ext.sec : ext.sec + Math.max(0, S.dlg.tokens.length - 9) * 4; // 긴 문장(10단어+)은 한 단어마다 +4초
+        S.left = S.dlg.sec; S.targets = []; S.spawnT = 0; S.pause = 1.4;
         dlgBanner(); banner.classList.add('dlg');
         warn.innerHTML = ORDER ? `<div class="sw-in"><small>💬 대화 ${S.round + 1}/${N}</small><b>${Q.ko}</b><em>첫 마디 다음 대사를 순서대로 쏴요!</em></div>`
           : `<div class="sw-in"><small>💬 문장 ${S.round + 1}/${N}</small><b>${Q.ko}</b><em>영어 단어를 순서대로 쏴요!</em></div>`;

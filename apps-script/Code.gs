@@ -10,7 +10,10 @@
  *  - 명예의전당    : 게임별 1~10위 (점수가 기록될 때마다 새로 정리) · 원정대 총점은 난이도(하/중/상)별로 따로
  */
 const SHEET = '품사원정대_점수';
-const GAME_NAME = { shoot: '품사 사격장', run: '청크런', kart: '청크 카트', crane: '청크 크레인', drum: '품사 드럼', 'board-low': '원정대 총점 (하)', 'board-mid': '원정대 총점 (중)', 'board-high': '원정대 총점 (상)', 'jg78-total': '정관중 L7·8 총점', 'jg78-drum': '정관중 L7·8 드럼 합계', 'jg78-kart': '정관중 L7·8 카트 합계', 'jg78-shoot': '정관중 L7·8 대화문 합계' };
+const GAME_NAME = { shoot: '품사 사격장', run: '청크런', kart: '청크 카트', crane: '청크 크레인', drum: '품사 드럼', 'board-low': '원정대 총점 (하)', 'board-mid': '원정대 총점 (중)', 'board-high': '원정대 총점 (상)', 'jg78-total': '정관중 L7·8 총점', 'jg78-drum': '정관중 L7·8 드럼 합계', 'jg78-kart': '정관중 L7·8 카트 합계', 'jg78-shoot': '정관중 L7·8 대화문 합계', 'sj78-total': '신정·서생중2 L7·8 총점', 'sj78-drum': '신정·서생중2 드럼 합계', 'sj78-kart': '신정·서생중2 카트 합계', 'sj78-shoot': '신정·서생중2 대화문 합계' };
+// 📚 학습 앱별 성적표 탭 (앱이 보내는 tab 이름 중 이것만 받음)
+const LESSON_TABS = ['정관중L78', '신정서생중2_L78'];
+const lessonTab_ = (t) => (LESSON_TABS.indexOf(String(t)) >= 0 ? String(t) : LESSON_TABS[0]);
 const SNACK_NAME = { choco: '초코파이', cake: '오예스', cookie: '오예스 쿠키앤크림' };
 
 function doPost(e) {
@@ -141,19 +144,18 @@ const L78_HEADER = ['기록 시각', '이름', '총점', '단어 정답', '단�
 /** ▶ 처음 한 번 실행: 「정관중L78」 성적표 탭을 미리 만들고 명예의전당을 새로 정리 (Apps Script 편집기에서 이 함수를 골라 ▶ 실행) */
 const L78_STEP_HEADER = ['기록 시각', '이름', '단계', '푼 단어 수', '단어 문항', '단어 정답', '단어 정답률(%)', '단어 점수', '게임 점수(원점수)', '게임 → 총점에 더한 점수', '게임 속 문제 정답', '누적 총점', '걸린 시간(분)'];
 function setupL78() {
-  tab_('정관중L78', L78_HEADER, '#7A1F1F');
-  tab_('정관중L78_단계', L78_STEP_HEADER, '#B8862E');
+  LESSON_TABS.forEach(function (t) { tab_(t, L78_HEADER, '#7A1F1F'); tab_(t + '_단계', L78_STEP_HEADER, '#B8862E'); });
   updateHall_();
 }
 function reportLesson(r) {
-  const sh = tab_('정관중L78', ['기록 시각', '이름', '총점', '단어 정답', '단어 문항', '단어 정답률(%)', '객관식 정답', '직접 쓰기 정답', '문법(드럼) 정답', '영작(카트) 정답', '드럼 3곡 합계', '카트 3판 합계', '최고 연속 정답', '틀린 단어', '걸린 시간(분)'], '#7A1F1F');
+  const sh = tab_(lessonTab_(r.tab), ['기록 시각', '이름', '총점', '단어 정답', '단어 문항', '단어 정답률(%)', '객관식 정답', '직접 쓰기 정답', '문법(드럼) 정답', '영작(카트) 정답', '드럼 3곡 합계', '카트 3판 합계', '최고 연속 정답', '틀린 단어', '걸린 시간(분)'], '#7A1F1F');
   append_(sh, [new Date(), String(r.name || '').slice(0, 20), r.total, r.wordOk, r.wordN, r.wordAcc, r.mcOk, r.typeOk, r.gramOk + '/' + r.gramN, r.sentOk + '/' + r.sentN, r.drum, r.kart, r.best, String(r.wrongs || '').slice(0, 900), r.minutes]);
   return true;
 }
 
 /** 📊 정관중 L7·8: 게임 하나를 끝낼 때마다 그때까지의 진행 상황 한 줄 (탭: 정관중L78_단계) */
 function reportLessonStep(r) {
-  const sh = tab_('정관중L78_단계', L78_STEP_HEADER, '#B8862E');
+  const sh = tab_(lessonTab_(r.tab) + '_단계', L78_STEP_HEADER, '#B8862E');
   append_(sh, [new Date(), String(r.name || '').slice(0, 20), r.step, r.wordsDone, r.wordN, r.wordOk, r.wordAcc, r.wordPts, r.gameRaw, r.gamePts, r.gameOk, r.total, r.minutes]);
   return true;
 }
