@@ -336,7 +336,11 @@ async function playGame(k) {
   if (g.kind === 'drum') {
     const quizzes = S.gram[g.round - 1].map(({ c, i }) => {
       const q = data.grammar[c][i];
-      return { tag: c, sentHTML: q.s, ask: q.q, opts: q.o.map((t, j) => ({ v: String(j), label: `${CIRC[j]} ${t}` })), ans: String(q.a), ansLabel: `${CIRC[q.a]} ${q.o[q.a]}`, explain: q.x };
+      // 보기 순서 섞기 (①~④ · ⓐ · (a) · 개수처럼 순서 자체가 답인 문제는 그대로)
+      const fixed = q.o.some((t) => /^[①-⑤ⓐ-ⓔ(]|개$/.test(t));
+      const order = fixed ? q.o.map((_, j) => j) : shuffle(q.o.map((_, j) => j));
+      const pos = order.indexOf(q.a);
+      return { tag: c, sentHTML: q.s, ask: q.q, opts: order.map((j, n) => ({ v: String(n), label: `${CIRC[n]} ${q.o[j]}` })), ans: String(pos), ansLabel: `${CIRC[pos]} ${q.o[q.a]}`, explain: q.x };
     });
     r = await playDrumLesson({ song: g.song, round: g.round, rounds: 3, quizzes, quizSec: GAME_Q_SEC, words: drumWords(), prizeNote: '드럼 3곡 합계 1~5위 초코파이 · 오예스!' });
   } else if (g.kind === 'kart') {

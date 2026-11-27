@@ -430,285 +430,189 @@
  "grammar": {
   "to부정사": [
    {
-    "s": "A: Why did they go to the park?<br>B: They went there ______ soccer.",
-    "q": "빈칸에 알맞은 것은?",
-    "o": [
-     "play",
-     "plays",
-     "to play",
-     "played"
-    ],
-    "a": 2,
-    "x": "공원에 간 <b>목적</b>(~하기 위해) → to + 동사원형"
-   },
-   {
-    "s": "건강을 유지하기 위해 그녀는 매일 요가를 한다.",
-    "q": "우리말을 영어로 바르게 옮긴 것은?",
-    "o": [
-     "She does yoga stay healthy every day.",
-     "She stays healthy to do yoga every day.",
-     "To stay healthy, she does yoga every day.",
-     "She does yoga staying healthy every day."
-    ],
-    "a": 2,
-    "x": "목적의 to부정사가 문장 앞에 온 형태 — <b>To stay healthy</b>, ~"
-   },
-   {
-    "s": "The question was difficult <u>to answer</u>.",
-    "q": "밑줄 친 to answer의 의미는?",
-    "o": [
-     "대답하기 위해 (목적)",
-     "대답해서 (감정의 원인)",
-     "대답하기에 (형용사 수식)",
-     "대답하게 되었다 (결과)"
-    ],
-    "a": 2,
-    "x": "형용사(difficult) 뒤 to부정사 → <b>'~하기에'</b>"
-   },
-   {
-    "s": "The boy grew up <u>to become</u> a great musician.",
-    "q": "밑줄 친 to become의 의미는?",
-    "o": [
-     "되기 위해 (목적)",
-     "되어서 (감정의 원인)",
-     "되기에 (형용사 수식)",
-     "자라서 ~가 되었다 (결과)"
-    ],
-    "a": 3,
-    "x": "grow up to ~ → <b>결과</b> '자라서 ~가 되었다'"
-   },
-   {
-    "s": "The book is interesting <u>to read</u>.",
-    "q": "밑줄 친 to read의 우리말 해석으로 알맞은 것은?",
-    "o": [
-     "읽기 위해",
-     "읽기에",
-     "읽어서",
-     "읽게 되어"
-    ],
-    "a": 1,
-    "x": "형용사(interesting) 수식 → <b>'읽기에'</b> (읽기 위해 ×)"
-   },
-   {
-    "s": "&lt;보기&gt; What should I do <u>to improve</u> my English?",
+    "s": "&lt;보기&gt; She went to the library <u>to borrow</u> some books.",
     "q": "밑줄 친 to부정사의 쓰임이 &lt;보기&gt;와 같은 것은?",
     "o": [
-     "I stopped working <u>to have</u> lunch.",
-     "He doesn't like <u>to wake</u> up early.",
-     "What do you want <u>to do</u> after school?",
-     "She was very happy <u>to see</u> her friends."
+     "I want <u>to borrow</u> your pen.",
+     "He has a lot of homework <u>to do</u>.",
+     "We got up early <u>to see</u> the sunrise.",
+     "<u>To learn</u> English is fun.",
+     "It is important <u>to exercise</u> every day."
+    ],
+    "a": 2,
+    "x": "&lt;보기&gt;·③ <b>목적</b>(~하기 위해) / ① 명사적(목적어) ② 형용사적(homework 수식) ④ 명사적(주어) ⑤ 진주어"
+   },
+   {
+    "s": "&lt;보기&gt; I was surprised <u>to hear</u> the news.",
+    "q": "밑줄 친 to부정사의 쓰임이 &lt;보기&gt;와 같은 것은?",
+    "o": [
+     "She studied hard <u>to pass</u> the test.",
+     "They were glad <u>to meet</u> their teacher.",
+     "My plan is <u>to travel</u> to Jeju.",
+     "I have nothing <u>to eat</u>.",
+     "The boy grew up <u>to be</u> a pilot."
+    ],
+    "a": 1,
+    "x": "&lt;보기&gt;·② 감정(surprised · glad) 뒤 → <b>감정의 원인</b> '~해서' / ① 목적 ③ 보어 ④ 형용사적 ⑤ 결과"
+   },
+   {
+    "s": "&lt;보기&gt; This question is hard <u>to answer</u>.",
+    "q": "밑줄 친 to부정사의 쓰임이 &lt;보기&gt;와 같은 것은?",
+    "o": [
+     "The river is dangerous <u>to swim</u> in.",
+     "It is hard <u>to answer</u> this question.",
+     "He was sad <u>to lose</u> the game.",
+     "I need a pen <u>to write</u> with.",
+     "She went out <u>to buy</u> milk."
     ],
     "a": 0,
-    "x": "&lt;보기&gt;·① <b>목적</b>(~하기 위해) / ②③ 명사적(목적어) / ④ 감정의 원인"
+    "x": "&lt;보기&gt;·① <b>형용사(hard · dangerous)를 꾸밈</b> '~하기에' / ② 가주어 It의 진주어 ③ 감정의 원인 ④ 형용사적 ⑤ 목적"
    },
    {
-    "s": "밑줄 친 부분의 쓰임이 같은 것끼리 짝지어진 것은?",
+    "s": "&lt;보기&gt; He grew up <u>to be</u> a famous singer.",
+    "q": "밑줄 친 to부정사의 쓰임이 &lt;보기&gt;와 같은 것은?",
+    "o": [
+     "She lived <u>to be</u> 100 years old.",
+     "I came here <u>to see</u> you.",
+     "It's time <u>to go</u> to bed.",
+     "I'm happy <u>to be</u> here.",
+     "We decided <u>to stay</u> home."
+    ],
+    "a": 0,
+    "x": "&lt;보기&gt;·① <b>결과</b> '(자라서 / 살아서) ~가 되었다' / ② 목적 ③ 형용사적 ④ 감정의 원인 ⑤ 명사적"
+   },
+   {
+    "s": "밑줄 친 to부정사의 쓰임이 나머지 넷과 <b>다른</b> 것은?",
     "q": "고르세요",
     "o": [
-     "<u>To sleep</u> well is important. / He was glad <u>to join</u> the team.",
-     "I have something <u>to tell</u> you. / She hopes <u>to travel</u> the world.",
-     "We studied hard <u>to get</u> good grades. / My dream is <u>to help</u> children.",
-     "<u>To protect</u> herself, she wore a helmet. / They went to the park <u>to walk</u> their dog."
-    ],
-    "a": 3,
-    "x": "④ 둘 다 <b>목적</b>(부사적 용법) — 나머지는 쓰임이 서로 달라요"
-   },
-   {
-    "s": "<u>To find</u> some food, Tom opened the big refrigerator.",
-    "q": "밑줄 친 부분과 쓰임이 같은 것은?",
-    "o": [
-     "<u>To wake</u> up early was very difficult.",
-     "He wanted <u>to eat</u> a giant pizza.",
-     "He ran fast <u>to catch</u> the bus.",
-     "He needed <u>to go</u> to the supermarket."
+     "I got up early <u>to catch</u> the first bus.",
+     "He saved money <u>to buy</u> a bike.",
+     "Do you want <u>to join</u> our club?",
+     "She went to the park <u>to walk</u> her dog.",
+     "<u>To stay</u> healthy, I exercise every day."
     ],
     "a": 2,
-    "x": "To find = <b>목적</b> '찾기 위해' → ③ to catch / ①②④는 명사적(주어·목적어)"
+    "x": "③ want의 <b>목적어(명사적)</b> / 나머지는 모두 목적 '~하기 위해' (⑤처럼 문장 앞에 와도 목적!)"
    },
    {
-    "s": "So, she decided ______ more shocking pictures.",
-    "q": "빈칸에 알맞은 것은?",
+    "s": "밑줄 친 부분의 우리말 해석이 <b>어색한</b> 것은?",
+    "q": "고르세요",
     "o": [
-     "post",
-     "posting",
-     "to post",
-     "posted"
+     "She was excited <u>to see</u> the singer. (그 가수를 봐서)",
+     "The book is easy <u>to read</u>. (읽기 위해)",
+     "I came home early <u>to see</u> my kids. (보기 위해)",
+     "He woke up <u>to find</u> himself famous. (깨어 보니 ~을 알게 되었다)",
+     "We were sorry <u>to hear</u> that. (들어서)"
+    ],
+    "a": 1,
+    "x": "형용사(easy)를 꾸미면 <b>'읽기에'</b> — 목적 '읽기 위해'가 아니에요"
+   },
+   {
+    "s": "다음 중 <b>어법상 틀린</b> 문장은?",
+    "q": "고르세요",
+    "o": [
+     "We went to the store to buy some milk.",
+     "To protect herself, she wore a helmet.",
+     "She decided posting more pictures.",
+     "He was happy to win the race.",
+     "This map is easy to read."
     ],
     "a": 2,
-    "x": "decide는 <b>to부정사</b>를 목적어로 → decided to post (decided posting ×)"
+    "x": "decide는 <b>to부정사</b>를 목적어로 → decided <b>to post</b> (본문 Goldilocks 문장!)"
    }
   ],
   "비인칭 주어 it": [
    {
-    "s": "여기에서 바닷가까지 2km이다.",
-    "q": "우리말과 같은 뜻의 문장은?",
+    "s": "&lt;보기&gt; <u>It</u> is getting dark outside.",
+    "q": "밑줄 친 It과 쓰임이 같은 것은?",
     "o": [
-     "This is 2km to the beach from here.",
-     "It is 2km to the beach from here.",
-     "There is 2km to the beach from here.",
-     "That is 2km to the beach from here."
-    ],
-    "a": 1,
-    "x": "거리 → <b>비인칭 주어 It</b>"
-   },
-   {
-    "s": "What's the weather like today?",
-    "q": "대답으로 알맞은 것은?",
-    "o": [
-     "That's windy.",
-     "This is very hot.",
-     "It's cold and windy.",
-     "It has rain and snow."
+     "<u>It</u> is my new bike.",
+     "<u>It</u> is fun to play soccer.",
+     "<u>It</u> was rainy all day yesterday.",
+     "I lost my phone, but I found <u>it</u>.",
+     "Look at the cat. <u>It</u> is so cute."
     ],
     "a": 2,
-    "x": "날씨 대답은 <b>It</b>으로 시작"
+    "x": "&lt;보기&gt;·③ 명암 · 날씨 → <b>비인칭 주어</b> / ①④⑤ 대명사(가리키는 대상 있음) ② <b>가주어</b>(진주어 to play soccer)"
    },
    {
-    "s": "밑줄 친 It의 쓰임이 나머지와 <b>다른</b> 하나는?",
-    "q": "고르세요",
+    "s": "&lt;보기&gt; <u>It</u> is ten kilometers from here to the beach.",
+    "q": "밑줄 친 It과 쓰임이 같은 것은?",
     "o": [
-     "<u>It</u> has four legs.",
-     "<u>It</u> is six in the morning.",
-     "<u>It</u> was very hot last week.",
-     "<u>It</u> is 5 kilometers from here."
-    ],
-    "a": 0,
-    "x": "① 다리 넷 달린 것을 <b>가리키는 대명사</b> / 나머지는 시간 · 날씨 · 거리 비인칭"
-   },
-   {
-    "s": "빈칸에 비인칭 주어 It을 쓸 수 있는 것은?",
-    "q": "고르세요",
-    "o": [
-     "______ is my sister's hat.",
-     "______ is under the table.",
-     "______ is very dark outside.",
-     "______ is an interesting game."
-    ],
-    "a": 2,
-    "x": "<b>명암</b>(어둡다) → 비인칭 It / 나머지는 대명사"
-   },
-   {
-    "s": "<u>It</u> is raining heavily.",
-    "q": "밑줄 친 It의 쓰임은?",
-    "o": [
-     "그것 (지시대명사)",
-     "비인칭 주어 (날씨)",
-     "가주어",
-     "강조"
+     "<u>It</u> is important to keep your promise.",
+     "<u>It</u> is Sunday today.",
+     "<u>It</u> is a present from my aunt.",
+     "I like this song. <u>It</u> makes me happy.",
+     "Where is my umbrella? Is <u>it</u> in your bag?"
     ],
     "a": 1,
-    "x": "날씨를 나타내는 <b>비인칭 주어</b> — 해석하지 않아요"
+    "x": "&lt;보기&gt; 거리 · ② 요일 → <b>비인칭</b> / ① 가주어 ③④⑤ 대명사"
    },
    {
-    "s": "A: Hurry up. ⓐ___ is getting dark.<br>B: Is ⓑ___ an express bus to the airport here?<br>A: Yes, there is.",
-    "q": "ⓐ, ⓑ에 알맞은 말은?",
-    "o": [
-     "It – it",
-     "It – there",
-     "There – it",
-     "There – there"
-    ],
-    "a": 1,
-    "x": "명암 → <b>It</b> / 'Yes, there is'로 답하니 ⓑ는 <b>there</b>"
-   },
-   {
-    "s": "밑줄 친 It(it)의 쓰임이 나머지와 <b>다른</b> 것은?",
+    "s": "밑줄 친 it의 쓰임이 나머지 넷과 <b>다른</b> 것은?",
     "q": "고르세요",
     "o": [
-     "<u>It</u>'s winter now in New Zealand.",
-     "How far is <u>it</u> from your school to the zoo?",
-     "<u>It</u>'s very bright in the room.",
-     "I have a puppy, and <u>it</u>'s 3 months old."
+     "<u>It</u> is spring in Korea.",
+     "How far is <u>it</u> to the station?",
+     "<u>It</u> is already 9 o'clock.",
+     "<u>It</u> is easy to make a sandwich.",
+     "<u>It</u> was very windy last night."
     ],
     "a": 3,
-    "x": "④ a puppy를 <b>가리키는 대명사</b> / 나머지는 계절 · 거리 · 명암 비인칭"
+    "x": "④ 진짜 주어(to make a sandwich)를 대신하는 <b>가주어</b> / 나머지는 계절 · 거리 · 시간 · 날씨 비인칭"
    },
    {
-    "s": "①<u>It</u> often rains in summer. The umbrella is perfect for rainy days. ②<u>It</u> is very useful. ③<u>It</u> is mine. ④<u>It</u>'s a present from my grandma.",
-    "q": "밑줄 친 It 중 쓰임이 <b>다른</b> 하나는?",
+    "s": "(a) <u>It</u> is Monday today.<br>(b) <u>It</u> is difficult to learn Chinese.<br>(c) Look at the dog. <u>It</u> is so big.<br>(d) <u>It</u> snowed a lot last winter.<br>(e) <u>It</u> is not easy to wake up early.",
+    "q": "밑줄 친 It의 쓰임이 같은 것끼리 짝지어진 것은?",
     "o": [
-     "① It (often rains)",
-     "② It (is very useful)",
-     "③ It (is mine)",
-     "④ It('s a present)"
+     "(a) – (c)",
+     "(a) – (d)",
+     "(b) – (c)",
+     "(c) – (e)",
+     "(d) – (e)"
     ],
-    "a": 0,
-    "x": "① 날씨 → <b>비인칭</b> / ②~④ 모두 the umbrella를 가리키는 대명사"
+    "a": 1,
+    "x": "(a) 요일 · (d) 날씨 → <b>비인칭</b> / (b)(e) 가주어 · (c) 대명사"
+   },
+   {
+    "s": "①<u>It</u> was getting dark, and ②<u>it</u> started to rain. Goldilocks found a cottage. ③<u>It</u> looked warm and cozy. Soon ④<u>it</u> was midnight.",
+    "q": "①~④ 중 쓰임이 나머지와 <b>다른</b> 것은?",
+    "o": [
+     "①",
+     "②",
+     "③",
+     "④"
+    ],
+    "a": 2,
+    "x": "③ a cottage를 <b>가리키는 대명사</b> / ① 명암 ② 날씨 ④ 시간 → 비인칭"
+   },
+   {
+    "s": "A: What time is ⓐ___ now?<br>B: ⓑ___ is 7 p.m.<br>A: Is ⓒ___ a bus stop near here?<br>B: Yes, there is. ⓓ___ is 5 minutes from here.",
+    "q": "빈칸 ⓐ~ⓓ 중 It(it)이 들어갈 수 <b>없는</b> 것은?",
+    "o": [
+     "ⓐ",
+     "ⓑ",
+     "ⓒ",
+     "ⓓ"
+    ],
+    "a": 2,
+    "x": "'Yes, <b>there</b> is'로 답하니 ⓒ는 <b>there</b> / ⓐⓑ 시간 · ⓓ 거리 → 비인칭 it"
+   },
+   {
+    "s": "&lt;보기&gt; <u>It</u>'s very bright in the room.",
+    "q": "밑줄 친 It의 쓰임이 &lt;보기&gt;와 <b>다른</b> 것은?",
+    "o": [
+     "<u>It</u>'s too hot today.",
+     "<u>It</u>'s two o'clock.",
+     "<u>It</u>'s my favorite cap.",
+     "<u>It</u>'s dark outside.",
+     "<u>It</u>'s winter now."
+    ],
+    "a": 2,
+    "x": "③ 모자를 <b>가리키는 대명사</b> / &lt;보기&gt;와 나머지는 명암 · 날씨 · 시간 · 계절 비인칭"
    }
   ],
   "수여동사": [
-   {
-    "s": "그는 우리에게 샌드위치를 만들어 주었다.",
-    "q": "영어로 바르게 쓴 것은?",
-    "o": [
-     "He made sandwiches us.",
-     "He made us sandwiches.",
-     "He made we sandwiches.",
-     "He made to us sandwiches."
-    ],
-    "a": 1,
-    "x": "4형식: 동사 + <b>간접목적어(us)</b> + 직접목적어(sandwiches)"
-   },
-   {
-    "s": "He ______ his friend some flowers.",
-    "q": "빈칸에 들어갈 수 <b>없는</b> 것은?",
-    "o": [
-     "sent",
-     "gave",
-     "bought",
-     "saw"
-    ],
-    "a": 3,
-    "x": "saw는 수여동사가 아니라 목적어 2개를 못 가져요"
-   },
-   {
-    "s": "다음 중 어법상 <b>어색한</b> 문장은?",
-    "q": "고르세요",
-    "o": [
-     "Can you lend me a pen?",
-     "Who teaches them math?",
-     "I'll send to my family a Christmas card.",
-     "The police showed us the way."
-    ],
-    "a": 2,
-    "x": "send <b>my family a card</b> 또는 send a card <b>to my family</b>"
-   },
-   {
-    "s": "She showed (her new phone, me).",
-    "q": "괄호 안 말을 바르게 배열한 것은?",
-    "o": [
-     "She showed her new phone me.",
-     "She showed me her new phone.",
-     "She showed me to her new phone.",
-     "She showed to me her new phone."
-    ],
-    "a": 1,
-    "x": "4형식: <b>누구에게(me) + 무엇을(her new phone)</b>"
-   },
-   {
-    "s": "She bought her friend a book.<br>= She bought a book ______ her friend.",
-    "q": "빈칸에 알맞은 전치사는?",
-    "o": [
-     "to",
-     "for",
-     "of",
-     "in"
-    ],
-    "a": 1,
-    "x": "buy → <b>for</b> (친구를 위해 사 주다)"
-   },
-   {
-    "s": "다음 중 문장의 형식이 <b>다른</b> 하나는?",
-    "q": "고르세요",
-    "o": [
-     "She lent me her jacket.",
-     "I made my mom a cup of coffee.",
-     "He sent his favorite singer an email.",
-     "We bought a delicious cake for the party."
-    ],
-    "a": 3,
-    "x": "④는 3형식 (for the party = 수식어) / 나머지는 4형식"
-   },
    {
     "s": "· Bill sent a letter by me.<br>· Do you teach the students English?<br>· Who bought the book him?<br>· Could you give Mary a call?<br>· Grandma always tells funny stories us.",
     "q": "어법상 옳은 문장의 개수는?",
@@ -720,6 +624,58 @@
     ],
     "a": 1,
     "x": "옳은 것: teach the students English / give Mary a call → <b>2개</b><br>sent a letter <b>to</b> me · bought <b>him the book</b> · tells <b>us funny stories</b>"
+   },
+   {
+    "s": "다음 문장을 3형식으로 바꿀 때 쓰이는 전치사가 나머지 넷과 <b>다른</b> 것은?",
+    "q": "고르세요",
+    "o": [
+     "She gave me a book.",
+     "He sent his mom a card.",
+     "Dad bought me a new bike.",
+     "I showed him my photos.",
+     "She told us a funny story."
+    ],
+    "a": 2,
+    "x": "buy → <b>for</b> (~를 위해 사 주다) / give · send · show · tell → <b>to</b>"
+   },
+   {
+    "s": "다음 중 빈칸에 <b>for</b>가 들어가는 것은?",
+    "q": "고르세요",
+    "o": [
+     "Can you lend your pen ___ me?",
+     "He asked a question ___ the teacher.",
+     "Mom cooked spaghetti ___ us.",
+     "I'll send an email ___ you.",
+     "She taught science ___ the students."
+    ],
+    "a": 2,
+    "x": "cook → <b>for</b> / lend · send · teach → to / ask → <b>of</b>"
+   },
+   {
+    "s": "· He made me a kite. = He made a kite ⓐ___ me.<br>· Can I ask you a favor? = Can I ask a favor ⓑ___ you?",
+    "q": "ⓐ, ⓑ에 알맞은 말이 바르게 짝지어진 것은?",
+    "o": [
+     "to – to",
+     "for – of",
+     "for – to",
+     "to – of",
+     "of – for"
+    ],
+    "a": 1,
+    "x": "make → <b>for</b> · ask → <b>of</b>"
+   },
+   {
+    "s": "다음 중 어법상 <b>옳은</b> 것은?",
+    "q": "고르세요",
+    "o": [
+     "She bought for me a hat.",
+     "Please pass me the salt.",
+     "He showed to us his room.",
+     "I'll send you to a letter.",
+     "Mom made a cake to me."
+    ],
+    "a": 1,
+    "x": "② pass + 간접목적어 + 직접목적어 (4형식) ✔<br>① bought me a hat ③ showed us his room ④ send you a letter ⑤ made a cake <b>for</b> me"
    },
    {
     "s": "다음 중 어법상 <b>틀린</b> 것은?",
@@ -746,54 +702,69 @@
     "x": "hear는 <b>수여동사가 아니라</b> 목적어 2개를 못 가져요"
    },
    {
-    "s": "They showed me his pictures.",
-    "q": "3형식으로 바르게 바꾼 것은?",
+    "s": "다음 중 문장의 형식이 <b>다른</b> 하나는?",
+    "q": "고르세요",
     "o": [
-     "They showed his pictures me.",
-     "They showed his pictures to me.",
-     "They showed his pictures for me.",
-     "They showed to me his pictures."
+     "She lent me her jacket.",
+     "I made my mom a cup of coffee.",
+     "He sent his favorite singer an email.",
+     "We bought a delicious cake for the party."
     ],
-    "a": 1,
-    "x": "show → 3형식에서 <b>to</b> + 간접목적어"
+    "a": 3,
+    "x": "④는 3형식 (for the party = 수식어) / 나머지는 4형식"
    }
   ],
   "시간의 접속사": [
    {
-    "s": "When Amy ______, we will have dinner.",
-    "q": "빈칸에 알맞은 것은?",
+    "s": "①School starts at eight every morning. ②Before I go to class, I prepare my books. ③After school ends, I will join the sports club. ④Before I will go home, I will check my homework.",
+    "q": "①~④ 중 어법상 <b>어색한</b> 것은?",
     "o": [
-     "will arrive",
-     "arrives",
-     "arriving",
-     "arrive"
+     "①",
+     "②",
+     "③",
+     "④"
     ],
-    "a": 1,
-    "x": "시간의 부사절은 미래라도 <b>현재 시제</b> → arrives"
+    "a": 3,
+    "x": "시간의 부사절은 미래라도 <b>현재 시제</b> → Before I <b>go</b> home"
    },
    {
-    "s": "다음 중 의미가 <b>어색한</b> 문장은?",
-    "q": "고르세요",
+    "s": "&lt;보기&gt; I was sleeping <u>when</u> you called me.",
+    "q": "밑줄 친 when의 쓰임이 &lt;보기&gt;와 같은 것은?",
     "o": [
-     "Let's go out after it stops raining.",
-     "He loved chocolate when he was a child.",
-     "Brush your teeth first before you wake up.",
-     "When he heard the news, he was very excited."
+     "<u>When</u> is your birthday?",
+     "I don't know <u>when</u> he will come.",
+     "<u>When</u> I was young, I lived in Busan.",
+     "<u>When</u> did you meet her?",
+     "Tell me <u>when</u> the store opens."
     ],
     "a": 2,
-    "x": "잠에서 깨기 '전에' 양치 → 불가능! before → <b>after</b>"
+    "x": "&lt;보기&gt;·③ '~할 때' <b>접속사</b> / ①④ 의문사 '언제' ②⑤ '언제 ~하는지'"
    },
    {
-    "s": "After school ______ over, I'll go to the gym.",
-    "q": "빈칸에 알맞은 것은?",
+    "s": "Mina finished her homework. Then she watched TV.",
+    "q": "두 문장을 한 문장으로 바르게 바꾼 것은?",
     "o": [
-     "will be",
-     "is",
-     "was",
-     "be"
+     "Mina finished her homework after she watched TV.",
+     "Mina watched TV before she finished her homework.",
+     "After Mina finished her homework, she watched TV.",
+     "When Mina watched TV, she finished her homework.",
+     "Mina finished her homework before she watches TV."
     ],
-    "a": 1,
-    "x": "시간의 부사절 → 미래 대신 <b>현재 시제 is</b>"
+    "a": 2,
+    "x": "숙제를 <b>끝낸 후에</b> TV → After + 먼저 한 일 / ①② 순서가 반대 ⑤ 시제 불일치"
+   },
+   {
+    "s": "다음 중 어법상 <b>옳은</b> 것은?",
+    "q": "고르세요",
+    "o": [
+     "I'll call you when I will arrive.",
+     "After he will finish dinner, he'll go out.",
+     "Before she goes to bed, she will read a book.",
+     "When I will be free, I'll help you.",
+     "We will start after everyone will come."
+    ],
+    "a": 2,
+    "x": "시간의 부사절은 미래라도 <b>현재 시제</b> → ③ goes ✔ / 나머지는 will을 빼야 해요"
    },
    {
     "s": "· She takes a nap ⓐ___ she's tired.<br>· ⓑ___ you leave, close all the windows.<br>· He got better ⓒ___ he took the medicine.",
@@ -808,40 +779,17 @@
     "x": "피곤할 <b>때</b> 낮잠 / 떠나기 <b>전에</b> 창문 닫기 / 약을 먹은 <b>후</b> 나음"
    },
    {
-    "s": "밑줄 친 When의 쓰임이 나머지와 <b>다른</b> 하나는?",
+    "s": "밑줄 친 before / after가 <b>접속사</b>로 쓰인 것은?",
     "q": "고르세요",
     "o": [
-     "<u>When</u> did she first meet him?",
-     "<u>When</u> will you be back home?",
-     "<u>When</u> do you usually have dinner?",
-     "<u>When</u> he opened the gift, he was surprised."
+     "I brush my teeth <u>after</u> lunch.",
+     "We arrived <u>before</u> noon.",
+     "<u>After</u> the movie, we had dinner.",
+     "Call me <u>before</u> you leave home.",
+     "He came home <u>after</u> dinner."
     ],
     "a": 3,
-    "x": "④ '~할 때' <b>접속사</b> / 나머지는 '언제' 의문사"
-   },
-   {
-    "s": "나는 양치질을 한 후에 TV를 볼 것이다.<br>I will watch TV after I ______ my teeth.",
-    "q": "빈칸에 알맞은 것은?",
-    "o": [
-     "will brush",
-     "brush",
-     "brushed",
-     "brushing"
-    ],
-    "a": 1,
-    "x": "시간의 부사절은 미래라도 <b>현재 시제</b> → brush"
-   },
-   {
-    "s": "①School starts at eight every morning. ②Before I go to class, I prepare my books. ③After school ends, I will join the sports club. ④Before I will go home, I will check my homework.",
-    "q": "①~④ 중 어법상 <b>어색한</b> 것은?",
-    "o": [
-     "①",
-     "②",
-     "③",
-     "④"
-    ],
-    "a": 3,
-    "x": "시간의 부사절은 미래라도 <b>현재 시제</b> → Before I <b>go</b> home"
+    "x": "④ 뒤에 <b>주어 + 동사</b>(you leave) → 접속사 / 나머지는 뒤에 명사만 → 전치사"
    },
    {
     "s": "민호의 저녁: 6시 저녁 식사 → 8시 숙제 → 10시 취침",
