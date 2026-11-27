@@ -520,7 +520,7 @@ function playDrumSong({ song = 1, base = 0, ext = null } = {}) {
           const x = qLayer.querySelector('.dq-x');
           if (ok) {
             const left = Math.max(0, Q.tEnd - clock()); const bonus = 1000 + Math.round((left / Q.dur) * 1000);
-            S.qOk++; S.lvl = Math.min(4, S.lvl + 1); S.score += bonus; S.fever = 8 * 8 * STEP; S.shield = 3; S.pendingJam = true; fanfare(); cheer(2.6, 1);
+            S.qOk++; S.qPts = (S.qPts || 0) + (Q.pts || 0); S.lvl = Math.min(4, S.lvl + 1); S.score += bonus; S.fever = 8 * 8 * STEP; S.shield = 3; S.pendingJam = true; fanfare(); cheer(2.6, 1);
             ctx.callout(S.qOk >= 3 ? 'legend' : 'wow', `정답! 🥁 드럼 솔로!`); ctx.burst(ctx.W / 2, ctx.H * 0.4, 50, ['#FFD43B', '#fff', '#E21E8C']);
             x.innerHTML = `<b class="ok">⭕ 정답! +${bonus}</b> ${Q.explain || ''}`;
           } else {
@@ -634,7 +634,7 @@ function playDrumSong({ song = 1, base = 0, ext = null } = {}) {
         const acc = Math.round((ok / total) * 100);
         if (acc >= 60) cheer(2.8, 1);
         if (ext) {
-          ctx.end({ acc, qOk: S.qOk, qN: S.qN, score: S.score, cleared: acc >= 60, coins: 0, snack: null,
+          ctx.end({ acc, qOk: S.qOk, qN: S.qN, qPts: S.qPts || 0, score: S.score, cleared: acc >= 60, coins: 0, snack: null,
             headline: S.qOk === S.qN ? '📚 문법 만점 연주!' : acc >= 60 ? '🥁 연주 성공!' : '연주 끝!', legendAt: 120000,
             lines: [`정확도 <b>${acc}%</b> · 최고 콤보 <b>${S.best}</b>`, '드럼 점수는 총점 · 드럼 순위에 더해져요'] });
           return;

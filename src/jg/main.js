@@ -27,8 +27,15 @@ const N_ITEMS = W.length * 2;
 const CIRC = '①②③④⑤';
 const POS = { n: 'n.', v: 'v.', a: 'a.', ad: 'ad.', phr: 'phr.' };
 // 🎯 배점: 객관식 < 직접 쓰기(서답형), 고난도 단어는 더 높게 · 게임 속 문제도 난이도별 배점
-const PTS = { mc: 100, mcHard: 150, type: 200, typeHard: 300, gram: 500, sent2: 400, sent3: 600, lane: 200, dlgWord: 300, dlgOrder: 400 };
-const isHard = (w) => HARD_SET.has(w.w) || w.p === 'phr';
+//  단어: 유형(문장 넣기 < 영영풀이) × 형식(객관식 < 직접 쓰기) × 단어 난이도(★ 기본 · ★★ 중 · 🔥 고난도)
+const WORD_PTS = { sen: { mc: [100, 120, 150], type: [200, 250, 300] }, def: { mc: [120, 150, 200], type: [250, 300, 400] } };
+const WLAB = ['★ 기본', '★★ 중', '🔥 고난도'];
+//  문법 드럼: 문제 난이도(중상 · 상 · 최상) — 1곡 → 3곡으로 갈수록 어려운 문제
+const GPTS = { 2: 400, 3: 500, 4: 700 }; const GLAB = { 2: '★★ 중상', 3: '★★★ 상', 4: '🔥 최상' };
+//  대화문: 단어 배열은 문장 길이 · 전치사+동명사, 대화 순서는 맞출 대사 수
+const dlgWordPts = (d) => { const n = d.en.split(/\s+/).length; return (n <= 6 ? 250 : n <= 8 ? 300 : 350) + (/\b(in|about) \w+ing\b/.test(d.en) ? 100 : 0); };
+const dlgOrderPts = (c) => (c.lines.length - 1 >= 4 ? 500 : 400);
+const PTS = { sent2: 400, sent3: 600, lane: 200 };
 const koShort = (w) => w.ko.replace(/\(.*?\)/g, '').split(/[,;]/)[0].trim();
 // 🛣️ 카트 단어 레인에 나올 어려운 단어들
 const HARD_LIST = ['photography', 'photographer', 'permission', 'wrangler', 'storytelling', 'capture', 'forgive', 'personal', 'unique', 'shocking', 'asleep', 'break into', 'in surprise', 'location', 'signal', 'editor', 'cottage', 'follower', 'be in charge of', 'take care of'];
@@ -79,7 +86,17 @@ function newRun(name, char) {
   // 🥁 드럼 3곡 × 문법 5문제 (곡마다 네 가지 문법 한 문제씩 + 하나 더 · 겹치지 않게)
   const gpool = {}; GRAM_CATS.forEach((c) => { gpool[c] = shuffle(data.grammar[c].map((_, i) => i)); });
   const EXTRA = ['수여동사', 'to부정사', '시간의 접속사'];
-  const gram = [0, 1, 2].map((r) => shuffle([...GRAM_CATS, EXTRA[r]]).map((c) => ({ c, i: gpool[c].pop() })));
+  // 문법 문제는 쉬운 것 → 어려운 것 순으로 1곡 · 2곡 · 3곡에 나눠 줌 (같은 난이도 안에서는 무작위)
+  // 문법마다 쉬운 것 → 어려운 것으로 줄 세운 뒤 고르게 뽑아서: 1곡 = 쉬운 쪽 · 3곡 = 가장 어려운 쪽 (같은 난이도 안에서는 무작위)
+  void gpool;
+  const lists = [0, 1, 2].map((r) => [...GRAM_CATS, EXTRA[r]]);
+  const picks = {};
+  GRAM_CATS.forEach((c) => {
+    const sorted = shuffle(data.grammar[c].map((q, i) => ({ c, i, d: q.d || 3 }))).sort((a, b) => a.d - b.d);
+    const k = lists.reduce((n, L) => n + L.filter((x) => x === c).length, 0);
+    picks[c] = Array.from({ length: k }, (_, j) => sorted[Math.round((j * (sorted.length - 1)) / Math.max(1, k - 1))]);
+  });
+  const gram = lists.map((L) => shuffle(L.map((c) => picks[c].shift())).map(({ c, i }) => ({ c, i })));
   // 🏎️ 카트 3판 × 본문 핵심 문장 5개 = 15문장 · 단어 레인 4번씩
   const sent = shuffle(data.sentences.map((_, i) => i));
   const sents = [0, 1, 2].map((r) => sent.slice(r * 5, r * 5 + 5));
@@ -179,7 +196,11 @@ function guide() {
       <li><b>💬 대화문 사격장 2판</b> — 1판: 한글 문장을 보고 영어 단어를 <em>순서대로</em> 쏴서 완성 (10문장) · 2판: 첫 마디 다음 <em>대사 순서</em> 맞히기 (대화 5개)<small>헷갈리는 오답 과녁 · 가짜 대사 조심! · 문장 30초 · 대화 45초</small></li>
       <li><b>🏆 마지막</b> — 게임 퀴즈까지 합친 정답률 <em>90% 이상이면 PASS!</em> · 총점 · 드럼 · 카트 · 대화문 순위</li>
     </ol>
-    <div class="score-rule"><b>배점</b> 단어 객관식 <b>100</b> (🔥고난도 150) · 직접 쓰기 <b>200</b> (🔥고난도 300) · 연속 정답 보너스<br>문법 드럼 🔥<b>500</b> · 본문 영작 빈칸 2개 <b>400</b> / 3개 🔥<b>600</b> · 단어 레인 <b>200</b> · 대화문 단어 배열 <b>300</b> / 대화 순서 <b>400</b> + 각 게임 점수</div>
+    <div class="score-rule"><b>배점</b> (★ 기본 / ★★ 중 / 🔥 고난도)
+      <table class="ptab"><tr><th></th><th>객관식</th><th>직접 쓰기</th></tr>
+        <tr><td>✏️ 문장 넣기</td><td>100 / 120 / 150</td><td>200 / 250 / 300</td></tr>
+        <tr><td>📖 영영풀이</td><td>120 / 150 / 200</td><td>250 / 300 / 400</td></tr></table>
+      🥁 문법: 중상 400 · 상 500 · 🔥최상 700 (1곡 → 3곡 갈수록 어려워져요)<br>🏎️ 본문 빈칸 2개 400 · 3개 🔥600 · 단어 레인 200<br>💬 단어 배열 250~450 (긴 문장 · 전치사+동명사 🔥) · 대화 순서 400~🔥500<br>+ 연속 정답 보너스 · 각 게임 점수</div>
     <div class="prize"><h3>🎁 상품</h3><ul><li>${PRIZE.total}</li><li>${PRIZE.games}</li><li>${PRIZE.perfect}</li></ul></div>
     <button class="primary big" id="go">🚀 출발!</button></div>`;
   app.querySelector('#go').onclick = () => { unlockAudio(); next(); };
@@ -210,9 +231,9 @@ let qTimer = null;
 function question() {
   const it = S.items[S.i]; const w = W[it.wi];
   const ans = it.k === 'sen' && w.a ? w.a : w.w;
-  const hard = isHard(w);
-  const base = it.f === 'mc' ? (hard ? PTS.mcHard : PTS.mc) : (hard ? PTS.typeHard : PTS.type);
-  const head = `<div class="qtag"><span class="l l${w.l}">Lesson ${w.l}</span><span>${it.k === 'def' ? '📖 영영풀이' : '✏️ 문장 넣기'}</span><span class="${it.f}">${it.f === 'mc' ? '객관식' : '⌨️ 직접 쓰기'}</span>${hard ? '<span class="hard">🔥 고난도</span>' : ''}<span class="pt">${base}점</span><em>${S.i + 1}번</em></div>`;
+  const lv = (w.d || 2) - 1;
+  const base = WORD_PTS[it.k][it.f][lv];
+  const head = `<div class="qtag"><span class="l l${w.l}">Lesson ${w.l}</span><span>${it.k === 'def' ? '📖 영영풀이' : '✏️ 문장 넣기'}</span><span class="${it.f}">${it.f === 'mc' ? '객관식' : '⌨️ 직접 쓰기'}</span><span class="lv lv${lv + 1}">${WLAB[lv]}</span><span class="pt">${base}점</span><em>${S.i + 1}번</em></div>`;
   const prompt = it.k === 'def'
     ? `<p class="ask">다음 영영풀이에 알맞은 ${w.p === 'phr' ? '표현' : '단어'}는?</p><div class="def"><small>${POS[w.p]}</small>${esc(w.def)}</div>`
     : `<p class="ask">빈칸에 알맞은 ${w.p === 'phr' ? '표현' : '단어'}는?</p><div class="sen">${blankHTML(w.ex)}</div>`;
@@ -348,7 +369,8 @@ async function playGame(k) {
       const fixed = q.o.some((t) => /^[①-⑤ⓐ-ⓔ(]|개$/.test(t));
       const order = fixed ? q.o.map((_, j) => j) : shuffle(q.o.map((_, j) => j));
       const pos = order.indexOf(q.a);
-      return { tag: `${c} · 🔥 고난도 ${PTS.gram}점`, sentHTML: q.s, ask: q.q, opts: order.map((j, n) => ({ v: String(n), label: `${CIRC[n]} ${q.o[j]}` })), ans: String(pos), ansLabel: `${CIRC[pos]} ${q.o[q.a]}`, explain: q.x };
+      const dl = q.d || 3;
+      return { tag: `${c} · ${GLAB[dl]} ${GPTS[dl]}점`, pts: GPTS[dl], sentHTML: q.s, ask: q.q, opts: order.map((j, n) => ({ v: String(n), label: `${CIRC[n]} ${q.o[j]}` })), ans: String(pos), ansLabel: `${CIRC[pos]} ${q.o[q.a]}`, explain: q.x };
     });
     r = await playDrumLesson({ song: g.song, round: g.round, rounds: 3, quizzes, quizSec: GAME_Q_SEC, words: drumWords(), prizeNote: '드럼 3곡 합계 1~5위 초코파이 · 오예스!' });
   } else if (g.kind === 'kart') {
@@ -359,10 +381,10 @@ async function playGame(k) {
     r = await playKartLesson({ charId: S.char, name: S.name, round: g.round, rounds: 3, quizzes, lanes: laneSet(g.round - 1), quizSec: GAME_Q_SEC, prizeNote: '카트 3판 합계 1~5위 초코파이 · 오예스!' });
   } else {
     if (g.round === 1) { // 1판: 대화문 핵심 10문장 — 단어를 순서대로 쏴서 문장 완성
-      const sentences = shuffle(data.dialogs.slice()).map((d) => ({ ...d, who: `${d.who} · ${PTS.dlgWord}점` }));
+      const sentences = shuffle(data.dialogs.slice()).map((d) => { const pts = dlgWordPts(d); return { ...d, pts, who: `${d.who} · ${pts >= 400 ? '🔥 고난도 ' : ''}${pts}점` }; });
       r = await playShootDialog({ sentences, mode: 'words', round: 1, rounds: 2, sec: 30 });
     } else { // 2판: 대화 5개 — 첫 마디 다음 대사를 순서대로 쏴서 대화 완성
-      const convos = shuffle(data.convos.slice()).map((d) => ({ ...d, who: `${d.who} · 🔥 ${PTS.dlgOrder}점` }));
+      const convos = shuffle(data.convos.slice()).map((d) => { const pts = dlgOrderPts(d); return { ...d, pts, who: `${d.who} · ${pts >= 500 ? '🔥 고난도 ' : ''}${pts}점` }; });
       r = await playShootDialog({ convos, mode: 'order', round: 2, rounds: 2, sec: 45 });
     }
   }
@@ -376,7 +398,7 @@ async function playGame(k) {
   }
   const raw = Math.round(r.score || 0);
   const qOk = r.qOk || 0; const laneOk = r.laneOk || 0;
-  const pts = g.kind === 'drum' ? Math.round(raw / 100) + qOk * PTS.gram : g.kind === 'kart' ? raw + (r.qPts ?? qOk * PTS.sent2) + laneOk * PTS.lane : Math.round(raw / 2) + qOk * (g.round === 1 ? PTS.dlgWord : PTS.dlgOrder);
+  const pts = g.kind === 'drum' ? Math.round(raw / 100) + (r.qPts ?? qOk * 500) : g.kind === 'kart' ? raw + (r.qPts ?? qOk * PTS.sent2) + laneOk * PTS.lane : Math.round(raw / 2) + (r.qPts ?? qOk * 300);
   S.games[k] = { kind: g.kind, raw, pts, qOk, qN: r.qN || 5, laneOk, place: r.place };
   S.score += pts; save();
   reportStep(k);

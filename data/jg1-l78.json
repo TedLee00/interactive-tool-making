@@ -8,7 +8,8 @@
    "p": "phr",
    "def": "to manage or take control of something or someone",
    "ex": "The coach ___ the team practice.",
-   "a": "is in charge of"
+   "a": "is in charge of",
+   "d": 3
   },
   {
    "l": 7,
@@ -16,7 +17,8 @@
    "ko": "진정시키다; 침착한",
    "p": "v",
    "def": "to make someone stop feeling upset, angry, or excited",
-   "ex": "I listened to music to ___ myself."
+   "ex": "I listened to music to ___ myself.",
+   "d": 2
   },
   {
    "l": 7,
@@ -24,7 +26,8 @@
    "ko": "(사진·영상에) 담다, 포착하다",
    "p": "v",
    "def": "to photograph, film, record, paint, etc. somebody or something",
-   "ex": "He pressed the camera button to ___ the sunset."
+   "ex": "He pressed the camera button to ___ the sunset.",
+   "d": 3
   },
   {
    "l": 7,
@@ -32,7 +35,8 @@
    "ko": "체스",
    "p": "n",
    "def": "a game for two people on a square board, in which each person has 16 pieces that can be moved on the board in different ways",
-   "ex": "Dad and I often play ___ after dinner."
+   "ex": "Dad and I often play ___ after dinner.",
+   "d": 1
   },
   {
    "l": 7,
@@ -40,7 +44,8 @@
    "ko": "삭제하다, 지우다",
    "p": "v",
    "def": "to remove something from a written or electronic text",
-   "ex": "How can I ___ a post on social media?"
+   "ex": "How can I ___ a post on social media?",
+   "d": 1
   },
   {
    "l": 7,
@@ -48,7 +53,8 @@
    "ko": "감독",
    "p": "n",
    "def": "a person in charge of a film or play who tells the actors and staff what to do",
-   "ex": "The ___ won an award at the film festival."
+   "ex": "The ___ won an award at the film festival.",
+   "d": 2
   },
   {
    "l": 7,
@@ -56,7 +62,8 @@
    "ko": "편집자",
    "p": "n",
    "def": "a person who makes changes to texts or films",
-   "ex": "The ___ of the book checked grammar and spelling."
+   "ex": "The ___ of the book checked grammar and spelling.",
+   "d": 2
   },
   {
    "l": 7,
@@ -64,7 +71,8 @@
    "ko": "효과",
    "p": "n",
    "def": "lights, sounds, special scenery, computer images, etc. used in a play or film, especially in order to show things that do not normally exist or happen",
-   "ex": "The sound ___s of the movie were amazing."
+   "ex": "The sound ___s of the movie were amazing.",
+   "d": 3
   },
   {
    "l": 7,
@@ -72,7 +80,8 @@
    "ko": "기술자, 엔지니어",
    "p": "n",
    "def": "a person whose job is to repair or control machines, engines, or electrical equipment",
-   "ex": "He wants to be a computer ___."
+   "ex": "He wants to be a computer ___.",
+   "d": 1
   },
   {
    "l": 7,
@@ -80,7 +89,8 @@
    "ko": "인터뷰, 면담",
    "p": "n",
    "def": "a meeting in which someone answers questions about himself or herself for a newspaper article, television show, etc.",
-   "ex": "Did you hear the ___ with the actor on the radio?"
+   "ex": "Did you hear the ___ with the actor on the radio?",
+   "d": 3
   },
   {
    "l": 7,
@@ -88,7 +98,8 @@
    "ko": "장소, 위치",
    "p": "n",
    "def": "a particular place or position that something is in",
-   "ex": "This map shows the ___ of the restaurant."
+   "ex": "This map shows the ___ of the restaurant.",
+   "d": 2
   },
   {
    "l": 7,
@@ -96,7 +107,8 @@
    "ko": "쇼핑몰",
    "p": "n",
    "def": "a building or group of buildings with connected hallways with shops, restaurants, theaters, etc.",
-   "ex": "I went to the shopping ___ to buy a coat."
+   "ex": "I went to the shopping ___ to buy a coat.",
+   "d": 1
   },
   {
    "l": 7,
@@ -104,7 +116,8 @@
    "ko": "관리자, 매니저",
    "p": "n",
    "def": "a person in control of an office, shop, team, etc.",
-   "ex": "The hotel ___ was always kind and smiling."
+   "ex": "The hotel ___ was always kind and smiling.",
+   "d": 1
   },
   {
    "l": 7,
@@ -112,7 +125,8 @@
    "ko": "순간",
    "p": "n",
    "def": "a very short period of time",
-   "ex": "Every ___ with my friends was happy."
+   "ex": "Every ___ with my friends was happy.",
+   "d": 2
   },
   {
    "l": 7,
@@ -120,7 +134,8 @@
    "ko": "사진작가",
    "p": "n",
    "def": "a person who takes photographs, either as a job or hobby",
-   "ex": "The ___ took lots of photos of the city."
+   "ex": "The ___ took lots of photos of the city.",
+   "d": 3
   },
   {
    "l": 7,
@@ -128,7 +143,8 @@
    "ko": "사진(촬영)술",
    "p": "n",
    "def": "the skill or activity of taking photographs",
-   "ex": "James is interested in ___, and he wants to buy an expensive camera."
+   "ex": "James is interested in ___, and he wants to buy an expensive camera.",
+   "d": 3
   },
   {
    "l": 7,
@@ -136,7 +152,8 @@
    "ko": "녹화하다, 녹음하다",
    "p": "v",
    "def": "to store music, sound, or pictures on tape or disks",
-   "ex": "This camera will ___ the parking lot at night."
+   "ex": "This camera will ___ the parking lot at night.",
+   "d": 2
   },
   {
    "l": 7,
@@ -144,7 +161,8 @@
    "ko": "쌀, 밥",
    "p": "n",
    "def": "a white or brown grain that you boil in water until it becomes soft enough to eat",
-   "ex": "Koreans eat ___ almost every day for meals."
+   "ex": "Koreans eat ___ almost every day for meals.",
+   "d": 1
   },
   {
    "l": 7,
@@ -152,7 +170,8 @@
    "ko": "촬영하다",
    "p": "v",
    "def": "to use a camera to record a video or take a photograph",
-   "ex": "I can ___ a movie on my phone."
+   "ex": "I can ___ a movie on my phone.",
+   "d": 2
   },
   {
    "l": 7,
@@ -160,7 +179,8 @@
    "ko": "신호",
    "p": "n",
    "def": "an action or thing that sends a message, often not using words",
-   "ex": "A red light is a ___ of danger."
+   "ex": "A red light is a ___ of danger.",
+   "d": 2
   },
   {
    "l": 7,
@@ -168,7 +188,8 @@
    "ko": "기술, 솜씨",
    "p": "n",
    "def": "an ability to do something very well because you have learned it",
-   "ex": "This book will improve your writing ___s."
+   "ex": "This book will improve your writing ___s.",
+   "d": 2
   },
   {
    "l": 7,
@@ -176,7 +197,8 @@
    "ko": "이야기하기",
    "p": "n",
    "def": "the activity of writing, telling, or reading stories",
-   "ex": "The writer's ___ skills are great."
+   "ex": "The writer's ___ skills are great.",
+   "d": 3
   },
   {
    "l": 7,
@@ -184,7 +206,8 @@
    "ko": "작업실, 스튜디오",
    "p": "n",
    "def": "a room with special equipment where television or radio programs or music recordings are made",
-   "ex": "She painted most of her paintings in this ___."
+   "ex": "She painted most of her paintings in this ___.",
+   "d": 2
   },
   {
    "l": 7,
@@ -192,7 +215,8 @@
    "ko": "~을 돌보다",
    "p": "phr",
    "def": "to protect someone or something and provide the things that person or thing needs",
-   "ex": "Her job is to ___ bears in the zoo."
+   "ex": "Her job is to ___ bears in the zoo.",
+   "d": 3
   },
   {
    "l": 7,
@@ -200,7 +224,8 @@
    "ko": "파도",
    "p": "n",
    "def": "a part of the ocean that is going up and down as it moves along",
-   "ex": "At the beach, many surfers are riding the large ___s."
+   "ex": "At the beach, many surfers are riding the large ___s.",
+   "d": 1
   },
   {
    "l": 7,
@@ -208,7 +233,8 @@
    "ko": "(가축) 조련사, 카우보이",
    "p": "n",
    "def": "someone who controls and looks after animals, especially horses or cows on a large farm",
-   "ex": "The ___ led the cows back to the farm."
+   "ex": "The ___ led the cows back to the farm.",
+   "d": 3
   },
   {
    "l": 7,
@@ -216,7 +242,8 @@
    "ko": "감기 걸리다",
    "p": "phr",
    "def": "to become sick with a cold",
-   "ex": "Did you ___?"
+   "ex": "Did you ___?",
+   "d": 1
   },
   {
    "l": 7,
@@ -224,7 +251,8 @@
    "ko": "미래에",
    "p": "phr",
    "def": "at a time after now; from now on",
-   "ex": "What do you want to be ___?"
+   "ex": "What do you want to be ___?",
+   "d": 1
   },
   {
    "l": 8,
@@ -232,7 +260,8 @@
    "ko": "잠이 든, 자고 있는",
    "p": "a",
    "def": "sleeping",
-   "ex": "Everyone is ___, and the whole house is quiet."
+   "ex": "Everyone is ___, and the whole house is quiet.",
+   "d": 2
   },
   {
    "l": 8,
@@ -240,7 +269,8 @@
    "ko": "지루한",
    "p": "a",
    "def": "not interesting",
-   "ex": "The party was ___, and I left early."
+   "ex": "The party was ___, and I left early.",
+   "d": 1
   },
   {
    "l": 8,
@@ -248,7 +278,8 @@
    "ko": "몰래 침입하다, 침입하다",
    "p": "phr",
    "def": "to enter a room or a building illegally or by force",
-   "ex": "The man will ___ the store through the back door."
+   "ex": "The man will ___ the store through the back door.",
+   "d": 3
   },
   {
    "l": 8,
@@ -256,7 +287,8 @@
    "ko": "오두막",
    "p": "n",
    "def": "a small house, usually in the country",
-   "ex": "They spent the weekend in a ___ in the mountains."
+   "ex": "They spent the weekend in a ___ in the mountains.",
+   "d": 2
   },
   {
    "l": 8,
@@ -264,7 +296,8 @@
    "ko": "추종자, 팬, 팔로워",
    "p": "n",
    "def": "someone who follows others on their social media",
-   "ex": "The actor gained a lot of new ___s on his social media."
+   "ex": "The actor gained a lot of new ___s on his social media.",
+   "d": 2
   },
   {
    "l": 8,
@@ -272,7 +305,8 @@
    "ko": "영원히",
    "p": "ad",
    "def": "for all of the time in the future",
-   "ex": "They promised to be friends ___."
+   "ex": "They promised to be friends ___.",
+   "d": 2
   },
   {
    "l": 8,
@@ -280,7 +314,8 @@
    "ko": "용서하다",
    "p": "v",
    "def": "to stop being angry with someone who has done something wrong",
-   "ex": "Josh will ___ his sister for stealing his pencil."
+   "ex": "Josh will ___ his sister for stealing his pencil.",
+   "d": 3
   },
   {
    "l": 8,
@@ -288,7 +323,8 @@
    "ko": "구멍",
    "p": "n",
    "def": "an empty space, especially where something is broken or torn",
-   "ex": "There was a ___ in my sock."
+   "ex": "There was a ___ in my sock.",
+   "d": 1
   },
   {
    "l": 8,
@@ -296,7 +332,8 @@
    "ko": "놀라서",
    "p": "phr",
    "def": "causing a feeling of surprise",
-   "ex": "She couldn't say a word ___."
+   "ex": "She couldn't say a word ___.",
+   "d": 3
   },
   {
    "l": 8,
@@ -304,7 +341,8 @@
    "ko": "(문을) 두드리다, 노크하다",
    "p": "v",
    "def": "to hit a door with your hand so that someone inside knows you are there",
-   "ex": "Please ___ before you enter my room."
+   "ex": "Please ___ before you enter my room.",
+   "d": 1
   },
   {
    "l": 8,
@@ -312,7 +350,8 @@
    "ko": "열거하다; 목록",
    "p": "v",
    "def": "to mention things one after another",
-   "ex": "Can you ___ your favorite desserts for me?"
+   "ex": "Can you ___ your favorite desserts for me?",
+   "d": 2
   },
   {
    "l": 8,
@@ -320,7 +359,8 @@
    "ko": "시끄러운",
    "p": "a",
    "def": "full of noise and sounds",
-   "ex": "The classroom became ___ when the teacher stepped out."
+   "ex": "The classroom became ___ when the teacher stepped out.",
+   "d": 1
   },
   {
    "l": 8,
@@ -328,7 +368,8 @@
    "ko": "허락, 허가",
    "p": "n",
    "def": "the act of allowing someone to do something",
-   "ex": "You need ___ to use this photo."
+   "ex": "You need ___ to use this photo.",
+   "d": 3
   },
   {
    "l": 8,
@@ -336,7 +377,8 @@
    "ko": "개인적인",
    "p": "a",
    "def": "relating to a single or particular person",
-   "ex": "The writer shared his ___ story in the book."
+   "ex": "The writer shared his ___ story in the book.",
+   "d": 3
   },
   {
    "l": 8,
@@ -344,7 +386,8 @@
    "ko": "게시하다; 게시물",
    "p": "v",
    "def": "to put information or pictures on a website",
-   "ex": "After you finish your homework, ___ it on the school website."
+   "ex": "After you finish your homework, ___ it on the school website.",
+   "d": 2
   },
   {
    "l": 8,
@@ -352,7 +395,8 @@
    "ko": "누르다",
    "p": "v",
    "def": "to push something with your finger",
-   "ex": "___ the button to open the door."
+   "ex": "___ the button to open the door.",
+   "d": 1
   },
   {
    "l": 8,
@@ -360,7 +404,8 @@
    "ko": "논평, 비평, 후기",
    "p": "n",
    "def": "a report in a newspaper, magazine, or program that gives an opinion about a new book, film, etc.",
-   "ex": "She reads book ___s before she chooses a novel."
+   "ex": "She reads book ___s before she chooses a novel.",
+   "d": 2
   },
   {
    "l": 8,
@@ -368,7 +413,8 @@
    "ko": "셀피(셀카)",
    "p": "n",
    "def": "a photograph that you take of yourself, usually with a mobile phone",
-   "ex": "He took a ___ with his phone."
+   "ex": "He took a ___ with his phone.",
+   "d": 1
   },
   {
    "l": 8,
@@ -376,7 +422,8 @@
    "ko": "충격적인",
    "p": "a",
    "def": "very upsetting or surprising",
-   "ex": "The ending of the movie was ___."
+   "ex": "The ending of the movie was ___.",
+   "d": 2
   },
   {
    "l": 8,
@@ -384,7 +431,8 @@
    "ko": "소리 지르다, 외치다",
    "p": "v",
    "def": "to say something very loudly",
-   "ex": "We ___ed with joy when our team won a gold medal."
+   "ex": "We ___ed with joy when our team won a gold medal.",
+   "d": 1
   },
   {
    "l": 8,
@@ -392,7 +440,8 @@
    "ko": "똑똑한, 영리한",
    "p": "a",
    "def": "clever and quick in thinking",
-   "ex": "Amy is ___ and can solve difficult math problems."
+   "ex": "Amy is ___ and can solve difficult math problems.",
+   "d": 1
   },
   {
    "l": 8,
@@ -400,7 +449,8 @@
    "ko": "사회의, 사회적인",
    "p": "a",
    "def": "relating to the people in a society and the way they live",
-   "ex": "Playing team sports is a ___ activity."
+   "ex": "Playing team sports is a ___ activity.",
+   "d": 2
   },
   {
    "l": 8,
@@ -408,7 +458,8 @@
    "ko": "매운, 양념 맛이 강한",
    "p": "a",
    "def": "containing strong flavors from spices",
-   "ex": "I love eating ___ food like gimchi."
+   "ex": "I love eating ___ food like gimchi.",
+   "d": 1
   },
   {
    "l": 8,
@@ -416,7 +467,8 @@
    "ko": "독특한, 특별한, 유일한",
    "p": "a",
    "def": "special and different from every other person or thing",
-   "ex": "This handmade gift will be ___ and special."
+   "ex": "This handmade gift will be ___ and special.",
+   "d": 3
   },
   {
    "l": 8,
@@ -424,7 +476,8 @@
    "ko": "위층으로, 위층에서",
    "p": "ad",
    "def": "on or going toward a higher floor of a building",
-   "ex": "The bedrooms are ___ in this house."
+   "ex": "The bedrooms are ___ in this house.",
+   "d": 2
   }
  ],
  "grammar": {
@@ -440,7 +493,8 @@
      "It is important <u>to exercise</u> every day."
     ],
     "a": 2,
-    "x": "&lt;보기&gt;·③ <b>목적</b>(~하기 위해) / ① 명사적(목적어) ② 형용사적(homework 수식) ④ 명사적(주어) ⑤ 진주어"
+    "x": "&lt;보기&gt;·③ <b>목적</b>(~하기 위해) / ① 명사적(목적어) ② 형용사적(homework 수식) ④ 명사적(주어) ⑤ 진주어",
+    "d": 3
    },
    {
     "s": "&lt;보기&gt; I was surprised <u>to hear</u> the news.",
@@ -453,7 +507,8 @@
      "The boy grew up <u>to be</u> a pilot."
     ],
     "a": 1,
-    "x": "&lt;보기&gt;·② 감정(surprised · glad) 뒤 → <b>감정의 원인</b> '~해서' / ① 목적 ③ 보어 ④ 형용사적 ⑤ 결과"
+    "x": "&lt;보기&gt;·② 감정(surprised · glad) 뒤 → <b>감정의 원인</b> '~해서' / ① 목적 ③ 보어 ④ 형용사적 ⑤ 결과",
+    "d": 3
    },
    {
     "s": "&lt;보기&gt; This question is hard <u>to answer</u>.",
@@ -466,7 +521,8 @@
      "She went out <u>to buy</u> milk."
     ],
     "a": 0,
-    "x": "&lt;보기&gt;·① <b>형용사(hard · dangerous)를 꾸밈</b> '~하기에' / ② 가주어 It의 진주어 ③ 감정의 원인 ④ 형용사적 ⑤ 목적"
+    "x": "&lt;보기&gt;·① <b>형용사(hard · dangerous)를 꾸밈</b> '~하기에' / ② 가주어 It의 진주어 ③ 감정의 원인 ④ 형용사적 ⑤ 목적",
+    "d": 4
    },
    {
     "s": "&lt;보기&gt; He grew up <u>to be</u> a famous singer.",
@@ -479,7 +535,8 @@
      "We decided <u>to stay</u> home."
     ],
     "a": 0,
-    "x": "&lt;보기&gt;·① <b>결과</b> '(자라서 / 살아서) ~가 되었다' / ② 목적 ③ 형용사적 ④ 감정의 원인 ⑤ 명사적"
+    "x": "&lt;보기&gt;·① <b>결과</b> '(자라서 / 살아서) ~가 되었다' / ② 목적 ③ 형용사적 ④ 감정의 원인 ⑤ 명사적",
+    "d": 3
    },
    {
     "s": "밑줄 친 to부정사의 쓰임이 나머지 넷과 <b>다른</b> 것은?",
@@ -492,7 +549,8 @@
      "<u>To stay</u> healthy, I exercise every day."
     ],
     "a": 2,
-    "x": "③ want의 <b>목적어(명사적)</b> / 나머지는 모두 목적 '~하기 위해' (⑤처럼 문장 앞에 와도 목적!)"
+    "x": "③ want의 <b>목적어(명사적)</b> / 나머지는 모두 목적 '~하기 위해' (⑤처럼 문장 앞에 와도 목적!)",
+    "d": 2
    },
    {
     "s": "밑줄 친 부분의 우리말 해석이 <b>어색한</b> 것은?",
@@ -505,7 +563,8 @@
      "We were sorry <u>to hear</u> that. (들어서)"
     ],
     "a": 1,
-    "x": "형용사(easy)를 꾸미면 <b>'읽기에'</b> — 목적 '읽기 위해'가 아니에요"
+    "x": "형용사(easy)를 꾸미면 <b>'읽기에'</b> — 목적 '읽기 위해'가 아니에요",
+    "d": 2
    },
    {
     "s": "다음 중 <b>어법상 틀린</b> 문장은?",
@@ -518,7 +577,8 @@
      "This map is easy to read."
     ],
     "a": 2,
-    "x": "decide는 <b>to부정사</b>를 목적어로 → decided <b>to post</b> (본문 Goldilocks 문장!)"
+    "x": "decide는 <b>to부정사</b>를 목적어로 → decided <b>to post</b> (본문 Goldilocks 문장!)",
+    "d": 2
    }
   ],
   "비인칭 주어 it": [
@@ -533,7 +593,8 @@
      "Look at the cat. <u>It</u> is so cute."
     ],
     "a": 2,
-    "x": "&lt;보기&gt;·③ 명암 · 날씨 → <b>비인칭 주어</b> / ①④⑤ 대명사(가리키는 대상 있음) ② <b>가주어</b>(진주어 to play soccer)"
+    "x": "&lt;보기&gt;·③ 명암 · 날씨 → <b>비인칭 주어</b> / ①④⑤ 대명사(가리키는 대상 있음) ② <b>가주어</b>(진주어 to play soccer)",
+    "d": 3
    },
    {
     "s": "&lt;보기&gt; <u>It</u> is ten kilometers from here to the beach.",
@@ -546,7 +607,8 @@
      "Where is my umbrella? Is <u>it</u> in your bag?"
     ],
     "a": 1,
-    "x": "&lt;보기&gt; 거리 · ② 요일 → <b>비인칭</b> / ① 가주어 ③④⑤ 대명사"
+    "x": "&lt;보기&gt; 거리 · ② 요일 → <b>비인칭</b> / ① 가주어 ③④⑤ 대명사",
+    "d": 3
    },
    {
     "s": "밑줄 친 it의 쓰임이 나머지 넷과 <b>다른</b> 것은?",
@@ -559,7 +621,8 @@
      "<u>It</u> was very windy last night."
     ],
     "a": 3,
-    "x": "④ 진짜 주어(to make a sandwich)를 대신하는 <b>가주어</b> / 나머지는 계절 · 거리 · 시간 · 날씨 비인칭"
+    "x": "④ 진짜 주어(to make a sandwich)를 대신하는 <b>가주어</b> / 나머지는 계절 · 거리 · 시간 · 날씨 비인칭",
+    "d": 3
    },
    {
     "s": "(a) <u>It</u> is Monday today.<br>(b) <u>It</u> is difficult to learn Chinese.<br>(c) Look at the dog. <u>It</u> is so big.<br>(d) <u>It</u> snowed a lot last winter.<br>(e) <u>It</u> is not easy to wake up early.",
@@ -572,7 +635,8 @@
      "(d) – (e)"
     ],
     "a": 1,
-    "x": "(a) 요일 · (d) 날씨 → <b>비인칭</b> / (b)(e) 가주어 · (c) 대명사"
+    "x": "(a) 요일 · (d) 날씨 → <b>비인칭</b> / (b)(e) 가주어 · (c) 대명사",
+    "d": 4
    },
    {
     "s": "①<u>It</u> was getting dark, and ②<u>it</u> started to rain. Goldilocks found a cottage. ③<u>It</u> looked warm and cozy. Soon ④<u>it</u> was midnight.",
@@ -584,7 +648,8 @@
      "④"
     ],
     "a": 2,
-    "x": "③ a cottage를 <b>가리키는 대명사</b> / ① 명암 ② 날씨 ④ 시간 → 비인칭"
+    "x": "③ a cottage를 <b>가리키는 대명사</b> / ① 명암 ② 날씨 ④ 시간 → 비인칭",
+    "d": 2
    },
    {
     "s": "A: What time is ⓐ___ now?<br>B: ⓑ___ is 7 p.m.<br>A: Is ⓒ___ a bus stop near here?<br>B: Yes, there is. ⓓ___ is 5 minutes from here.",
@@ -596,7 +661,8 @@
      "ⓓ"
     ],
     "a": 2,
-    "x": "'Yes, <b>there</b> is'로 답하니 ⓒ는 <b>there</b> / ⓐⓑ 시간 · ⓓ 거리 → 비인칭 it"
+    "x": "'Yes, <b>there</b> is'로 답하니 ⓒ는 <b>there</b> / ⓐⓑ 시간 · ⓓ 거리 → 비인칭 it",
+    "d": 4
    },
    {
     "s": "&lt;보기&gt; <u>It</u>'s very bright in the room.",
@@ -609,7 +675,8 @@
      "<u>It</u>'s winter now."
     ],
     "a": 2,
-    "x": "③ 모자를 <b>가리키는 대명사</b> / &lt;보기&gt;와 나머지는 명암 · 날씨 · 시간 · 계절 비인칭"
+    "x": "③ 모자를 <b>가리키는 대명사</b> / &lt;보기&gt;와 나머지는 명암 · 날씨 · 시간 · 계절 비인칭",
+    "d": 2
    }
   ],
   "수여동사": [
@@ -623,7 +690,8 @@
      "4개"
     ],
     "a": 1,
-    "x": "옳은 것: teach the students English / give Mary a call → <b>2개</b><br>sent a letter <b>to</b> me · bought <b>him the book</b> · tells <b>us funny stories</b>"
+    "x": "옳은 것: teach the students English / give Mary a call → <b>2개</b><br>sent a letter <b>to</b> me · bought <b>him the book</b> · tells <b>us funny stories</b>",
+    "d": 4
    },
    {
     "s": "다음 문장을 3형식으로 바꿀 때 쓰이는 전치사가 나머지 넷과 <b>다른</b> 것은?",
@@ -636,7 +704,8 @@
      "She told us a funny story."
     ],
     "a": 2,
-    "x": "buy → <b>for</b> (~를 위해 사 주다) / give · send · show · tell → <b>to</b>"
+    "x": "buy → <b>for</b> (~를 위해 사 주다) / give · send · show · tell → <b>to</b>",
+    "d": 3
    },
    {
     "s": "다음 중 빈칸에 <b>for</b>가 들어가는 것은?",
@@ -649,7 +718,8 @@
      "She taught science ___ the students."
     ],
     "a": 2,
-    "x": "cook → <b>for</b> / lend · send · teach → to / ask → <b>of</b>"
+    "x": "cook → <b>for</b> / lend · send · teach → to / ask → <b>of</b>",
+    "d": 3
    },
    {
     "s": "· He made me a kite. = He made a kite ⓐ___ me.<br>· Can I ask you a favor? = Can I ask a favor ⓑ___ you?",
@@ -662,7 +732,8 @@
      "of – for"
     ],
     "a": 1,
-    "x": "make → <b>for</b> · ask → <b>of</b>"
+    "x": "make → <b>for</b> · ask → <b>of</b>",
+    "d": 4
    },
    {
     "s": "다음 중 어법상 <b>옳은</b> 것은?",
@@ -675,7 +746,8 @@
      "Mom made a cake to me."
     ],
     "a": 1,
-    "x": "② pass + 간접목적어 + 직접목적어 (4형식) ✔<br>① bought me a hat ③ showed us his room ④ send you a letter ⑤ made a cake <b>for</b> me"
+    "x": "② pass + 간접목적어 + 직접목적어 (4형식) ✔<br>① bought me a hat ③ showed us his room ④ send you a letter ⑤ made a cake <b>for</b> me",
+    "d": 3
    },
    {
     "s": "다음 중 어법상 <b>틀린</b> 것은?",
@@ -687,7 +759,8 @@
      "I showed my report card to Mom."
     ],
     "a": 1,
-    "x": "buy <b>his daughter a new doll</b> 또는 buy a new doll <b>for</b> his daughter"
+    "x": "buy <b>his daughter a new doll</b> 또는 buy a new doll <b>for</b> his daughter",
+    "d": 2
    },
    {
     "s": "밑줄 친 동사를 괄호 안의 말로 바꿀 때 어법상 <b>어색한</b> 것은?",
@@ -699,7 +772,8 @@
      "The teacher <u>told</u> us an interesting story. (heard)"
     ],
     "a": 3,
-    "x": "hear는 <b>수여동사가 아니라</b> 목적어 2개를 못 가져요"
+    "x": "hear는 <b>수여동사가 아니라</b> 목적어 2개를 못 가져요",
+    "d": 2
    },
    {
     "s": "다음 중 문장의 형식이 <b>다른</b> 하나는?",
@@ -711,7 +785,8 @@
      "We bought a delicious cake for the party."
     ],
     "a": 3,
-    "x": "④는 3형식 (for the party = 수식어) / 나머지는 4형식"
+    "x": "④는 3형식 (for the party = 수식어) / 나머지는 4형식",
+    "d": 4
    }
   ],
   "시간의 접속사": [
@@ -725,7 +800,8 @@
      "④"
     ],
     "a": 3,
-    "x": "시간의 부사절은 미래라도 <b>현재 시제</b> → Before I <b>go</b> home"
+    "x": "시간의 부사절은 미래라도 <b>현재 시제</b> → Before I <b>go</b> home",
+    "d": 2
    },
    {
     "s": "&lt;보기&gt; I was sleeping <u>when</u> you called me.",
@@ -738,7 +814,8 @@
      "Tell me <u>when</u> the store opens."
     ],
     "a": 2,
-    "x": "&lt;보기&gt;·③ '~할 때' <b>접속사</b> / ①④ 의문사 '언제' ②⑤ '언제 ~하는지'"
+    "x": "&lt;보기&gt;·③ '~할 때' <b>접속사</b> / ①④ 의문사 '언제' ②⑤ '언제 ~하는지'",
+    "d": 4
    },
    {
     "s": "Mina finished her homework. Then she watched TV.",
@@ -751,7 +828,8 @@
      "Mina finished her homework before she watches TV."
     ],
     "a": 2,
-    "x": "숙제를 <b>끝낸 후에</b> TV → After + 먼저 한 일 / ①② 순서가 반대 ⑤ 시제 불일치"
+    "x": "숙제를 <b>끝낸 후에</b> TV → After + 먼저 한 일 / ①② 순서가 반대 ⑤ 시제 불일치",
+    "d": 3
    },
    {
     "s": "다음 중 어법상 <b>옳은</b> 것은?",
@@ -764,7 +842,8 @@
      "We will start after everyone will come."
     ],
     "a": 2,
-    "x": "시간의 부사절은 미래라도 <b>현재 시제</b> → ③ goes ✔ / 나머지는 will을 빼야 해요"
+    "x": "시간의 부사절은 미래라도 <b>현재 시제</b> → ③ goes ✔ / 나머지는 will을 빼야 해요",
+    "d": 3
    },
    {
     "s": "· She takes a nap ⓐ___ she's tired.<br>· ⓑ___ you leave, close all the windows.<br>· He got better ⓒ___ he took the medicine.",
@@ -776,7 +855,8 @@
      "after – Before – before"
     ],
     "a": 1,
-    "x": "피곤할 <b>때</b> 낮잠 / 떠나기 <b>전에</b> 창문 닫기 / 약을 먹은 <b>후</b> 나음"
+    "x": "피곤할 <b>때</b> 낮잠 / 떠나기 <b>전에</b> 창문 닫기 / 약을 먹은 <b>후</b> 나음",
+    "d": 2
    },
    {
     "s": "밑줄 친 before / after가 <b>접속사</b>로 쓰인 것은?",
@@ -789,7 +869,8 @@
      "He came home <u>after</u> dinner."
     ],
     "a": 3,
-    "x": "④ 뒤에 <b>주어 + 동사</b>(you leave) → 접속사 / 나머지는 뒤에 명사만 → 전치사"
+    "x": "④ 뒤에 <b>주어 + 동사</b>(you leave) → 접속사 / 나머지는 뒤에 명사만 → 전치사",
+    "d": 4
    },
    {
     "s": "민호의 저녁: 6시 저녁 식사 → 8시 숙제 → 10시 취침",
@@ -801,7 +882,8 @@
      "Minho had dinner when he went to bed."
     ],
     "a": 2,
-    "x": "저녁(6시)을 먹은 <b>후에</b> 숙제(8시) → did his homework <b>after</b> he had dinner"
+    "x": "저녁(6시)을 먹은 <b>후에</b> 숙제(8시) → did his homework <b>after</b> he had dinner",
+    "d": 2
    }
   ]
  },
