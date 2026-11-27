@@ -510,7 +510,7 @@ export function playKart({ charId = 'bboy', name = '나', used, ext = null } = {
           fb.className = `fz-fb ${ok ? 'ok' : 'no'}`;
           fb.innerHTML = `<b>${ok ? '정답! ⚡ 게이지 +60%!' : i === null ? '⏰ 시간 초과!' : '아쉬워요!'}</b><span class="kq-full">${q.full}</span>${q.tip ? `<small>💡 ${q.tip}</small>` : ''}`;
           box.appendChild(fb);
-          if (ok) { quizzes.ok++; streak++; gauge = Math.min(1, gauge + 0.6); ME.boost = 1.3; if (!E.comboCallout(streak, `영작 ${streak}연속!`)) E.sfx('ok'); }
+          if (ok) { quizzes.ok++; quizzes.pts = (quizzes.pts || 0) + (q.pts || 0); streak++; gauge = Math.min(1, gauge + 0.6); ME.boost = 1.3; if (!E.comboCallout(streak, `영작 ${streak}연속!`)) E.sfx('ok'); }
           else { streak = 0; gauge = Math.max(0, gauge - 0.35); lsfxNo(); }
           setTimeout(() => { box.remove(); MSG.textContent = ok ? '⚡ 게이지 +60%! 악셀을 꾹!' : '다음 퀴즈 존에서 만회하자!'; mode = 'race'; }, ok ? 1800 : 3800);
         };
@@ -526,7 +526,7 @@ export function playKart({ charId = 'bboy', name = '나', used, ext = null } = {
         const rows = R.slice().sort((a, b) => placeOf(a) - placeOf(b)).map((r) => `${placeOf(r)}. ${r.me ? `<b>${r.name}</b>` : r.name}`).join(' · ');
         setTimeout(() => E.end({
           score: Math.max(0, 1500 - (place - 1) * 300) + quizzes.ok * 200 + lanes.ok * 150, cleared: place <= 3,
-          coins: ext ? 0 : [0, 20, 14, 10, 6, 4, 2][place], snack: ext ? null : place === 1 ? 'cookie' : null, place, qOk: quizzes.ok, qN: quizzes.n, laneOk: lanes.ok, laneN: lanes.n,
+          coins: ext ? 0 : [0, 20, 14, 10, 6, 4, 2][place], snack: ext ? null : place === 1 ? 'cookie' : null, place, qOk: quizzes.ok, qN: quizzes.n, qPts: quizzes.pts || 0, laneOk: lanes.ok, laneN: lanes.n,
           headline: place === 1 ? '🏆 1등 골인!' : `${place}등 골인!`, legendAt: 2400,
           lines: [ext ? `✍️ 영작 퀴즈 <b>${quizzes.ok}</b>/${quizzes.n} 정답 · 🛣️ 단어 레인 <b>${lanes.ok}</b>/${lanes.n}` : `❓ 퀴즈 존 <b>${quizzes.ok}</b>/${quizzes.n} 정답 · 🛣️ 품사 레인 <b>${lanes.ok}</b>/${lanes.n}`, rows],
         }), 1600);

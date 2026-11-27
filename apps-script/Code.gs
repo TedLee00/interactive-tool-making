@@ -17,7 +17,7 @@ function doPost(e) {
   const out = (o) => ContentService.createTextOutput(JSON.stringify(o)).setMimeType(ContentService.MimeType.JSON);
   try {
     const req = JSON.parse(e.postData.contents || '{}');
-    const fns = { submitScore: submitScore, getRanking: getRanking, reportQuiz: reportQuiz, reportRun: reportRun, reportSnack: reportSnack, reportLesson: reportLesson };
+    const fns = { submitScore: submitScore, getRanking: getRanking, reportQuiz: reportQuiz, reportRun: reportRun, reportSnack: reportSnack, reportLesson: reportLesson, reportLessonStep: reportLessonStep };
     if (!fns[req.fn]) return out({ ok: false, error: 'unknown fn' });
     return out({ ok: true, result: fns[req.fn].apply(null, req.args || []) });
   } catch (err) { return out({ ok: false, error: String(err) }); }
@@ -135,12 +135,21 @@ function reportSnack(r) {
 /** 📚 정관중 L7·8 학습 앱: 끝까지 마치면 한 줄 (탭: 정관중L78) */
 const L78_HEADER = ['기록 시각', '이름', '총점', '단어 정답', '단어 문항', '단어 정답률(%)', '객관식 정답', '직접 쓰기 정답', '문법(드럼) 정답', '영작(카트) 정답', '드럼 3곡 합계', '카트 3판 합계', '최고 연속 정답', '틀린 단어', '걸린 시간(분)'];
 /** ▶ 처음 한 번 실행: 「정관중L78」 성적표 탭을 미리 만들고 명예의전당을 새로 정리 (Apps Script 편집기에서 이 함수를 골라 ▶ 실행) */
+const L78_STEP_HEADER = ['기록 시각', '이름', '단계', '푼 단어 수', '단어 문항', '단어 정답', '단어 정답률(%)', '단어 점수', '게임 점수(원점수)', '게임 → 총점에 더한 점수', '게임 속 문제 정답', '누적 총점', '걸린 시간(분)'];
 function setupL78() {
   tab_('정관중L78', L78_HEADER, '#7A1F1F');
+  tab_('정관중L78_단계', L78_STEP_HEADER, '#B8862E');
   updateHall_();
 }
 function reportLesson(r) {
   const sh = tab_('정관중L78', ['기록 시각', '이름', '총점', '단어 정답', '단어 문항', '단어 정답률(%)', '객관식 정답', '직접 쓰기 정답', '문법(드럼) 정답', '영작(카트) 정답', '드럼 3곡 합계', '카트 3판 합계', '최고 연속 정답', '틀린 단어', '걸린 시간(분)'], '#7A1F1F');
   append_(sh, [new Date(), String(r.name || '').slice(0, 20), r.total, r.wordOk, r.wordN, r.wordAcc, r.mcOk, r.typeOk, r.gramOk + '/' + r.gramN, r.sentOk + '/' + r.sentN, r.drum, r.kart, r.best, String(r.wrongs || '').slice(0, 900), r.minutes]);
+  return true;
+}
+
+/** 📊 정관중 L7·8: 게임 하나를 끝낼 때마다 그때까지의 진행 상황 한 줄 (탭: 정관중L78_단계) */
+function reportLessonStep(r) {
+  const sh = tab_('정관중L78_단계', L78_STEP_HEADER, '#B8862E');
+  append_(sh, [new Date(), String(r.name || '').slice(0, 20), r.step, r.wordsDone, r.wordN, r.wordOk, r.wordAcc, r.wordPts, r.gameRaw, r.gamePts, r.gameOk, r.total, r.minutes]);
   return true;
 }
