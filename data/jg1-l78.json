@@ -1041,7 +1041,9 @@
     "does",
     "being",
     "at",
-    "wants"
+    "wants",
+    "will",
+    "on"
    ]
   },
   {
@@ -1052,7 +1054,9 @@
     "interesting",
     "on",
     "kind",
-    "sport"
+    "sport",
+    "at",
+    "for"
    ]
   },
   {
@@ -1063,7 +1067,9 @@
     "write",
     "to",
     "song",
-    "interesting"
+    "interesting",
+    "wrote",
+    "for"
    ]
   },
   {
@@ -1074,7 +1080,9 @@
     "doesn't",
     "trying",
     "to",
-    "How"
+    "How",
+    "don't you",
+    "tried"
    ]
   },
   {
@@ -1085,7 +1093,9 @@
     "make",
     "to",
     "fly",
-    "interesting"
+    "interesting",
+    "made",
+    "but"
    ]
   },
   {
@@ -1096,7 +1106,9 @@
     "a",
     "being",
     "engineering",
-    "wants"
+    "wants",
+    "become",
+    "for"
    ]
   },
   {
@@ -1107,7 +1119,9 @@
     "How",
     "of",
     "does",
-    "thinks"
+    "thinks",
+    "on",
+    "feel"
    ]
   },
   {
@@ -1118,7 +1132,9 @@
     "doesn't",
     "not",
     "very",
-    "agree"
+    "agree",
+    "too much",
+    "isn't"
    ]
   },
   {
@@ -1129,7 +1145,9 @@
     "don't",
     "are",
     "interesting",
-    "on"
+    "on",
+    "was",
+    "knew"
    ]
   },
   {
@@ -1140,7 +1158,155 @@
     "cheap",
     "then",
     "more",
-    "expensive"
+    "expensive",
+    "cheapest",
+    "that"
+   ]
+  }
+ ],
+ "convos": [
+  {
+   "who": "L7 A-1 · 장래 희망",
+   "ko": "민수의 장래 희망 대화",
+   "lines": [
+    [
+     "G",
+     "What do you want to be in the future, Minsu?"
+    ],
+    [
+     "B",
+     "I want to be a sports reporter."
+    ],
+    [
+     "G",
+     "Oh, really? Do you watch a lot of sports games?"
+    ],
+    [
+     "B",
+     "Yes, I do. I'm interested in all kinds of sports."
+    ]
+   ],
+   "x": [
+    [
+     "B",
+     "No, I don't. I'm not interested in sports."
+    ]
+   ]
+  },
+  {
+   "who": "L7 A-2 · 관심 묻기",
+   "ko": "David가 요리하는 대화",
+   "lines": [
+    [
+     "G",
+     "David, what are you making?"
+    ],
+    [
+     "B",
+     "I'm making pizza and pasta."
+    ],
+    [
+     "G",
+     "They look delicious. Are you interested in Italian food?"
+    ],
+    [
+     "B",
+     "Yes, I am. I want to be a world-famous chef in the future!"
+    ]
+   ],
+   "x": [
+    [
+     "B",
+     "No, I'm not. I don't like cooking at all."
+    ]
+   ]
+  },
+  {
+   "who": "L7 A-4 · 패션 디자이너",
+   "ko": "Jacob의 꿈 대화",
+   "lines": [
+    [
+     "G",
+     "Are you interested in fashion, Jacob?"
+    ],
+    [
+     "B",
+     "Yes, I love to make clothes."
+    ],
+    [
+     "G",
+     "Really? That's so cool!"
+    ],
+    [
+     "B",
+     "Thanks. I want to be a fashion designer. I'll make clothes for you someday."
+    ]
+   ],
+   "x": [
+    [
+     "B",
+     "Yes, I love to fly airplanes."
+    ]
+   ]
+  },
+  {
+   "who": "L8 A-2 · 의견 묻기",
+   "ko": "파스타에 대한 의견 대화",
+   "lines": [
+    [
+     "B",
+     "What do you think about this pasta?"
+    ],
+    [
+     "G",
+     "I think it's pretty good."
+    ],
+    [
+     "B",
+     "I don't think so. I think it's too salty."
+    ],
+    [
+     "G",
+     "Really? It's OK for me."
+    ]
+   ],
+   "x": [
+    [
+     "B",
+     "I think so, too. It's really delicious."
+    ]
+   ]
+  },
+  {
+   "who": "L8 C · 본문 대화",
+   "ko": "블랙홀 책에 대한 대화",
+   "lines": [
+    [
+     "B",
+     "What do you think about this book, Yuna?"
+    ],
+    [
+     "G",
+     "A History of Black Holes? I think it'll be difficult."
+    ],
+    [
+     "B",
+     "I don't agree. I think it'll be very interesting."
+    ],
+    [
+     "G",
+     "So, are you going to buy the book, Alex?"
+    ],
+    [
+     "B",
+     "I'd love to, but it's too thick and heavy."
+    ]
+   ],
+   "x": [
+    [
+     "B",
+     "I agree. I think it'll be too difficult."
+    ]
    ]
   }
  ]

@@ -46,7 +46,7 @@ const GAMES = [
   { at: 96, kind: 'kart', round: 3 },
 ];
 const GICON = { drum: '🥁', kart: '🏎️', shoot: '💬' };
-const N_GRAM = 15; const N_SENT = data.sentences.length; const N_LANE = 12; const N_DLG = data.dialogs.length;
+const N_GRAM = 15; const N_SENT = data.sentences.length; const N_LANE = 12; const N_DLG = data.dialogs.length + data.convos.length; // 대화문: 1판 단어 배열 10문장 + 2판 대화 순서 5개
 const N_ALL = N_ITEMS + N_GRAM + N_SENT + N_LANE + N_DLG; // 정답률 계산: 단어 + 문법 + 본문 영작 + 단어 레인 + 대화문
 const GRAM_CATS = Object.keys(data.grammar); // to부정사 · 비인칭 주어 it · 수여동사 · 시간의 접속사
 
@@ -110,7 +110,7 @@ function title() {
         <div><i>📖</i><b>단어 ${N_ITEMS}문제</b><small>영영풀이 + 문장 넣기</small></div>
         <div><i>🥁</i><b>문법 드럼 3곡</b><small>곡마다 문법 5문제</small></div>
         <div><i>🏎️</i><b>영작 카트 3판</b><small>본문 핵심 15문장</small></div>
-        <div><i>💬</i><b>대화문 사격장</b><small>대화 핵심 10문장</small></div>
+        <div><i>💬</i><b>대화문 사격장</b><small>단어 배열 10 · 대화 순서 5</small></div>
       </div>
     </div>
     <div class="prize card"><h3>🎁 상품 안내</h3><ul><li>${PRIZE.total}</li><li>${PRIZE.games}</li><li>${PRIZE.perfect}</li></ul></div>
@@ -172,7 +172,7 @@ function guide() {
       <li><b>📖 단어 ${N_ITEMS}문제</b> — 7·8과 단어 ${W.length}개를 <em>영영풀이</em>로 한 번, <em>문장 속 빈칸</em>으로 한 번!<small>객관식 60% · 직접 쓰기 40% · 한 문제 <b>30초</b></small></li>
       <li><b>🥁 문법 드럼 3곡</b> — 떨어지는 노트는 <em>학습지 단어</em>(영↔한) · 연주 중간 문법 퀴즈 5번<small>한 문제 1분 · 푸는 동안 연주 멈춤 · 정답이면 드럼 솔로 + 관객 환호!</small></li>
       <li><b>🏎️ 영작 카트 3판</b> — 퀴즈 존 5곳 본문 핵심 문장 빈칸 채우기 + 단어 레인 4번<small>3판 × 5문장 = 본문 핵심 15문장 · 한 문제 1분</small></li>
-      <li><b>💬 대화문 사격장 2판</b> — 한글 문장을 보고 영어 단어 과녁을 <em>순서대로</em> 쏴서 완성<small>2판 × 5문장 = 대화 핵심 10문장 · 문장당 30초</small></li>
+      <li><b>💬 대화문 사격장 2판</b> — 1판: 한글 문장을 보고 영어 단어를 <em>순서대로</em> 쏴서 완성 (10문장) · 2판: 첫 마디 다음 <em>대사 순서</em> 맞히기 (대화 5개)<small>헷갈리는 오답 과녁 · 가짜 대사 조심! · 문장 30초 · 대화 45초</small></li>
       <li><b>🏆 마지막</b> — 게임 퀴즈까지 합친 정답률 <em>90% 이상이면 PASS!</em> · 총점 · 드럼 · 카트 · 대화문 순위</li>
     </ol>
     <div class="score-rule"><b>점수</b> 객관식 100 · 직접 쓰기 150 · 연속 정답 보너스 · 드럼 · 카트 점수 · 문법/영작 정답 +500</div>
@@ -274,8 +274,10 @@ function gameGate(k) {
       <ul><li>⏱ 한 문제 <b>1분</b> (푸는 동안 연주는 잠깐 멈춤)</li><li>⭕ 정답이면 <b>🥁 드럼 솔로 + 관객 환호</b></li><li>문법 정답 1개마다 총점 <b>+500</b></li></ul>`,
     kart: `<p>6명 레이스! 퀴즈 존 <b>5곳</b>에서 <b>교과서 본문 핵심 문장</b>의 빈칸을 채우고<br><b>단어 레인 4번</b>에서는 알맞은 뜻(단어) 레인으로 달려요</p>
       <ul><li>✍️ 빈칸 2~3개 · 알맞은 말 묶음 고르기 (<b>1분</b>)</li><li>🛣 단어 레인 정답 → 부스터 + 게이지 50%</li><li>영작 · 레인 정답마다 총점 <b>+500 / +200</b></li></ul>`,
-    shoot: `<p>위에 뜬 <b>한글 대화문</b>을 보고<br>올라오는 <b>영어 단어 과녁</b>을 순서대로 쏴서 문장을 완성해요</p>
-      <ul><li>⏱ 문장당 <b>30초</b> · 5문장</li><li>✏️ 쏠 때마다 한글 아래에 영어 문장이 만들어져요</li><li>순서가 틀린 과녁은 -100 · -1초 · 문장 완성마다 총점 <b>+300</b></li></ul>`,
+    shoot: g.round === 1 ? `<p><b>1판 · 단어 배열</b> — 위에 뜬 <b>한글 대화문</b>을 보고<br>영어 단어 과녁을 순서대로 쏴서 문장을 완성해요</p>
+      <ul><li>⏱ 문장당 <b>30초</b> · 대화 핵심 <b>10문장</b></li><li>⚠️ 헷갈리는 <b>오답 단어 과녁</b>이 많이 섞여 있어요</li><li>순서가 틀린 과녁은 -100 · -1초 · 문장 완성마다 총점 <b>+300</b></li></ul>`
+      : `<p><b>2판 · 대화 순서</b> — 대화의 <b>첫 마디</b>만 보여요<br>지나가는 대사 카드를 <b>대화 순서대로</b> 쏴서 대화를 완성해요</p>
+      <ul><li>⏱ 대화당 <b>45초</b> · 교과서 대화 <b>5개</b></li><li>🃏 흐름에 안 맞는 <b>가짜 대사</b>도 섞여 지나가요</li><li>대화 완성마다 총점 <b>+300</b></li></ul>`,
   }[g.kind];
   app.innerHTML = `${topHTML()}<div class="card gate ${g.kind}">
     <div class="g-ico">${GICON[g.kind]}</div>
@@ -350,8 +352,13 @@ async function playGame(k) {
     });
     r = await playKartLesson({ charId: S.char, name: S.name, round: g.round, rounds: 3, quizzes, lanes: laneSet(g.round - 1), quizSec: GAME_Q_SEC, prizeNote: '카트 3판 합계 1~5위 초코파이 · 오예스!' });
   } else {
-    const sentences = S.dlgs[g.round - 1].map((i) => data.dialogs[i]);
-    r = await playShootDialog({ sentences, round: g.round, rounds: 2, sec: 30 });
+    if (g.round === 1) { // 1판: 대화문 핵심 10문장 — 단어를 순서대로 쏴서 문장 완성
+      const sentences = shuffle(data.dialogs.slice());
+      r = await playShootDialog({ sentences, mode: 'words', round: 1, rounds: 2, sec: 30 });
+    } else { // 2판: 대화 5개 — 첫 마디 다음 대사를 순서대로 쏴서 대화 완성
+      const convos = shuffle(data.convos.slice());
+      r = await playShootDialog({ convos, mode: 'order', round: 2, rounds: 2, sec: 45 });
+    }
   }
   bgm(MUSIC);
   if (r.quit) {
