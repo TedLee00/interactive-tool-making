@@ -17,7 +17,9 @@ import { fillFaces, charURL } from '../board/charart.js';
 import { setPlayer, submitScore, getRanking, rankTableHTML, callApi, queueSend, flushPending } from '../rank/rank.js';
 import config from '../../data/config.json';
 
-const KEY = 'jg78.save.v2';
+// 👩‍🏫 선생님 체험 모드: 주소 끝에 ?try=ted5821 — 순위 · 구글 시트에 기록하지 않고, 원하는 게임 · 결과 화면으로 바로 가기
+const DEMO = new URLSearchParams(location.search).get('try') === 'ted5821';
+const KEY = DEMO ? 'jg78.demo.v2' : 'jg78.save.v2';
 const MUSIC = 'jgBox'; // 🎀 부드럽고 귀여운 오르골 곡
 const WORD_SEC = 30; const GAME_Q_SEC = 60; const PASS_CUT = 80;
 const W = data.words;
@@ -117,10 +119,37 @@ function title() {
       <button class="${can ? 'ghost big' : 'primary big'}" id="new">${can ? '처음부터 새로 하기' : '시작하기 ▶'}</button>
       ${sv && sv.finished ? '<button class="ghost big" id="last">🏆 지난 결과 · 순위 보기</button>' : ''}
     </div>`;
+  if (DEMO) demoPanel();
   fillFaces(app);
   app.querySelector('#new').onclick = () => { unlockAudio(); if (can && !confirm('지금까지 푼 기록이 지워져요. 새로 시작할까요?')) return; profile(); };
   if (can) app.querySelector('#cont').onclick = () => { unlockAudio(); S = sv; setPlayer(S.name); next(); };
   if (sv && sv.finished) app.querySelector('#last').onclick = () => { S = sv; setPlayer(S.name); result(); };
+}
+
+/** 👩‍🏫 체험 패널: 단어 문제 · 게임 8개 · 결과(PASS / NOT PASS)로 바로 가기 */
+function demoPanel() {
+  const box = document.createElement('div');
+  box.className = 'card demo';
+  box.innerHTML = `<h3>👩‍🏫 선생님 체험 모드</h3><p>순위표 · 구글 시트에 <b>기록되지 않아요</b>. 바로 가고 싶은 곳을 누르세요.</p>
+    <div class="demo-btns"><button data-j="word">📖 단어 문제</button>${GAMES.map((g, k) => `<button data-j="${k}">${GICON[g.kind]} ${GNAME[g.kind]} ${g.round}</button>`).join('')}
+    <button data-j="pass">🎉 결과 · PASS</button><button data-j="np">💪 결과 · NOT PASS</button></div>`;
+  app.prepend(box);
+  box.querySelectorAll('[data-j]').forEach((b) => {
+    b.onclick = () => {
+      unlockAudio(); newRun('체험(선생님)', 'bboy'); setPlayer(S.name);
+      const j = b.dataset.j;
+      if (j === 'word') return next();
+      if (j === 'pass' || j === 'np') {
+        const good = j === 'pass';
+        Object.assign(S, { i: N_ITEMS, wordOk: good ? 100 : 60, mcOk: 60, typeOk: 40, score: good ? 42000 : 26000, best: 25, wrongs: good ? [1] : [1, 2, 3, 4] });
+        S.games = GAMES.map((g) => ({ kind: g.kind, raw: g.kind === 'drum' ? 250000 : 2500, pts: 1, qOk: good ? 5 : 3, qN: 5, laneOk: good ? 4 : 2 }));
+        save(); return result();
+      }
+      const k = +j; S.i = GAMES[k].at;
+      S.games = GAMES.slice(0, k).map((g) => ({ kind: g.kind, raw: 0, pts: 0, qOk: 0, qN: 5, laneOk: 0 }));
+      save(); gameGate(k);
+    };
+  });
 }
 
 function profile() {
@@ -370,14 +399,15 @@ async function result() {
   app.querySelector('#again').onclick = () => { if (confirm('새로 시작할까요? (순위는 최고 점수로 남아요)')) { localStorage.removeItem(KEY); profile(); } };
   app.querySelector('#home').onclick = title;
   if (first) {
+    if (DEMO) S.finished = true;
     if (T.pass) { callout('legend', `PASS! ${T.acc}%`); setTimeout(() => crewDance(`🎉 ${S.name} PASS! 응원단 출동!`), 900); } else setTimeout(() => retryShow(T.acc), 600);
-    if (config.rankApi) {
+    if (config.rankApi && !DEMO) {
       const row = { name: S.name, total: S.score, wordOk: S.wordOk, wordN: N_ITEMS, wordAcc: Math.round((S.wordOk / N_ITEMS) * 100), mcOk: S.mcOk, typeOk: S.typeOk, gramOk: T.gram, gramN: N_GRAM, sentOk: `${T.sent} · 레인 ${T.lane}/${N_LANE} · 대화문 ${T.dlg}/${N_DLG}`, sentN: N_SENT, drum: T.drum, kart: T.kart, best: S.best, wrongs: `${T.pass ? 'PASS' : 'NOT PASS'} ${T.acc}% · ${wrongWords.map((w) => w.w).join(', ')}`, minutes: Math.round((Date.now() - S.startedAt) / 60000) };
       callApi('reportLesson', [row]).then(() => flushPending()).catch(() => queueSend('reportLesson', [row]));
     }
   }
   // 순위: 처음 끝냈을 때만 기록 + 순위, 다시 볼 때는 순위만
-  const send = first ? (id, v) => submitScore(id, v, S.name) : (id) => getRanking(id, S.name);
+  const send = first && !DEMO ? (id, v) => submitScore(id, v, S.name) : (id) => getRanking(id, S.name); // 체험 모드는 기록 없이 순위만 보기
   const R = await Promise.all([send('jg78-total', S.score), send('jg78-drum', T.drum), send('jg78-kart', T.kart)]).catch(() => null);
   const el = app.querySelector('#rk'); if (!el) return;
   if (!R) { el.innerHTML = '<p class="muted">순위를 불러오지 못했어요. 인터넷 연결 후 「지난 결과 · 순위 보기」로 다시 확인해요.</p>'; return; }
