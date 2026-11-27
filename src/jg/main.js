@@ -3,7 +3,7 @@
 //  - 중간중간 🥁 문법 드럼 3곡(곡마다 문법 5문제 · 떨어지는 노트 = 학습지 단어 영↔한)
 //    🏎️ 영작 카트 3판(퀴즈 존 5곳 = 본문 핵심 문장 · 단어 레인 4번) — 모두 15문장
 //    💬 대화문 사격장 2판(한글 문장 → 영어 단어 과녁을 순서대로 쏴서 완성) — 모두 10문장
-//  - 끝: 게임까지 합친 정답률 80% 이상 PASS(응원단 춤) / NOT PASS(다음에 재도전)
+//  - 끝: 게임까지 합친 정답률 90% 이상 PASS(응원단 춤) / NOT PASS(다음에 재도전)
 //  - 끝나면 총점 · 드럼 합계 · 카트 합계를 구글 시트 순위표에 올리고 내 순위를 보여 준다
 import data from '../../data/jg1-l78.json';
 import chars from '../../data/characters.json';
@@ -21,7 +21,7 @@ import config from '../../data/config.json';
 const DEMO = new URLSearchParams(location.search).get('try') === 'ted5821';
 const KEY = DEMO ? 'jg78.demo.v2' : 'jg78.save.v2';
 const MUSIC = 'jgBox'; // 🎀 부드럽고 귀여운 오르골 곡
-const WORD_SEC = 30; const GAME_Q_SEC = 60; const PASS_CUT = 80;
+const WORD_SEC = 30; const GAME_Q_SEC = 60; const PASS_CUT = 90;
 const W = data.words;
 const N_ITEMS = W.length * 2;
 const CIRC = '①②③④⑤';
@@ -173,7 +173,7 @@ function guide() {
       <li><b>🥁 문법 드럼 3곡</b> — 떨어지는 노트는 <em>학습지 단어</em>(영↔한) · 연주 중간 문법 퀴즈 5번<small>한 문제 1분 · 푸는 동안 연주 멈춤 · 정답이면 드럼 솔로 + 관객 환호!</small></li>
       <li><b>🏎️ 영작 카트 3판</b> — 퀴즈 존 5곳 본문 핵심 문장 빈칸 채우기 + 단어 레인 4번<small>3판 × 5문장 = 본문 핵심 15문장 · 한 문제 1분</small></li>
       <li><b>💬 대화문 사격장 2판</b> — 한글 문장을 보고 영어 단어 과녁을 <em>순서대로</em> 쏴서 완성<small>2판 × 5문장 = 대화 핵심 10문장 · 문장당 30초</small></li>
-      <li><b>🏆 마지막</b> — 게임까지 합친 정답률 <em>80% 이상이면 PASS!</em> · 총점 · 드럼 · 카트 순위</li>
+      <li><b>🏆 마지막</b> — 게임 퀴즈까지 합친 정답률 <em>90% 이상이면 PASS!</em> · 총점 · 드럼 · 카트 · 대화문 순위</li>
     </ol>
     <div class="score-rule"><b>점수</b> 객관식 100 · 직접 쓰기 150 · 연속 정답 보너스 · 드럼 · 카트 점수 · 문법/영작 정답 +500</div>
     <div class="prize"><h3>🎁 상품</h3><ul><li>${PRIZE.total}</li><li>${PRIZE.games}</li><li>${PRIZE.perfect}</li></ul></div>
@@ -296,12 +296,36 @@ function drumWords() {
   return B;
 }
 /** 🛣️ 카트 단어 레인: 영어 → 한글 뜻 / 한글 뜻 → 영어 */
+// 🛣️ 단어 레인 매력적인 오답: 철자 · 뜻이 비슷해서 헷갈리는 말 (ko = 영어→뜻 레인, en = 뜻→영어 레인)
+const CONF = {
+  photography: { ko: ['사진작가', '사진 찍다'], en: ['photographer', 'photograph'] },
+  photographer: { ko: ['사진술', '사진 찍다'], en: ['photography', 'photograph'] },
+  permission: { ko: ['허락하다', '임무'], en: ['permit', 'mission'] },
+  wrangler: { ko: ['레슬링 선수', '말다툼하다'], en: ['wrestler', 'stranger'] },
+  storytelling: { ko: ['이야기꾼', '이야기책'], en: ['storyteller', 'storybook'] },
+  capture: { ko: ['녹화하다', '편집하다'], en: ['record', 'shoot'] },
+  forgive: { ko: ['잊어버리다', '금지하다'], en: ['forget', 'forbid'] },
+  personal: { ko: ['사람', '사회적인'], en: ['person', 'social'] },
+  unique: { ko: ['통일된', '평범한'], en: ['united', 'union'] },
+  shocking: { ko: ['충격받은', '놀란'], en: ['shocked', 'surprised'] },
+  asleep: { ko: ['잠자다', '깨어 있는'], en: ['sleep', 'awake'] },
+  'break into': { ko: ['고장 나다', '헤어지다'], en: ['break down', 'break up'] },
+  'in surprise': { ko: ['놀라운', '갑자기'], en: ['surprising', 'by surprise'] },
+  location: { ko: ['지역의', '위치시키다'], en: ['local', 'locate'] },
+  signal: { ko: ['서명', '표지판'], en: ['signature', 'sign'] },
+  editor: { ko: ['편집하다', '판(版)'], en: ['edit', 'edition'] },
+  cottage: { ko: ['성', '대학'], en: ['castle', 'college'] },
+  follower: { ko: ['따라가다', '지도자'], en: ['follow', 'leader'] },
+  'be in charge of': { ko: ['~을 돌보다', '~에 관심이 있다'], en: ['take care of', 'be interested in'] },
+  'take care of': { ko: ['~을 담당하다', '~을 조심하다'], en: ['be in charge of', 'be careful of'] },
+};
 function laneSet(r) {
   return (S.lanes[r] || []).map(({ wi, e2k }) => {
     const w = W[wi];
-    const others = shuffle(W.filter((x, k) => k !== wi && (x.p === w.p || x.p === 'phr' || w.p === 'phr'))).slice(0, 2);
     const lab = (x) => (e2k ? koShort(x) : x.w);
-    return { word: e2k ? w.w : koShort(w), target: lab(w), labels: shuffle([lab(w), ...others.map(lab)]), hint: e2k ? '뜻' : '영어 단어' };
+    const C = CONF[w.w];
+    const others = C ? (e2k ? C.ko : C.en) : shuffle(W.filter((x, k) => k !== wi && x.p === w.p)).slice(0, 2).map(lab);
+    return { word: e2k ? w.w : koShort(w), target: lab(w), labels: shuffle([lab(w), ...others]), hint: e2k ? '뜻' : '영어 단어' };
   });
 }
 
@@ -354,7 +378,7 @@ function stats() {
   const gram = sum('drum', 'qOk'); const sent = sum('kart', 'qOk'); const lane = sum('kart', 'laneOk'); const dlg = sum('shoot', 'qOk');
   const ok = S.wordOk + gram + sent + lane + dlg;
   const acc = Math.round((ok / N_ALL) * 100);
-  return { drum: sum('drum'), kart: sum('kart'), gram, sent, lane, dlg, ok, acc, pass: acc >= PASS_CUT };
+  return { drum: sum('drum'), kart: sum('kart'), shoot: sum('shoot'), gram, sent, lane, dlg, ok, acc, pass: acc >= PASS_CUT };
 }
 
 /** 🙌 NOT PASS: 캐릭터들이 걸어 나와 "다음에 재도전!" 팻말 · 파이팅 */
@@ -383,13 +407,13 @@ async function result() {
     <div class="kick">FINISH! · ${esc(S.name)}</div>
     <h2>🏆 총점 <b>${S.score.toLocaleString()}</b>점 <span class="stamp ${T.pass ? 'ok' : 'no'}">${T.pass ? 'PASS' : 'NOT PASS'}</span></h2>
     <div class="acc">전체 정답률 <b>${T.acc}%</b> <small>(게임 포함 ${T.ok}/${N_ALL} · PASS 기준 ${PASS_CUT}% 이상)</small></div>
-    ${T.pass ? '<div class="pass-msg">🎉 PASS! 기말 준비 완벽해요!</div>' : '<div class="retry-msg">💪 다음에 재도전! <small>PASS 기준 정답률 80% 이상 — 틀린 단어를 복습하고 다시 도전해요</small></div>'}
+    ${T.pass ? '<div class="pass-msg">🎉 PASS! 기말 준비 완벽해요!</div>' : `<div class="retry-msg">💪 다음에 재도전! <small>PASS 기준 정답률 ${PASS_CUT}% 이상 — 틀린 단어를 복습하고 다시 도전해요</small></div>`}
     ${perfect ? `<div class="perfect">💯 단어 ${N_ITEMS}문제 전부 정답!<br><small>초코파이 + 오예스 + 오예스 쿠키앤크림 3종 세트 대상!</small></div>` : ''}
     <div class="bd">
       <div><i>📖</i><b>${S.wordOk}/${N_ITEMS}</b><small>단어</small></div>
       <div><i>🥁</i><b>${T.gram}/${N_GRAM}</b><small>문법 · 드럼 ${T.drum.toLocaleString()}</small></div>
       <div><i>🏎️</i><b>${T.sent}/${N_SENT}</b><small>본문 영작 · 레인 ${T.lane}/${N_LANE}</small></div>
-      <div><i>💬</i><b>${T.dlg}/${N_DLG}</b><small>대화문</small></div>
+      <div><i>💬</i><b>${T.dlg}/${N_DLG}</b><small>대화문 · ${T.shoot.toLocaleString()}</small></div>
     </div>
     <p class="muted">객관식 ${S.mcOk} · 직접 쓰기 ${S.typeOk} 정답 · 최고 ${S.best}연속 · 카트 합계 ${T.kart.toLocaleString()}</p>
     <div id="rk"><p class="rk-wait">🏆 순위 계산 중… (구글 시트에 기록하는 중)</p></div>
@@ -408,11 +432,11 @@ async function result() {
   }
   // 순위: 처음 끝냈을 때만 기록 + 순위, 다시 볼 때는 순위만
   const send = first && !DEMO ? (id, v) => submitScore(id, v, S.name) : (id) => getRanking(id, S.name); // 체험 모드는 기록 없이 순위만 보기
-  const R = await Promise.all([send('jg78-total', S.score), send('jg78-drum', T.drum), send('jg78-kart', T.kart)]).catch(() => null);
+  const R = await Promise.all([send('jg78-total', S.score), send('jg78-drum', T.drum), send('jg78-kart', T.kart), send('jg78-shoot', T.shoot)]).catch(() => null);
   const el = app.querySelector('#rk'); if (!el) return;
   if (!R) { el.innerHTML = '<p class="muted">순위를 불러오지 못했어요. 인터넷 연결 후 「지난 결과 · 순위 보기」로 다시 확인해요.</p>'; return; }
-  el.innerHTML = `<div class="myrank">${['총점', '🥁 드럼 합계', '🏎️ 카트 합계'].map((t, k) => `<div><small>${t}</small><b>${R[k].myRank || '-'}위</b><em>${R[k].count}명 중</em></div>`).join('')}</div>`
-    + rankTableHTML('jg78-total', R[0], S.name) + rankTableHTML('jg78-drum', R[1], S.name) + rankTableHTML('jg78-kart', R[2], S.name);
+  el.innerHTML = `<div class="myrank">${['총점', '🥁 드럼', '🏎️ 카트', '💬 대화문'].map((t, k) => `<div><small>${t}</small><b>${R[k].myRank || '-'}위</b><em>${R[k].count}명 중</em></div>`).join('')}</div>`
+    + rankTableHTML('jg78-total', R[0], S.name) + rankTableHTML('jg78-drum', R[1], S.name) + rankTableHTML('jg78-kart', R[2], S.name) + rankTableHTML('jg78-shoot', R[3], S.name);
 }
 
 // 테스트용 (자동 테스트에서 문제 · 게임 위치로 바로 가기)
