@@ -212,3 +212,10 @@ body.jg { background: linear-gradient(180deg, #FFF4E3 0%, #FFE7EC 55%, #E9F1FF 1
 .shoot-ban.dlg .dlg-bar { height: 6px; border-radius: 3px; background: #EEE8F8; overflow: hidden; margin-top: 4px; }
 .shoot-ban.dlg .dlg-bar i { display: block; height: 100%; background: linear-gradient(90deg, #7AD7FF, #2E7BC4); }
 .mg-mission.shoot-ban.dlg { white-space: normal; }
+
+/* 👩‍🏫 선생님 체험 모드 */
+.card.demo { border: 3px dashed #2E7BC4; background: #F2F7FF; }
+.demo h3 { margin: 0 0 4px; font-family: 'Jua', sans-serif; font-weight: 400; color: #1F4E8A; }
+.demo p { margin: 0 0 8px; font-size: 13px; color: #4A5A7A; }
+.demo-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.demo-btns button { min-height: 42px; border-radius: 12px; border: 2px solid #BBD3F2; background: #fff; font-family: 'Jua', sans-serif; font-size: 15px; color: #1F4E8A; }
