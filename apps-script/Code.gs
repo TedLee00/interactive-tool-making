@@ -81,8 +81,12 @@ function updateHall_() {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
   let sh = ss.getSheetByName('명예의전당');
   if (!sh) sh = ss.insertSheet('명예의전당');
-  sh.clear();
   const games = Object.keys(GAME_NAME);
+  const needCols = games.length * 4; // 게임마다 4칸 (순위 · 이름 · 점수 · 빈칸) — 게임이 늘면 탭 칸 수도 늘림
+  if (sh.getMaxColumns() < needCols) sh.insertColumnsAfter(sh.getMaxColumns(), needCols - sh.getMaxColumns());
+  if (sh.getMaxRows() < 15) sh.insertRowsAfter(sh.getMaxRows(), 15 - sh.getMaxRows());
+  sh.getRange(1, 1, sh.getMaxRows(), sh.getMaxColumns()).breakApart();
+  sh.clear();
   const all = sheet_().getDataRange().getValues().slice(1); // 시트를 한 번만 읽어서 빠르게
   const medal = ['1위 (금)', '2위 (은)', '3위 (동)'];
   games.forEach(function (g, k) {
