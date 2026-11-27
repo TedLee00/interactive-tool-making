@@ -47,7 +47,7 @@ const clean_ = (s, n) => String(s == null ? '' : s).trim().slice(0, n || 40);
 function submitScore(r) {
   const name = clean_(r.name, 20);
   const game = clean_(r.game, 20);
-  const score = Math.max(0, Math.min(999999, Number(r.score) || 0));
+  const score = Math.max(0, Math.min(99999999, Number(r.score) || 0)); // 드럼 3곡 합계는 100만 점이 넘을 수 있어 넉넉하게
   if (!name || !game) return { list: [], myRank: 0, count: 0 };
   append_(sheet_(), [new Date(), game, name, score]);
   try { updateHall_(); } catch (e) { /* 명예의전당 탭 정리 실패해도 기록은 됨 */ }
@@ -133,6 +133,12 @@ function reportSnack(r) {
 }
 
 /** 📚 정관중 L7·8 학습 앱: 끝까지 마치면 한 줄 (탭: 정관중L78) */
+const L78_HEADER = ['기록 시각', '이름', '총점', '단어 정답', '단어 문항', '단어 정답률(%)', '객관식 정답', '직접 쓰기 정답', '문법(드럼) 정답', '영작(카트) 정답', '드럼 3곡 합계', '카트 3판 합계', '최고 연속 정답', '틀린 단어', '걸린 시간(분)'];
+/** ▶ 처음 한 번 실행: 「정관중L78」 성적표 탭을 미리 만들고 명예의전당을 새로 정리 (Apps Script 편집기에서 이 함수를 골라 ▶ 실행) */
+function setupL78() {
+  tab_('정관중L78', L78_HEADER, '#7A1F1F');
+  updateHall_();
+}
 function reportLesson(r) {
   const sh = tab_('정관중L78', ['기록 시각', '이름', '총점', '단어 정답', '단어 문항', '단어 정답률(%)', '객관식 정답', '직접 쓰기 정답', '문법(드럼) 정답', '영작(카트) 정답', '드럼 3곡 합계', '카트 3판 합계', '최고 연속 정답', '틀린 단어', '걸린 시간(분)'], '#7A1F1F');
   append_(sh, [new Date(), String(r.name || '').slice(0, 20), r.total, r.wordOk, r.wordN, r.wordAcc, r.mcOk, r.typeOk, r.gramOk + '/' + r.gramN, r.sentOk + '/' + r.sentN, r.drum, r.kart, r.best, String(r.wrongs || '').slice(0, 900), r.minutes]);
