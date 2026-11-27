@@ -17,22 +17,31 @@ const SNACK_NAME = { choco: '초코파이', cake: '오예스', cookie: '쿠키�
 const RING = ['#E0453A', '#fff', '#2E7BC4', '#fff', '#FFD43B'];
 
 /** 💬 대화문 사격장 (정관중 L7·8 앱): 위에 한글 문장 → 올라오는 영어 단어 과녁을 순서대로 쏴서 문장 완성 · 문장당 30초 */
-export function playShootDialog({ sentences = [], round = 1, rounds = 2, sec = 30, prizeNote = '' } = {}) {
-  return playShoot({ ext: { sentences, round, rounds, sec, prizeNote } });
+export function playShootDialog({ sentences = [], convos = [], mode = 'words', round = 1, rounds = 2, sec = 30, prizeNote = '' } = {}) {
+  return playShoot({ ext: { sentences, convos, mode, round, rounds, sec, prizeNote } });
+}
+// 💬 대화 순서 모드: 첫 대사는 주어지고, 나머지 대사 카드를 순서대로 쏜다 (헷갈리는 가짜 대사도 섞여 지나감)
+const lineOf = (l) => `${l[0]}: ${l[1]}`;
+function wrapText(g, text, maxW) {
+  const out = []; let cur = '';
+  text.split(' ').forEach((w) => { const t = cur ? `${cur} ${w}` : w; if (g.measureText(t).width > maxW && cur) { out.push(cur); cur = w; } else cur = t; });
+  if (cur) out.push(cur); return out;
 }
 const toks = (en) => en.split(/\s+/).map((w) => w.replace(/[.,!?]+$/g, '')).filter(Boolean);
 export function playShoot({ ext = null } = {}) {
+  const ORDER = ext?.mode === 'order';
+  const N = ext ? (ORDER ? ext.convos.length : ext.sentences.length) : 0;
   return openGame({
     id: 'shoot',
     rankId: ext ? false : undefined,
-    rewardHTML: ext ? (r) => `<span class="co">💬 문장 <b>${r.qOk}/${r.qN}</b> 완성</span>` : undefined,
+    rewardHTML: ext ? (r) => `<span class="co">💬 ${ORDER ? '대화' : '문장'} <b>${r.qOk}/${r.qN}</b> 완성</span>` : undefined,
     title: ext ? `💬 대화문 사격장 ${ext.round}/${ext.rounds}` : '🎯 품사 사격장',
-    subtitle: ext ? `한글 문장을 보고 영어 단어 과녁을 순서대로 탕! · ${ext.sentences.length}문장` : '지시된 품사 과녁만 탕!',
+    subtitle: ext ? (ORDER ? `대화의 첫 마디를 보고 다음 대사를 순서대로 탕! · 대화 ${N}개` : `한글 문장을 보고 영어 단어 과녁을 순서대로 탕! · ${N}문장`) : '지시된 품사 과녁만 탕!',
     music: 'mgArena',
     howto: ext ? [
-      '<span class="hk y">💬 위에 한글 문장</span> 영어 단어 과녁을 <b>문장 순서대로</b> 쏘기',
-      '<span class="hk g">✏️ 쏠 때마다</span> 한글 아래에 영어 문장이 만들어져요',
-      `<span class="hk r">⏱ 문장당 ${ext.sec}초</span> 순서가 틀린 과녁은 <b>-100 · -1초</b>`,
+      ORDER ? '<span class="hk y">💬 첫 대사만 보여요</span> 지나가는 대사 카드를 <b>대화 순서대로</b> 쏘기' : '<span class="hk y">💬 위에 한글 문장</span> 영어 단어 과녁을 <b>문장 순서대로</b> 쏘기',
+      ORDER ? '<span class="hk g">🃏 가짜 대사도 섞여요</span> 앞뒤 흐름이 맞는 말만!' : '<span class="hk g">✏️ 쏠 때마다</span> 한글 아래에 영어 문장이 만들어져요 · 헷갈리는 오답 과녁 조심!',
+      `<span class="hk r">⏱ ${ORDER ? '대화' : '문장'}당 ${ext.sec}초</span> 순서가 틀리면 <b>-100 · -1초</b>`,
       '<span class="hk p">👨‍🏫 Ted 쌤</span> 쏘면 <b>아야! -250</b>',
       ext.prizeNote ? `<span class="hk b">🏆 상품</span> ${ext.prizeNote}` : '',
     ].filter(Boolean) : [
@@ -56,7 +65,7 @@ export function playShoot({ ext = null } = {}) {
       banner.className = 'mg-mission shoot-ban';
       ctx.layer.appendChild(banner);
 
-      const rows = () => [ctx.H * 0.29, ctx.H * 0.45, ctx.H * 0.61];
+      const rows = () => (ORDER ? [ctx.H * 0.43, ctx.H * 0.57, ctx.H * 0.71] : [ctx.H * 0.29, ctx.H * 0.45, ctx.H * 0.61]);
       const words = (R) => {
         if (R.pool === 'pos') return { good: data.pos[R.target], bad: Object.entries(data.pos).filter(([k]) => k !== R.target).flatMap(([, v]) => v) };
         return { good: data.chunks[R.target], bad: Object.entries(data.chunks).filter(([k]) => k !== R.target).flatMap(([, v]) => v) };
@@ -64,19 +73,29 @@ export function playShoot({ ext = null } = {}) {
       // 💬 대화문 모드: 문장 하나 = 한 라운드
       function dlgBanner(state = '') {
         const D = S.dlg; const T = D.tokens;
+        if (ORDER) {
+          const L = (t, cls = '') => { const [sp, ...rest] = t.split(': '); return `<li class="${cls}"><b class="sp ${sp}">${sp}</b>${rest.join(': ')}</li>`; };
+          const done = T.slice(0, D.idx).map((t) => L(t, 'ok')).join('');
+          const left = state === 'miss' ? T.slice(D.idx).map((t) => L(t, 'miss')).join('') : T.slice(D.idx).map(() => '<li class="blank"><b class="sp">?</b>______</li>').join('');
+          banner.innerHTML = `<div class="dlg-top"><small>💬 ${S.round + 1}/${N}</small><span class="dlg-who">${D.who || ''} · ${D.ko}</span><em class="dlg-sec ${S.left <= 8 ? 'low' : ''}">${Math.max(0, Math.ceil(S.left))}초</em></div>
+            <ol class="dlg-lines">${L(D.first, 'given')}${done}${left}</ol><div class="dlg-bar"><i style="width:${Math.max(0, S.left / ext.sec) * 100}%"></i></div>`;
+          return;
+        }
         const built = T.slice(0, D.idx).map((w) => `<b>${w}</b>`).join(' ');
         const rest = state === 'miss' ? T.slice(D.idx).map((w) => `<s>${w}</s>`).join(' ') : T.slice(D.idx).map(() => '<i>___</i>').join(' ');
-        banner.innerHTML = `<div class="dlg-top"><small>💬 ${S.round + 1}/${ext.sentences.length}</small><span class="dlg-who">${D.who || ''}</span><em class="dlg-sec ${S.left <= 8 ? 'low' : ''}">${Math.max(0, Math.ceil(S.left))}초</em></div>
+        banner.innerHTML = `<div class="dlg-top"><small>💬 ${S.round + 1}/${N}</small><span class="dlg-who">${D.who || ''}</span><em class="dlg-sec ${S.left <= 8 ? 'low' : ''}">${Math.max(0, Math.ceil(S.left))}초</em></div>
           <div class="dlg-ko">${D.ko}</div><div class="dlg-en ${state}">${built} ${rest}${D.idx >= T.length ? D.end : ''}</div><div class="dlg-bar"><i style="width:${Math.max(0, S.left / ext.sec) * 100}%"></i></div>`;
       }
       function nextSentence() {
         S.round++;
-        if (S.round >= ext.sentences.length) return finish();
-        const Q = ext.sentences[S.round];
-        S.dlg = { ko: Q.ko, who: Q.who, tokens: toks(Q.en), end: (Q.en.match(/[.!?]$/) || [''])[0], extra: Q.x || [], idx: 0, done: false };
+        if (S.round >= N) return finish();
+        const Q = ORDER ? ext.convos[S.round] : ext.sentences[S.round];
+        S.dlg = ORDER ? { ko: Q.ko, who: Q.who, first: lineOf(Q.lines[0]), tokens: Q.lines.slice(1).map(lineOf), end: '', extra: (Q.x || []).map(lineOf), idx: 0, done: false }
+          : { ko: Q.ko, who: Q.who, tokens: toks(Q.en), end: (Q.en.match(/[.!?]$/) || [''])[0], extra: Q.x || [], idx: 0, done: false };
         S.left = ext.sec; S.targets = []; S.spawnT = 0; S.pause = 1.4;
         dlgBanner(); banner.classList.add('dlg');
-        warn.innerHTML = `<div class="sw-in"><small>💬 문장 ${S.round + 1}/${ext.sentences.length}</small><b>${Q.ko}</b><em>영어 단어를 순서대로 쏴요!</em></div>`;
+        warn.innerHTML = ORDER ? `<div class="sw-in"><small>💬 대화 ${S.round + 1}/${N}</small><b>${Q.ko}</b><em>첫 마디 다음 대사를 순서대로 쏴요!</em></div>`
+          : `<div class="sw-in"><small>💬 문장 ${S.round + 1}/${N}</small><b>${Q.ko}</b><em>영어 단어를 순서대로 쏴요!</em></div>`;
         warn.classList.remove('on'); void warn.offsetWidth; warn.classList.add('on');
         ctx.sfx('reveal');
       }
@@ -105,8 +124,8 @@ export function playShoot({ ext = null } = {}) {
           const later = D.tokens.slice(D.idx + 1).filter((w) => w !== next && !present.has(w));
           const extra = D.extra.filter((w) => !present.has(w));
           const roll = Math.random();
-          if (!present.has(next) && (roll < 0.55 || !later.length)) label = next;
-          else if (roll < 0.75 && later.length) label = pick(later);
+          if (!present.has(next) && (roll < (ORDER ? 0.5 : 0.42) || !later.length)) label = next;
+          else if (roll < (ORDER ? 0.75 : 0.57) && later.length) label = pick(later);
           else if (extra.length) label = pick(extra);
           else if (later.length) label = pick(later);
           else if (!present.has(next)) label = next;
@@ -118,6 +137,14 @@ export function playShoot({ ext = null } = {}) {
         }
         const r = R.pool === 'chunks' ? 36 : 31;
         const ry = rows();
+        if (ORDER) { // 대사 카드: 넓은 카드가 줄마다 천천히 지나감
+          const cw = Math.min(ctx.W - 24, 340); const ch = 58;
+          const freeC = [0, 1, 2].filter((row) => { const dir = row % 2 ? -1 : 1; const x0 = dir > 0 ? -cw / 2 : ctx.W + cw / 2; return !S.targets.some((t) => t.alive && t.row === row && Math.abs(t.x - x0) < cw + 30); });
+          if (!freeC.length) return;
+          const row = pick(freeC); const dir = row % 2 ? -1 : 1;
+          S.targets.push({ kind: 'card', row, label, good: false, x: dir > 0 ? -cw / 2 : ctx.W + cw / 2, y: ry[row], vx: 42 * dir, w: cw, h: ch, r: ch / 2, t: 0, alive: true });
+          return;
+        }
         const lvl = ext ? 0 : Math.min(6, S.round * 1.5); // 라운드마다 조금씩 빨라짐
         const sp = ext ? 48 : 60 + lvl * 12;
         // 줄마다 방향 고정(겹치지 않게) · 입구가 비어 있는 줄에만 등장
@@ -154,7 +181,7 @@ export function playShoot({ ext = null } = {}) {
           S.pops.push({ x: clamp(p.x, 90, ctx.W - 90), y: p.y - 40, ok: false, big: '아야!! 😵', sub: '선생님은 쏘면 안 돼요! -250 · -1초', life: 1.3 });
           return;
         }
-        const hit = [...S.targets].reverse().find((t) => t.alive && (t.x - p.x) ** 2 + (t.ty - p.y) ** 2 <= t.r * t.r);
+        const hit = [...S.targets].reverse().find((t) => t.alive && (t.kind === 'card' ? Math.abs(t.x - p.x) <= t.w / 2 && Math.abs(t.ty - p.y) <= t.h / 2 : (t.x - p.x) ** 2 + (t.ty - p.y) ** 2 <= t.r * t.r));
         if (!hit) {
           S.holes.push({ x: p.x, y: p.y, life: 1.2 });
           if (S.combo > 0) ctx.floatText('빗나감!', p.x, p.y - 20, '#6B5F8A', 15);
@@ -220,9 +247,9 @@ export function playShoot({ ext = null } = {}) {
         if (S.finished) return;
         S.finished = true;
         if (ext) {
-          const n = ext.sentences.length;
+          const n = N;
           ctx.end({ score: Math.max(0, S.score), cleared: S.qOk >= Math.ceil(n / 2), coins: 0, snack: null, qOk: S.qOk, qN: n,
-            headline: S.qOk === n ? '💬 대화문 명사수!' : S.qOk >= Math.ceil(n / 2) ? '💬 대화문 사격 성공!' : '조금만 더 정확하게!', legendAt: 4000,
+            headline: S.qOk === n ? (ORDER ? '💬 대화 순서 완벽!' : '💬 대화문 명사수!') : S.qOk >= Math.ceil(n / 2) ? '💬 대화문 사격 성공!' : '조금만 더 정확하게!', legendAt: 4000,
             lines: [`명중 <b>${S.hits}</b> · 잘못 쏜 과녁 ${S.wrong}`, `최고 콤보 <b>${S.best}</b>`] });
           return;
         }
@@ -349,10 +376,11 @@ export function playShoot({ ext = null } = {}) {
           S.pops.forEach((q) => { q.life -= dt; }); S.pops = S.pops.filter((q) => q.life > 0);
           S.spawnT -= dt;
           const alive = S.targets.filter((t) => t.alive).length;
-          if (S.spawnT <= 0 && alive < (ext ? 7 : 6)) { spawn(); S.spawnT = ext ? 0.6 : Math.max(0.45, 0.78 - S.round * 0.08); }
+          if (S.spawnT <= 0 && alive < (ORDER ? 4 : ext ? 8 : 6)) { spawn(); S.spawnT = ORDER ? 1.6 : ext ? 0.5 : Math.max(0.45, 0.78 - S.round * 0.08); }
           S.targets.forEach((t) => {
             t.t += dt;
             if (t.kind === 'snack') { t.x += t.vx * dt; t.ty = t.y + Math.sin(t.t * 7) * 16; /* 더 빠르고 작고, 위아래로 출렁 */ if (t.x < -70 || t.x > ctx.W + 70) t.alive = false; }
+            else if (t.kind === 'card') { t.x += t.vx * dt; t.ty = t.y + Math.sin(t.t * 2.5) * 2; if (t.x < -t.w / 2 - 30 || t.x > ctx.W + t.w / 2 + 30) t.alive = false; }
             else if (t.kind === 'slide') { t.x += t.vx * dt; t.ty = t.y + Math.sin(t.t * 4) * 3; if (t.x < -60 || t.x > ctx.W + 60) t.alive = false; }
             else {
               t.life -= dt;
@@ -365,7 +393,7 @@ export function playShoot({ ext = null } = {}) {
           S.targets = S.targets.filter((t) => t.alive);
           S.holes.forEach((h) => { h.life -= dt; });
           S.holes = S.holes.filter((h) => h.life > 0);
-          ctx.hud(ext ? `💬 ${S.round + 1}/${ext.sentences.length} · <b>${S.score}</b>${S.combo > 1 ? ` <i>🔥${S.combo}</i>` : ''}` : `⏱ <b>${Math.max(0, Math.ceil(S.left))}</b>초 · 🎯 ${S.hits} · <b>${S.score}</b>${S.combo > 1 ? ` <i>🔥${S.combo}</i>` : ''}`);
+          ctx.hud(ext ? `💬 ${S.round + 1}/${N} · <b>${S.score}</b>${S.combo > 1 ? ` <i>🔥${S.combo}</i>` : ''}` : `⏱ <b>${Math.max(0, Math.ceil(S.left))}</b>초 · 🎯 ${S.hits} · <b>${S.score}</b>${S.combo > 1 ? ` <i>🔥${S.combo}</i>` : ''}`);
         },
         draw(g) {
           const { W, H } = ctx;
@@ -380,6 +408,16 @@ export function playShoot({ ext = null } = {}) {
           // 과녁
           S.targets.forEach((t) => {
             const y = t.ty ?? t.y;
+            if (t.kind === 'card') { // 🃏 대사 카드
+              const [sp, ...rest] = t.label.split(': '); const txt = rest.join(': ');
+              roundRect(g, t.x - t.w / 2, y - t.h / 2, t.w, t.h, 14); g.fillStyle = '#FFFBF0'; g.fill(); g.lineWidth = 3; g.strokeStyle = '#2B2350'; g.stroke();
+              g.fillStyle = sp === 'G' ? '#E21E8C' : '#2E7BC4'; g.beginPath(); g.arc(t.x - t.w / 2 + 20, y, 13, 0, 7); g.fill();
+              g.fillStyle = '#fff'; g.font = "400 15px Jua, sans-serif"; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(sp, t.x - t.w / 2 + 20, y + 1);
+              g.font = "700 13px 'Noto Sans KR', sans-serif"; g.textAlign = 'left'; g.fillStyle = '#2B2350';
+              const ls = wrapText(g, txt, t.w - 52).slice(0, 3); const lh = 16;
+              ls.forEach((ln, k) => g.fillText(ln, t.x - t.w / 2 + 40, y + (k - (ls.length - 1) / 2) * lh));
+              return;
+            }
             if (t.kind === 'snack') {
               // 줄에 매달린 과자 + 반짝이는 테두리
               g.strokeStyle = '#FFD43B'; g.lineWidth = 2; g.beginPath(); g.moveTo(t.x + t.r * 0.7, y); g.lineTo(t.x + t.r + 18, y + 22); g.stroke();

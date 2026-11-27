@@ -10,7 +10,7 @@
  *  - 명예의전당    : 게임별 1~10위 (점수가 기록될 때마다 새로 정리) · 원정대 총점은 난이도(하/중/상)별로 따로
  */
 const SHEET = '품사원정대_점수';
-const GAME_NAME = { shoot: '품사 사격장', run: '청크런', kart: '청크 카트', crane: '청크 크레인', drum: '품사 드럼', 'board-low': '원정대 총점 (하)', 'board-mid': '원정대 총점 (중)', 'board-high': '원정대 총점 (상)', 'jg78-total': '정관중 L7·8 총점', 'jg78-drum': '정관중 L7·8 드럼 합계', 'jg78-kart': '정관중 L7·8 카트 합계' };
+const GAME_NAME = { shoot: '품사 사격장', run: '청크런', kart: '청크 카트', crane: '청크 크레인', drum: '품사 드럼', 'board-low': '원정대 총점 (하)', 'board-mid': '원정대 총점 (중)', 'board-high': '원정대 총점 (상)', 'jg78-total': '정관중 L7·8 총점', 'jg78-drum': '정관중 L7·8 드럼 합계', 'jg78-kart': '정관중 L7·8 카트 합계', 'jg78-shoot': '정관중 L7·8 대화문 합계' };
 const SNACK_NAME = { choco: '초코파이', cake: '오예스', cookie: '오예스 쿠키앤크림' };
 
 function doPost(e) {
