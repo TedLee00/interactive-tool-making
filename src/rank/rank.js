@@ -54,11 +54,19 @@ let flushing = false;
 export async function flushPending() {
   if (flushing || !config.rankApi) return; flushing = true;
   try {
+    // 하나씩 보내고 성공하면 지움. 네트워크 실패면 다음 기회에.
+    // 시트에 없는 기능이면 버리되, 학습 앱 성적표는 Apps Script를 새 버전으로 배포하면 받을 수 있으니 2주 동안 보관
+    const held = [];
     let q = loadPending();
     while (q.length) {
-      try { await callApi(q[0].fn, q[0].args); } catch (e) { if (!/unknown fn/.test(String(e && e.message))) break; } // 아직 안 되면 다음 기회에 (시트에 없는 기능이면 버림)
+      const it = q[0];
+      try { await callApi(it.fn, it.args); } catch (e) {
+        if (!/unknown fn/.test(String(e && e.message))) break;
+        if (/^reportLesson/.test(it.fn) && Date.now() - (it.at || 0) < 14 * 864e5) held.push(it);
+      }
       q = loadPending(); q.shift(); savePending(q);
     }
+    if (held.length) savePending([...held, ...loadPending()]);
   } finally { flushing = false; }
 }
 if (typeof window !== 'undefined' && config.rankApi) { setTimeout(flushPending, 4000); window.addEventListener('online', flushPending); }

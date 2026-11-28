@@ -235,3 +235,6 @@ body.jg { background: linear-gradient(180deg, #FFF4E3 0%, #FFE7EC 55%, #E9F1FF 1
 .ptab { width: 100%; border-collapse: collapse; margin: 4px 0 6px; font-size: 12.5px; background: #fff; border-radius: 8px; overflow: hidden; }
 .ptab th, .ptab td { border: 1px solid #DCE6F5; padding: 3px 4px; text-align: center; }
 .ptab td:first-child { text-align: left; font-weight: 800; }
+.demo-chk { margin-top: 10px; text-align: center; }
+.demo-chk button { width: 100%; min-height: 44px; border-radius: 12px; border: 2px solid #E0B44A; background: #FFF6DA; font-family: 'Jua', sans-serif; font-size: 16px; color: #7A4A0A; }
+.demo-chk p { margin: 8px 0 0; font-size: 14px; line-height: 1.5; }
