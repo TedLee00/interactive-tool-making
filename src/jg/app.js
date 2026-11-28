@@ -161,8 +161,20 @@ function demoPanel() {
   box.className = 'card demo';
   box.innerHTML = `<h3>👩‍🏫 선생님 체험 모드</h3><p>순위표 · 구글 시트에 <b>기록되지 않아요</b>. 바로 가고 싶은 곳을 누르세요.</p>
     <div class="demo-btns"><button data-j="word">📖 단어 문제</button>${GAMES.map((g, k) => `<button data-j="${k}">${GICON[g.kind]} ${GNAME[g.kind]} ${g.round}</button>`).join('')}
-    <button data-j="pass">🎉 결과 · PASS</button><button data-j="np">💪 결과 · NOT PASS</button></div>`;
+    <button data-j="pass">🎉 결과 · PASS</button><button data-j="np">💪 결과 · NOT PASS</button></div>
+    <div class="demo-chk"><button id="chk">🔌 구글 시트 연결 확인</button><p id="chkMsg"></p></div>`;
   app.prepend(box);
+  // 🔌 시트에 아무것도 쓰지 않고, 배포된 Apps Script가 성적표 기록 기능을 가진 최신 버전인지만 확인
+  box.querySelector('#chk').onclick = async () => {
+    const m = box.querySelector('#chkMsg'); m.textContent = '확인 중… (최대 20초)';
+    if (!config.rankApi) { m.innerHTML = '❌ data/config.json에 rankApi 주소가 없어요'; return; }
+    try { await callApi('reportLessonStep', []); m.innerHTML = '✅ 최신 버전이에요'; } catch (e) {
+      const msg = String((e && e.message) || e);
+      if (/unknown fn/.test(msg) || /TypeError/.test(msg) && !/\btab\b/.test(msg)) m.innerHTML = '❌ <b>배포된 Apps Script가 옛 버전이에요.</b><br>배포 → 배포 관리 → ✏️ 편집 → 버전: <b>새 버전</b> → 배포';
+      else if (/TypeError|undefined/.test(msg)) m.innerHTML = '✅ <b>연결 정상 · 최신 버전</b>이에요. 학생 기록이 시트에 남아요.';
+      else m.innerHTML = `⚠️ 시트에 연결하지 못했어요 (${esc(msg).slice(0, 80)})<br>인터넷 연결 또는 배포 설정(액세스: 모든 사용자)을 확인하세요.`;
+    }
+  };
   box.querySelectorAll('[data-j]').forEach((b) => {
     b.onclick = () => {
       unlockAudio(); newRun('체험(선생님)', 'bboy'); setPlayer(S.name);
