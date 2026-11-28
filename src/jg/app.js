@@ -13,7 +13,7 @@ import { shuffle } from '../games/engine.js';
 import { sfx, setMuted, isMuted } from '../quiz/sound.js';
 import { syncMute, unlockAudio, callout, comboCallout, bgm, bgmStop, crewDance } from '../fx/fx.js';
 import { fillFaces, charURL } from '../board/charart.js';
-import { setPlayer, submitScore, getRanking, rankTableHTML, callApi, queueSend, flushPending } from '../rank/rank.js';
+import { setPlayer, submitScore, getRanking, rankTableHTML, callApi, queueSend, flushPending, pendingInfo } from '../rank/rank.js';
 import config from '../../data/config.json';
 
 /**
@@ -168,12 +168,19 @@ function demoPanel() {
   box.querySelector('#chk').onclick = async () => {
     const m = box.querySelector('#chkMsg'); m.textContent = '확인 중… (최대 20초)';
     if (!config.rankApi) { m.innerHTML = '❌ data/config.json에 rankApi 주소가 없어요'; return; }
+    // 이 기기(같은 브라우저)에서 학생 모드로 풀다가 못 보낸 기록이 있으면 함께 보여 주고 다시 보냄
+    const P0 = pendingInfo(); // 확인 요청(일부러 실패) 전에 읽어 둠
+    const pend = () => { const P = P0; const n = P.list.filter((x) => /^reportLesson|^submitScore/.test(x.fn)).length;
+      const last = P.last ? `<br><small>마지막 실패: ${esc(P.last.fn)} · ${esc(P.last.msg)} · ${new Date(P.last.at).toLocaleString('ko-KR')}</small>` : '';
+      return `<br>📮 이 기기에 못 보낸 기록 <b>${n}개</b>${n ? ' — 지금 다시 보내는 중…' : ''}${last}`; };
+    const resend = async () => { await flushPending(); const left = pendingInfo().list.length; m.innerHTML += `<br>${left ? `⚠️ 아직 ${left}개를 못 보냈어요` : '✅ 남은 기록 없음 (다 보냈어요)'}`; };
     try { await callApi('reportLessonStep', []); m.innerHTML = '✅ 최신 버전이에요'; } catch (e) {
       const msg = String((e && e.message) || e);
       if (/unknown fn/.test(msg) || /TypeError/.test(msg) && !/\btab\b/.test(msg)) m.innerHTML = '❌ <b>배포된 Apps Script가 옛 버전이에요.</b><br>배포 → 배포 관리 → ✏️ 편집 → 버전: <b>새 버전</b> → 배포';
       else if (/TypeError|undefined/.test(msg)) m.innerHTML = '✅ <b>연결 정상 · 최신 버전</b>이에요. 학생 기록이 시트에 남아요.';
       else m.innerHTML = `⚠️ 시트에 연결하지 못했어요 (${esc(msg).slice(0, 80)})<br>인터넷 연결 또는 배포 설정(액세스: 모든 사용자)을 확인하세요.`;
     }
+    m.innerHTML += pend(); resend();
   };
   box.querySelectorAll('[data-j]').forEach((b) => {
     b.onclick = () => {

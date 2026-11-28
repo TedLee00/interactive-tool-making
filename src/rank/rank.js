@@ -42,14 +42,23 @@ export async function callApi(fn, args) {
     const j = await res.json();
     if (!j.ok) throw new Error(j.error);
     return j.result;
+  } catch (e) {
+    // 🔎 마지막 실패 이유를 기기에 남김 (선생님 체험 모드 「연결 확인」에서 보여 줌)
+    try { localStorage.setItem('cq.lastErr.v1', JSON.stringify({ fn, msg: String((e && (e.name === 'AbortError' ? '시간 초과(20초)' : e.message)) || e).slice(0, 160), at: Date.now() })); } catch { /* 저장 불가 */ }
+    throw e;
   } finally { clearTimeout(tm); }
+}
+/** 이 기기에 남은 못 보낸 기록 · 마지막 실패 이유 */
+export function pendingInfo() {
+  let last = null; try { last = JSON.parse(localStorage.getItem('cq.lastErr.v1')); } catch { /* 없음 */ }
+  return { list: loadPending(), last };
 }
 
 /** 📮 보내지 못한 기록 보관함: 인터넷이 끊기거나 시트가 늦게 답하면 기기에 모아 두었다가 다음에 다시 보냄 (기록이 사라지지 않게) */
 const PKEY = 'cq.pending.v1';
 const loadPending = () => { try { return JSON.parse(localStorage.getItem(PKEY)) || []; } catch { return []; } };
 const savePending = (q) => { try { localStorage.setItem(PKEY, JSON.stringify(q.slice(-200))); } catch { /* 저장 불가 */ } };
-export function queueSend(fn, args) { const q = loadPending(); q.push({ fn, args, at: Date.now() }); savePending(q); }
+export function queueSend(fn, args) { const q = loadPending(); q.push({ fn, args, at: Date.now() }); savePending(q); setTimeout(flushPending, 30000); } // 30초 뒤 한 번 더 시도
 let flushing = false;
 export async function flushPending() {
   if (flushing || !config.rankApi) return; flushing = true;
